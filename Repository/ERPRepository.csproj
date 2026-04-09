@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Context\ERPContext.csproj" />
+		<ProjectReference Include="..\Data\ERPData.csproj" />
+		<ProjectReference Include="..\Helper\Helper.csproj" />
+		<ProjectReference Include="..\HelperMySQL\HelperMySQL.csproj" />
+	</ItemGroup>
+
+</Project>
