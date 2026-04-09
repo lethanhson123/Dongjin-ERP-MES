@@ -1,0 +1,99 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH05Service _H05Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H05";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _H05Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+
+<style>
+    .full-width-card {
+        margin: 0;
+        padding: 0;
+    }
+
+        .full-width-card .card-content {
+            padding: 0;
+        }
+
+    .full-width-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .card {
+        box-shadow: none;
+        border: none;
+    }
+</style>
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy full-width-card">
+        <div class="card-content">
+            <!-- Hiển thị hình ảnh -->
+            <div class="row" style="margin-bottom: 0;">
+                <div class="col s12">
+                    <div class="card full-width-card">
+                        <div class="card-content">
+                            <div>
+                                <img src="~/image/h05.png" alt="H05 Image" class="full-width-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/H05.js?v=@version"></script>

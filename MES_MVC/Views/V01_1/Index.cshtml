@@ -1,0 +1,108 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string url = "V01_1";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "V01_PHOTO (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <h6><b>V01_PHOTO (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l10 right-align-md">
+                    <div>
+                        <input id="FileToUpload" type="file" class="form-control" accept="image/*" style="display:none;">
+                        <button id="Buttonadd" title="Add" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">Add</button>
+                        <a target="_blank" href="#" id="Button1" title="Down" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;" download>Down</a>
+                        <button id="Buttonsave" title="Save" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">Save</button>
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l8 card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l9">
+                            <div>
+                                <label>PN_NO : </label>
+                                <input id="Label3" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>.</label>
+                                <input id="Label9" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>FILE : </label>
+                                <input id="Label2" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>SIZE(Byte) : </label>
+                                <input id="Label8" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l9">
+                            <div>
+                                <label>.</label>
+                                <input id="Label4" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label style="color: red;">※ Photo Size Max 1.5 Mb</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div class="col s12 m12 l12">
+                        <img id="PictureBox1" alt="PictureBox1" title="PictureBox1" width="400" height="400" />
+
+                    </div>
+                </div>             
+            </div>         
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/V01_1.js?v=@version"></script>
+

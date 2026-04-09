@@ -1,0 +1,170 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IV03_1Service _V03_1Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "V03_1";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _V03_1Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <!-- Header -->
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6>
+                        <b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b>
+                    </h6>
+                </div>
+
+            </div>
+
+            <!-- Search Section -->
+            <div class="row valign-wrapper" style="margin-bottom: 5px;">
+
+                <div class="col s12 m6 l4">
+                    <div>
+                        <label>Search</label>
+                        <input id="TextID" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m6 l8 right-align">
+                    <button id="Button1" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> Search
+                    </button>
+                    <button id="Button3" class="btn waves-effect waves-light blue darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">check</i> Apply
+                    </button>
+                    <button id="Button2" class="btn waves-effect waves-light red lighten-1">
+                        <i class="material-icons">close</i> Close
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info Row 1: 5 Label -->
+            <div class="row" style="margin-bottom:0;">
+                <div class="col s12">
+                    <div class="card-panel" style="padding: 10px 0;">
+                        <div class="row" style="margin-bottom:0;">
+                            <div class="col s2 center-align"><span id="Label7">-</span></div>
+                            <div class="col s2 center-align"><span id="Label6">-</span></div>
+                            <div class="col s2 center-align"><span id="Label5">-</span></div>
+                            <div class="col s2 center-align"><span id="Label8">-</span></div>
+                            <div class="col s4 center-align"><span id="Label9">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Row 2: 3 Label -->
+            <div class="row" style="margin-bottom:0;">
+                <div class="col s12">
+                    <div class="card-panel" style="padding: 10px 0;">
+                        <div class="row" style="margin-bottom:0;">
+                            <div class="col s4 center-align"><span id="Label1">-</span></div>
+                            <div class="col s4 center-align"><span id="Label2">-</span></div>
+                            <div class="col s4 center-align"><span id="Label3">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="KhungOverflow">
+                <table class="responsive-table" id="DataGridView1Table">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Product No</th>
+                            <th>COST</th>
+                            <th>DATE</th>
+                            <th>Industry Type</th>
+                            <th>Business Number</th>
+                            <th>Address</th>
+                            <th>TEL.</th>
+                            <th>FAX.</th>
+                            <th>Manager</th>
+                            <th>REMARK</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView1">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/V03_1.js?v=@version"></script>
+<style>
+    #DataGridView1 th, #DataGridView1 td {
+        max-width: 120px;
+        min-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #DataGridView1 tr.selected {
+        background-color: #bbdefb !important;
+        border-left: 4px solid #2196F3;
+    }
+
+        #DataGridView1 tr.selected td {
+            background-color: #bbdefb !important;
+        }
+
+    #DataGridView1 tr:hover {
+        background-color: #e3f2fd;
+        cursor: pointer;
+    }
+</style>

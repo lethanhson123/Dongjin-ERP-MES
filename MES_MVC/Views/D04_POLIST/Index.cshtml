@@ -1,0 +1,59 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string url = "D04_POLIST";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "D04_POLIST (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l6">
+					<h6><b>D04_POLIST (@url)</b></h6>
+				</div>
+				<div class="col s12 m12 l6 right-align-md">
+					<div>						
+					</div>
+				</div>
+			</div>
+			<div class="KhungOverflow60">
+				<table class="responsive-table" id="DataGridView1Table">
+					<thead class="sticky-header">
+						<tr>
+							<th>PO_CODE</th>
+							<th>CREATE_DTM</th>							
+						</tr>
+					</thead>
+					<tbody id="DataGridView1">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/D04_POLIST.js?v=@version"></script>
+

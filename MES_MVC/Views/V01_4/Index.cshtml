@@ -1,0 +1,163 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string url = "V01_4";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "COST_FILE (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <h6><b>COST_FILE (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l1">
+                    Month :
+                </div>
+                <div class="col s12 m12 l2">
+                    <select id="ComboBox1" class="browser-default form-select">
+                        <option value="0">
+                            ALL
+                        </option>
+                        <option value="1">
+                            Month +1
+                        </option>
+                        <option value="2">
+                            Month +2
+                        </option>
+                        <option value="3">
+                            Month +3
+                        </option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l7 right-align-md">
+                    <div>
+                        <button id="Buttonfind" title="Search" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">Search</button>
+                        <button id="Buttonadd" title="Add" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">Add</button>
+                        <button id="Buttonsave" title="Save" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">Save</button>
+                        <button id="Buttondelete" title="Search" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">Delete</button>
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>Company Name : </label>
+                            <input id="Label3" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>Division : </label>
+                            <input id="Label1" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row card-panel green lighten-4">
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>DATE : </label>
+                            <input id="DateTimePicker1" type="date" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <label>.</label>
+                            <input id="Label11" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <button id="Button1" title="ADD FILE" class="btn waves-effect waves-light green darken-1">ADD FILE</button>
+                            <input id="FileToUpload" type="file" class="form-control" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>FILE NAME : </label>
+                            <input id="TextBox1" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <label>.</label>
+                            <input id="Label12" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <label>.</label>
+                            <input id="Label10" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>REMARK : </label>
+                            <input id="TextBox2" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label style="color: red;">※ File Size Max 2 Mb</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="KhungOverflow40">
+                <table class="responsive-table" id="DataGridView1Table">
+                    <thead class="sticky-header">
+                        <tr onclick="DataGridView1Sort()">
+                            <th>CODE</th>
+                            <th>DATE</th>
+                            <th>FILE_NAME</th>
+                            <th>TYPE</th>
+                            <th>REMARK</th>
+                            <th>FILE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView1">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/V01_4.js?v=@version"></script>
+

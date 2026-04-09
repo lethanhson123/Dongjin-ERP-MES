@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Barcode Only</title>
+    <style>
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+            }
+
+            .barcode-container {
+                padding: 8px;
+                text-align: center;
+            }
+
+            .barcode-info {
+                font-size: 10px;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="barcode-container">
+        <img src="[QRCodeFileName]" width="54" height="54"><br>
+        <div class="barcode-info">[BARCODE_AA]</div>
+        <div class="barcode-info">Qty: [BARCODE_BB]</div>
+    </div>
+    <script>
+        window.onload = function () {
+            window.print();
+            localStorage.setItem('C08HTML', '0');
+        };
+    </script>
+</body>
+</html>

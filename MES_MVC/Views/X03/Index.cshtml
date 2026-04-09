@@ -1,0 +1,199 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IX03Service _X03Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "X03";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _X03Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>TaskTime DJG (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+
+
+            <!-- Lưới dữ liệu -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow70">
+                        <table class="responsive-table" id="DataGridViewTable">
+                            <thead class="sticky-header">
+                                <tr onclick="DataGridViewSort()">
+                                    <th>ID</th>
+                                    <th>ECN No</th>
+                                    <th>Production Line</th>
+                                    <th>Process</th>
+                                    <th>Product Code</th>
+                                    <th>Product Name</th>
+                                    <th>Family</th>
+                                    <th>Circuit #</th>
+                                    <th>Task Time</th>
+                                    <th>Customer Task Time</th>
+                                    <th>Gap</th>
+                                    <th>Note</th>
+                                    <th>Active</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView">
+                                <!-- Dữ liệu sẽ được điền vào đây từ JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ModalImportTaskTime" class="modal">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 0;">
+            <div class="col s8">
+                <h4>Import Task Time</h4>
+            </div>
+            <div class="col s4 right-align">
+                <button id="BtnSaveImport" class="btn waves-effect waves-light green darken-1">
+                    <i class="material-icons left">save</i>Save
+                </button>
+                <button class="modal-close btn waves-effect waves-light red">
+                    <i class="material-icons left">close</i>Cancel
+                </button>
+            </div>
+        </div>
+        <div class="file-field input-field">
+            <div class="btn cyan">
+                <span>File</span>
+                <input id="FileImportTaskTime" type="file" accept=".xlsx,.xls">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Upload Excel file">
+            </div>
+        </div>
+        <div class="progress" id="importProgress" style="display: none;">
+            <div class="indeterminate"></div>
+        </div>
+        <div class="KhungOverflow">
+            <table class="responsive-table striped">
+                <thead>
+                    <tr>
+                        <th>ECN No</th>
+                        <th>Production Line</th>
+                        <th>Process</th>
+                        <th>Product Code</th>
+                        <th>Product Name</th>
+                        <th>Family</th>
+                        <th>Circuit #</th>
+                        <th>Task Time</th>
+                        <th>Customer Task Time</th>
+                        <th>Gap</th>
+                    </tr>
+                </thead>
+                <tbody id="ImportPreviewTable">
+                    <!-- Dữ liệu preview sẽ được điền vào đây từ JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/X03.js?v=@version"></script>
+

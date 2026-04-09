@@ -1,0 +1,197 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IA11Service _A11Service
+@{
+    //string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "A11";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _A11Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    @if (IsButtonfind)
+                    {
+                        <button id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                        </button>
+                    }
+
+                    @if (IsButtonadd)
+                    {
+                        <button id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                        </button>
+                    }
+
+                    @if (IsButtonsave)
+                    {
+                        <button id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave"
+                                class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                        </button>
+                    }
+
+                    @if (IsButtondelete)
+                    {
+                        <button id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete"
+                                class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                        </button>
+                    }
+
+                    @if (IsButtoncancel)
+                    {
+                        <button id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                        </button>
+                    }
+
+                    @if (IsButtoninport)
+                    {
+                        <button id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                        </button>
+                    }
+
+                    @if (IsButtonexport)
+                    {
+                        <button id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                        </button>
+                    }
+
+                    @if (IsButtonprint)
+                    {
+                        <button id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                        </button>
+                    }
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row" id="Tag001">
+                    <div class="col s12 m6 l12 card-panel lighten-4">
+                        <div class="row" style="margin:2px">
+                            <div class="row" style="margin:2px;">
+                                <label>@MES_MVC.Resources.Resource.DbTbl_Group</label>
+                                <table id="Table1">
+                                    <thead>
+                                        <tr>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_Code</th>
+                                            <th>@MES_MVC.Resources.Resource.English</th>
+                                            <th>@MES_MVC.Resources.Resource.Korean</th>
+                                            <th>@MES_MVC.Resources.Resource.Vietnamese</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_CreateDate</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_CreateBy</th>
+                                            <th>@MES_MVC.Resources.Resource.dbTbl_UpdateDate</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_UpdateBy</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_Active</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView1">
+                                        <!-- Dữ liệu sẽ được đổ tại đây -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <div class="row" id="Tag002">
+                    <div class="col s12 m6 l12 card-panel lighten-4">
+                        <div class="row" style="margin:2px">
+                            <div class="row" style="margin:2px;">
+                                <label>@MES_MVC.Resources.Resource.Btn_Detail</label>
+                                <table class="display wrap" id="Table2" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_MasterCode</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_Code</th>
+                                            <th>@MES_MVC.Resources.Resource.English</th>
+                                            <th>@MES_MVC.Resources.Resource.Korean</th>
+                                            <th>@MES_MVC.Resources.Resource.Vietnamese</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_CreateDate</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_CreateBy</th>
+                                            <th>@MES_MVC.Resources.Resource.dbTbl_UpdateDate</th>
+                                            <th>@MES_MVC.Resources.Resource.DbTbl_UpdateBy</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView2">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/A11.js?v=@GlobalHelper.GetVersionScrip("A11.js")"></script>
+

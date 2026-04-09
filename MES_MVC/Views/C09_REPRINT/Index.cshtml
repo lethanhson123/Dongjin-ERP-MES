@@ -1,0 +1,124 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string url = "C09_REPRINT";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "C09_REPRINT (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <h6><b>C09_REPRINT (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l4">
+                    <input id="ORDER_NO" type="text" class="form-control" readonly>
+                </div>
+                <div class="col s12 m12 l4 right-align-md">
+                    <div class="col s12 m12 l4">
+                        <button id="Buttonprint" title="Print" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Print</button>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel yellow lighten-4">
+                <div class="col s12 m12 l6">
+                    <div>                        
+                        <input id="PRT_1" type="text" class="form-control" readonly value="BARCODE">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>                        
+                        <input id="PRT_2" type="text" class="form-control" readonly value="SEQ">
+                    </div>
+                </div>               
+                <div class="col s12 m12 l2">
+                    <div>                        
+                        <input id="PRT_3" type="text" class="form-control" readonly value="LEADNO">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>                        
+                        <input id="PRT_4" type="text" class="form-control" readonly value="DT">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>                        
+                        <input id="PRT_5" type="text" class="form-control" readonly value="MC">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_6" type="text" class="form-control" readonly value="HOOK">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_7" type="text" class="form-control" readonly value="TOT_QTY">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_8" type="text" class="form-control" readonly value="BANDSIZE">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_9" type="text" class="form-control" readonly value="SF Stock">
+                    </div>
+                </div>
+            </div>
+            <div class="KhungOverflow60">
+                <table class="responsive-table" id="DataGridView1Table">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th>TORDER_BARCODENM</th>
+                            <th>Barcode_SEQ</th>
+                            <th>WORK_END</th>
+                            <th>LEAD_NO</th>
+                            <th>ORDER_DATE</th>
+                            <th>MC</th>
+                            <th>HOOK_RACK</th>
+                            <th>PO_QTY</th>
+                            <th>BUNDLE_SIZE</th>
+                            <th>SAFTY_QTY</th>                            
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView1">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C09_REPRINT.js?v=@version"></script>
+

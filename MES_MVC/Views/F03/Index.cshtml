@@ -1,0 +1,490 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IF03Service _F03Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "F03";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _F03Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6 id="LabelNAME"><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    @if (IsButtonfind)
+                    {
+                        <button id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                        </button>
+                    }
+
+                    @if (IsButtonadd)
+                    {
+                        <button id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                        </button>
+                    }
+
+                    @if (IsButtonsave)
+                    {
+                        <button id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave"
+                                class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                        </button>
+                    }
+
+                    @if (IsButtondelete)
+                    {
+                        <button id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete"
+                                class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                        </button>
+                    }
+
+                    @if (IsButtoncancel)
+                    {
+                        <button id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                        </button>
+                    }
+
+                    @if (IsButtoninport)
+                    {
+                        <button id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                        </button>
+                    }
+
+                    @if (IsButtonexport)
+                    {
+                        <button id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                        </button>
+                    }
+
+                    @if (IsButtonprint)
+                    {
+                        <button id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                        </button>
+                    }
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="row">
+                    <div class="col s12 m6 l4">
+                        <ul class="tabs">
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="active p-0" href="#Tag001">@MES_MVC.Resources.Resource.DbTbl_ScanQRCode (IQC NG)</a>
+                            </li>
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="p-0" href="#Tag002">@MES_MVC.Resources.Resource.DbTbl_History</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col s12 m6 l8">
+                    </div>
+                </div>
+                <div id="Tag001" class="col s12">
+                    <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                        <div class="row p-0 m-0">
+                            <div class="col s12 m12 l6">
+                                <div class="row">
+                                    <div class="col s12 m6 l6">
+                                        <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.DbTbl_ScanQRCode</label>
+                                    </div>
+                                </div>
+
+                                <input type="text" id="tab1_QRCodeScan" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.DbTbl_ErrorInfo</label>
+                                <input type="text" id="error_Infor" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.DbTbl_Total</label>
+                                <input type="text" id="txt_Total" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.DbTbl_Quantity</label>
+                                <input type="number" id="error_Qty" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m8 l8">
+                            <div class="row" style="font-size:20px;">
+                                <div class="col s12 m12 l12">
+                                    <div class="col s12 m12 l12">
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_LotCode:</strong> <span id="txt_LotCode" class="preserve-space" style="color:green; font-size:20px;">-</span></p>
+                                    </div>
+                                    <div class="col s12 m6 l6">
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_ProductCode:</strong> <span id="txt_ProductCode" style="color:blue;font-size:20px;">-</span> <span id="txt_ID" style="color:white;font-size:20px;">-</span></p>
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_ProductName:</strong> <span id="txt_ProductName" style="color:blue;font-size:20px;">-</span></p>
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_Picture:</strong> <span id="txt_Picture" class="preserve-space" style="color:green;font-size:20px;">-</span></p>
+                                        <p><strong>Unit:</strong> <span id="txt_Unit" style="color:green;font-size:20px;">-</span></p>
+                                    </div>
+                                    <div class="col s12 m6 l6">
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_Invoice:</strong> <span id="txt_Invoice" style="color:darkgreen;font-size:20px;">-</span></p>
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_Supplier:</strong> <span id="txt_Supplier" style="color:darkorchid;font-size:20px;">-</span></p>
+                                        @* <p><strong>@MES_MVC.Resources.Resource.DbTbl_Total:</strong> <span id="txt_Total" style="color:blue;font-size:20px;">-</span></p> *@
+                                        <p><strong>Total Invoice:</strong> <span id="txt_TotalInvoice" style="color:red;font-size:20px;">-</span></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <div class="picture-container">
+                                <img id="pictureUpload" src="" alt="@MES_MVC.Resources.Resource.DbTbl_NoPicture" style="min-width:120px; min-height:120px; max-height:220px; " />
+                                <button type="button" class="upload-btn">Upload</button>
+                                <input type="file" id="fileInput" accept="image/*" style="display:none;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:3px;">
+                        <div class="col s12">
+                            <table class="display wrap" id="Table1" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Supplier</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Invoice</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_ScanQRCode</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_PartNo</th>
+                                        <th>Sample</th>
+                                        <th>Total Invoice</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_NGQty</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Unit</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Percentage</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_DateIn</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_DateCheck</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Week</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Month</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Content</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Picture</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Status</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Note</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_CreateBy</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_CreateDate</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="Tag002" class="col s12">
+                    <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                        <div class="row p-0 m-0">
+                            <div class="col s12 m6 l1">
+                                <label style="font-size:20px;">@MES_MVC.Resources.Resource.DbTbl_FromDate</label>
+                                <input id="tab2_fromDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                       value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                            <div class="col s12 m6 l1">
+                                <label style="font-size:20px;">@MES_MVC.Resources.Resource.DbTbl_ToDate</label>
+                                <input id="tab2_toDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                       value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                            <div class="col s12 m12 l4">
+                                <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.Btn_Search</label>
+                                <input type="text" id="tab2_Search" class="form-control" maxlength="80"
+                                       style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <label style="color:black; font-size:16px">Total Sample</label>
+                                <p id="sum_Sample" style="color:blue; font-size:20px; font-weight:bold;">0</p>
+                            </div>
+                            <div class="col s12 m6 l1">
+                                <label style="color:black; font-size:14px">Total Invoice</label>
+                                <p id="sum_TotalInvoice" style="color:purple; font-size:18px; font-weight:bold;">0</p>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <label style="color:black; font-size:16px">Total NG</label>
+                                <p id="sum_NG" style="color:red; font-size:20px; font-weight:bold;">0</p>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <label style="color:black; font-size:16px">NG %</label>
+                                <p id="sum_Percentage" style="color:orange; font-size:20px; font-weight:bold;">0%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin:3px;">
+                        <div class="col s12">
+                            <table class="display wrap" id="Table2" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">
+                                            <label>
+                                                <input type="checkbox" id="SelectAllCheckbox" />
+                                                <span></span>
+                                            </label>
+                                        </th>
+                                        <th>Edit</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Supplier</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Invoice</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_ScanQRCode</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_PartNo</th>
+                                        <th>Sample</th>
+                                        <th>Total Invoice</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_NGQty</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Unit</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Percentage</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_DateIn</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_DateCheck</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Week</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Month</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Content</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Picture</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Status</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Note</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_CreateBy</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_CreateDate</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pictureModal" class="modal" style="display:none; margin-top:5%;">
+    <div class="modal-content" style="text-align:center;">
+        <div class="row">
+            <img id="modalImage" src="" style="max-width:100%; max-height:80vh; border:1px solid #ccc;" />
+        </div>
+        <div class="row">
+            <button id="modalClose" style="cursor:pointer; font-size:20px;">Close</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ✅ MODAL EDIT MỚI - ĐẸP & CÓ UNIT -->
+<div id="modal-edit-history" class="modal" style="width: 600px; max-height: 90%;">
+    <div class="modal-content">
+        <!-- ✅ HEADER ĐẸP -->
+        <h5 style="color: #00897b; border-bottom: 2px solid #00897b; padding-bottom: 10px; margin-bottom: 20px;">
+            <i class="material-icons" style="vertical-align: middle;">edit</i>
+            Edit IQC NG Record (Customer 2)
+        </h5>
+
+        <!-- ✅ INFO CARD -->
+        <div class="card-panel light-blue lighten-5" style="padding: 12px; margin-bottom: 20px;">
+            <div class="row" style="margin-bottom: 0;">
+                <div class="col s12">
+                    <strong style="color: #01579b;">Lot Code:</strong>
+                    <span id="view_Barcode" style="color: #00897b; font-weight: bold;"></span>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 0;">
+                <div class="col s6">
+                    <strong style="color: #01579b;">Part No:</strong>
+                    <span id="view_MaterialCode" style="color: #424242;"></span>
+                </div>
+                <div class="col s6">
+                    <strong style="color: #01579b;">Total Qty:</strong>
+                    <span id="view_Quantity" style="color: #424242;"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ FORM FIELDS -->
+        <div class="row">
+            <!-- Sample Qty -->
+            <div class="col s4">
+                <label style="color: #424242; font-weight: 500;">
+                    Sample Qty <span style="color: red;">*</span>
+                </label>
+                <input id="edit_Quantity" type="number" min="0" class="form-control"
+                       style="border: 1px solid #bdbdbd; border-radius: 4px; padding: 8px; font-size: 15px; color: black;">
+            </div>
+
+            <!-- ✅ UNIT -->
+            <div class="col s4">
+                <label style="color: #424242; font-weight: 500;">
+                    Unit <span style="color: red;">*</span>
+                </label>
+                <select id="edit_Unit" class="browser-default"
+                        style="border: 1px solid #bdbdbd; border-radius: 4px; padding: 8px; font-size: 15px; height: auto; color: black;">
+                    <option value="PC">PC</option>
+                    <option value="MT">MT</option>
+                    <option value="Kg">Kg</option>
+                    <option value="EA">EA</option>
+                    <option value="PCS">PCS</option>
+                    <option value="RL">RL</option>
+                    <option value="m">m</option>
+                </select>
+            </div>
+
+            <!-- NG Qty -->
+            <div class="col s4">
+                <label style="color: #424242; font-weight: 500;">
+                    NG Qty <span style="color: red;">*</span>
+                </label>
+                <input id="edit_NGQty" type="number" min="0" class="form-control"
+                       style="border: 1px solid #bdbdbd; border-radius: 4px; padding: 8px; font-size: 15px; color: black;">
+            </div>
+
+           
+        </div>
+
+        <!-- Status & Note -->
+        <div class="row">
+            <div class="col s6">
+                <label style="color: #424242; font-weight: 500;">Status</label>
+                <select id="edit_ImprovementPlans" class="browser-default"
+                        style="border: 1px solid #bdbdbd; border-radius: 4px; padding: 8px; font-size: 15px; height: auto; color: black;">
+                    <option value="waiting feedback">Waiting Feedback</option>
+                    <option value="return">Return</option>
+                    <option value="use">Use</option>
+                </select>
+            </div>
+            <div class="col s6">
+                <label style="color: #424242; font-weight: 500;">Note</label>
+                <select id="edit_Note" class="browser-default"
+                        style="border: 1px solid #bdbdbd; border-radius: 4px; padding: 8px; font-size: 15px; height: auto; color: black;">
+                    <option value="On going">On Going</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Error Info -->
+        <div class="row">
+            <div class="col s12">
+                <label style="color: #424242; font-weight: 500;">
+                    Error Information <span style="color: red;">*</span>
+                </label>
+                <textarea id="edit_ErrorInfo" maxlength="500" rows="4"
+                          style="border: 1px solid #bdbdbd; border-radius: 4px; padding: 8px; font-size: 15px; width: 100%; resize: vertical; color: black; font-family: inherit;"
+                          placeholder="Describe the error details..."></textarea>
+                <small style="color: #757575;">Max 500 characters</small>
+            </div>
+        </div>
+
+        <input type="hidden" id="edit_ID" />
+    </div>
+
+    <!-- ✅ FOOTER BUTTONS ĐẸP -->
+    <div class="modal-footer" style="padding: 10px 24px;">
+        <button class="modal-close btn-flat waves-effect waves-light"
+                style="margin-right: 10px; color: #757575;">
+            <i class="material-icons left">close</i>Cancel
+        </button>
+        <button id="BtnSaveHistory" class="btn green darken-1 waves-effect waves-light">
+            <i class="material-icons left">save</i>Save Changes
+        </button>
+    </div>
+</div>
+
+<!-- ✅ CUSTOM CSS CHO MODAL -->
+<style>
+    #modal-edit-history {
+        border-radius: 8px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+        #modal-edit-history input:focus,
+        #modal-edit-history select:focus,
+        #modal-edit-history textarea:focus {
+            outline: none;
+            border-color: #00897b !important;
+            box-shadow: 0 0 0 2px rgba(0, 137, 123, 0.1);
+        }
+
+        #modal-edit-history label {
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        #modal-edit-history .row {
+            margin-bottom: 16px;
+        }
+
+        #modal-edit-history textarea {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5;
+        }
+
+            #modal-edit-history textarea::placeholder {
+                color: #9e9e9e;
+                font-style: italic;
+            }
+
+        #modal-edit-history .modal-content {
+            padding: 24px;
+        }
+</style>
+<script src="~/Scripts/F03.js?v=@version"></script>

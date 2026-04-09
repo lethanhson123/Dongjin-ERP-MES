@@ -1,0 +1,272 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    BaseResult BaseResult = new BaseResult();
+    BaseResult.ListtsmenuTranfer = new List<tsmenuTranfer>();
+    BaseParameter BaseParameter = new BaseParameter();
+
+    // Kiểm tra ngôn ngữ, nếu chưa có thì đặt mặc định
+    string cookie = CookieHelper.GetCookie(GlobalHelper.Language) ?? GlobalHelper.LanguageCodeEN;  
+
+    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cookie);
+    Thread.CurrentThread.CurrentUICulture = new CultureInfo(cookie);
+    string URLFlag = "/Image/" + cookie + ".png";
+
+    // Kiểm tra thông tin đăng nhập trong session
+    string USER_NM = Context.Session.GetString(GlobalHelper.USER_NM) ?? "Khách";
+    string UserID = Context.Session.GetString(GlobalHelper.UserID) ?? string.Empty;
+    BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+
+    // Nếu không có USER_IDX, chuyển hướng về trang đăng nhập
+    if (string.IsNullOrEmpty(BaseParameter.USER_IDX))
+    {
+        Context.Response.Redirect("/MAIN_Login/Index");
+    }
+    else
+    {
+        try
+        {
+            BaseParameter.ParentID = int.Parse(Context.Session.GetString(GlobalHelper.MenuParent));
+
+            BaseResult = await _MAINService.Main_Shown(BaseParameter);
+
+            // Kiểm tra quyền truy cập vào URL hiện tại
+            if (BaseResult.ListtsauthTranfer != null)
+            {
+                string url = Context.Request.Path.Value?.Replace("/", "") ?? GlobalHelper.URLCodeDefault;
+
+                if (url != GlobalHelper.URLCodeDefault)
+                {
+                    bool IsAuth=true;
+                    var tsauthTranfer = BaseResult.ListtsauthTranfer
+                        .FirstOrDefault(o => o.SCRN_PATH == url && bool.Parse(o.MENU_AUTH_YN));
+
+                    if (tsauthTranfer == null)
+                    {
+                        IsAuth=false;
+                    }
+                    switch (url)
+                    {
+                        case "Z04_ADMIN":
+                            IsAuth=true;
+                            break;
+                        case "C09_LIST":
+                            IsAuth=true;
+                            break;
+                    }
+                    if (IsAuth==false)
+                    {
+                        Context.Response.Redirect("/" + GlobalHelper.URLCodeDefault);
+                    }
+                }
+            }
+
+            // Dịch tên menu dựa trên resource
+            if (BaseResult.ListtsmenuTranfer != null)
+            {
+                foreach (var menu in BaseResult.ListtsmenuTranfer)
+                {
+                    try
+                    {
+                        menu.MENU_NM_HAN = MES_MVC.Resources.Resource.GetObject(menu.Code)?.ToString() ?? menu.Code;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Lỗi dịch tên menu: {ex.Message}");
+                        menu.MENU_NM_HAN = menu.Code;
+                    }
+                    switch (menu.Code)
+                    {
+                        case "H01":                        
+                            menu.MENU_NM_HAN = "Mo -" + menu.MENU_NM_HAN;
+                            break;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Lỗi xử lý layout: {ex.Message}");
+        }
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="~/manifest.json">
+    <title>@ViewData["Title"] - DONGJIN</title>
+    <meta name="description" content="DONGJIN GLOBAL COMPANY LIMITED | Manufacturing Execution System (MES) 2025" />
+    <link rel="icon" type="image/x-icon" href="~/Image/logo.png">
+    <meta property="og:site_name" content="dongjin-global.com" />
+    <meta property="og:rich_attachment" content="true" />
+    <meta property="og:type" content="article" />
+@*     <meta property="article:publisher" content="https://www.facebook.com/dongjinglobal" />
+    <meta property="og:url" itemprop="url" content="https://dongjin-global.com/" /> *@
+    <meta property="og:image" itemprop="thumbnailUrl" content="/Image/logo01.png" />
+@* 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> *@
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/flag-icon/css/flag-icon.min.css">
+    <link href="~/lib/fontawesome/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/themes/horizontal-menu-template/materialize.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/themes/horizontal-menu-template/style.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/layouts/style-horizontal.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/custom/custom.css">
+    <link rel="stylesheet" type="text/css" href="~/css/custom.css?v=@version">
+    <script src="~/js/jquery-1.12.4.min.js"></script>
+</head>
+<body class="horizontal-layout page-header-light horizontal-menu 2-columns  " data-open="click"
+data-menu="horizontal-menu" data-col="2-columns">
+    <div id="BackGround" style="width:100%; height:100%; z-index:1000; background-color: #eeeeee; opacity: 0.5; position:absolute; top:0px; left:0px; display: none; text-align: center;">
+        <div id="BackGroundDim" style="z-index:2000; position:absolute;">
+            <div class="msgbox">
+                <img src="~/Image/loading.gif" alt="Loading, please wait..." title="Loading, please wait..." width="200"
+                height="200" />
+            </div>
+            <h5>Loading, please wait...</h5>     
+        </div>
+    </div>
+    <header class="page-topbar" id="header">
+        <div class="navbar navbar-fixed">         
+            <nav class="white hide-on-med-and-down" id="horizontal-nav">
+                <div class="nav-wrapper">
+                    <ul class="left hide-on-med-and-down" id="ul-horizontal-nav" data-menu="menu-navigation">
+                        @{
+                            List<tsmenuTranfer> ListtsmenuTranfer1 = BaseResult.ListtsmenuTranfer.Where(o => o.MENU_LVL == 1).ToList();
+                            foreach (tsmenuTranfer tsmenuTranfer1 in ListtsmenuTranfer1)
+                            {
+                                if (tsmenuTranfer1.Visible == true)
+                                {
+                                    List<tsmenuTranfer> ListtsmenuTranfer2 = BaseResult.ListtsmenuTranfer.Where(o => o.MENU_LVL == 2 && o.ParentID == tsmenuTranfer1.MENU_IDX).ToList();
+                                    <li>
+                                        @{
+                                            var scrnPath = (tsmenuTranfer1.MENU_NM_EN?.Trim() ?? "default"); // nếu giá trị null thì trả về hình mạc định
+                                            var iconPath = $"/icons/{scrnPath}.png";
+                                            if (string.IsNullOrEmpty(tsmenuTranfer1.SCRN_PATH.Trim()))
+                                            {
+                                                <a class="dropdown-menu" href="#" data-target="@tsmenuTranfer1.MENU_IDX">
+                                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 1px;">
+                                                        <img src="@iconPath" onerror="this.src='/icons/default.png';" width="25" height="25" alt="Icon" />
+                                                        <span style="margin-top: -35px;">@tsmenuTranfer1.MENU_NM_HAN</span>
+                                                    </div>
+                                                </a>
+
+                                                if (ListtsmenuTranfer2.Any())
+                                                {
+                                                    <ul class="dropdown-content dropdown-horizontal-list" id="@tsmenuTranfer1.MENU_IDX">
+                                                        @{
+                                                            foreach (tsmenuTranfer tsmenuTranfer2 in ListtsmenuTranfer2)
+                                                            {
+                                                                bool IsUseNot = false;                                                               
+                                                                switch (tsmenuTranfer2.MENU_NM_EN)
+                                                                {
+                                                                    case "B05":
+                                                                    case "B06":
+                                                                    case "B12":
+                                                                    case "G03":
+                                                                    case "G04":
+                                                                    case "C13":
+                                                                    case "C14":
+                                                                    case "E04":
+                                                                    case "E05":
+                                                                    case "C16":
+                                                                    case "C17":
+                                                                    case "V04":
+                                                                    case "V05":
+                                                                    case "V07":
+                                                                    case "A03":
+                                                                    case "A05":                                                                    
+                                                                    case "A07":
+                                                                    case "A09":
+                                                                    case "Z01":
+                                                                    case "Z02":
+                                                                    case "Z05":
+                                                                    case "Z07":       
+                                                                    case "Z03":   
+                                                                    case "Z06":                                                                                                                                          
+                                                                    case "C07":   
+                                                                    case "C10":                                                                                                                                           
+                                                                    case "C18":                                                                                                                                                                                                                
+                                                                    case "D02":   
+                                                                    case "D01":   
+                                                                    case "D12":   
+                                                                    case "D05":   
+                                                                    case "D06":   
+                                                                    case "D09":   
+                                                                    case "E03":   
+                                                                    case "F01":   
+                                                                    case "F03":                                                                        
+                                                                        IsUseNot = true;
+                                                                        break;
+                                                                }
+                                                                string color = "black";
+                                                                if (IsUseNot == true)
+                                                                {
+                                                                    color = "red";
+                                                                }
+                                                                if (tsmenuTranfer2.Visible == true)
+                                                                {
+                                                                    <li data-menu="">
+                                                                        <a asp-controller="@tsmenuTranfer2.SCRN_PATH" asp-action="Index" title="@tsmenuTranfer2.MENU_NM_HAN" style="color: @color;"><i class="border_all"></i>@tsmenuTranfer2.MENU_NM_HAN [@tsmenuTranfer2.MENU_NM_EN]</a>
+                                                                    </li>
+                                                                }
+                                                               
+                                                            }
+                                                        }
+                                                    </ul>
+                                                }
+                                            }
+                                            else
+                                            {                                               
+
+                                                <a class="dropdown-menu" href="#" data-target="@tsmenuTranfer1.MENU_IDX">
+                                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                                        <img src="@iconPath" onerror="this.src='/icons/default.png';" width="25" height="25" alt="Icon" />
+                                                        <span style="margin-top: -35px;">@tsmenuTranfer1.MENU_NM_HAN</span>
+                                                    </div>
+                                                </a>
+                                                <ul class="dropdown-content dropdown-horizontal-list" id="@tsmenuTranfer1.MENU_IDX">
+                                                    <li data-menu="">
+                                                        <a asp-controller="@tsmenuTranfer1.SCRN_PATH" asp-action="Index" title="@tsmenuTranfer1.MENU_NM_HAN" style="color: red;"><i class="border_all"></i>@tsmenuTranfer1.MENU_NM_HAN</a>
+                                                    </li>
+                                                </ul>
+                                            }
+                                        }
+                                    </li>
+                                }
+                            }
+
+                        }
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div id="main">
+        <div class="row">
+            @RenderBody()
+        </div>
+    </div>
+
+    <div id="custom-alert" style="display: none;">
+        <strong>⚠️ Cảnh báo:</strong>
+        <span id="custom-alert-message">Thông báo</span>
+    </div>
+
+    <script src="~/app-assets/js/vendors.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/data-tables/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js"
+            type="text/javascript"></script>
+    <script src="~/app-assets/vendors/data-tables/js/dataTables.select.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/js/plugins.js" type="text/javascript"></script>
+    <script src="~/app-assets/js/custom/custom-script.js" type="text/javascript"></script>
+    <script src="~/app-assets/js/scripts/data-tables.js" type="text/javascript"></script>
+    <script src="~/js/custom.js?v=@version"></script>
+</body>
+</html>

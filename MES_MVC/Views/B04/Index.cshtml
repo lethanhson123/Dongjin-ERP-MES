@@ -1,0 +1,714 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IB04Service _B04Service
+@{
+    //string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "B04";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _B04Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<style>
+
+    .modal {
+        max-height: 100%;
+    }
+
+        .modal .modal-content {
+            padding: 5px;
+        }
+</style>
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <ul class="tabs">
+                        <li class="tab col s1 p-0">
+                            <a id="ATag001" class="active p-0" href="#Tag001">Release</a>
+                        </li>
+                        <li class="tab col s1 p-0">
+                            <a id="ATag002" class="p-0" href="#Tag002">Release List</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag003" class="p-0" href="#Tag003">More information</a>
+                        </li>
+                        <li class="tab col s1 p-0">
+                            <a id="ATag004" class="p-0" href="#Tag004">MONTH</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag005" class="p-0" href="#Tag005">FIFO Reason</a>
+                        </li>
+                        <li class="tab col s1 p-0">
+                            <a id="ATag006" class="p-0" href="#Tag006">Barcode</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row" id="Tag001">
+                <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <label>Barcode : </label>
+                            <input id="TBBarcode" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <br />
+                            <button id="BTBCCHK" class="btn waves-effect waves-light green darken-1" style="width: 100%;">ADD</button>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l5">
+                        <div>
+                            <label>Result</label>
+                            <input id="TBpo_result" type="text" class="form-control" readonly style="color: red; font-size: 14px;" value="Stay">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <label>BOX_QTY</label>
+                            <input id="BOX_QTY" type="number" class="form-control" readonly value="0">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <br />
+                            <button id="Button1" class="btn waves-effect waves-light green darken-1" style="width: 100%; font-size: 12px;">ERROR CODE</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView4Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView4Sort()">
+                                <th>RESULT</th>
+                                <th>PART_IDX</th>
+                                <th>PART NO</th>
+                                <th>PART NAME</th>
+                                <th>PKG_QTY</th>
+                                <th>DATE</th>
+                                <th>QTY</th>
+                                <th>PKG_GRP</th>
+                                <th>Pallet NO</th>
+                                <th>Shipping NO</th>
+                                <th>BARCD ID</th>
+                                <th>DSCN_YN</th>
+                                <th>BOX_QTY</th>
+                                <th style="width: 300px;">SHEET NO</th>
+                                <th>FIFO Reason</th>
+                                @* <th>PART_IDX</th>
+								<th>BARCODE_IDX</th>
+								<th>PKG_GRPIDX</th>
+								<th>BOX_QTY</th>
+								<th>PKG_SNP</th>
+								<th>LOC</th> *@
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView4">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag002">
+                <div class="col s12 m12 l12 card-panel green lighten-4">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>MTIN Date (start) : </label>
+                            <input id="DTPsuck1" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>(end) (MM/DD/YYYY): </label>
+                            <input id="DTPsuck2" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <br />
+                        <div>
+                            <label>
+                                <input id="RBY" name="PART_USE" type="radio" value="true" checked />
+                                <span>Complete(Y)</span>
+                            </label>
+                            <label>
+                                <input id="RBN" name="PART_USE" type="radio" value="false" />
+                                <span>Stay(N)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>Barcode ID : </label>
+                            <input id="TBBC_SUCK" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DGV_LISTTable">
+                        <thead class="sticky-header">
+                            <tr onclick="DGV_LISTSort()">
+                                <th></th>
+                                <th>BARCD_ID</th>
+                                <th>PART_NO</th>
+                                <th>PART_NM</th>
+                                <th>PART_CAR</th>
+                                <th>PART_FML</th>
+                                <th>PART_SCN</th>
+                                <th>Stock</th>
+                                <th>SUM_QTY</th>
+                                <th>PLET_NO</th>
+                                <th>SHPD_NO</th>
+                                <th>BC_TYPE</th>
+                                <th>IN_QTY</th>
+                                <th>OUT_QTY</th>
+                                <th>MTIN_RMK</th>
+                                <th>MTIN_DTM</th>
+                                <th>BC_STAY</th>
+                                <th>UPDATE_DTM</th>
+                                <th>UPDATE_USER</th>
+                                @* <th>DSCN_YN</th>
+								<th>IV_IDX</th> *@
+                            </tr>
+                        </thead>
+                        <tbody id="DGV_LIST">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag003">
+                <div class="row card-panel yellow lighten-4">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label id="TLB_01" style="cursor: pointer; color: blue;">PART NO : </label>
+                            <input id="TBTEXT01" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>DATE: </label>
+                            <input id="TBTEXT03" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>PART NO : </label>
+                            <input id="TLB_05" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>PART NAME : </label>
+                            <input id="TLB_07" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>MES STOCK : </label>
+                            <input id="TLB_09" type="number" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>EXCEL STOCK : </label>
+                            <input id="TLB_10" type="number" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow30">
+                    <table class="responsive-table" id="T_DGV_01Table">
+                        <thead class="sticky-header">
+                            <tr onclick="T_DGV_01Sort()">
+                                <th>NO</th>
+                                <th>TYPE</th>
+                                <th>Date(RDCE)</th>
+                                <th>QTY</th>
+                                <th>STOCK_QTY</th>
+                                <th>DATE</th>
+                                <th>SHPD_NO</th>
+                                <th>PLET_NO</th>
+                                <th>USER</th>
+                                @*  <th>SHEET NO</th>
+                                <th>Reason</th> *@
+                            </tr>
+                        </thead>
+                        <tbody id="T_DGV_01">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l5">
+                        <div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <label>
+                                <input id="TLB_CHK1" name="PART_USE" type="radio" />
+                                <span>Select All</span>
+                            </label>
+                            <label>
+                                <input id="TLB_CHK2" name="PART_USE" type="radio" />
+                                <span>Inversion of choice</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <label>BARCODE ID : </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <input id="TextBox3" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow35">
+                    <table class="responsive-table" id="T_DGV_02Table">
+                        <thead class="sticky-header">
+                            <tr onclick="T_DGV_02Sort()">
+                                <th></th>
+                                <th>PART_NO</th>
+                                <th>PART_NM</th>
+                                <th>PART_SNP</th>
+                                <th>IN_QTY</th>
+                                <th>OUT_QTY</th>
+                                <th>PLET_NO</th>
+                                <th>Shipping_NO</th>
+                                <th>IN Date</th>
+                                <th>IN User</th>
+                                <th>OUT Date</th>
+                                <th>OUT USER</th>
+                                @* 	<th>T2_BR_DSCN</th>
+								<th>PKG_GRP</th>
+								<th>T2_MTIN_IDX</th>
+								<th>T2_PART_IDX</th>
+								<th>T2_BARCD_IDX</th> *@
+                                <th>BARCD_ID</th>
+                                <th>Location</th>
+                                <th>SHEET NO</th>
+                                <th>Reason</th>
+                                @* <th>OR_DT</th> *@
+                            </tr>
+                        </thead>
+                        <tbody id="T_DGV_02">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col s12 m12 l6">
+                </div>
+                <div class="col s12 m12 l6">
+                </div>
+            </div>
+            <div class="row" id="Tag004">
+                <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <label>DATE(MONTH) (MM/DD/YYYY): </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <input id="DateTimePicker1" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <input id="Label9" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <input id="Label10" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="KhungOverflow30">
+                    <table class="responsive-table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>YEAR</th>
+                                <th>MONTH</th>
+                                <th>WEEK</th>
+                                <th>P_COUNT</th>
+                                <th>BARCODE</th>
+                                <th>PO_QTY</th>
+                                <th>IN_QTY</th>
+                                <th>OUT_QTY</th>
+                                <th>PO_PLAN</th>
+                                <th>STAY_QTY</th>
+                                <th>STAY_RATIO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col s12 m12 l12 card-panel yellow lighten-4">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>PART NO : </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="TextBox1" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>WEEK : </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="TextBox2" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow30">
+                    <table class="responsive-table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView2Sort()">
+                                <th>PART_NO</th>
+                                <th>UTM</th>
+                                <th>DESC</th>
+                                <th>YEAR</th>
+                                <th>MONTH</th>
+                                <th>WEEK</th>
+                                <th>BARCODE</th>
+                                <th>PO_QTY</th>
+                                <th>IN_QTY</th>
+                                <th>OUT_QTY</th>
+                                <th>PO_PLAN</th>
+                                <th>STAY_QTY</th>
+                                <th>STAY_RATIO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView2">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag005">
+                <div class="row card-panel green lighten-4">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>DATE: </label>
+                            <input id="SearchDate" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <label>Search : </label>
+                            <input id="Search" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l7">
+                    <h5>FIFO Reason</h5>
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DataGridView7Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>NO</th>
+                                    <th>BARCD_ID</th>
+                                    <th>OUT_DTM</th>
+                                    <th>PKG_QTY</th>
+                                    <th>PKG_OUTQTY</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView7">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l5">
+                    <h5>Không có Order (No Order)</h5>
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DataGridView8Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>NO</th>
+                                    <th>BARCD_ID</th>
+                                    <th>OUT_DTM</th>
+                                    <th>PKG_QTY</th>
+                                    <th>PKG_OUTQTY</th>
+                                    @* <th>Reason</th> *@
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView8">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="Tag006">
+                <div class="row card-panel green lighten-4">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>YEAR: </label>
+                            <select id="Year" class="browser-default form-select">
+                                @{
+                                    for (int i = DateTime.Now.Year; i > 2015; i--)
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>MONTH: </label>
+                            <select id="Month" class="browser-default form-select">
+                                @{
+                                    for (int i = 0; i < 13; i++)
+                                    {
+                                        string month = i.ToString().PadLeft(2, '0');
+                                        if (i == DateTime.Now.Month)
+                                        {
+                                            <option value="@month" selected>@month</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@month">@month</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">      
+                        <br/>
+                        <label>
+                            <input id="CheckBox1" type="checkbox" />
+                            <span>All</span>
+                        </label>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>Search : </label>
+                            <input id="SearchString" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l6">
+                    <h5>tmbrcd</h5>
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DGV_B07_31Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>NO</th>
+                                    <th>PART_NO</th>
+                                    <th>BARCD_ID</th>
+                                    <th>PKG_QTY</th>
+                                    <th>PKG_OUTQTY</th>
+                                    <th>OUT_QTY</th>
+                                    <th>GAP</th>
+                                    <th>OUT_DTM</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DGV_B07_31">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l6">
+                    <h5>tmbrcd_his</h5>
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DGV_B07_32Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>NO</th>
+                                    <th>BARCD_IDX</th>
+                                    <th>BARCD_ID</th>
+                                    <th>PKG_QTY</th>
+                                    <th>PKG_OUTQTY</th>
+                                    <th>OUT_DTM</th>
+                                    @* <th>UPDATE_DTM</th>
+                                    <th>UPDATE_USER</th> *@
+                                    <th>USER_NM</th>
+                                    <th>Name</th>
+                                    <th>Reason</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody id="DGV_B07_32">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="B04_ERROR" class="modal modal-fixed-footer" style="width: 50vw !important; height: 70vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="row">
+                <div class="col s12 m12 l12 card-panel grey lighten-1">
+                    <h4><b>Notification ERROR (B04_ERROR)</b></h4>
+                </div>
+                <div class="col s12 m12 l12 card-panel red darken-4 center-align white-text">
+                    <div>
+                        <h4 class="center-align white-text">FIFO problem.</h4>
+                        <h4 class="center-align white-text">Would you like to continue registering?</h4>
+                        <h4 class="center-align white-text">FIFO 오류. 계속 진행 하겠습니까?</h4>
+                    </div>
+                    <div class="col s12 m12 l3">
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <button id="B04_ERROR_Button1" class="btn waves-effect waves-light green darken-1" style="width: 100%;">YES</button>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <button id="B04_ERROR_Button2" class="btn waves-effect waves-light green darken-1" style="width: 100%;">NO</button>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                    </div>
+                </div>
+                <div class="col s12 m12 l12" style="margin-bottom: 10px;">
+                    <div>
+                        <label>
+                            <input id="Reason01" name="Reason" type="radio" checked />
+                            <span id="Reason01Text" style="font-size: 30px;">1. Barcode cũ, Scan sót hàng</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12" style="margin-bottom: 10px;">
+                    <div>
+                        <label>
+                            <input id="Reason02" name="Reason" type="radio" />
+                            <span id="Reason02Text" style="font-size: 30px;">2. Hàng kiếm không thấy</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12" style="margin-bottom: 10px;">
+                    <div>
+                        <label>
+                            <input id="Reason03" name="Reason" type="radio" />
+                            <span id="Reason03Text" style="font-size: 30px;">3. Hàng để không đúng vị trí</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12" style="margin-bottom: 10px;">
+                    <div>
+                        <label>
+                            <input id="Reason04" name="Reason" type="radio" />
+                            <span id="Reason04Text" style="font-size: 30px;">4. Khác</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/B04.js?v=@GlobalHelper.GetVersionScrip("B04.js")"></script>
+

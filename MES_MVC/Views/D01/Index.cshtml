@@ -1,0 +1,330 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject ID01Service _D01Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "D01";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _D01Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    @if (IsButtonfind)
+                    {
+                        <button id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                        </button>
+                    }
+
+                    @if (IsButtonadd)
+                    {
+                        <button id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                        </button>
+                    }
+
+                    @if (IsButtonsave)
+                    {
+                        <button id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave"
+                                class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                        </button>
+                    }
+
+                    @if (IsButtondelete)
+                    {
+                        <button id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete"
+                                class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                        </button>
+                    }
+
+                    @if (IsButtoncancel)
+                    {
+                        <button id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                        </button>
+                    }
+
+                    @if (IsButtoninport)
+                    {
+                        <button id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                        </button>
+                    }
+
+                    @if (IsButtonexport)
+                    {
+                        <button id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                        </button>
+                    }
+
+                    @if (IsButtonprint)
+                    {
+                        <button id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                        </button>
+                    }
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row">
+                    <div class="col s12 m6 l4">
+                        <ul class="tabs">
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="active p-0" href="#Tag001">@MES_MVC.Resources.Resource.MML_SaleStatus</a>
+                            </li>
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="p-0" href="#Tag002">@MES_MVC.Resources.Resource.MML_YearSaleStatus</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col s12 m6 l8">
+                    </div>
+                </div>
+                <div class="row" id="Tag001">
+                    <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                        <div class="row p-0 m-0">
+                            <div class="col s12 m12 l3">
+                                <div class="col s12 m12 l6 text-left">
+                                    <label style="font-size:14px;">@MES_MVC.Resources.Resource.DbTbl_FromDate</label>
+                                    <input id="tab1_fromDate" type="date" class="form-control" style="color: black; font-size: 16px;min-height:30px;"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="col s12 m12 l6 text-left">
+                                    <label style="font-size:14px;">@MES_MVC.Resources.Resource.DbTbl_ToDate</label>
+                                    <input id="tab1_toDate" type="date" class="form-control" style="color: black; font-size: 16px;min-height:30px;"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12 l2">
+                                <label class="input100" style="color:black; font-size:14px">@MES_MVC.Resources.Resource.DbTbl_POCode</label>
+                                <input type="text" id="tab1_poCode" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <label class="input100" style="color:black; font-size:14px">@MES_MVC.Resources.Resource.DbTbl_PartNo</label>
+                                <input type="text" id="tab1_PartNo" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <label class="input100" style="color:black; font-size:14px">@MES_MVC.Resources.Resource.DbTbl_Model</label>
+                                <input type="text" id="tab1_model" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1 p-1">
+                        <div class="KhungOverflow">
+                            <table class="responsive-table" id="Table1">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th onclick="sortTable('Table1',0)" style="min-width:100px; cursor:pointer;">
+                                            NO
+                                        </th>
+                                        <th onclick="sortTable('Table1',1)" style="min-width:100px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_POCode
+                                        </th>
+                                        <th onclick="sortTable('Table1',2)" style="min-width:150px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_PODate
+                                        </th>
+                                        <th onclick="sortTable('Table1',3)" style="min-width:60px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_PartNo
+                                        </th>
+                                        <th onclick="sortTable('Table1',4)" style="min-width:60px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_PartName
+                                        </th>
+                                        <th onclick="sortTable('Table1',5)" style="min-width:60px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_Model
+                                        </th>
+                                        <th onclick="sortTable('Table1',6)" style="min-width:90px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_Group
+                                        </th>
+                                        <th onclick="sortTable('Table1',7)" style="min-width:90px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_SNP
+                                        </th>
+                                        <th onclick="sortTable('Table1',8)" style="min-width:60px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_StockQty
+                                        </th>
+                                        <th onclick="sortTable('Table1',9)" style="min-width:60px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_POQty
+                                        </th>
+                                        <th onclick="sortTable('Table1',10)" style="min-width:60px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_SaleQty
+                                        </th>
+                                        <th onclick="sortTable('Table1',11)" style="min-width:60px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_Cost
+                                        </th>
+                                        <th onclick="sortTable('Table1',12)" style="min-width:60px; cursor:pointer;">
+                                            @MES_MVC.Resources.Resource.DbTbl_SaleCost
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView1">
+                                    <!-- Dữ liệu sẽ được đổ tại đây -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="Tag002">
+                    <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                        <div class="row" style="margin:5px;">
+                            <div class="col s12 m6 l4">
+                                <div class="col s12 m12 l3 text-left">
+                                    <label>@MES_MVC.Resources.Resource.DbTbl_Year</label>
+                                    <input id="tab2_year" type="number" class="form-control" style="color: black; min-height:30px;"
+                                           value="2025">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12 card-panel lighten-4">
+                        <div class="row m-1 p-1" style="margin:3px">
+                            <div class="KhungOverflow">
+                                <table class="responsive-table" id="Table2">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th onclick="sortTable('Table2',0)" style="cursor:pointer;">No</th>
+                                            <th onclick="sortTable('Table2',1)" style="cursor:pointer;">Model</th>
+                                            <th onclick="sortTable('Table2',2)" style="cursor:pointer;">Product Count</th>
+                                            <th onclick="sortTable('Table2',3)" style="cursor:pointer;">PO Quantity</th>
+                                            <th onclick="sortTable('Table2',4)" style="cursor:pointer;">Actual Quantity</th>
+                                            <th onclick="sortTable('Table2',5)" style="cursor:pointer;">Achievement Rate (%)</th>
+                                            <th onclick="sortTable('Table2',6)" style="cursor:pointer;">Total Sales</th>
+
+                                            <!-- Dữ liệu theo tháng -->
+                                            @for (int i = 1; i <= 12; i++)
+                                            {
+                                                var month = i.ToString("D2");
+                                                <th onclick="sortTable('Table2', @(i * 3 + 4))" style="cursor:pointer;">PO_@month</th>
+                                                <th onclick="sortTable('Table2', @(i * 3 + 5))" style="cursor:pointer;">ACT_@month</th>
+                                                <th onclick="sortTable('Table2', @(i * 3 + 6))" style="cursor:pointer;">Sales_@month</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView2">
+                                        <!-- Dữ liệu sẽ được đổ tại đây -->
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+      const sortState = {};
+    function sortTable(tableId, columnIndex) {
+        const table = document.getElementById(tableId);
+        const tbody = table.tBodies[0];
+        const rows = Array.from(tbody.rows);
+        // Key duy nhất cho từng bảng và cột
+        const key = tableId + "_" + columnIndex;
+        const currentDirection = sortState[key] || 'asc';
+
+        rows.sort((a, b) => {
+            let cellA = a.cells[columnIndex].innerText.trim().toLowerCase();
+            let cellB = b.cells[columnIndex].innerText.trim().toLowerCase();
+            // So sánh số nếu có thể
+            const isNumeric = !isNaN(cellA) && !isNaN(cellB);
+            if (isNumeric) {
+                cellA = parseFloat(cellA);
+                cellB = parseFloat(cellB);
+            }
+            if (cellA < cellB) return currentDirection === 'asc' ? -1 : 1;
+            if (cellA > cellB) return currentDirection === 'asc' ? 1 : -1;
+            return 0;
+        });
+        // Gắn lại thứ tự
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+        rows.forEach(row => tbody.appendChild(row));
+        // Lưu trạng thái lần sau đảo chiều
+        sortState[key] = currentDirection === 'asc' ? 'desc' : 'asc';
+    };
+
+        const localizedText = {
+        search: '@MES_MVC.Resources.Resource.Btn_Search',
+        WrongCode: '@MES_MVC.Resources.Resource.ERROR_NotExisted',
+        WrongProduct: '@MES_MVC.Resources.Resource.ERROR_WrongProductCode',      
+        Success: '@MES_MVC.Resources.Resource.SUCCESS_Success',
+        Empty: '@MES_MVC.Resources.Resource.ERROR_NoData',
+    };
+
+</script>
+<script src="~/Scripts/D01.js?v=@version"></script>
+

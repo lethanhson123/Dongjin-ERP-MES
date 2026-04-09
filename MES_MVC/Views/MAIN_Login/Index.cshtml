@@ -1,0 +1,272 @@
+﻿@model MESService.Model.BaseParameter
+@inject CookieHelper CookieHelper
+
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    string cookie = CookieHelper.GetCookie(GlobalHelper.Language) ?? GlobalHelper.LanguageCodeEN;
+    string Label3 = "";
+    string Label4 = "";
+
+    switch (cookie)
+    {
+        case "en":
+            Label3 = "User";
+            Label4 = "MC Name";
+            break;
+        case "kr":
+            Label3 = "사용자";
+            Label4 = "설비명";
+            break;
+        case "vi":
+            Label3 = "Người dùng";
+            Label4 = "MC Name";
+            break;
+    }
+}
+
+@{
+    string L_Title = "";
+    string L_OldPass = "";
+    string L_NewPass = "";
+    string L_ConfirmPass = "";
+    string L_Submit = "";
+    string L_Alert_Old = "";
+    string L_Alert_Weak = "";
+    string L_Alert_NotMatch = "";
+    string L_Success = "";
+
+    switch (cookie)
+    {
+        case "en":
+            L_Title = "Change Password (First Login)";
+            L_OldPass = "Old Password";
+            L_NewPass = "New Password";
+            L_ConfirmPass = "Confirm Password";
+            L_Submit = "Submit";
+            L_Alert_Old = "Please enter old password!";
+            L_Alert_Weak = "Password must include uppercase, lowercase, number and special character!";
+            L_Alert_NotMatch = "Passwords do not match!";
+            L_Success = "Password changed successfully!";
+            break;
+
+        case "kr":
+            L_Title = "비밀번호 변경 (첫 로그인)";
+            L_OldPass = "기존 비밀번호";
+            L_NewPass = "새 비밀번호";
+            L_ConfirmPass = "비밀번호 확인";
+            L_Submit = "확인";
+            L_Alert_Old = "기존 비밀번호를 입력하세요!";
+            L_Alert_Weak = "비밀번호는 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다!";
+            L_Alert_NotMatch = "비밀번호가 일치하지 않습니다!";
+            L_Success = "비밀번호 변경 완료!";
+            break;
+
+        case "vi":
+            L_Title = "Đổi mật khẩu lần đầu";
+            L_OldPass = "Mật khẩu cũ";
+            L_NewPass = "Mật khẩu mới";
+            L_ConfirmPass = "Nhập lại mật khẩu";
+            L_Submit = "Xác nhận";
+            L_Alert_Old = "Vui lòng nhập mật khẩu cũ!";
+            L_Alert_Weak = "Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt!";
+            L_Alert_NotMatch = "Mật khẩu không khớp!";
+            L_Success = "Đổi mật khẩu thành công!";
+            break;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutMAIN_Login.cshtml";
+    ViewData["Title"] = "Login";
+}
+<div class="col s12 m6 l4"></div>
+
+<div class="col s12 m6 l4 z-depth-4 card-panel border-radius-6 login-card bg-opacity-8">
+    <div class="row">
+        <br />
+        <div class="col s12 m12 l12" style="text-align: center;">
+            <img src="~/Image/logo01.png" class="responsive-img" />
+        </div>
+        <div class="col s12 m12 l6">
+            <label>Ngôn ngữ | 언어 | Language</label>
+        </div>
+        <div class="col s4 m4 l2">
+            <a asp-controller="MAIN_Login" asp-action="ChangeLanguage" asp-route-language="@GlobalHelper.LanguageCodeVI">
+                <img src="~/Image/vi.png" style="border: 1px solid #000000;" width="70" height="50" />
+            </a>
+        </div>
+        <div class="col s4 m4 l2">
+            <a asp-controller="MAIN_Login" asp-action="ChangeLanguage" asp-route-language="@GlobalHelper.LanguageCodeKR">
+                <img src="~/Image/kr.png" style="border: 1px solid #000000;" width="70" height="50" />
+            </a>
+        </div>
+        <div class="col s4 m4 l2">
+            <a asp-controller="MAIN_Login" asp-action="ChangeLanguage" asp-route-language="@GlobalHelper.LanguageCodeEN">
+                <img src="~/Image/en.png" style="border: 1px solid #000000;" width="70" height="50" />
+            </a>
+        </div>
+    </div>
+
+    <div class="col s12 m12 l12">
+        <div class="col s12 m12 l4">
+            <label>@Label3</label>
+        </div>
+        <div class="col s12 m12 l8">
+            <select id="ComboBox1" class="browser-default form-select">
+                @switch (cookie)
+                {
+                    case "en":
+                        <option value="Manager">Manager</option>
+                        <option value="Worker">Worker</option>
+                        <option value="Korean Factory">Korean Factory</option>
+                        <option value="Outsourcing">Outsourcing</option>
+                        break;
+                    case "kr":
+                        <option value="관리자">관리자</option>
+                        <option value="작업자">작업자</option>
+                        <option value="한국">한국</option>
+                        <option value="외주업체">외주업체</option>
+                        break;
+                    case "vi":
+                        <option value="Người quản lí">Người quản lí</option>
+                        <option value="Công nhân">Công nhân</option>
+                        <option value="Hàn Quốc">Hàn Quốc</option>
+                        <option value="Công ty gia công">Công ty gia công</option>
+                        break;
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="col s12 m12 l12" style="margin-top: 20px;">
+        <div class="col s12 m12 l4">
+            <label>@Label4</label>
+        </div>
+        <div class="col s12 m12 l4">
+            <input id="MC_Label" type="text" class="form-control" readonly>
+        </div>
+        <div class="col s12 m12 l4">
+            <button id="Button2" class="btn waves-effect waves-light green col s12" title="MC LIST" style="width: 100%;">MC LIST</button>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("OK_Click", "MAIN_Login", FormMethod.Post, new { autocomplete = "off" }))
+    {       
+        @Html.HiddenFor(model => model.MC_NAME, new { id = "MC_Label_Form" })
+        <div class="row margin">
+            <div class="input-field col s12">
+                <i class="material-icons prefix pt-2">person_outline</i>
+                @Html.TextBoxFor(model => model.UserID, new { type = "text", autocomplete = "off", @class = "", @placeholder = MES_MVC.Resources.Resource.PlaceHolder_UserName })
+                <label for="userid" class="center-align">@MES_MVC.Resources.Resource.PlaceHolder_UserName</label>
+            </div>
+        </div>
+        <div class="row margin">
+            <div class="input-field col s12">
+                <i class="material-icons prefix pt-2">lock_outline</i>
+                @Html.PasswordFor(model => model.Password, new { type = "password", autocomplete = "new-password", @class = "", @placeholder = MES_MVC.Resources.Resource.PlaceHolder_Password })
+                <label for="password">@MES_MVC.Resources.Resource.PlaceHolder_Password</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l12 ml-2 mt-1">
+                <p>
+                    <label>
+                        @Html.CheckBoxFor(model => model.IsRemember)
+                        <span>Remember Me</span>
+                    </label>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <button id="Login" class="btn waves-effect waves-light cyan col s12">
+                    @MES_MVC.Resources.Resource.Btn_Login
+                </button>
+            </div>
+            <div class="input-field col s6">
+                <a id="Cancel" class="btn waves-effect waves-light purple col s12">
+                    @MES_MVC.Resources.Resource.Btn_Cancel
+                </a>
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="col s12 m6 l4"></div>
+
+<!-- Change Password Modal -->
+<div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+        <h5>@L_Title</h5>
+
+        <div class="input-field">
+            <input id="username" type="text" readonly>
+            <label>User Name</label>
+        </div>
+
+        <div class="input-field">
+            <input id="oldPassword" type="password">
+            <label>@L_OldPass</label>
+        </div>
+
+        <div class="input-field">
+            <input id="newPassword" type="password">
+            <label>@L_NewPass</label>
+        </div>
+
+        <div class="input-field">
+            <input id="confirmPassword" type="password">
+            <label>@L_ConfirmPass</label>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <a href="#!" onclick="submitChangePassword()" class="btn blue">@L_Submit</a>
+    </div>
+</div>
+
+<script>
+    var requireChange = '@TempData["RequireChangePassword"]';
+    var username = '@TempData["Username"]';
+    var reason = '@TempData["Reason"]';
+
+    var MSG = {
+        OLD_REQUIRED: '@L_Alert_Old',
+        WEAK_PASSWORD: '@L_Alert_Weak',
+        NOT_MATCH: '@L_Alert_NotMatch',
+        SUCCESS: '@L_Success',
+        EXPIRED: {
+            en: "Password expired after 90 days. Please change it!",
+            kr: "비밀번호가 90일 후 만료되었습니다. 변경해주세요!",
+            vi: "Mật khẩu đã hết hạn 90 ngày, vui lòng đổi lại!"
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // Init modal
+        var elems = document.querySelectorAll('.modal');
+        M.Modal.init(elems);
+
+        if (requireChange === 'True' && username !== '') {
+
+            document.getElementById("username").value = username;
+            M.updateTextFields();
+
+            // THÊM: cảnh báo expire
+            if (reason === 'PasswordExpired') {
+                let lang = '@cookie';
+                alert(MSG.EXPIRED[lang]);
+            }
+
+            var elem = document.getElementById('changePasswordModal');
+            var instance = M.Modal.getInstance(elem);
+
+            instance.options.dismissible = false;
+            instance.open();
+        }
+    });
+</script>
+
+<script src="~/Scripts/MAIN_Login.js?v=@version"></script>

@@ -1,0 +1,431 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IA09Service _A09Service
+
+@{
+   // string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "A09";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _A09Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <h6 id="LabelNAME"><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l6 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <ul class="tabs" id="TabControl1">
+                        <li class="tab col s6 p-0">
+                            <a id="TabPage1" class="active p-0" href="#Tag001">Cost price infomation</a>
+                        </li>
+                        <li class="tab col s6 p-0">
+                            <a id="TabPage2" class="p-0" href="#Tag002">Cost History</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col s12 m6 l6">
+                </div>
+            </div>
+            <div class="row" id="Tag001">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="LabelA">@MES_MVC.Resources.Resource.PART01</label>
+                                <input id="suchTB1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="LabelB">@MES_MVC.Resources.Resource.PART02</label>
+                                <input id="suchTB2" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="LabelC">@MES_MVC.Resources.Resource.PART03</label>
+                                <input id="suchTB3" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l12 card-panel green lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label id="LabelAA">@MES_MVC.Resources.Resource.PART01</label>
+                                <input id="TextBox1" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label id="LabelBB">@MES_MVC.Resources.Resource.PART02</label>
+                                <input id="TextBox2" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label id="LabelCC">@MES_MVC.Resources.Resource.PART03</label>
+                                <input id="TextBox3" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label id="LabelD">@MES_MVC.Resources.Resource.PART06</label>
+                                <input id="TextBox4" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Cost Date</label>
+                                <input id="TextBox5" type="date" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Cost Value</label>
+                                <input id="TextBox6" type="number" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <button id="Button1" title="Cost History Detail"
+                                        class="btn waves-effect waves-light green darken-1">
+                                   Change
+                                </button>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th></th>
+                                <th>PART_NO</th>
+                                <th>PART_NAME</th>
+                                <th>PART_MODEL</th>
+                                <th>PART_GROUP</th>
+                                <th>COST_DATE</th>
+                                <th>COST_VALUE</th>
+                                <th>COST_IDX</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag002">
+                <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.PART01</label>
+                                <input id="suchTB21" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.PART02</label>
+                                <input id="suchTB22" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.PART03</label>
+                                <input id="suchTB23" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12 card-panel green lighten-4">
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.PART01</label>
+                                <input id="TextBox21" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.PART02</label>
+                                <input id="TextBox22" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.PART03</label>
+                                <input id="TextBox23" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 l4">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.PART06</label>
+                                <input id="TextBox24" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <div>
+                                <label>Cost Date</label>
+                                <input id="TextBox25" type="date" class="form-control" readonly>
+                            </div>
+                        </div>
+                       
+                        <div class="col s12 m4 l4">
+                            <div>
+                                <label>Cost Value</label>
+                                <input id="TextBox26" type="number" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div class="KhungOverflow35">
+                            <table class="responsive-table" id="DataGridView2Table">
+                                <thead class="sticky-header">
+                                    <tr onclick="DataGridView2Sort()">
+                                        <th></th>
+                                        <th>COST_CODE</th>
+                                        <th>PART_NO</th>
+                                        <th>PART_NAME</th>
+                                        <th>PART_MODEL</th>
+                                        <th>PART_GROUP</th>
+                                        <th>DATE</th>
+                                        <th>COST</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView2">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m6 l6">
+                        <div class="KhungOverflow20">
+                            <table class="responsive-table" id="DataGridView3Table">
+                                <thead class="sticky-header">
+                                    <tr onclick="DataGridView3Sort()">
+                                        <th>DATE</th>
+                                        <th>COST</th>
+                                     
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView3">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l6">
+                        <canvas id="Chart" width="1200" height="270"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal A09_1 -->
+<div id="modal_A09_1" class="modal">
+    <div class="modal-content">
+        <h4>@MES_MVC.Resources.Resource.GetObject("CostChange")</h4>
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <label for="TextBox1_A09_1">품번 : </label>
+                <input id="TextBox1_A09_1" type="text" class="form-control" readonly>
+            </div>
+            <div class="col s12 m6 l6">
+                <label for="TextBox2_A09_1">품명 : </label>
+                <input id="TextBox2_A09_1" type="text" class="form-control" readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <label for="TextBox3_A09_1"> 차종 : </label>
+                <input id="TextBox3_A09_1" type="text" class="form-control" readonly>
+            </div>
+            <div class="col s12 m6 l6">
+                <label for="TextBox4_A09_1">제품구분 :</label>
+                <input id="TextBox4_A09_1" type="text" class="form-control" readonly>
+            </div>
+           
+        </div>
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <label for="TextBox5_A09_1">DATE : </label>
+                <input id="TextBox5_A09_1" type="date" class="form-control" readonly>
+            </div>
+            <div class="col s12 m6 l6">
+                <label for="TextBox6_A09_1">COST($) : </label>
+                <input id="TextBox6_A09_1" type="number" class="form-control" readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <label for="DateTimePicker1_A09_1">Ngày có hiệu lực</label>
+                <input id="DateTimePicker1_A09_1" type="date" class="form-control">
+            </div>
+            <div class="col s12 m6 l6">
+                <label for="TextBox7_A09_1">COST($) : </label>
+                <input id="TextBox7_A09_1" type="number" class="form-control" step="0.01" min="0">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <button id="Buttoncancel_A09_1" class="btn waves-effect waves-light green darken-1">@MES_MVC.Resources.Resource.Buttoncancel</button>
+        <button id="Buttonsave_A09_1" class="btn waves-effect waves-light cyan darken-1">@MES_MVC.Resources.Resource.Buttonsave</button>
+      
+        <button id="Buttonclose_A09_1" class="btn waves-effect waves-light purple darken-1">@MES_MVC.Resources.Resource.Buttonclose</button>
+    </div>
+</div>
+
+<!-- Modal A09_2 -->
+<div id="modal_A09_2" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>COST_LIST</h4>
+        <div class="row">
+            <div class="col s12">
+                <input id="ExcelFile_A09_2" type="file" accept=".xls,.xlsx" style="display: none;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12" style="display: flex; justify-content: flex-end; align-items: center; gap: 10px;">
+                <button id="Buttonsave_A09_2" class="btn waves-effect waves-light cyan darken-1">@MES_MVC.Resources.Resource.Buttonsave</button>
+                <button id="Buttoninport_A09_2" class="btn waves-effect waves-light green darken-1">@MES_MVC.Resources.Resource.Buttoninport</button>
+                <button id="Buttonclose_A09_2" class="btn waves-effect waves-light purple darken-1">@MES_MVC.Resources.Resource.Buttonclose</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <table class="responsive-table KhungOverflow" id="DataGridView1_A09_2">
+                    <thead>
+                        <tr>
+                            <th>PART_NO</th>
+                            <th>DATE</th>
+                            <th>Unit_Price</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #Chart {
+        width: 1200px !important;
+        height: 270px !important;
+        display: block;
+    }
+</style>
+<script src="~/Scripts/A09.js?v=@GlobalHelper.GetVersionScrip("A09.js")"></script>

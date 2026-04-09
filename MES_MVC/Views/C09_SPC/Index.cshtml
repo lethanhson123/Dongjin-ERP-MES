@@ -1,0 +1,120 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string url = "C09_SPC";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "SP/ST SPC (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <h6><b>SP/ST SPC (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l4">
+                    <input id="INSP_TEXT" type="text" class="form-control" readonly>
+                </div>
+                <div class="col s12 m12 l4 right-align-md">                   
+                    <div class="col s12 m12 l4">
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                    </div>
+                </div>
+            </div>      
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <div class="KhungOverflow60">
+                        <table class="responsive-table" id="DataGridView1Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>LEAD_NO</th>
+                                    <th>W_Diameter</th>                                   
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l6">
+                    <div class="col s12 m12 l12">
+                        <button id="Button1" title="SAVE" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">SAVE</button>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>Minimun Horizontal Force : </label>                            
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>         
+                            <input id="RUS_TEXT_01" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important;" value="ST">                            
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <input id="Label2" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important;" value="Kgf">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l8">
+                        <div>                            
+                            <input id="RUS_01" type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>Minimun  Vertical Force : </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <input id="RUS_TEXT_02" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important;" value="ST">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <input id="Label3" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important;" value="Kgf">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l8">
+                        <div>
+                            <input id="RUS_02" type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <input id="MRUS" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C09_SPC.js?v=@version"></script>
+

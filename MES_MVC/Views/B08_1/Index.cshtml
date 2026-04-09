@@ -1,0 +1,104 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string cookie = string.Empty;
+	cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+	string UserID = cookie;
+	string url = "B08_1";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "STAY (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l6">
+					<h6><b>STAY (@url)</b></h6>
+				</div>
+				<div class="col s12 m12 l6 right-align-md">
+					<div>
+						<button id="Button3" title="Close" class="btn waves-effect waves-light purple darken-1">Close</button>
+					</div>
+				</div>
+			</div>
+			<div class="row card-panel light-blue lighten-4">
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l4">
+						<div>
+							<label>PART NO : </label>
+						</div>
+					</div>
+					<div class="col s12 m12 l8">
+						<div>
+							<input id="PART_NO_LB" type="text" class="form-control" readonly style="font-size: 30px;">
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l4">
+						<div>
+							<label>STAY : </label>							
+						</div>
+					</div>
+					<div class="col s12 m12 l8">
+						<div>							
+							<input id="STAY_LB" type="text" class="form-control" readonly style="font-size: 30px;">
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m12 l12" style="text-align: center; font-size: 30px;">
+					<div>
+						<h5>E: emergency,  N: normal,  S: stop</h5>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<br/>
+				<div class="col s12 m12 l3">
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<button id="Button1" title="E" class="btn waves-effect waves-light yellow darken-4" style="width: 100%; font-size: 30px;">E</button>
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<button id="Button2" title="N" class="btn waves-effect waves-light green darken-4" style="width: 100%; font-size: 30px;">N</button>
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<button id="Button5" title="S" class="btn waves-effect waves-light red darken-4" style="width: 100%; font-size: 30px;">S</button>
+					</div>
+				</div>
+				<div class="col s12 m12 l3">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/B08_1.js?v=@version"></script>
+

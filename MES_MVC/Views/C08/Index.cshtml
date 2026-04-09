@@ -1,0 +1,283 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC08Service _C08Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "C08";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN ?? "false");
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN ?? "false");
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN ?? "false");
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN ?? "false");
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN ?? "false");
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN ?? "false");
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN ?? "false");
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN ?? "false");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _C08Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col s12">
+                    <!-- INPUT Label, TextBox4, and Label37 -->
+                    <div style="display: none; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <label id="Label4" style="font-size: 18px; font-weight: bold; margin: 0;">INPUT</label>
+                        <input type="text" id="TextBox4" style="padding: 5px; border: 1px solid #ccc; min-width: 200px;">
+                        <label id="Label37" style="font-size: 18px; font-weight: bold; margin: 0;">0</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12" style="display: flex; gap: 20px;">
+                <!-- Table section -->
+                <div style="flex: 0 0 738px;">
+                    <table id="BarcodeTable" class="striped" style="width: 738px; height: 361px; table-layout: fixed;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 20%; padding: 0;">
+                                    <input type="text" id="TextBox5"  class="form-control" style="width: 70%; border: none; background-color: #2196F3 !important; padding: 0; margin: 0;">
+                                </td>
+                                <td style="width: 20%; padding: 0;">
+                                    <input type="date" id="DateTimePicker1" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" style="width: 80%; border: none; background-color: transparent; padding: 0; margin: 0;">
+                                </td>
+                                <td style="width: 20%; padding: 0;">
+                                    <label id="Label6" style="display: block; width: 80%; padding: 0; margin: 0;"></label>
+                                </td>
+                                <td style="width: 20%; padding: 0;">
+                                    <input type="text" id="TextBox3" class="form-control" style="width: 80%; border: none; background-color: #2196F3 !important; padding: 0; margin: 0;">
+                                </td>
+                                <td rowspan="3" style="text-align: center; vertical-align: middle; min-width: 135px; min-height: 111px;">
+                                    <div id="qrcode"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="padding: 0; text-align: left; position: relative;">
+                                    <input type="text" id="TextBox1" class="form-control" style="width: 60%; border: none; background-color: #2196F3 !important; padding: 0; margin: 0; font-weight: bold; font-size: 16px; text-align: left;">
+                                    <button id="Button3" class="btn waves-effect waves-light blue darken-2" style="position: absolute; left: 65%; top: 50%; transform: translateY(-50%); height: 30px; line-height: 30px; padding: 0 10px;">
+                                        <i class="material-icons" style="font-size: 18px; line-height: 30px;">search</i> Find
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4"> </td>
+                                <td colspan="2"> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> </td>
+                                <td colspan="2" style="padding: 0; text-align: left;">
+                                    <input type="number" id="TextBox2" min="0" class="form-control" style="width: 50%; border: none; background-color: #2196F3 !important; padding: 0; margin: 0; font-weight: bold; font-size: 16px; text-align: left;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> </td>
+                                <td colspan="2"> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> </td>
+                                <td colspan="2"> </td>
+                            </tr>
+                            <tr>
+                                <td>CCH.W</td>
+                                <td colspan="2"> </td>
+                                <td colspan="2"> </td>
+                            </tr>
+                            <tr>
+                                <td>ICH.W</td>
+                                <td colspan="2"> </td>
+                                <td colspan="2"> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Side buttons -->
+                <div style="display: flex; flex-direction: column; gap: 15px; align-items: flex-start;">
+                    <button id="Button2" class="btn waves-effect waves-light" style="background-color: LemonChiffon; color: #333; width: 145px; height: 100px; font-weight: bold;">
+                        RESET
+                    </button>
+                    <button id="Button4" class="btn waves-effect waves-light" style="background-color: Tomato; color: white; width: 145px; height: 55px; font-weight: bold;">
+                        ONLY Barcode
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+               
+                <div class="col s12" style="display: flex; align-items: center; gap: 40px;">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <!-- NumericUpDown1 -->
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="number" id="NumericUpDown1" value="1" min="1" max="999" style="width: 120px; height: 37px; padding: 5px; border: 1px solid #ccc; text-align: center; font-size: 16px;">
+                    </div>
+
+                    <!-- Printer Button -->
+                    <button id="Button1" class="btn waves-effect waves-light" style="background-color: #E0E0E0; color: #333; width: 469px; height: 54px; font-weight: bold;">
+                        Printer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal tìm kiếm LEAD NO -->
+<div id="searchModal" class="modal modal-fixed-footer" style="width: 80%; max-height: 80%;">
+    <div class="modal-content">
+        <h4>Search LEAD NO</h4>
+
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col s9">
+                <div class="input-field">
+                    <input id="searchTextBox1" type="text" class="validate">
+                    <label for="searchTextBox1">Search LEAD NO</label>
+                </div>
+            </div>
+            <div class="col s3">
+                <button id="searchButton1" class="btn waves-effect waves-light green darken-1" style="margin-top: 15px;">
+                    <i class="material-icons left">search</i>Search
+                </button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 5px;">
+            <div class="col s12">
+                <div class="card-panel blue lighten-5">
+                    <div class="row" style="margin-bottom: 0;">
+                        <div class="col s4">
+                            <div class="input-field">
+                                <input id="selectedLabel2" type="text" class="form-control" readonly>
+                               
+                            </div>
+                        </div>
+                        <div class="col s4">
+                            <div class="input-field">
+                                <input id="selectedLabel3" type="text" class="form-control" readonly>
+                               
+                            </div>
+                        </div>
+                        <div class="col s4">
+                            <div class="input-field">
+                                <input id="selectedLabel4" type="text" class="form-control" readonly>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="KhungOverflow">
+                    <table id="searchDataGrid" class="striped highlight responsive-table">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th style="width: 50%;">LEAD PN</th>
+                                <th style="width: 20%; text-align: right;">BUNDLE SIZE</th>
+                                <th style="width: 30%; text-align: center;">HOOK RACK</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu sẽ được thêm vào bằng JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+      
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+        <a href="#!" id="selectButton" class="modal-close waves-effect waves-green btn green">Select</a>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+<style>
+    #BarcodeTable tr {
+        height: 40px !important; 
+    }
+
+    #BarcodeTable td {
+        min-height: 40px !important; 
+    }
+</style>
+<script src="~/Scripts/C08.js?v=@version"></script>

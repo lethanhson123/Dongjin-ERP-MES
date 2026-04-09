@@ -1,0 +1,107 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IWMP_PLAYService _WMP_PLAYService
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string url = "WMP_PLAY";
+    try
+    {
+        string FLNM = Context.Session.GetString(GlobalHelper.WMP_PLAY_FLNM) ?? string.Empty;
+        BaseParameter.SearchString = FLNM;
+        BaseResult = await _WMP_PLAYService.Load(BaseParameter);
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "MES_HELP (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l3">
+                        <div class="KhungOverflow60">
+                            <table class="responsive-table" id="DataGridView1Table">
+                                <thead class="sticky-header">
+                                    <tr onclick="DataGridView1Sort()">
+                                        <th>HELP LIST</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView1">
+                                    @{
+                                        if (BaseResult != null)
+                                        {
+                                            if (BaseResult.DGV_WMP_PLIST != null)
+                                            {
+                                                int i = 0;
+                                                foreach (var item in BaseResult.DGV_WMP_PLIST)
+                                                {
+                                                    i = i + 1;
+                                                    string WMPID = "WMP" + i;
+                                                    string WMP = "http://" + GlobalHelper.GetFileServer + "/MES_DATE/HELP_FILE/" + item.FILE_NM + "." + item.FILE_EX;
+                                                    <tr>
+                                                        <td><a title="@item.LIST" onclick="DataGridView1_CellContentClick('@WMPID')">@item.LIST</a></td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l9">
+                        @{
+                            if (BaseResult != null)
+                            {
+                                if (BaseResult.DGV_WMP_PLIST != null)
+                                {
+                                    int i = 0;
+                                    foreach (var item in BaseResult.DGV_WMP_PLIST)
+                                    {
+                                        string display = "none";
+                                        if (i == 0)
+                                        {
+                                            display = "block";
+                                        }
+                                        i = i + 1;
+                                        string WMP = "http://" + GlobalHelper.GetFileServer + "/MES_DATE/HELP_FILE/" + item.FILE_NM + "." + item.FILE_EX;
+                                        string WMPID = "WMP" + i;
+                                        <div id="@WMPID" style="display: @display;">
+                                            <video type="video/mp4" width="800"
+                                                   height="444" src="@WMP" controls>
+                                            </video>
+                                        </div>
+                                    }
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/WMP_PLAY.js?v=@version"></script>
+

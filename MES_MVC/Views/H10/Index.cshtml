@@ -1,0 +1,203 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH10Service _H10Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H10";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _H10Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<style>
+    .input-spacing {
+        margin-right: 24px !important;
+    }
+</style>
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l12 d-flex" style="display: flex; align-items: center;">
+                    <button id="Button2" class="btn waves-effect waves-light blue darken-1 input-spacing">
+                        <i class="material-icons">autorenew</i> Reload
+                    </button>
+
+                    <input type="date" id="DateTimePicker1" class="form-control input-spacing" style="width:180px;" />
+
+                    <button id="Button1" class="btn waves-effect waves-light green darken-1 input-spacing">
+                        <i class="material-icons">refresh</i> Search
+                    </button>
+
+                    <label id="Label1" style="margin-bottom: 0; font-weight: bold;">
+                        Factory 1
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="margin-top:12px;">
+                <div class="col s12 m12 l12">
+                    <div class="KhungOverflow10" style="overflow-x:auto;">
+                        <table class="responsive-table striped bordered" id="DataGridView2">
+                            <thead>
+                                <tr>
+                                    <th>Hour</th>
+                                    <th>Z101</th>
+                                    <th>Z102</th>
+                                    <th>Z103</th>
+                                    <th>Z104</th>
+                                    <th>Z105</th>
+                                    <th>Z106</th>
+                                    <th>Z107</th>
+                                    <th>Z108</th>
+                                    <th>Z109</th>
+                                    <th>Z110</th>
+                                    <th>Z111</th>
+                                    <th>Z112</th>
+                                    <th>TW_SUM</th>
+                                    <th>S101</th>
+                                    <th>S102</th>
+                                    <th>S103</th>
+                                    <th>S104</th>
+                                    <th>S105</th>
+                                    <th>S106</th>
+                                    <th>S107</th>
+                                    <th>S108</th>
+                                    <th>S109</th>
+                                    <th>S110</th>
+                                    <th>S111</th>
+                                    <th>S112</th>
+                                    <th>WD_SUM</th>
+                                    <th>B201</th>
+                                    <th>B202</th>
+                                    <th>B203</th>
+                                    <th>B204</th>
+                                    <th>B205</th>
+                                    <th>B206</th>
+                                    <th>B207</th>
+                                    <th>B208</th>
+                                    <th>B209</th>
+                                    <th>B210</th>
+                                    <th>B211</th>
+                                    <th>B212</th>
+                                    <th>B213</th>
+                                    <th>B214</th>
+                                    <th>B215</th>
+                                    <th>B216</th>
+                                    <th>CR_SUM</th>
+                                    <th>SUM</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView2Body">
+                                <!-- Data will be loaded by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="KhungOverflow60" style="overflow-x:auto; margin-top: 24px;">
+                        <table class="responsive-table striped bordered" id="DataGridView1">
+                            <thead>
+                                <tr>
+                                    <th>Hour</th>
+                                    <th>Z101</th>
+                                    <th>Z102</th>
+                                    <th>Z103</th>
+                                    <th>Z104</th>
+                                    <th>Z105</th>
+                                    <th>Z106</th>
+                                    <th>Z107</th>
+                                    <th>Z108</th>
+                                    <th>Z109</th>
+                                    <th>Z110</th>
+                                    <th>Z111</th>
+                                    <th>Z112</th>
+                                    <th>TW_SUM</th>
+                                    <th>S101</th>
+                                    <th>S102</th>
+                                    <th>S103</th>
+                                    <th>S104</th>
+                                    <th>S105</th>
+                                    <th>S106</th>
+                                    <th>S107</th>
+                                    <th>S108</th>
+                                    <th>S109</th>
+                                    <th>S110</th>
+                                    <th>S111</th>
+                                    <th>S112</th>
+                                    <th>WD_SUM</th>
+                                    <th>B201</th>
+                                    <th>B202</th>
+                                    <th>B203</th>
+                                    <th>B204</th>
+                                    <th>B205</th>
+                                    <th>B206</th>
+                                    <th>B207</th>
+                                    <th>B208</th>
+                                    <th>B209</th>
+                                    <th>B210</th>
+                                    <th>B211</th>
+                                    <th>B212</th>
+                                    <th>B213</th>
+                                    <th>B214</th>
+                                    <th>B215</th>
+                                    <th>B216</th>
+                                    <th>CR_SUM</th>
+                                    <th>SUM</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1Body">
+                                <!-- Data will be loaded by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/H10.js?v=@version"></script>

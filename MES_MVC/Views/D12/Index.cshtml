@@ -1,0 +1,731 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject ID12Service _D12Service
+@{
+   // string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "D12";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _D12Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    @if (IsButtonfind)
+                    {
+                        <button id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                        </button>
+                    }
+
+                    @if (IsButtonadd)
+                    {
+                        <button id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                        </button>
+                    }
+
+                    @if (IsButtonsave)
+                    {
+                        <button id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave"
+                                class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                        </button>
+                    }
+
+                    @if (IsButtondelete)
+                    {
+                        <button id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete"
+                                class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                        </button>
+                    }
+
+                    @if (IsButtoncancel)
+                    {
+                        <button id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                        </button>
+                    }
+
+                    @if (IsButtoninport)
+                    {
+                        <button id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                        </button>
+                    }
+
+                    @if (IsButtonexport)
+                    {
+                        <button id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                        </button>
+                    }
+
+                    @if (IsButtonprint)
+                    {
+                        <button id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                        </button>
+                    }
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row">
+                    <div class="col s12 m6 l4">
+                        <ul class="tabs">
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="active p-0" href="#Tag002">@MES_MVC.Resources.Resource.Btn_Packing</a>
+                            </li>
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="p-0" href="#Tag003">@MES_MVC.Resources.Resource.DbTbl_ProducingAbility</a>
+                            </li>
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="p-0" href="#Tag004">@MES_MVC.Resources.Resource.DbTbl_ReWork</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col s12 m6 l8">
+                    </div>
+                </div>
+
+                <div class="row" id="Tag002">
+                    <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                        <div class="row" style="margin:5px;">
+                            <div class="col s12 m6 l4">
+                                <div class="col s12 m12 l3 text-left">
+                                    <label>@MES_MVC.Resources.Resource.DbTbl_FromDate</label>
+                                    <input id="tab2_fromDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="col s12 m12 l3 text-left">
+                                    <label>@MES_MVC.Resources.Resource.DbTbl_ToDate</label>
+                                    <input id="tab2_toDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="col s12 m12 l6 text-left">
+                                    <div class="row s12 m12 l12">
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col s12 m12 l6">
+                                                    <label style="margin-left:10px">
+                                                        <input id="RadioButton1" name="STATUS2" type="radio" value="" checked />
+                                                        <span>@MES_MVC.Resources.Resource.Btn_All</span>
+                                                    </label>
+                                                </div>
+                                                <div class="col s12 m12 l6">
+                                                    <label style="margin-left:10px">
+                                                        <input id="RadioButton2" name="STATUS2" type="radio" value="N" />
+                                                        <span>@MES_MVC.Resources.Resource.DbTbl_Receive</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col s12 m12 l6">
+                                                    <label style="margin-left:10px">
+                                                        <input id="RadioButton3" name="STATUS2" type="radio" value="Y" />
+                                                        <span>@MES_MVC.Resources.Resource.DbTbl_Shipping</span>
+                                                    </label>
+                                                </div>
+                                                <div class="col s12 m12 l6">
+                                                    <label style="margin-left:10px">
+                                                        <input id="RadioButton3" name="STATUS2" type="radio" value="D" />
+                                                        <span>@MES_MVC.Resources.Resource.Btn_Delete</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l8">
+                                <div class="col s12 m12 l8">
+                                    <div class="col s12 m12 l6">
+                                        <div class="row s12 m12 l12">
+                                            <div class="col s12 m12 l4">
+                                                <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                    @MES_MVC.Resources.Resource.DbTbl_PartCode:
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l8">
+                                                <input id="tab2_PartCode" type="text" class="form-control"
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                        <div class="row s12 m12 l12">
+                                            <div class="col s12 m12 l4">
+                                                <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                    @MES_MVC.Resources.Resource.DbTbl_PartName:
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l8">
+                                                <input id="tab2_PartName" type="text" class="form-control"
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col s12 m12 l6">
+                                        <div class="row s12 m12 l12">
+                                            <div class="col s12 m12 l4">
+                                                <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                    @MES_MVC.Resources.Resource.DbTbl_PackingCode:
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l8">
+                                                <input id="tab2_PackingCode" type="text" class="form-control"
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                        <div class="row s12 m12 l12">
+                                            <div class="col s12 m12 l4">
+                                                <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                    @MES_MVC.Resources.Resource.DbTbl_Stage:
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l8">
+                                                <input id="tab2_Stage" type="text" class="form-control"
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div class="row">
+                                        <div class="col s12 m12 l6">
+                                            <div class="row">
+                                                <div class="col s12 m12 l7">
+                                                    <label style="font-size: 14px; display: block; text-align: right;">
+                                                        @MES_MVC.Resources.Resource.DbTbl_Total (all):
+                                                    </label>
+                                                </div>
+                                                <div class="col s12 m12 l5">
+                                                    <input id="tab2_TotalQty" type="text" class="form-control" readonly
+                                                           style="color: black; font-size: 14px; min-height:30px; text-align: left;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col s12 m12 l6">
+                                            <div class="row">
+                                                <div class="col s12 m12 l7">
+                                                    <label style="font-size: 14px; display: block; text-align: right;">
+                                                        @MES_MVC.Resources.Resource.DbTbl_Shipping:
+                                                    </label>
+                                                </div>
+                                                <div class="col s12 m12 l5">
+                                                    <input id="tab2_TotalY" type="text" class="form-control" readonly
+                                                           style="color: black; font-size: 14px; min-height:30px; text-align: left;" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12 m12 l6">
+                                            <div class="row">
+                                                <div class="col s12 m12 l7">
+                                                    <label style="font-size: 14px; display: block; text-align: right;">
+                                                        @MES_MVC.Resources.Resource.DbTbl_PackingLotNo:
+                                                    </label>
+                                                </div>
+                                                <div class="col s12 m12 l5">
+                                                    <input id="tab2_DistinctPartNo" type="text" class="form-control" readonly
+                                                           style="color: black; font-size: 14px; min-height:30px; text-align: left;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col s12 m12 l6">
+                                            <div class="row">
+                                                <div class="col s12 m12 l7">
+                                                    <label style="font-size: 14px; display: block; text-align: right;">
+                                                        @MES_MVC.Resources.Resource.DbTbl_Receive:
+                                                    </label>
+                                                </div>
+                                                <div class="col s12 m12 l5">
+                                                    <input id="tab2_totalN" type="text" class="form-control" readonly
+                                                           style="color: black; font-size: 14px; min-height:30px; text-align: left;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12 card-panel lighten-4">
+                        <div class="row m-1 p-1" style="margin:3px">
+                            <div class="KhungOverflow">
+                                <table class="responsive-table" id="Table2">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th onclick="sortTable('Table2',0)" style=" cursor:pointer;">
+                                                No
+                                            </th>
+                                            <th onclick="sortTable('Table2',1)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_PartNo
+                                            </th>
+                                            <th onclick="sortTable('Table2',2)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_PartName
+                                            </th>
+                                            <th onclick="sortTable('Table2',3)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Stage
+                                            </th>
+                                            <th onclick="sortTable('Table2',4)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Category
+                                            </th>
+                                            <th onclick="sortTable('Table2',5)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_SNP
+                                            </th>
+                                            <th onclick="sortTable('Table2',6)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_PackingLotNo
+                                            </th>
+                                            <th onclick="sortTable('Table2',7)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_StockQty
+                                            </th>
+                                            <th onclick="sortTable('Table2',8)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Date
+                                            </th>
+                                            <th onclick="sortTable('Table2',9)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_ScanInTime
+                                            </th>
+                                            <th onclick="sortTable('Table2',10)" style="cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_LotCode
+                                            </th>
+                                            <th onclick="sortTable('Table2',11)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Remark
+                                            </th>
+                                            <th onclick="sortTable('Table2',12)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_CreateBy
+                                            </th>
+                                            <th onclick="sortTable('Table2',13)" style="cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Shipping
+                                            </th>
+                                            <th onclick="sortTable('Table2',14)" style="cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_DeleteTime
+                                            </th>
+                                            <th onclick="sortTable('Table2',15)" style="cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_DeleteBy
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView2">
+                                        <!-- Dữ liệu sẽ được đổ tại đây -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="Tag003">
+                    <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                        <div class="row" style="margin:5px;">
+                            <div class="col s12 m12 l12">
+                                <div class="col s12 m12 l3">
+                                    <div class="col s12 m12 l6 text-left">
+                                        <label>@MES_MVC.Resources.Resource.DbTbl_FromDate</label>
+                                        <input id="tab3_fromDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                               value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                    </div>
+                                    <div class="col s12 m12 l6 text-left">
+                                        <label>@MES_MVC.Resources.Resource.DbTbl_ToDate</label>
+                                        <input id="tab3_toDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                               value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                    </div>
+                                </div>
+
+                                <div class="col s12 m12 l2">
+                                    <label>
+                                        @MES_MVC.Resources.Resource.DbTbl_Category:
+                                    </label>
+                                    <input id="tab3_Catalogy" type="text" class="form-control"
+                                           style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                </div>
+
+                                <div class="col s12 m12 l2">
+                                    <label>
+                                        @MES_MVC.Resources.Resource.DbTbl_PartName:
+                                    </label>
+                                    <input id="tab3_PartName" type="text" class="form-control"
+                                           style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                </div>
+
+                                <div class="col s12 m12 l2">
+                                    <label>
+                                        @MES_MVC.Resources.Resource.DbTbl_Stage:
+                                    </label>
+                                    <input id="tab3_Stage" type="text" class="form-control"
+                                           style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                </div>
+                                <div class="col s12 m12 l3">
+                                    <div class="row">
+                                        <div class="col s12 m12 l12">
+                                            <div class=" col s12 m12 l6">
+                                                <label>
+                                                    @MES_MVC.Resources.Resource.DbTbl_Total_Count:
+                                                </label>
+                                                <input id="tab3_itemCount" type="text" class="form-control" readonly
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                            <div class=" col s12 m12 l6">
+                                                <label>
+                                                    @MES_MVC.Resources.Resource.DbTbl_BoxNumber:
+                                                </label>
+                                                <input id="tab3_boxCount" type="text" class="form-control" readonly
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12 card-panel lighten-4">
+                        <div class="row m-1 p-1" style="margin:3px">
+                            <div class="KhungOverflow">
+                                <table class="responsive-table" id="Table3">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th onclick="sortTable('Table3',0)" style=" cursor:pointer;">
+                                                No
+                                            </th>
+                                            <th onclick="sortTable('Table3',1)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Category
+                                            </th>
+                                            <th onclick="sortTable('Table3',2)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Stage
+                                            </th>
+                                            <th onclick="sortTable('Table3',3)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_PartName
+                                            </th>
+                                            <th onclick="sortTable('Table3',4)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_PONo (Count)
+                                            </th>
+                                            <th onclick="sortTable('Table3',5)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_SNP
+                                            </th>
+                                            <th onclick="sortTable('Table3',6)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Quantity
+                                            </th>
+                                            <th onclick="sortTable('Table3',7)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_BoxNumber
+                                            </th>
+                                            <th onclick="sortTable('Table3',8)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_StartDate
+                                            </th>
+                                            <th onclick="sortTable('Table3',9)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_EndDate
+                                            </th>
+                                            <th onclick="sortTable('Table3',10)" style="cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Time (H)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView3">
+                                        <!-- Dữ liệu sẽ được đổ tại đây -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="Tag004">
+                    <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                        <div class="row" style="margin:5px;">
+                            <div class="col s12 m6 l4">
+                                <div class="col s12 m12 l3 text-left">
+                                    <label>@MES_MVC.Resources.Resource.DbTbl_FromDate</label>
+                                    <input id="tab4_fromDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="col s12 m12 l3 text-left">
+                                    <label>@MES_MVC.Resources.Resource.DbTbl_ToDate</label>
+                                    <input id="tab4_toDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="col s12 m12 l6 text-left">
+                                    <div class="row s12 m12 l12">
+                                        <div class="row">
+                                            <div class="col s12 m12 l12">
+                                                <label style="margin-left:10px">
+                                                    <input id="tab4_RadioButton2" name="STATUS4" type="radio" value="N" checked />
+                                                    <span>@MES_MVC.Resources.Resource.DbTbl_Receive</span>
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l12">
+                                                <label style="margin-left:10px">
+                                                    <input id="tab4_RadioButton3" name="STATUS4" type="radio" value="Y" />
+                                                    <span>@MES_MVC.Resources.Resource.DbTbl_ReWork</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l8">
+                                <div class="col s12 m12 l8">
+                                    <div class="col s12 m12 l6">
+                                        <div class="row s12 m12 l12">
+                                            <div class="col s12 m12 l4">
+                                                <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                    @MES_MVC.Resources.Resource.DbTbl_PartNo:
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l8">
+                                                <input id="tab4_PartCode" type="text" class="form-control"
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                        <div class="row s12 m12 l12">
+                                            <div class="col s12 m12 l4">
+                                                <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                    @MES_MVC.Resources.Resource.DbTbl_PartName:
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l8">
+                                                <input id="tab4_PartName" type="text" class="form-control"
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col s12 m12 l6">
+                                        <div class="row s12 m12 l12">
+                                            <div class="col s12 m12 l4">
+                                                <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                    @MES_MVC.Resources.Resource.DbTbl_PackingCode:
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l8">
+                                                <input id="tab4_PackingCode" type="text" class="form-control"
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                        <div class="row s12 m12 l12">
+                                            <div class="col s12 m12 l4">
+                                                <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                    @MES_MVC.Resources.Resource.DbTbl_LotCode:
+                                                </label>
+                                            </div>
+                                            <div class="col s12 m12 l8">
+                                                <input id="tab4_LotCode" type="text" class="form-control"
+                                                       style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div class="row">
+                                        <div class="col s12 m12 l4">
+                                            <label style="font-size: 14px; display: block; width: 100%; text-align: right;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Stage:
+                                            </label>
+                                        </div>
+                                        <div class="col s12 m12 l8">
+                                            <input id="tab4_Stage" type="text" class="form-control"
+                                                   style="color: black; font-size: 16px; min-height:30px; text-align: left;" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12 card-panel lighten-4">
+                        <div class="row m-1 p-1" style="margin:3px">
+                            <div class="row">
+                                <div class="col s12 m12 l6">
+                                    <div class="row">
+                                        <div class="col s12 m12 l7">
+                                            <label style="font-size: 14px; display: block; text-align: right;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Total_Count:
+                                            </label>
+                                        </div>
+                                        <div class="col s12 m12 l5">
+                                            <input id="tab4_ItemCount" type="text" class="form-control" readonly
+                                                   style="color: black; font-size: 14px;  text-align: left;" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="KhungOverflow">
+                                <table class="responsive-table" id="Table4">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th onclick="sortTable('Table4',0)" style=" cursor:pointer;">
+                                                No
+                                            </th>
+                                            <th onclick="sortTable('Table4',1)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_PartNo
+                                            </th>
+                                            <th onclick="sortTable('Table4',2)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_PartName
+                                            </th>
+                                            <th onclick="sortTable('Table4',3)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Stage
+                                            </th>
+                                            <th onclick="sortTable('Table4',4)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Category
+                                            </th>
+                                            <th onclick="sortTable('Table4',5)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_SNP
+                                            </th>
+                                            <th onclick="sortTable('Table4',6)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_PackingLotNo
+                                            </th>
+                                            <th onclick="sortTable('Table4',7)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_StockQty
+                                            </th>
+                                            <th onclick="sortTable('Table4',8)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Date
+                                            </th>
+                                            <th onclick="sortTable('Table4',9)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_ScanInTime
+                                            </th>
+                                            <th onclick="sortTable('Table4',10)" style="cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_LotCode
+                                            </th>
+                                            <th onclick="sortTable('Table4',11)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Remark
+                                            </th>
+                                            <th onclick="sortTable('Table4',12)" style=" cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_CreateBy
+                                            </th>
+                                            <th onclick="sortTable('Table4',13)" style="cursor:pointer;">
+                                                @MES_MVC.Resources.Resource.DbTbl_Shipping
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView4">
+                                        <!-- Dữ liệu sẽ được đổ tại đây -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const sortState = {};
+
+       function sortTable(tableId, columnIndex) {
+           const table = document.getElementById(tableId);
+           const tbody = table.tBodies[0];
+           const rows = Array.from(tbody.rows);
+           // Key duy nhất cho từng bảng và cột
+           const key = tableId + "_" + columnIndex;
+           const currentDirection = sortState[key] || 'asc';
+
+           rows.sort((a, b) => {
+               let cellA = a.cells[columnIndex].innerText.trim().toLowerCase();
+               let cellB = b.cells[columnIndex].innerText.trim().toLowerCase();
+               // So sánh số nếu có thể
+               const isNumeric = !isNaN(cellA) && !isNaN(cellB);
+               if (isNumeric) {
+                   cellA = parseFloat(cellA);
+                   cellB = parseFloat(cellB);
+               }
+               if (cellA < cellB) return currentDirection === 'asc' ? -1 : 1;
+               if (cellA > cellB) return currentDirection === 'asc' ? 1 : -1;
+               return 0;
+           });
+           // Gắn lại thứ tự
+           while (tbody.firstChild) {
+               tbody.removeChild(tbody.firstChild);
+           }
+           rows.forEach(row => tbody.appendChild(row));
+           // Lưu trạng thái lần sau đảo chiều
+           sortState[key] = currentDirection === 'asc' ? 'desc' : 'asc';
+       }
+
+        // Lấy text từ C# resource đưa vào biến JS
+       const localizedText = {
+           search: '@MES_MVC.Resources.Resource.Btn_Search',
+           reset: '@MES_MVC.Resources.Resource.ButtonREST',
+           WrongCode: '@MES_MVC.Resources.Resource.ERROR_NotExisted',
+           WrongProduct: '@MES_MVC.Resources.Resource.ERROR_WrongProductCode',
+           Scanned: '@MES_MVC.Resources.Resource.WARN_ScanExisted',
+           Success: '@MES_MVC.Resources.Resource.SUCCESS_Success',
+           Empty: '@MES_MVC.Resources.Resource.ERROR_NoData',
+           FullBox: '@MES_MVC.Resources.Resource.ERROR_FullBox',
+           CannotDelete: '@MES_MVC.Resources.Resource.ERROR_CannotDelete',
+           Remark: '@MES_MVC.Resources.Resource.DbTbl_Remark',
+           confirmScanMore: '@MES_MVC.Resources.Resource.MSG_AddPackingItem',
+           TurnofUnikey:'@MES_MVC.Resources.Resource.MSG_UnikeyTurnOff'
+       };
+</script>
+<script src="~/Scripts/D12.js?v=@GlobalHelper.GetVersionScrip("D12.js")"></script>
+

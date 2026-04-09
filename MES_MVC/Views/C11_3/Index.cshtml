@@ -1,0 +1,137 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C11_3";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "WORK (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <h6><b>WORK (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l1">
+                    <label>LEAD NO :</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_D01" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 20px;">
+                </div>
+                <div class="col s12 m12 l1">
+                    <label>MC :</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_D02" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 20px;">
+                </div>
+                <div class="col s12 m12 l1">
+                    <input id="C11_D03" type="text" class="form-control" readonly value="J" style="border-width: 0px !important; font-size: 20px;">
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="ORDER" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; font-size: 20px;">
+                </div>
+                <div class="col s12 m12 l1 right-align-md">
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12" style="text-align: center;">
+                    <label style="font-size: 20px; font-weight: bold; color: blue;">Current material(현사용 자재)</label>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l4">
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <button id="BT_APP1" title="APPLICATOR Change" class="btn waves-effect waves-light green darken-1" style="width: 100%;">APPLICATOR Change</button>
+                    </div>
+                    <div class="col s12 m12 l4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l3" style="text-align: right;">
+                        <label>APPLICATOR1 : </label>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <input id="VLA1" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 20px;">
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <input id="VLA11" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 20px;">
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <input id="TOOL_CONT" type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center; background-color: green !important; color: black; font-size: 30px; height: 40px !important;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l3" style="text-align: right;">
+                        <label>LH_WORK_COUNT :</label>
+                    </div>
+                    <div class="col s12 m12 l5">
+                        <input id="COUNT_L" type="text" class="form-control" value="0" readonly style="border-width: 0px !important; text-align: center; font-size: 20px;">
+                    </div>
+                    <div class="col s12 m12 l2" style="text-align: right;">
+                        <label>RH_WORK_COUNT :</label>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input id="COUNT_R" type="text" class="form-control" value="0" readonly style="border-width: 0px !important; text-align: center; font-size: 20px;">
+                    </div>
+                </div>
+                <div class="row">
+                    <hr />
+                    <div class="col s12 m12 l3" style="text-align: right;">
+                        <label>COUNT : </label>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input id="C11_COUNT1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; color: blue; text-align: center; font-size: 20px;">
+                    </div>
+                    <div class="col s12 m12 l1" style="text-align: center;">
+                        <label>/</label>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input id="C11_COUNT2" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 20px;">
+                    </div>
+                    <div class="col s12 m12 l2" style="text-align: right;">
+                        <label>BUNDLE_SIZE :</label>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input id="C11_COUNT3" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 20px;">
+                    </div>
+                </div>
+                <div class="row">
+                    <hr />
+                    <div class="col s12 m12 l12">
+                        <button id="Buttonprint" title="Complete" class="btn btn-large waves-effect waves-light cyan darken-1" style="width: 100%; font-size: 32px; text-transform: none !important;">Complete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C11_3.js?v=@version"></script>
+

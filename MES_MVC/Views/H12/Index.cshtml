@@ -1,0 +1,144 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH12Service _H12Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H12";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _H12Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<style>
+    .input-spacing {
+        margin-right: 24px !important;
+    }
+</style>
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12 d-flex" style="display: flex; align-items: center;">
+                    <button id="Button2" class="btn waves-effect waves-light blue darken-1 input-spacing">
+                        <i class="material-icons">autorenew</i> Reload
+                    </button>
+                    <input type="date" id="DateTimePicker1" class="form-control input-spacing" style="width:180px;" />
+                    <button id="Button1" class="btn waves-effect waves-light green darken-1 input-spacing">
+                        <i class="material-icons">refresh</i> Search
+                    </button>
+                    <label id="Label1" style="margin-bottom: 0; font-weight: bold;">
+                        Factory 1
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="margin-top:12px;">
+                <div class="col s12 m12 l12">
+                    <div class="KhungOverflow30" style="overflow-x:auto; margin-top: 24px;">
+                        <table class="responsive-table striped bordered" id="DataGridView2">
+                            <thead>
+                                <tr>
+                                    <th>Hour</th>
+                                    <th>ZZ101</th>
+                                    <th>ZZ102</th>
+                                    <th>ZZ103</th>
+                                    <th>ZZ104</th>
+                                    <th>ZZ105</th>
+                                    <th>ZZ106</th>
+                                    <th>TW_SUM</th>
+                                    <th>ZS101</th>
+                                    <th>ZS102</th>
+                                    <th>ZS103</th>
+                                    <th>ZS104</th>
+                                    <th>ZS105</th>
+                                    <th>ZS106</th>
+                                    <th>ZS107</th>
+                                    <th>WD_SUM</th>
+                                    <th>SUM</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView2Body">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="KhungOverflow30" style="overflow-x:auto;">
+                        <table class="responsive-table striped bordered" id="DataGridView1">
+                            <thead>
+                                <tr>
+                                    <th>Hour</th>
+                                    <th>ZZ101</th>
+                                    <th>ZZ102</th>
+                                    <th>ZZ103</th>
+                                    <th>ZZ104</th>
+                                    <th>ZZ105</th>
+                                    <th>ZZ106</th>
+                                    <th>TW_SUM</th>
+                                    <th>ZS101</th>
+                                    <th>ZS102</th>
+                                    <th>ZS103</th>
+                                    <th>ZS104</th>
+                                    <th>ZS105</th>
+                                    <th>ZS106</th>
+                                    <th>ZS107</th>
+                                    <th>WD_SUM</th>
+                                    <th>SUM</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1Body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/H12.js?v=@version"></script>

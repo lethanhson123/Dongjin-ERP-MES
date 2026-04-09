@@ -1,0 +1,477 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IB05Service _B05Service
+@{
+   // string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "B05";
+    try
+    {
+        //truyền biến User ID thay thế cho Cookies để lấy phân quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _B05Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l12">
+                    <ul class="tabs">
+                        <li class="tab col s3 p-0">
+                            <a id="TabPage1" class="active p-0" href="#Tag001">Warehouse List</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="TabPage2" class="p-0" href="#Tag002">Shipped NO.list</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="TabPage3" class="p-0" href="#Tag003">Long-term inventory</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="TabPage4" class="p-0" href="#Tag004">PART_NO_Location</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" id="Tag001">
+                <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NO :</label>
+                                <input id="TextBox1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NAME :</label>
+                                <input id="TextBox2" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Shipping NO :</label>
+                                <input id="TextBox3" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Wear date :</label>
+                                <input id="DateTimePicker1" type="date" class="form-control" value="2025-06-23">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>&nbsp;</label>
+                                <input id="DateTimePicker2" type="date" class="form-control" value="2025-06-23">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Confirmation :</label>
+                                <select id="ComboBox1" class="browser-default form-select">
+                                    <option value="Y" selected>Y</option>
+                                    <option value="N">N</option>
+                                    <option value="ALL">ALL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <span style="color: red; font-weight: bold;">MAX DATA 5000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>DATE</th>
+                                <th>PART_NO</th>
+                                <th>PART_Name</th>
+                                <th>PART_GRP1</th>
+                                <th>PART_GRP2</th>
+                                <th>SNP</th>
+                                <th>PART_Product</th>
+                                <th>STOCK</th>
+                                <th>QTY</th>
+                                <th>PKG_QTY</th>
+                                <th>Unit</th>
+                                <th>Ratio</th>
+                                <th>NET_WT</th>
+                                <th>GRS_WT</th>
+                                <th>Pallet_NO</th>
+                                <th>Shipping_NO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag002" style="display: none;">
+                <div class="col s12 m12 l12 card-panel light-green lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Shipping NO :</label>
+                                <input id="TextBox4" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Wear date :</label>
+                                <input id="DateTimePicker4" type="date" class="form-control" value="2025-06-23">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>&nbsp;</label>
+                                <input id="DateTimePicker3" type="date" class="form-control" value="2025-06-23">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label> </label>
+                                <span style="color: red; font-weight: bold;">MAX DATA 5000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView2Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView2Sort()">
+                                <th>DATE</th>
+                                <th>Shipping_NO</th>
+                                <th>PART_COUNT</th>
+                                <th>SUM_QTY</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView2">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag003" style="display: none;">
+                <div class="col s12 m12 l12 card-panel purple lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NO :</label>
+                                <input id="TextBox7" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NAME :</label>
+                                <input id="TextBox6" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Group Code :</label>
+                                <input id="TextBox5" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView3Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView3Sort()">
+                                <th></th>
+                                <th>DATE</th>
+                                <th>BARCODE_ID</th>
+                                <th>PART_NO</th>
+                                <th>PART_Name</th>
+                                <th>PART_GRP1</th>
+                                <th>PART_GRP2</th>
+                                <th>SNP</th>
+                                <th>PART_Product</th>
+                                <th>STOCK</th>
+                                <th>QTY</th>
+                                <th>PKG_QTY</th>
+                                <th>Unit</th>
+                                <th>Ratio</th>
+                                <th>NET_WT</th>
+                                <th>GRS_WT</th>
+                                <th>Pallet_NO</th>
+                                <th>Shipping_NO</th>
+                                <th>Location</th>
+                                <th>MTIN_RMK</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView3">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag004" style="display: none;">
+                <!-- Search Section 1 - Blue background -->
+                <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NO :</label>
+                                <input id="suchTB1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NAME :</label>
+                                <input id="suchTB2" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>MODEL :</label>
+                                <input id="TextBox8" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>FAMILY :</label>
+                                <input id="TextBox9" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>
+                                    <input id="RadioButton1" type="radio" name="areaType" value="NONE" checked />
+                                    <span>NONE</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton2" type="radio" name="areaType" value="Over" />
+                                    <span>Over</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton3" type="radio" name="areaType" value="Below" />
+                                    <span>Below</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Total Area(m²) :</label>
+                                <input id="TextBox10" type="number" class="form-control" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details Section - Green background -->
+                <div class="col s12 m12 l12 card-panel light-green lighten-4">
+                    <div class="row">
+                        <!-- Column 1: PART NO, Model, Unit Area -->
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NO :</label>
+                                <input id="T4_T01" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>Model :</label>
+                                <input id="T4_T05" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>Unit Area :</label>
+                                <input id="T4_T11" type="number" class="form-control" step="0.01">
+                            </div>
+                        </div>
+
+                        <!-- Column 2: PART NAME, SNP, BOX COUNT -->
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NAME :</label>
+                                <input id="T4_T02" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>SNP :</label>
+                                <input id="T4_T06" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>BOX COUNT :</label>
+                                <input id="T4_T12" type="number" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Product, W×L×H, Total Area -->
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Product :</label>
+                                <input id="T4_T03" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>W × L × H (Cm) :</label>
+                                <input id="T4_T07" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>Total Area(m²) :</label>
+                                <input id="T4_T13" type="number" class="form-control" step="0.01">
+                            </div>
+                        </div>
+
+                        <!-- Column 4: Family, MRP(SAFETY), Weight -->
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Family :</label>
+                                <input id="T4_T04" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>MRP(SAFETY) :</label>
+                                <input id="T4_T10" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>Weight (G) :</label>
+                                <input id="txt_DVT" type="number" class="form-control" step="0.01">
+                            </div>
+                        </div>
+
+                        <!-- Column 5: Location, SUM -->
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label>Location :</label>
+                                <input id="T4_T14" type="text" class="form-control" value="--">
+                            </div>
+                            <div style="margin-top: 35px;">
+                                <span style="color: black; font-weight: bold; font-size: 18px;">SUM</span>
+                                <span id="Label27" style="color: black; font-weight: bold; font-size: 18px; margin-left: 10px;">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView4Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView4Sort()">
+                                <th>CODE</th>
+                                <th>PART_NO</th>
+                                <th>PART_NAME</th>
+                                <th>MODEL(FA)</th>
+                                <th>PART_Family(Product)</th>
+                                <th>Packing_Unit</th>
+                                <th>Item_Type</th>
+                                <th>Location</th>
+                                <th>MRP(SAFETY)</th>
+                                <th>W(cm)</th>
+                                <th>L(cm)</th>
+                                <th>H(cm)</th>
+                                <th>Unit Area(m²)</th>
+                                <th>BOX COUNT</th>
+                                <th>Total Area(m²)</th>
+                                <th>Weight (G)</th>
+                                <th>Creation_date</th>
+                                <th>Creation_User</th>
+                                <th>Update_Date</th>
+                                <th>Update_User</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView4">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/B05.js?v=@GlobalHelper.GetVersionScrip("B05.js")"></script>

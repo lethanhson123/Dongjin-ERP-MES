@@ -1,0 +1,569 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IA04Service _A04Service
+@{
+    //string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "A04";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+         string Language = CookieHelper.GetCookie(GlobalHelper.Language);     
+        BaseResult = await _A04Service.Load();
+        if (BaseResult.Listtscode != null)
+        {
+            for (int i = 0; i < BaseResult.Listtscode.Count; i++)
+            {
+                BaseResult.Listtscode[i].CD_SYS_NOTE = BaseResult.Listtscode[i].CD_NM_EN;
+                if (Language == GlobalHelper.LanguageCodeKR)
+                {
+                    BaseResult.Listtscode[i].CD_SYS_NOTE = BaseResult.Listtscode[i].CD_NM_HAN;
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i> @MES_MVC.Resources.Resource.Buttonhelp
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Panel -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="card-panel light-blue lighten-4" style="padding: 10px;">
+                        <div class="row" style="margin-bottom: 0;">
+                            <div class="col s4">
+                                <label>APPLICATOR:</label>
+                                <input type="text" id="STB1" name="APPLICATOR" class="form-control" style="height: 24px;" onkeypress="if(event.key === 'Enter') document.getElementById('Buttonfind').click();">
+                            </div>
+                            <div class="col s4">
+                                <label>Customer:</label>
+                                <select id="STB2" name="Customer" class="browser-default form-select" style="height: 24px;">
+                                    <option value="ALL">ALL</option>
+                                    @if (BaseResult.Listtscode != null)
+                                    {
+                                        foreach (var customer in BaseResult.Listtscode)
+                                        {
+                                            <option value="@customer.CD_SYS_NOTE">@customer.CD_SYS_NOTE</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col s4">
+                                <label>TYPE:</label>
+                                <input type="text" id="STB3" name="TYPE" class="form-control" style="height: 24px;" onkeypress="if(event.key === 'Enter') document.getElementById('Buttonfind').click();">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Panel -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="card-panel green lighten-4" style="padding: 10px;">
+                        <div class="row" style="margin-bottom: 0;">
+                            <div class="col s3">
+                                <label>APPLICATOR:</label>
+                                <input type="text" id="app01" name="app01" class="form-control" style="height: 24px;">
+                            </div>
+                            <div class="col s2">
+                                <label>APP. SEQ:</label>
+                                <select id="app02" name="app02" class="browser-default form-select" style="height: 24px;">
+                                    <option value=""></option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                    <option value="G">G</option>
+                                    <option value="H">H</option>
+                                    <option value="I">I</option>
+                                    <option value="J">J</option>
+                                    <option value="K">K</option>
+                                    <option value="L">L</option>
+                                    <option value="M">M</option>
+                                    <option value="N">N</option>
+                                    <option value="O">O</option>
+                                    <option value="P">P</option>
+                                    <option value="Q">Q</option>
+                                    <option value="R">R</option>
+                                    <option value="S">S</option>
+                                    <option value="T">T</option>
+                                    <option value="U">U</option>
+                                    <option value="V">V</option>
+                                    <option value="W">W</option>
+                                </select>
+                            </div>
+                            <div class="col s2">
+                                <label>APP:</label>
+                                <input type="text" id="app03" name="app03" class="form-control" style="height: 24px;" readonly>
+                            </div>
+                            <div class="col s2">
+                                <label>Work Count:</label>
+                                <input type="number" id="app04" name="app04" class="form-control" style="height: 24px; text-align: right;" min="0">
+                            </div>
+                            <div class="col s3 right-align" style="padding-top: 15px;">
+                                <button id="Button2" class="btn-small waves-effect waves-light green darken-1" style="margin-right: 5px;">
+                                    <i class="material-icons left">add</i> Add
+                                </button>
+                                <button id="Button3" class="btn-small waves-effect waves-light green darken-1" style="margin-right: 5px;">
+                                    <i class="material-icons left">cancel</i> Cancel
+                                </button>
+                                <button id="Button1" class="btn-small waves-effect waves-light green darken-1">
+                                    <i class="material-icons left">save</i> Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs Panel -->
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s3"><a class="active" href="#basic-info">Basic Information</a></li>
+                        <li class="tab col s3"><a href="#crimping-insulation">Crimping & Insulation</a></li>
+                        <li class="tab col s3"><a href="#anvil-measurement">Anvil & Measurement</a></li>
+                        <li class="tab col s3"><a href="#cutting-misc">Cutting & Misc</a></li>
+                    </ul>
+                </div>
+                <div id="basic-info" class="col s12">
+                    <div class="card-panel yellow lighten-4" style="padding: 10px;">
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col s2 right-align"><label>CODE:</label></div>
+                            <div class="col s2"><input type="text" id="TB1" name="CODE" class="form-control" style="height: 24px;" readonly></div>
+                            <div class="col s2 right-align"><label>APPLICATOR<span class="red-text">*</span>:</label></div>
+                            <div class="col s2"><input type="text" id="TB2" name="APPLICATOR" class="form-control" style="height: 24px;"></div>
+                            <div class="col s2 right-align"><label>SUPPLIER NO:</label></div>
+                            <div class="col s2"><input type="text" id="TB8" name="SPP_NO" class="form-control" style="height: 24px;"></div>
+                        </div>
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col s2 right-align"><label>TYPE:</label></div>
+                            <div class="col s2"><input type="text" id="TB9" name="TYPE" class="form-control" style="height: 24px;"></div>
+                            <div class="col s2 right-align"><label>GAUGE:</label></div>
+                            <div class="col s2"><input type="text" id="TB10" name="GAUGE" class="form-control" style="height: 24px;"></div>
+                            <div class="col s2 right-align"><label>Customer<span class="red-text">*</span>:</label></div>
+                            <div class="col s2">
+                                <select id="TB4" name="Customer" class="browser-default form-select" style="height: 24px;">
+                                    @if (BaseResult.Listtscode != null)
+                                    {
+                                        foreach (var customer in BaseResult.Listtscode)
+                                        {
+                                            <option value="@customer.CD_SYS_NOTE">@customer.CD_SYS_NOTE</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col s2 right-align"><label>Standard Count:</label></div>
+                            <div class="col s2"><input type="number" id="TB5" name="MAX_CNT" class="form-control" style="height: 24px; text-align: right; background-color: #ffcc80;" min="0"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="crimping-insulation" class="col s12">
+                    <div class="card-panel yellow lighten-4" style="padding: 10px;">
+                        <!-- Main content -->
+                        <div class="row">
+                            <!-- Category headers - First row -->
+                            <div class="col s12">
+                                <table class="bordered" style="margin-bottom: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">CORE PLATE</th>
+                                            <th class="center-align grey lighten-2" style="width: 35%;">INSULATION PLATE</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">ANVIL Integral</th>
+                                            <th class="center-align grey lighten-2" style="width: 10%;">CMU</th>
+                                            <th class="center-align grey lighten-2" style="width: 15%;">IMU</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Subcategory headers and inputs - Second row -->
+                        <div class="row" style="margin-top: -20px; margin-bottom: 0;">
+                            <div class="col s12">
+                                <table class="bordered">
+                                    <thead>
+                                        <tr>
+                                            <!-- CORE PLATE subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">NORMAL</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">SPECIAL</th>
+
+                                            <!-- INSULATION PLATE subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 7%;">SEAL</th>
+                                            <th class="center-align grey lighten-1" style="width: 7%;">Non-Seal</th>
+                                            <th class="center-align grey lighten-1" style="width: 7%;">X-TYPE</th>
+                                            <th class="center-align grey lighten-1" style="width: 7%;">K-TYPE</th>
+                                            <th class="center-align grey lighten-1" style="width: 7%;">SPECIAL</th>
+
+                                            <!-- ANVIL subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">NORMAL</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">SPECIAL</th>
+
+                                            <!-- CMU subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 5%;">NORMAL</th>
+                                            <th class="center-align grey lighten-1" style="width: 5%;">SPECIAL</th>
+
+                                            <!-- IMU subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 5%;">NORMAL</th>
+                                            <th class="center-align grey lighten-1" style="width: 5%;">Non-Seal</th>
+                                            <th class="center-align grey lighten-1" style="width: 5%;">SPECIAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <!-- CORE PLATE input fields -->
+                                            <td><input type="text" id="TB11" name="COPL_NOR" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB12" name="COPL_SPE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- INSULATION PLATE input fields -->
+                                            <td><input type="text" id="TB13" name="INSPL_SEALTYPE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB14" name="INSPL_NONSEAL" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB15" name="INSPL_XTYPE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB16" name="INSPL_KTYPE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB17" name="INSPL_SPE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- ANVIL input fields -->
+                                            <td><input type="text" id="TB18" name="ANVIL_NOR" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB19" name="ANVIL_SPE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- CMU input fields -->
+                                            <td><input type="text" id="TB20" name="CMU_NOR" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB21" name="CMU_SPE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- IMU input fields -->
+                                            <td><input type="text" id="TB22" name="IMU_NOR" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB23" name="IMU_NONSEAL" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB24" name="IMU_SPE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="anvil-measurement" class="col s12">
+                    <div class="card-panel yellow lighten-4" style="padding: 10px;">
+                        <!-- Main content -->
+                        <div class="row">
+                            <!-- Category headers - First row -->
+                            <div class="col s12">
+                                <table class="bordered" style="margin-bottom: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">CUT PLATE</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">CUT ANVIL</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">CUT HOLDER</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">REAR BLOCK</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">REAR-CUT HOLDER</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Subcategory headers and inputs - Second row -->
+                        <div class="row" style="margin-top: -20px; margin-bottom: 0;">
+                            <div class="col s12">
+                                <table class="bordered">
+                                    <thead>
+                                        <tr>
+                                            <!-- CUT PLATE subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Integral</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Detachable</th>
+
+                                            <!-- CUT ANVIL subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Integral</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Detachable</th>
+
+                                            <!-- CUT HOLDER subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Integral</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Detachable</th>
+
+                                            <!-- REAR BLOCK subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Integral</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Detachable</th>
+
+                                            <!-- REAR-CUT HOLDER subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Integral</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Detachable</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <!-- CUT PLATE input fields -->
+                                            <td><input type="text" id="TB25" name="CUTPL_ONE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB26" name="CUTPL_DET" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- CUT ANVIL input fields -->
+                                            <td><input type="text" id="TB27" name="CUTAN_ONE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB28" name="CUTAN_DET" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- CUT HOLDER input fields -->
+                                            <td><input type="text" id="TB29" name="CUTHO_ONE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB30" name="CUTHO_DET" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- REAR BLOCK input fields -->
+                                            <td><input type="text" id="TB31" name="RRBLK_ONE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB32" name="RRBLK_DET" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- REAR-CUT HOLDER input fields -->
+                                            <td><input type="text" id="TB33" name="RRCUTHO_ONE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB34" name="RRCUTHO_DET" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="cutting-misc" class="col s12">
+                    <div class="card-panel yellow lighten-4" style="padding: 10px;">
+                        <div class="row">
+                            <!-- Category headers - First row -->
+                            <div class="col s12">
+                                <table class="bordered" style="margin-bottom: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">FRONT-CUT HOLDER</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">REAR-CUT ANVIL</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">WIRE DOWN</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">Remark</th>
+                                            <th class="center-align grey lighten-2" style="width: 20%;">Public CODE</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Subcategory headers and inputs - Second row -->
+                        <div class="row" style="margin-top: -20px; margin-bottom: 0;">
+                            <div class="col s12">
+                                <table class="bordered">
+                                    <thead>
+                                        <tr>
+                                            <!-- FRONT-CUT HOLDER subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Integral</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Detachable</th>
+
+                                            <!-- REAR-CUT ANVIL subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Integral</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Detachable</th>
+
+                                            <!-- WIRE DOWN subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Integral</th>
+                                            <th class="center-align grey lighten-1" style="width: 10%;">Detachable</th>
+
+                                            <!-- Remark - no subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 20%;">Notes</th>
+
+                                            <!-- Public CODE - no subcategories -->
+                                            <th class="center-align grey lighten-1" style="width: 20%;">Reference ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <!-- FRONT-CUT HOLDER input fields -->
+                                            <td><input type="text" id="TB35" name="FRCUTHO_ONE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB36" name="FRCUTHO_DET" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- REAR-CUT ANVIL input fields -->
+                                            <td><input type="text" id="TB37" name="RRCUTAN_ONE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB38" name="RRCUTAN_DET" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- WIRE DOWN input fields -->
+                                            <td><input type="text" id="TB39" name="WRDN_ONE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                            <td><input type="text" id="TB40" name="WRDN_DET" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- Remark input field -->
+                                            <td><input type="text" id="TB42" name="DESC" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+
+                                            <!-- Public CODE input field -->
+                                            <td><input type="text" id="TB41" name="COMB_CODE" class="form-control" style="height: 24px; margin-bottom: 0;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upper Grid -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow30">
+                        <table id="DataGridView1Table" class="responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th><input type="checkbox" id="selectAll"></th>
+                                    <th>APPLICATOR</th>
+                                    <th>SEQ</th>
+                                    <th>Customer</th>
+                                    <th>MAX_COUNT</th>
+                                    <th>Total_Count</th>
+                                    <th>Work Count</th>
+                                    <th>SPP_NO</th>
+                                    <th>TYPE</th>
+                                    <th>GAUGE</th>
+                                    <th>COPL_NOR</th>
+                                    <th>COPL_SPE</th>
+                                    <th>INSPL_SEALTYPE</th>
+                                    <th>INSPL_NONSEAL</th>
+                                    <th>INSPL_XTYPE</th>
+                                    <th>INSPL_KTYPE</th>
+                                    <th>INSPL_SPE</th>
+                                    <th>ANVIL_NOR</th>
+                                    <th>ANVIL_SPE</th>
+                                    <th>CMU_NOR</th>
+                                    <th>CMU_SPE</th>
+                                    <th>IMU_NOR</th>
+                                    <th>IMU_NONSEAL</th>
+                                    <th>IMU_SPE</th>
+                                    <th>CUTPL_ONE</th>
+                                    <th>CUTPL_DET</th>
+                                    <th>CUTAN_ONE</th>
+                                    <th>CUTAN_DET</th>
+                                    <th>CUTHO_ONE</th>
+                                    <th>CUTHO_DET</th>
+                                    <th>RRBLK_ONE</th>
+                                    <th>RRBLK_DET</th>
+                                    <th>RRCUTHO_ONE</th>
+                                    <th>RRCUTHO_DET</th>
+                                    <th>FRCUTHO_ONE</th>
+                                    <th>FRCUTHO_DET</th>
+                                    <th>RRCUTAN_ONE</th>
+                                    <th>RRCUTAN_DET</th>
+                                    <th>WRDN_ONE</th>
+                                    <th>WRDN_DET</th>
+                                    <th>COMB_CODE</th>
+                                    <th>DESC</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1">
+                                <!-- Data will be populated via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="row">
+                <div class="col s12">
+                    <div style="height: 2px; background-color: #ccc; margin: 10px 0;"></div>
+                </div>
+            </div>
+
+            <!-- Lower Grid -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow30">
+                        <table id="DataGridView6Table" class="responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>APPLICATOR</th>
+                                    <th>SEQ</th>
+                                    <th>WORK_DATE</th>
+                                    <th>WORK_QTY</th>
+                                    <th>TOTAL_QTY</th>
+                                    <th>CONTENT</th>
+                                    <th>CREATE_DATE</th>
+                                    <th>USER</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView6Body">
+                                <!-- Data will be populated via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/A04.js?v=@GlobalHelper.GetVersionScrip("A04.js")"></script>

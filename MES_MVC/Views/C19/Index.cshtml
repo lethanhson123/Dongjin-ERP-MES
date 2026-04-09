@@ -1,0 +1,356 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC19Service _C19Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C19";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _C19Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align">
+                    <button @(IsButtonfind ? "" : "disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s2"><a class="active" href="#TabPage1">LEAD LIST</a></li>
+                        <li class="tab col s2"><a href="#TabPage5">Management</a></li>
+                        <li class="tab col s2"></li>
+                        <li class="tab col s2"></li>
+                        <li class="tab col s2"></li>
+                        <li class="tab col s2"></li>
+                    </ul>
+                </div>
+
+                <!-- TabPage1: Search -->
+                <div id="TabPage1" class="col s12">
+                    <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                        <div class="row">
+                            <div class="col s12 m5 l2">
+                                <div>
+                                    <label>Type</label>
+                                    <select id="ComboBox1" class="browser-default form-select">
+                                        <option value="ALL">ALL</option>
+                                        <option value="LEAD">LEAD</option>
+                                        <option value="SPST">SPST</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col s12 5 l2">
+                                <div>
+                                    <label>LEAD NO</label>
+                                    <input id="TextBox1" type="text" class="form-control" />
+                                </div>
+                            </div>
+                           
+                            <div class="col s12 m5 l2">
+                                <div>
+                                    <label>WIRE</label>
+                                    <input id="TextBox4" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col s12 m5 l2">
+                                <div>
+                                    <label>TERM</label>
+                                    <input id="TextBox2" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col s12 m5 l2">
+                                <div>
+                                    <label>SEAL</label>
+                                    <input id="TextBox3" type="text" class="form-control" />
+                                </div>
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <div class="KhungOverflow70">
+                        <table class="responsive-table" id="DataGridView1Table">
+                            <thead class="sticky-header">
+                                <tr onclick="DataGridView1Sort()">
+                                    <th>INDEX</th>
+                                    <th>TYPE</th>
+                                    <th>LEAD_PN</th>
+                                    <th>BUNDLE</th>
+                                    <th>WIRE NO</th>
+                                    <th>T1_PART</th>
+                                    <th>S1_PART</th>
+                                    <th>T2_PART</th>
+                                    <th>S2_PART</th>
+                                    <th>STRIP1</th>
+                                    <th>STRIP2</th>
+                                    <th>CCH_W1</th>
+                                    <th>ICH_W1</th>
+                                    <th>CCH_W2</th>
+                                    <th>ICH_W2</th>
+                                    <th>T1NO</th>
+                                    <th>T2NO</th>
+                                    <th>WIR_NO</th>
+                                    <th>WIRE_NAME</th>
+                                    <th>V_Diameter</th>
+                                    <th>W_LINK</th>
+                                    <th>W_Color</th>
+                                    <th>W_Length</th>
+                                    <th>DSCN_YN</th>
+                                    <th>CREATE_DTM</th>
+                                    <th>CREATE_USER</th>
+                                    <th>UPDATE_DTM</th>
+                                    <th>UPDATE_USER</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1">
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                </div>
+
+                <!-- TabPage5: Detail -->
+                <div id="TabPage5" class="col s12 m12 l12">
+                    <hr />
+                    <!-- Filter Area -->
+                    <div class="row">
+                        <div class="col s12 m3 l3" style="padding-right: 25px;">
+                            <div>
+                                <label>Lọc Lead PN</label>
+                                <input id="TextBox5" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col s12 m6 l6" style="padding-left: 25px; padding-right: 25px;">
+                            <div>
+                                <label>Excel Data</label>
+                                <input id="TextBox30" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col s12 m3 l3" style="padding-left: 25px;">
+                            <div>
+                                <label>&nbsp;</label> <!-- Label trống để căn chỉnh button với các input -->
+                                <button id="Button4" class="btn waves-effect waves-light blue darken-1" style="width: 100%;">HOOK</button>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <hr />
+
+                    <!-- 3-Grid Layout -->
+                    <div class="row p-0 m-0">
+                        <!-- Left Grid - Danh sách Lead PN -->
+                        <div class="col s12 m3 l3 p-0 border">
+                            <div style="background-color: #e6f2ff; color: #003366; padding: 10px; height: 70vh; display: flex; flex-direction: column;">
+                                <div class="KhungOverflow60 flex-grow-1" style="background-color: #f0f8ff;">
+                                    <table id="DataGridView6" class="responsive-table highlight bordered">
+                                        <thead style="background-color: #4682b4; color: white;">
+                                            <tr>
+                                                <th data-sort="LEAD_PN" class="center-header-text sortable">LEAD PN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="Tab5_LeadListBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Center Grid - Chi tiết Lead PN -->
+                        <div class="col s12 m6 l6 p-0 border">
+                            <div id="Tab5_DetailPanel" style="background-color: #e6f5e6; color: #004d00; padding: 10px; height: 70vh; overflow-y: auto;">
+                              
+                                <div class="row mb-2">
+                                    <div class="col s6">
+                                        <label>
+                                            <input name="Tab5_leadType" type="radio" id="RadioButton6" checked />
+                                            <span>LEAD</span>
+                                        </label>
+                                    </div>
+                                    <div class="col s6">
+                                        <label>
+                                            <input name="Tab5_leadType" type="radio" id="RadioButton7" />
+                                            <span>SPST</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s3 valign-wrapper"><label for="TextBox6">LEAD NO:</label></div>
+                                    <div class="col s9">
+                                        <input type="text" id="TextBox6" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="row mb-2 align-items-center">
+                                    <div class="col s2"><label>DSCN_YN:</label></div>
+                                    <div class="col s2"><label><input name="Tab5_ds_yn" type="radio" id="RadioButton4" /><span>Y</span></label></div>
+                                    <div class="col s2"><label><input name="Tab5_ds_yn" type="radio" id="RadioButton5" checked /><span>N</span></label></div>
+                                    <div class="col s2"><label for="Label36">INDEX:</label></div>
+                                    <div class="col s4"><input type="text" id="Label36" class="form-control grey lighten-3" readonly /></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s4"><input type="text" id="TextBox7" class="form-control" /><label for="TextBox7">Hook rack:</label></div>
+                                    <div class="col s4"><input type="number" id="TextBox19" class="form-control" /><label for="TextBox19">Safety stock:</label></div>
+                                    <div class="col s4"><input type="number" id="TextBox29" class="form-control" /><label for="TextBox29">Bundle QTY:</label></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s12"><input type="text" id="TextBox8" class="form-control" /><label for="TextBox8">WIRE P.NO:</label></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s4"><input type="text" id="TextBox24" class="form-control" /><label for="TextBox24">Wire:</label></div>
+                                    <div class="col s4"><input type="text" id="TextBox25" class="form-control" /><label for="TextBox25">Diameter:</label></div>
+                                    <div class="col s4"><input type="text" id="TextBox22" class="form-control" /><label for="TextBox22">W/Link:</label></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s4"><input type="text" id="TextBox26" class="form-control" /><label for="TextBox26">Color:</label></div>
+                                    <div class="col s4"><input type="text" id="TextBox23" class="form-control" /><label for="TextBox23">W.R/No:</label></div>
+                                    <div class="col s4"><input type="number" id="TextBox27" class="form-control" /><label for="TextBox27">Length(mm):</label></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s3"><input type="text" id="TextBox9" class="form-control" /><label for="TextBox9">TERM1:</label></div>
+                                    <div class="col s3"><input type="text" id="TextBox10" class="form-control" /><label for="TextBox10">SEAL1:</label></div>
+                                    <div class="col s3"><input type="number" id="TextBox11" class="form-control" /><label for="TextBox11">STRIP1:</label></div>
+                                    <div class="col s3"><input type="text" id="TextBox20" class="form-control" /><label for="TextBox20">T1.No:</label></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s6"><input type="text" id="TextBox12" class="form-control" /><label for="TextBox12">CCH_W1:</label></div>
+                                    <div class="col s6"><input type="text" id="TextBox13" class="form-control" /><label for="TextBox13">ICH_W1:</label></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s3"><input type="text" id="TextBox14" class="form-control" /><label for="TextBox14">TERM2:</label></div>
+                                    <div class="col s3"><input type="text" id="TextBox15" class="form-control" /><label for="TextBox15">SEAL2:</label></div>
+                                    <div class="col s3"><input type="number" id="TextBox16" class="form-control" /><label for="TextBox16">STRIP2:</label></div>
+                                    <div class="col s3"><input type="text" id="TextBox21" class="form-control" /><label for="TextBox21">T2.No:</label></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s6"><input type="text" id="TextBox17" class="form-control" /><label for="TextBox17">CCH_W2:</label></div>
+                                    <div class="col s6"><input type="text" id="TextBox18" class="form-control" /><label for="TextBox18">ICH_W2:</label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Grid - Danh sách Sub-part -->
+                        <div id="Panel7" class="col s12 m3 l3 p-0 border">
+                            <div style="background-color: #f0e6ff; color: #330066; padding: 10px; height: 70vh; display: flex; flex-direction: column;">
+
+                                <div class="row mb-2">
+                                    <div class="col s4">
+                                        <button id="Button5" class="btn waves-effect waves-light green darken-1">Add</button>
+                                    </div>
+                                    <div class="col s4">
+                                        <button id="Button6" class="btn waves-effect waves-light red darken-1">Delete</button>
+                                    </div>
+                                    <div class="col s4">
+                                        <button id="Button3" class="btn waves-effect waves-light cyan darken-1">Save</button>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col s12">
+                                        <input type="text" id="TextBox28" class="form-control" />
+                                        <label for="TextBox28">LEAD NO</label>
+                                    </div>
+                                </div>
+                                <div class="KhungOverflow60 flex-grow-1" style="background-color: #f8f0ff;">
+                                    <table id="DataGridView7" class="responsive-table highlight bordered">
+                                        <thead style="background-color: #8a2be2; color: white;">
+                                            <tr>
+                                                <th class="center-header-text">NO</th>
+                                                <th class="center-header-text">LEAD NO</th>
+                                                <th class="center-header-text">LH / RH</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="Tab5_SubPartBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <hr />
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C19.js?v=@version"></script>

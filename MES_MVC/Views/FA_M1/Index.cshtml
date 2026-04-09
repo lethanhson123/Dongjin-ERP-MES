@@ -1,0 +1,152 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IFA_M1Service _FA_M1Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "FA_M1";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _FA_M1Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+
+    // Lấy danh sách Line unique
+    var lineList = BaseResult.EmployeeFAList?.Select(e => e.Line).Distinct().OrderBy(l => l).ToList() ?? new List<string>();
+}
+
+@{
+    ViewData["Title"] = "Attendance Session Report (FA_M1)";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <!-- HEADER -->
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>Báo cáo Chấm công (FA_M1)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="Tìm kiếm" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> Tìm kiếm
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="Export Excel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> Export
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="In Report" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> Print
+                    </button>
+                    <button id="Buttonhelp" title="Help" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="Đóng" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> Đóng
+                    </button>
+                </div>
+            </div>
+
+            <!-- FILTER SECTION -->
+            <div class="row">
+                <!-- Từ ngày -->
+                <div class="col s12 m6 l2">
+                    <label for="StartDate">Từ ngày</label>
+                    <input id="StartDate" type="date" class="form-control" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")">
+                </div>
+
+                <!-- Đến ngày -->
+                <div class="col s12 m6 l2">
+                    <label for="EndDate">Đến ngày</label>
+                    <input id="EndDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                </div>
+
+                <!-- Nhân viên - TextBox -->
+                <div class="col s12 m6 l4">
+                    <label for="EmployeeFilter">Nhân viên (Mã hoặc Tên)</label>
+                    <input id="EmployeeFilter" type="text" class="form-control" placeholder="Nhập mã hoặc tên nhân viên...">
+                </div>
+
+                <!-- Line - Select -->
+                <div class="col s12 m6 l4">
+                    <label for="LineFilter">Line</label>
+                    <select id="LineFilter" class="browser-default">
+                        <option value="">-- Tất cả Line --</option>
+                        @foreach (var line in lineList)
+                        {
+                            <option value="@line">@line</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow70">
+                        <table id="DataGridView1" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th class="center-align">ID</th>
+                                    <th class="center-align">Ngày</th>
+                                    <th>Nhân viên</th>
+                                    <th class="center-align">Ca</th>
+                                    <th class="center-align">Line</th>
+                                    <th class="center-align">Check In</th>
+                                    <th class="center-align">Check Out</th>
+                                    <th class="center-align">Giờ làm</th>
+                                    <th class="center-align">Đi muộn</th>
+                                    <th class="center-align">Tăng ca</th>
+                                    <th class="center-align">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="11" class="center-align">Chưa có dữ liệu</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/FA_M1.js?v=@version"></script>

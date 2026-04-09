@@ -1,0 +1,354 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IF02Service _F02Service
+@{
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "F02";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.FirstOrDefault(o => o.SCRN_PATH == url);
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _F02Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6 id="LabelNAME"><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    @if (IsButtonfind)
+                    {
+                        <button id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                        </button>
+                    }
+
+                    @if (IsButtonadd)
+                    {
+                        <button id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                        </button>
+                    }
+
+                    @if (IsButtonsave)
+                    {
+                        <button id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave"
+                                class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                        </button>
+                    }
+
+                    @if (IsButtondelete)
+                    {
+                        <button id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete"
+                                class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                        </button>
+                    }
+
+                    @if (IsButtoncancel)
+                    {
+                        <button id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                        </button>
+                    }
+
+                    @if (IsButtoninport)
+                    {
+                        <button id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                        </button>
+                    }
+
+                    @if (IsButtonexport)
+                    {
+                        <button id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                        </button>
+                    }
+
+                    @if (IsButtonprint)
+                    {
+                        <button id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                        </button>
+                    }
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="row">
+                    <div class="col s12 m6 l4">
+                        <ul class="tabs">
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="active p-0" href="#Tag001">@MES_MVC.Resources.Resource.MML_OQCNG</a>
+                            </li>
+                            <li class="tab col s12 m6 l6 p-0">
+                                <a class="p-0" href="#Tag002">@MES_MVC.Resources.Resource.DbTbl_History</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col s12 m6 l8">
+                    </div>
+                </div>
+                <div id="Tag001" class="col s12">
+                    <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                        <div class="row p-0 m-0">
+                            <div class="col s12 m12 l2 text-left">
+                                <label style="font-size:20px;">@MES_MVC.Resources.Resource.DbTbl_Line</label>
+                                <select id="lineSelected" class="browser-default select2-only">
+                                    @if (BaseResult.LineList != null)
+                                    {
+                                        foreach (var line in BaseResult.LineList)
+                                        {
+                                            <option value="@line.ID">@line.LineGroup - @line.LineName - @line.Family </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col s12 m12 l4">
+                                <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.DbTbl_ErrorInfo</label>
+                                <select id="errorSelected" class="browser-default select2-only">
+                                    <option value="0">--</option>
+                                    @if (BaseResult.NGLists != null)
+                                    {
+                                        foreach (var item in BaseResult.NGLists)
+                                        {
+                                            <option value="@item.ID">
+                                                @item.ErrorCode - @item.ErrorDescription (@item.KoreanDescription)
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col s12 m12 l6">
+                                <div class="row">
+                                    <div class="col s12 m6 l6">
+                                        <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.DbTbl_ScanQRCode</label>
+                                    </div>
+                                    <div class="col s12 m6 l6">
+                                        <label style="background-color:khaki; font-size:20px; margin:3px;">
+                                            <input type="checkbox" id="tab1_GP12" />
+                                            <span>GP12</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <input type="text" id="tab1_QRCodeScan" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m8 l8">
+                            <div class="row" style="font-size:20px;">
+                                <div class="col s12 m12 l12">
+                                    <div class="col s12 m12 l12">
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_LotCode:</strong> <span id="txt_LotCode" class="preserve-space" style="color:green; font-size:20px;">-</span></p>
+                                    </div>
+                                    <div class="col s12 m6 l6">
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_ProductCode:</strong> <span id="txt_ProductCode" style="color:blue;font-size:20px;">-</span></p>
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_ProductName:</strong> <span id="txt_ProductName" style="color:blue;font-size:20px;">-</span></p>
+                                    </div>
+                                    <div class="col s12 m6 l6">
+                                        <p><strong>SNP:</strong> <span id="txt_SNP" style="color:darkgreen;font-size:20px;">-</span></p>
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_ECN_No:</strong> <span id="txt_ECN" style="color:darkorchid;font-size:20px;">-</span></p>
+                                    </div>
+                                    <div class="col s12 m12 l12">
+                                        <p><strong>@MES_MVC.Resources.Resource.DbTbl_Picture:</strong> <span id="txt_Picture" class="preserve-space" style="color:green;font-size:20px;">-</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m4 l4">
+                            <div class="picture-container">
+                                <img id="pictureUpload" src="" alt="Chưa có ảnh" style="min-width:120px; min-height:120px; max-height:220px; " />
+                                <button type="button" class="upload-btn">Upload</button>
+                                <input type="file" id="fileInput" accept="image/*" style="display:none;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:3px;">
+                        <div class="col s12">
+                            <table class="display wrap" id="Table1" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label>
+                                                <input type="checkbox" id="checkAll" />
+                                                <span>@MES_MVC.Resources.Resource.Btn_All</span>
+                                            </label>
+                                        </th>
+                                        <th>#</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_LotCode</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_PartNo</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_PartName</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_SubCode</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_LineName</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_ErrorInfo</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Description</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_ECN_No</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_TestModeType</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Picture</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_CreateBy</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_CreateDate</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="Tag002" class="col s12">
+                    <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                        <div class="row p-0 m-0">
+                            <div class="col s12 m6 l1">
+                                <label style="font-size:20px;">@MES_MVC.Resources.Resource.DbTbl_FromDate</label>
+                                <input id="tab2_fromDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                       value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                            <div class="col s12 m6 l1">
+                                <label style="font-size:20px;">@MES_MVC.Resources.Resource.DbTbl_ToDate</label>
+                                <input id="tab2_toDate" type="date" class="form-control" style="color: black; min-height:30px;"
+                                       value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                            <div class="col s12 m12 l2 text-left">
+                                <label style="font-size:20px;">@MES_MVC.Resources.Resource.DbTbl_Line</label>
+                                <select id="tab2_lineSelected" class="browser-default form-select">
+                                    @if (BaseResult.LineList != null)
+                                    {
+                                        <option value="0">@MES_MVC.Resources.Resource.Btn_All</option>
+                                        foreach (var line in BaseResult.LineList)
+                                        {
+                                            <option value="@line.ID">@line.LineGroup - @line.LineName - @line.Family </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col s12 m12 l4">
+                                <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.DbTbl_ErrorInfo</label>
+                                <select id="tab2_errorSelected" class="browser-default form-select">
+                                    @if (BaseResult.NGLists != null)
+                                    {
+                                        <option value="0">@MES_MVC.Resources.Resource.Btn_All</option>
+                                        foreach (var item in BaseResult.NGLists)
+                                        {
+                                            <option value="@item.ID">@item.ErrorCode - @item.ErrorDescription (@item.KoreanDescription)</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <label class="input100" style="color:black; font-size:20px">@MES_MVC.Resources.Resource.Btn_Search</label>
+                                <input type="text" id="tab2_Search" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:3px;">
+                        <div class="col s12">
+                            <table class="display wrap" id="Table2" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label>
+                                                <input type="checkbox" id="tb2_checkAll" />
+                                                <span>@MES_MVC.Resources.Resource.Btn_All</span>
+                                            </label>
+                                        </th>
+                                        <th>#</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_LotCode</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_PartNo</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_PartName</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_SubCode</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_LineName</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_ErrorInfo</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Description</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_ECN_No</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_TestModeType</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_Picture</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_CreateBy</th>
+                                        <th>@MES_MVC.Resources.Resource.DbTbl_CreateDate</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pictureModal" class="modal" style="display:none; margin-top:5%;">
+    <div class="modal-content" style="text-align:center;">
+        <div class="row">
+            <img id="modalImage" src="" style="max-width:100%; max-height:80vh; border:1px solid #ccc;" />
+        </div>
+        <div class="row">
+            <button id="modalClose" style="cursor:pointer; font-size:20px;">Close</button>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/F02.js?v=@GlobalHelper.GetVersionScrip("F02.js")"></script>

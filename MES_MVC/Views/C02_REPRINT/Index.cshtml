@@ -1,0 +1,210 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string url = "C02_REPRINT";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "C02_REPRINT (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <h6><b>C02_REPRINT (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l4">
+                    <input id="Label4" type="text" class="form-control" readonly style="border-width: 0px !important;">
+                </div>
+                <div class="col s12 m12 l4 right-align-md">
+                    <div class="col s12 m12 l4">
+                        <button id="Buttonprint" title="Print" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Print</button>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel yellow lighten-4">
+                <div class="col s12 m12 l6">
+                    <div>                        
+                        <input id="PRT_1" type="text" class="form-control" readonly style="border-width: 0px !important;" value="BARCODE">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>                        
+                        <input id="PRT_2" type="text" class="form-control" readonly style="border-width: 0px !important;" value="SEQ">
+                    </div>
+                </div>               
+                <div class="col s12 m12 l2">
+                    <div>                        
+                        <input id="PRT_3" type="text" class="form-control" readonly style="border-width: 0px !important;" value="LEADNO">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>                        
+                        <input id="PRT_4" type="text" class="form-control" readonly style="border-width: 0px !important;" value="DT">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>                        
+                        <input id="PRT_5" type="text" class="form-control" readonly style="border-width: 0px !important;" value="MC">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_6" type="text" class="form-control" readonly style="border-width: 0px !important;" value="HOOK">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_7" type="text" class="form-control" readonly style="border-width: 0px !important;" value="TOT_QTY">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_8" type="text" class="form-control" readonly style="border-width: 0px !important;" value="BANDSIZE">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_9" type="text" class="form-control" readonly style="border-width: 0px !important;" value="WIRE">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="PRT_10" type="text" class="form-control" readonly style="border-width: 0px !important;" value="T1">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_11" type="text" class="form-control" readonly style="border-width: 0px !important;" value="ST1">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_12" type="text" class="form-control" readonly style="border-width: 0px !important;" value="SEAL1">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_13" type="text" class="form-control" readonly style="border-width: 0px !important;" value="CCH1">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_14" type="text" class="form-control" readonly style="border-width: 0px !important;" value="ICH1">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="PRT_15" type="text" class="form-control" readonly style="border-width: 0px !important;" value="T2">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_16" type="text" class="form-control" readonly style="border-width: 0px !important;" value="ST2">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_17" type="text" class="form-control" readonly style="border-width: 0px !important;" value="SEAL2">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_18" type="text" class="form-control" readonly style="border-width: 0px !important;" value="CCH2">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_19" type="text" class="form-control" readonly style="border-width: 0px !important;" value="ICH2">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="PRT_20" type="text" class="form-control" readonly style="border-width: 0px !important;" value="PROJ">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_21" type="text" class="form-control" readonly style="border-width: 0px !important;" value="ST">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>                        
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>                        
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="PRT_22" type="text" class="form-control" readonly style="border-width: 0px !important;" value="SF Stock">
+                    </div>
+                </div>
+            </div>
+            <div class="KhungOverflow60">
+                <table class="responsive-table" id="DataGridView1Table">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th>TORDER_BARCODENM</th>
+                            <th>Barcode_SEQ</th>
+                            <th>WORK_END</th>
+                            <th>LEAD_NO</th>
+                            <th>ORDER_DATE</th>
+                            <th>MC</th>
+                            <th>HOOK_RACK</th>
+                            <th>TOT_QTY</th>
+                            <th>BUNDLE_SIZE</th>
+                            <th>WIRE</th>
+                            <th>TERM1</th>
+                            <th>STRIP1</th>
+                            <th>SEAL1</th>
+                            <th>CCH_W1</th>
+                            <th>ICH_W1</th>
+                            <th>TERM2</th>
+                            <th>STRIP2</th>
+                            <th>SEAL2</th>
+                            <th>CCH_W2</th>
+                            <th>ICH_W2</th>
+                            <th>PROJECT</th>
+                            <th>SP_ST</th>
+                            <th>ADJ_AF_QTY</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView1">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C02_REPRINT.js?v=@version"></script>
+

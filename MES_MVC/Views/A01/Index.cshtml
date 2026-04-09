@@ -1,0 +1,608 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IA01Service _A01Service
+
+@{
+	//string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+
+	// Sử dụng Cookie thay vì Session
+	string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+	string url = "A01";
+	string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+
+	try
+	{
+		BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+
+		BaseResult = await _MAINService.Main_Shown(BaseParameter);
+		if (BaseResult.ListtsauthTranfer != null)
+		{
+			BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer
+				.FirstOrDefault(o => o.SCRN_PATH == url);
+			if (BaseResult.tsauthTranfer != null)
+			{
+				IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+				IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+				IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+				IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+				IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+				IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+				IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+				IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+
+	try
+	{
+		string Language = CookieHelper.GetCookie(GlobalHelper.Language) ?? GlobalHelper.LanguageCodeEN;
+
+		BaseResult = await _A01Service.Load();
+		if (BaseResult.DGV_A01_01 != null)
+		{
+			foreach (var item in BaseResult.DGV_A01_01)
+			{
+				item.CD_SYS_NOTE = item.CD_NM_EN;
+				if (Language == GlobalHelper.LanguageCodeKR)
+				{
+					item.CD_SYS_NOTE = item.CD_NM_HAN;
+				}
+			}
+		}
+
+		if (BaseResult.DGV_A01_01_1 != null)
+		{
+			foreach (var item in BaseResult.DGV_A01_01_1)
+			{
+				item.CD_SYS_NOTE = item.CD_NM_EN;
+				if (Language == GlobalHelper.LanguageCodeKR)
+				{
+					item.CD_SYS_NOTE = item.CD_NM_HAN;
+				}
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l6">
+					<h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b> <b>PART ECN NO = BOM</b></h6>					
+				</div>
+				<div class="col s12 m12 l6 right-align-md">
+					<button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+					</button>
+
+					<button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+					</button>
+
+					<button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+					</button>
+
+					<button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+					</button>
+
+					<button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+					</button>
+
+					<button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+					</button>
+
+					<button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+					</button>
+
+					<button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+					</button>
+
+					<button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">help</i>
+					</button>
+
+					<button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m12 l6">
+					<ul class="tabs">
+						<li class="tab col s4 p-0">
+							<a id="ATag001" class="active p-0" href="#Tag001">PART NO List</a>
+						</li>
+						<li class="tab col s4 p-0">
+							<a id="ATag002" class="p-0" href="#Tag002">PART NO ECN List</a>
+						</li>
+						<li class="tab col s4 p-0">
+							<a id="ATag003" class="p-0" href="#Tag003">Cycle time(Take time)</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col s12 m12 l6">
+				</div>
+			</div>
+			<div class="row" id="Tag001">
+				<div class="col s12 m6 l12 card-panel light-blue lighten-4">					
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART01</label>
+								<input id="suchTB1" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART02</label>
+								<input id="suchTB2" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART03</label>
+								<input id="TextBox8" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART04</label>
+								<input id="TextBox9" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART06</label>
+								<select id="suchTB3" class="browser-default form-select">
+									<option value="ALL">
+										ALL
+									</option>
+									@{
+										foreach (var item in BaseResult.DGV_A01_01)
+										{
+											<option value="@item.CD_SYS_NOTE">
+												@item.CD_SYS_NOTE
+											</option>
+										}
+									}
+								</select>
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>BOM Group</label>
+								<select id="ComboBox5" class="browser-default form-select">
+									<option value="ALL">
+										ALL
+									</option>
+									@{
+										foreach (var item in BaseResult.DGV_A01_CB1)
+										{
+											<option value="@item.BOM_GRP">
+												@item.BOM_GRP
+											</option>
+										}
+									}
+								</select>
+							</div>
+						</div>					
+				</div>
+				<div class="col s12 m6 l12 card-panel green lighten-4" style="margin-bottom: 0px; margin-top: -10px;">
+					<div class="row">
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART01</label>
+								<input id="TextBox1" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART02</label>
+								<input id="TextBox2" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART06</label>
+								<select id="TextBox6" class="browser-default form-select">
+									@{
+										foreach (var item in BaseResult.DGV_A01_01_1)
+										{
+											<option value="@item.CD_IDX">
+												@item.CD_SYS_NOTE
+											</option>
+										}
+									}
+								</select>
+								<input id="Label6" type="text" class="form-control" style="display: none;" value="Enter/Select @MES_MVC.Resources.Resource.PART06">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>BOM Group</label>
+								<select id="ComboBox4" class="browser-default form-select">
+									@{
+										foreach (var item in BaseResult.DGV_A01_CB1)
+										{
+											<option value="@item.BOM_GRP">
+												@item.BOM_GRP
+											</option>
+										}
+									}
+								</select>
+								<input id="ComboBox4TextBox" type="text" class="form-control" style="display: none;">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART05</label>
+								<input id="TextBox5" type="number" class="form-control" style="text-align: right;">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<a href="@ExcelTemplateURL" title="@ExcelTemplateURL" class="link-primary">
+									<b>
+										Execl Sheet Name :
+										A01_PART_LIST
+									</b>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s12 m12 l2">
+							<div>
+								<label>Supplier PART NO</label>
+								<input id="TextBox21" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART03</label>
+								<select id="ComboBox1" class="browser-default form-select">
+									<option value="Enter/Select @MES_MVC.Resources.Resource.PART06">
+										Enter/Select @MES_MVC.Resources.Resource.PART06
+									</option>
+								</select>
+								<input id="ComboBox1TextBox" type="text" class="form-control" style="display: none;" value="Enter/Select @MES_MVC.Resources.Resource.PART03">
+								<input id="Label3" type="text" class="form-control" style="display: none;" value="Enter/Select @MES_MVC.Resources.Resource.PART03">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>Family (PC)</label>
+								<select id="ComboBox2" class="browser-default form-select">
+									<option value="Enter/Select @MES_MVC.Resources.Resource.PART06">
+										Enter/Select @MES_MVC.Resources.Resource.PART06
+									</option>
+								</select>
+								<input id="ComboBox2TextBox" type="text" class="form-control" style="display: none;" value="Enter/Select @MES_MVC.Resources.Resource.PART06">
+								<input id="Label4" type="text" class="form-control" style="display: none;" value="Enter/Select @MES_MVC.Resources.Resource.PART06">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>Location</label>
+								<input id="MaskedTextBox1" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>@MES_MVC.Resources.Resource.PART07</label>
+								<div class="col s12 m12 l12">
+									<div class="col s12 m12 l4">
+										<label>
+											<input id="RadioButton1" name="PART_USE" type="radio" />
+											<span>Y</span>
+										</label>
+									</div>
+									<div class="col s12 m12 l4">
+										<label>
+											<input id="RadioButton2" name="PART_USE" type="radio" />
+											<span>N</span>
+										</label>
+									</div>
+									<div class="col s12 m12 l4">
+										<input id="TextBox7" type="text" class="form-control" readonly>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<a href="@ExcelTemplateURL" title="@ExcelTemplateURL" id="Button2" class="btn waves-effect waves-light green darken-1">FROM</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="KhungOverflow">
+					<table class="responsive-table" id="DataGridView1Table">
+						<thead class="sticky-header">
+							<tr>
+								<th></th>
+								<th>CODE</th>
+								<th>PART_NO</th>
+								<th>Supplier PART NO</th>
+								<th>PART_NAME</th>
+								<th>BOM_GROUP</th>
+								<th>LINE (FA)</th>
+								<th>Family (PC)</th>
+								<th>Packing_Unit</th>
+								<th>Item_Type (K)</th>
+								<th>Item_Type (E)</th>
+								<th>Location</th>
+								<th>PART_USE</th>
+								<th>PART_ENCNO</th>
+								<th>PART_ECN_DATE</th>
+								<th>Creation_date</th>
+								<th>Creation_User</th>
+								<th>Update_Date</th>
+								<th>Update_User</th>
+							</tr>
+						</thead>
+						<tbody id="DataGridView1">
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row" id="Tag002">
+				<div class="col s12 m6 l12">
+					<div class="col s12 m12 l3">
+						<div class="col s12 m6 l12 card-panel green lighten-4" style="padding-bottom: 10px !important;">
+							<div>
+								<label>PART NO</label>
+								<input id="TextBox10" type="text" class="form-control">
+							</div>
+							<div>
+								<label>TYPE</label>
+								<select id="ComboBox3" class="browser-default form-select">
+									@{
+										foreach (var item in BaseResult.DGV_A01_01_1)
+										{
+											<option value="@item.CD_IDX">
+												@item.CD_SYS_NOTE
+											</option>
+										}
+									}
+								</select>
+							</div>
+						</div>
+						<div class="KhungOverflow40">
+							<table class="responsive-table" id="DataGridView2Table">
+								<thead class="sticky-header">
+									<tr onclick="DataGridView2Sort()">
+										<th>PART_CODE</th>
+										<th>PART_NO</th>
+									</tr>
+								</thead>
+								<tbody id="DataGridView2">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col s12 m12 l9">
+						<div class="col s12 m12 l12 card-panel light-blue lighten-4">
+							<div class="row">
+								<div class="col s12 m12 l4">
+									<div>
+										<label>PART_NO</label>
+										<input id="Label14" type="text" class="form-control" readonly>
+										<input id="Label25" type="text" class="form-control" style="display: none;">
+									</div>
+								</div>
+								<div class="col s12 m12 l4">
+									<div>
+										<label>PART_ENCNO</label>
+										<input id="TextBox3" type="text" class="form-control">
+									</div>
+								</div>
+								<div class="col s12 m12 l4">
+									<div>
+										<button id="Button1" title="File Manager"
+												class="btn waves-effect waves-light green darken-1">
+											File Manager
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col s12 m12 l4">
+									<div>
+										<label>PART_ECN_DATE (MM/DD/YYYY)</label>
+										<input id="DateTimePicker1" type="date" class="form-control" readonly>
+									</div>
+								</div>
+								<div class="col s12 m12 l4">
+									<div>
+										<label>DWG_NO</label>
+										<input id="TextBox4" type="text" class="form-control">
+									</div>
+								</div>
+								<div class="col s12 m12 l4">
+									<div>
+										<label>DWG_FILE_GRP</label>
+										<input id="TextBox20" type="text" class="form-control">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="KhungOverflow40">
+							<table class="responsive-table" id="DataGridView3Table">
+								<thead class="sticky-header">
+									<tr onclick="DataGridView3Sort()">
+										<th>PART_NO</th>
+										<th>PART_NAME</th>
+										<th>ECN_DATE</th>
+										<th>ENC_NO</th>
+										<th>DWG_NO</th>
+										<th>Vewer</th>
+										<th>DWG_FILE</th>
+										<th>FILE_Down</th>
+										<th>Creation Date</th>
+										<th>Creation User</th>
+										<th>Update Date</th>
+										<th>Update User</th>
+									</tr>
+								</thead>
+								<tbody id="DataGridView3">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" id="Tag003">
+				<div class="col s12 m6 l12 card-panel yellow lighten-4">
+					<div class="row">
+						<div class="col s12 m12 l4">
+							<div>
+								<label>PART NO</label>
+								<input id="TextBox13" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l4">
+							<div>
+								<label>PART NAME</label>
+								<input id="TextBox12" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l4">
+							<div>
+								<label>LINE</label>
+								<input id="TextBox11" type="text" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m6 l12 card-panel green lighten-4">
+					<div class="row">
+						<div class="col s12 m12 l2">
+							<div>
+								<label>PART NO</label>
+								<input id="CT_01" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>PART NAME</label>
+								<input id="CT_02" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>LINE</label>
+								<input id="TextBox19" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>C/T</label>
+								<input id="CT_08" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>L/P</label>
+								<input id="CT_07" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>SUB</label>
+								<input id="TextBox14" type="text" class="form-control">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s12 m12 l2">
+							<div>
+								<label>FA</label>
+								<input id="TextBox15" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>TOTAL</label>
+								<input id="TextBox16" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>CUT_SUM</label>
+								<input id="TextBox17" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l2">
+							<div>
+								<label>FA_SUM</label>
+								<input id="TextBox18" type="text" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow40">
+					<table class="responsive-table" id="DGV_CTTable">
+						<thead class="sticky-header">
+							<tr onclick="DGV_CTSort()">
+								<th>Part NO</th>
+								<th>PART NAME</th>
+								<th>LINE</th>
+								<th>DATE</th>
+								<th>CT</th>
+								<th>LP</th>
+								<th>SUB</th>
+								<th>FA</th>
+								<th>TOTAL</th>
+								<th>CUT_SUM</th>
+								<th>FA_SUM</th>
+							</tr>
+						</thead>
+						<tbody id="DGV_CT">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/A01.js?v=@GlobalHelper.GetVersionScrip("A01.js")"></script>
+

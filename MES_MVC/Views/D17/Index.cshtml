@@ -1,0 +1,403 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject ID17Service _D17Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "D17";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _D17Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <!-- Header Buttons -->
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>FG Warehouse Management (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    @if (IsButtonfind)
+                    {
+                        <button id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                        </button>
+                    }
+                    @if (IsButtonexport)
+                    {
+                        <button id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                        </button>
+                    }
+
+                    @if (IsButtonprint)
+                    {
+                        <button id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                        </button>
+                    }
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp"
+                            class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose"
+                            class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s3"><a class="active" href="#Tab_Receive">FG Receive</a></li>
+                        <li class="tab col s3"><a href="#Tab_Inventory">Inventory</a></li>
+                        <li class="tab col s3"><a href="#Tab_History">History</a></li>
+                        <li class="tab col s3"><a href="#Tab_Report">📊 Report</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TAB 1: FG RECEIVE (UPDATED) -->
+            <div id="Tab_Receive" class="col s12">
+                <!-- Scan Section -->
+                <div class="card-panel light-blue lighten-5">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12 m6 l6">
+                            <label style="font-size: 18px; font-weight: bold;">Scan Packing Lot</label>
+                            <input id="ScanBarcode" type="text" class="form-control"
+                                   style="font-size: 20px; color: blue; font-weight: bold;"
+                                   placeholder="Scan packing lot barcode here..." autocomplete="off">
+                        </div>
+
+                        <div class="col s12 m3 l3">
+                            <label style="font-size: 18px; font-weight: bold;">&nbsp;</label>
+                            <p style="margin-top: 10px;">
+                                <label>
+                                    <input type="checkbox" id="SkipSNPCheck" class="filled-in" />
+                                    <span style="font-weight: bold; color: #f44336;">Skip SNP Check</span>
+                                </label>
+                            </p>
+                        </div>
+
+                        <div class="col s12 m3 l3">
+                            <label style="font-size: 18px; font-weight: bold;">Receive Date</label>
+                            <input id="ReceiveDate" type="date" class="form-control"
+                                   style="font-size: 18px;" readonly
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lot Codes Detail Grid -->
+                <div class="card-panel">
+                    <h6 style="font-weight: bold;">Lot Codes Detail</h6>
+                    <div class="KhungOverflow" style="max-height: 500px;">
+                        <table id="Table_LotDetail" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Lot Code</th>
+                                    <th>Part No</th>
+                                    <th>ECN No</th>
+                                    <th>Rework</th>
+                                    <th>QC Scan Date</th>
+                                    <th>QC User</th>
+                                    <th>FG In Date</th>
+                                    <th>FG In User</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TBody_LotDetail">
+                                <tr><td colspan="9" class="center-align grey-text">No data</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: INVENTORY -->
+            <div id="Tab_Inventory" class="col s12">
+                <!-- Search Filter -->
+                <div class="card-panel light-blue lighten-5">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12 m6 l3">
+                            <label>Part No</label>
+                            <input id="Filter_PartNo" type="text" class="form-control" placeholder="Search...">
+                        </div>
+                        <div class="col s12 m6 l3">
+                            <label>Packing Lot</label>
+                            <input id="Filter_PackingLot" type="text" class="form-control" placeholder="Search...">
+                        </div>
+                        <div class="col s12 m6 l3">
+                            <label>Customer Code</label>
+                            <input id="Filter_CustomerCode" type="text" class="form-control" placeholder="HMC, KIA...">
+                        </div>
+                        <div class="col s12 m6 l3">
+                            <label>Total Records</label>
+                            <div class="form-control center-align" style="font-weight: bold; background-color: #e3f2fd; color: #1976d2;">
+                                <i class="material-icons tiny" style="vertical-align: middle;">inventory</i>
+                                <span id="TotalInventory">0</span> boxes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Grid -->
+                <div class="card-panel">
+                    <div class="KhungOverflow" style="max-height: 500px;">
+                        <table id="Table_Inventory" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Packing Lot</th>
+                                    <th>Part No</th>
+                                    <th>Part Name</th>
+                                    <th>SNP</th>
+                                    <th>Actual</th>
+                                    <th>Rework</th>
+                                    <th>Customer</th>
+                                    <th>FG In Date</th>
+                                    <th>FG In User</th>
+                                    <th>QC Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TBody_Inventory">
+                                <tr><td colspan="12" class="center-align grey-text">No data</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: HISTORY -->
+            <div id="Tab_History" class="col s12">
+                <!-- Search Filter -->
+                <div class="card-panel light-blue lighten-5">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12 m6 l2">
+                            <label>From Date</label>
+                            <input id="History_FromDate" type="date" class="form-control"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                        <div class="col s12 m6 l2">
+                            <label>To Date</label>
+                            <input id="History_ToDate" type="date" class="form-control"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                        <div class="col s12 m6 l2">
+                            <label>Type</label>
+                            <select id="History_FilterType" class="browser-default">
+                                <option value="ALL">All</option>
+                                <option value="IN">IN</option>
+                                <option value="OUT">OUT</option>
+                            </select>
+                        </div>
+                        <div class="col s12 m6 l2">
+                            <label>Part No</label>
+                            <input id="History_PartNo" type="text" class="form-control" placeholder="Search...">
+                        </div>
+                        <div class="col s12 m6 l2">
+                            <label>Packing Lot</label>
+                            <input id="History_PackingLot" type="text" class="form-control" placeholder="Search...">
+                        </div>
+                        <div class="col s12 m6 l2">
+                            <label>Total Records</label>
+                            <div class="form-control center-align" style="font-weight: bold; background-color: #fff3e0; color: #f57c00;">
+                                <i class="material-icons tiny" style="vertical-align: middle;">history</i>
+                                <span id="TotalHistory">0</span> records
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Grid -->
+                <div class="card-panel">
+                    <div class="KhungOverflow" style="max-height: 500px;">
+                        <table id="Table_History" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Trans Type</th>
+                                    <th>Packing Lot</th>
+                                    <th>Part No</th>
+                                    <th>Part Name</th>
+                                    <th>SNP</th>
+                                    <th>Actual</th>
+                                    <th>Rework</th>
+                                    <th>Customer</th>
+                                    <th>Shipping No</th>
+                                    <th>Destination</th>
+                                    <th>Trans Date</th>
+                                    <th>Trans User</th>
+                                    <th>Remark</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TBody_History">
+                                <tr><td colspan="14" class="center-align grey-text">No data</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="Tab_Report" class="col s12">
+                <div class="card-panel">
+                    <h6><b>Daily Report</b></h6>
+                    <div class="KhungOverflow">
+                        <table id="Table_Report">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Part No</th>
+                                    <th>Part Name</th>
+                                    <th>SNP</th>
+                                    <th>01</th>
+                                    <th>02</th>
+                                    <th>03</th>
+                                    <th>04</th>
+                                    <th>05</th>
+                                    <th>06</th>
+                                    <th>07</th>
+                                    <th>08</th>
+                                    <th>09</th>
+                                    <th>10</th>
+                                    <th>11</th>
+                                    <th>12</th>
+                                    <th>13</th>
+                                    <th>14</th>
+                                    <th>15</th>
+                                    <th>16</th>
+                                    <th>17</th>
+                                    <th>18</th>
+                                    <th>19</th>
+                                    <th>20</th>
+                                    <th>21</th>
+                                    <th>22</th>
+                                    <th>23</th>
+                                    <th>24</th>
+                                    <th>25</th>
+                                    <th>26</th>
+                                    <th>27</th>
+                                    <th>28</th>
+                                    <th>29</th>
+                                    <th>30</th>
+                                    <th>31</th>
+                                    <th style="background: #fff3e0;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TBody_Report">
+                                <tr><td colspan="35" class="center-align grey-text">No data</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL: PACKING LOT DETAIL -->
+<div id="Modal_PackingDetail" class="modal" style="width: 65%; height: 70%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col s8">
+                <h5>📦 <span id="Detail_PackingLot" style="color:blue;"></span> (<span id="Detail_LotCount">0</span> lot codes)</h5>
+            </div>
+            <div class="col s4 right-align">
+                <button class="modal-close btn grey">Close</button>
+            </div>
+        </div>
+
+        <div class="KhungOverflow" style="max-height: 500px;">
+            <table class="highlight striped">
+                <thead class="sticky-header">
+                    <tr>
+                        <th>No</th>
+                        <th>Lot Code</th>
+                        <th>Part No</th>
+                        <th>ECN No</th>
+                        <th>Rework</th>
+                        <th>QC Date</th>
+                        <th>QC User</th>
+                        <th>FG In Date</th>
+                        <th>FG In User</th>
+                    </tr>
+                </thead>
+                <tbody id="TBody_PackingDetail"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@* <style>
+    #Table_Report th {
+        text-align: center;
+        font-size: 10px;
+        padding: 4px 2px;
+    }
+
+    #Table_Report td {
+        text-align: center;
+        padding: 4px 2px;
+        font-size: 10px;
+    }
+
+        #Table_Report td:nth-child(1) {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        #Table_Report td:nth-child(2),
+        #Table_Report td:nth-child(3) {
+            text-align: left;
+        }
+</style> *@
+
+<script src="~/Scripts/D17.js?v=@version"></script>

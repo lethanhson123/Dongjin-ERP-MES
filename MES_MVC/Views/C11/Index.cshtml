@@ -1,0 +1,2001 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC11Service _C11Service
+@{
+   
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C11";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{    
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<style>
+    .modal
+    {    
+        max-height: 100%; 
+    }
+</style>
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l9">
+                    <div class="row">
+                        <div class="col s12 m12 l6">
+                            <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>MC : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="MCbox" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 30px;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="Label70" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; color: blue; text-align: right; display: none;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1" style="width: 100%;"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label style="color: red;">Order</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>BARCODE : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <input id="Barcodebox" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row card-panel light-blue lighten-4">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>LEAD NO : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="ST_LEAD" type="text" class="form-control" readonly value="-" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label style="color: blue;">BARCODE : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="ST_BC" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; color: blue;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="ST_BCIDX" type="text" class="form-control" readonly value="CODE" style="border-width: 0px !important; color: blue;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Wire Count : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="ST_WC" type="text" class="form-control" readonly value="0" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Term Count : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="ST_TC" type="text" class="form-control" readonly value="0" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Seal Count : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="ST_SC" type="text" class="form-control" readonly value="0" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="KhungOverflow25">
+                        <table class="responsive-table" id="SW_BOMTable">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Work</th>
+                                    <th>LEAD_NO</th>
+                                    <th>BUNDLE</th>
+                                    <th>WIRE_PARTNO</th>
+                                    <th>T1_PARTNO</th>
+                                    <th>S1_PARTNO</th>
+                                    <th>T2_PARTNO</th>
+                                    <th>S2_PARTNO</th>
+                                    <th>STRIP1</th>
+                                    <th>STRIP2</th>
+                                    <th>CCH_W1</th>
+                                    <th>ICH_W1</th>
+                                    <th>CCH_W2</th>
+                                    <th>ICH_W2</th>
+                                    <th>T1_NO</th>
+                                    <th>T2_NO</th>
+                                    <th>W_LINK</th>
+                                    <th>WR_NO</th>
+                                    <th>WIRE_NM</th>
+                                    <th>W_Diameter</th>
+                                    <th>W_Color</th>
+                                    <th>W_Length</th>
+                                    <th>LEAD_INDEX</th>
+                                    <th>W_PN_IDX</th>
+                                    <th>T1_PN_IDX</th>
+                                    <th>S1_PN_IDX</th>
+                                    <th>T2_PN_IDX</th>
+                                    <th>S2_PN_IDX</th>
+                                </tr>
+                            </thead>
+                            <tbody id="SW_BOM">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row card-panel green lighten-4">
+                        <div class="row">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <button id="Button_L" title="LH_Work" class="btn waves-effect waves-light blue darken-1" style="width: 100%;">LH_Work</button>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <button id="Button_J" title="JOINT_Work" class="btn waves-effect waves-light blue darken-1" style="width: 100%;">JOINT_Work</button>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <label>COUNT</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label48" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; color: blue; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align: center;">
+                                <div>
+                                    <label>/</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="TOT_COUNT" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>                         
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <button id="Button_J2" title="JOINT_Work" class="btn waves-effect waves-light blue darken-1" style="width: 100%;">JOINT_Work</button>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <button id="Button_R" title="RH_Work" class="btn waves-effect waves-light blue darken-1" style="width: 100%;">RH_Work</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="COUNT_L" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="COUNT_J" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3" style="text-align: right;">
+                                <div>
+                                    <label>BUNDLE_SIZE</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label50" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="COUNT_J2" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="COUNT_R" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div class="KhungOverflow35">
+                                <table class="responsive-table" id="L_DGVTable">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>TERM 1</th>
+                                            <th>ERR</th>
+                                            <th>Com</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="L_DGV">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l6">
+                            <div class="col s12 m12 l12">
+                                <br />
+                                <img id="PictureBox1" src="@DomainSite/Image/SHELD_WIRE.png" height="50%" width="100%" />
+                            </div>
+                            <div class="col s12 m12 l12">
+                                <input id="Label2" type="text" class="form-control" readonly value="JOINT" style="border-width: 0px !important;">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <input id="ST_LB01" type="text" class="form-control" readonly value="STR.1" style="border-width: 0px !important;">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <input id="ST_DSTR1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: left;">
+                            </div>
+                            <div class="col s12 m12 l4">
+                                <input id="ST_DWIRE1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center;">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <input id="ST_DSTR2" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: right;">
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <input id="ST_LB02" type="text" class="form-control" readonly value="STR.2" style="border-width: 0px !important;">
+                            </div>
+                            <div class="col s12 m12 l12">
+                                <img id="PictureBox2" src="@DomainSite/Image/LEAD.png" height="100%" width="100%" />
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m12 l4">
+                                    <input id="VLW" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: right;">
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <input id="WIRE_Length" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m12 l2">
+                                    <div>
+                                        <label style="font-size: 10px;">CCH/CCW1</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <input id="ST_DCC1" type="text" class="form-control" readonly value="/" style="border-width: 0px !important;">
+                                </div>
+                                <div class="col s12 m12 l2">
+                                    <div>
+                                        <label style="font-size: 10px;">CCH/CCW2</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <input id="ST_DCC2" type="text" class="form-control" readonly value="/" style="border-width: 0px !important;">
+                                </div>
+                                <div class="col s12 m12 l2">
+                                    <div>
+                                        <label style="font-size: 10px;">ICH/ICW1</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <input id="ST_DIC1" type="text" class="form-control" readonly value="/" style="border-width: 0px !important;">
+                                </div>
+                                <div class="col s12 m12 l2">
+                                    <div>
+                                        <label style="font-size: 10px;">ICH/ICW2</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <input id="ST_DIC2" type="text" class="form-control" readonly value="/" style="border-width: 0px !important;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div class="KhungOverflow35">
+                                <table class="responsive-table" id="R_DGVTable">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>TERM 2</th>
+                                            <th>ERR</th>
+                                            <th>Com</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="R_DGV">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div class="col s12 m12 l12" style="background-color: blue; text-align: center; margin-bottom: 10px; padding-top: 10px; padding-bottom: 10px;">
+                        <div>
+                            <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START03</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; padding-top: 10px; padding-bottom: 10px;">
+                        <div>
+                            <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START04</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START05</label>
+                            <input id="BI_STIME" type="text" class="form-control" readonly value="__:__:__" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START06</label>
+                            <input id="BI_RCK" type="text" class="form-control" readonly value="-" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>.</label>
+                            <input id="BI_RTIME" type="text" class="form-control" readonly value="__:__:__" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START07</label>
+                            <input id="BI_STOPTIME" type="text" class="form-control" readonly value="00:00:00" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">UPH : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_UPH" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START08</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_WQTY" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START09</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_RVA" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START10</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12 card-panel yellow lighten-4">
+                        <button id="BI_10" title="STOP" class="btn waves-effect waves-light red darken-1" style="width: 100%; font-size: 24px;">STOP</button>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton1" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton1Text">Chuẩn bị thiết bị (설비준비)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton2" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton2Text">Thiếu nguyên vật liệu (자재결품)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton3" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton3Text">Vấn đề chất lượng (품질문제)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton4" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton4Text">Máy hư (설비고장)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton5" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton5Text">Đào tạo/ họp (교육/회의)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton6" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton6Text">Giờ ăn (식사시간)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton7" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton7Text">Khác (기타)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_STOP" class="modal modal-fixed-footer" style="width: 80vw !important; height: 80vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l12 card-panel red darken-4 center-align white-text">
+                <h4 class="white-text"><b>Alert notification (@url)</b></h4>
+            </div>
+            <div class="col s12 m12 l12 center-align">
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_STOP_Label5" type="text" value="-" class="form-control" style="" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_STOP_Label6" type="text" value="-" class="form-control" style="" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l4 right-align">
+                    <div>
+                        <input id="C11_STOP_STOP_MC" type="text" value="-" class="form-control" style="" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l12">
+                <div>
+                    <input id="C11_STOP_Label2" type="text" value="--" class="form-control" style="font-size: 60px; color: red; text-align: center; height: 80px !important; " readonly>
+                </div>
+            </div>
+            <div class="col s12 m12 l12 center-align">
+                <div>
+                    <label id="C11_STOP_Label3" style="font-size: 60px;">Non-operational</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l12">
+                <div>
+                    <input id="C11_STOP_Label4" type="text" value="00 : 00 : 00" class="form-control" style="font-size: 60px; color: blue; text-align: center; height: 80px !important; " readonly>
+                </div>
+            </div>
+            <div class="col s12 m12 l12">
+                <div class="col s12 m12 l2">
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <button id="C11_STOP_Button2" class="btn btn-large waves-effect waves-light yellow darken-2" style="width: 100%;">
+                            <i class="material-icons left">build</i>
+                            점검 중 / Đang kiểm tra
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <button id="C11_STOP_Button3" class="btn btn-large waves-effect waves-light blue darken-1" style="width: 100%;" disabled>
+                            <i class="material-icons left">assignment_turned_in</i>
+                            완료 / Hoàn thành sửa chữa
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <button id="C11_STOP_Button1" class="btn btn-large waves-effect waves-light green darken-1" style="width: 100%;">
+                            <i class="material-icons left">play_arrow</i>
+                            재 시 작 / Khởi động lại
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal C11_STOP Maintenance -->
+<div id="C11_STOP_MaintenanceModal" class="modal" style="width: 90%; max-height: 90vh;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 15px;">
+            <div class="col s12">
+                <h5>Chi tiết bảo trì máy</h5>
+            </div>
+        </div>
+
+        <form id="C11_STOP_MaintenanceForm">
+            <div class="row">
+                <div class="col s12">
+                    <label for="C11_STOP_CurrentStatus">Nội dung lỗi <span class="red-text">*</span></label>
+                    <select id="C11_STOP_CurrentStatus" class="browser-default" required>
+                        <option value="" disabled selected>Chọn Nội dung lỗi</option>
+                        <option value="Lỗi cúp/ngữa đầu terminal (단자 밴드업/다운 불량)">Lỗi cúp/ngữa đầu terminal (단자 밴드업/다운 불량)</option>
+                        <option value="Lỗi G terminal (단자 벨마우스 불량)">Lỗi G terminal (단자 벨마우스 불량)</option>
+                        <option value="Lỗi thông số không đạt (압착 값이 불합격)">Lỗi thông số không đạt (압착 값이 불합격)</option>
+                        <option value="Lỗi dính đồng/lệch terminal (심선 노출/ 단자 위치 불량)">Lỗi dính đồng/lệch terminal (심선 노출/ 단자 위치 불량)</option>
+                        <option value="Lỗi biến dạng terminal (단자 변형 불량)">Lỗi biến dạng terminal (단자 변형 불량)</option>
+                        <option value="Lỗi bavớ (버 생김 불량)">Lỗi bavớ (버 생김 불량)</option>
+                        <option value="Lỗi dao (칼 불량)">Lỗi dao (칼 불량)</option>
+                        <option value="Lỗi đầu dập (압착 부분 불량)">Lỗi đầu dập (압착 부분 불량)</option>
+                        <option value="Lỗi sensor (센서 불량)">Lỗi sensor (센서 불량)</option>
+                        <option value="Lỗi bàn đạp dập (폐달 불량)">Lỗi bàn đạp dập (폐달 불량)</option>
+                        <option value="Lỗi biến tần (인버터 불량)">Lỗi biến tần (인버터 불량)</option>
+                        <option value="Lỗi khác (기타)">Lỗi khác (기타)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="C11_STOP_Solution">Biện pháp <span class="red-text">*</span></label>
+                    <select id="C11_STOP_Solution" class="browser-default" required>
+                        <option value="" disabled selected>Chọn biện pháp</option>
+                        <option value="Kiểm tra, canh chỉnh (확인 및 조정)">Kiểm tra, canh chỉnh (확인 및 조정)</option>
+                        <option value="Kiểm tra, canh chỉnh (thay dao) (확인 및 조정 - 칼날 교체)">Kiểm tra, canh chỉnh (thay dao) (확인 및 조정 - 칼날 교체)</option>
+                        <option value="Kiểm tra, canh chỉnh (thay thế) (확인, 조정 및 교체)">Kiểm tra, canh chỉnh (thay thế) (확인, 조정 및 교체)</option>
+                        <option value="Reset, cài lại (재세팅)">Reset, cài lại (재세팅)</option>
+                        <option value="Xử lý theo thực tế (실제 현상황에 맞게 조치)">Xử lý theo thực tế (실제 현상황에 맞게 조치)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="C11_STOP_SparePartsUsed">Phụ tùng sử dụng <span class="red-text">*</span></label>
+                    <textarea id="C11_STOP_SparePartsUsed" class="materialize-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="C11_STOP_MaintenedBy">Người sửa <span class="red-text">*</span></label>
+                    <select id="C11_STOP_MaintenedBy" class="browser-default" required>
+                        <option value="" disabled selected>Chọn người sửa</option>
+                        <option value="Đức (LD)">Đức (LD)</option>
+                        <option value="Quốc L (FM)">Quốc L (FM)</option>
+                        <option value="Vũ (FM)">Vũ (FM)</option>
+                        <option value="Quốc N">Quốc N</option>
+                        <option value="Hải">Hải</option>
+                        <option value="Kiệt">Kiệt</option>
+                        <option value="Thảo">Thảo</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Phúc (Staff)">Phúc (Staff)</option>
+                        <option value="Võ Thanh Tuần (F2)">Võ Thanh Tuần (F2)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="C11_STOP_Notes">Ghi chú</label>
+                    <textarea id="C11_STOP_Notes" class="materialize-textarea"></textarea>
+                </div>
+            </div>
+
+            <input type="hidden" id="C11_STOP_TSNON_OPER_IDX" value="">
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button id="C11_STOP_MaintenanceSaveBtn" class="btn green" type="button">
+            <i class="material-icons left">save</i>Lưu
+        </button>
+    </div>
+</div>
+<div id="C11_ER_L" class="modal modal-fixed-footer" style="width: 100vw !important; height: 70vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <h6><b>ERROR (C11_ER_L)</b></h6>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_ER_L_Label1" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l6">
+            </div>
+            <div class="col s12 m12 l2">
+                <button id="C11_ER_L_Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div>
+                    <select id="C11_ER_L_ComboBox1" class="browser-default form-select">
+                    </select>
+                </div>
+            </div>
+            <div class="col s12 m12 l8">
+                <div>
+                    <input id="C11_ER_L_TextBox1" type="text" class="form-control" style="font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <button id="C11_ER_L_Button1" title="Search" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div style="padding-top: 10px;">
+                    <input id="C11_ER_L_LBR2" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    <br />
+                    <input id="C11_ER_L_LBR22" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l10">
+                <div>
+                    <img id="C11_ER_L_PictureBox1" src="@DomainSite/Image/LEAD_R.png" height="79" width="1073" />
+
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="C11_ER_L_LBR4" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row card-panel yellow lighten-4">
+            <div class="col s12 m12 l2">
+                <div>
+                </div>
+            </div>
+            <div class="col s12 m12 l10">
+                <div>
+                    <table class="responsive-table">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>Check</th>
+                                <th>Standard</th>
+                                <th>Input value</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background-color: transparent;">
+                                <td><input id="C11_ER_L_CHBT2" class='form-check-input' type='checkbox'><span></span></td>
+                                <td><input id="C11_ER_L_LBT2S" type="text" class="form-control" readonly value="T2_ST" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td><input id="C11_ER_L_LBT2V" type="text" class="form-control" readonly value="T2_VL" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td><input id="C11_ER_L_LBT2R" type="text" class="form-control" readonly value="T2_RES" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                            </tr>
+                            <tr style="background-color: transparent;">
+                                <td rowspan="2"><input id="C11_ER_L_CHBA2" class='form-check-input' type='checkbox'><span></span></td>
+                                <td><input id="C11_ER_L_LBA2S" type="text" class="form-control" readonly value="APP2_ST" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td><input id="C11_ER_L_LBA2V" type="text" class="form-control" readonly value="APP2_VL" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td rowspan="2"><input id="C11_ER_L_LBA2R" type="text" class="form-control" readonly value="APP2_RES" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                            </tr>
+                            <tr style="background-color: transparent;">
+                                <td><input id="C11_ER_L_LBA2SEQ" type="text" class="form-control" readonly value="APP2_SEQ" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td><input id="C11_ER_L_LBA2IDX" type="text" class="form-control" readonly value="APP2_IDX" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l3">
+            </div>
+            <div class="col s12 m12 l6">
+                <button id="C11_ER_L_Button2" title="Complete" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">Complete</button>
+            </div>
+            <div class="col s12 m12 l3">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_1" class="modal modal-fixed-footer" style="width: 100vw !important; height: 85vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content" style="background-color: #e0e0e0 !important;">
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <h6><b>WORK (C11_1)</b></h6>
+            </div>
+            <div class="col s12 m12 l1">
+                <label>LEAD NO :</label>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_1_C11_D01" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1">
+                <label>MC :</label>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_1_C11_D02" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1">
+                <input id="C11_1_C11_D03" type="text" class="form-control" readonly value="L" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_1_ORDER" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1 right-align-md">
+                <button id="C11_1_Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l6" style="border: 1px solid #000000;">
+                <div class="col s12 m12 l12" style="text-align: center;">
+                    <label style="font-size: 24px; font-weight: bold;">@MES_MVC.Resources.Resource.CO2_START01</label>
+                </div>
+                <div class="col s12 m12 l12" style="height: 76px;">
+                </div>
+                <div class="col s12 m12 l4" style="text-align: right;">
+                    <label>TERM1 : </label>
+                </div>
+                <div class="col s12 m12 l8">
+                    <input id="C11_1_C11_D04" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: yellow !important; color: black; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l6" style="border: 1px solid #000000;">
+                <div class="col s12 m12 l12" style="text-align: center;">
+                    <label style="font-size: 24px; font-weight: bold; color: blue;">@MES_MVC.Resources.Resource.CO2_START02</label>
+                </div>
+                <div class="col s12 m12 l4" style="text-align: right;">
+                    <label></label>
+                </div>
+                <div class="col s12 m12 l8">
+                    <button id="C11_1_BT_APP1" title="APPLICATOR Change" class="btn waves-effect waves-light green darken-1" style="width: 100%;">APPLICATOR Change</button>
+                </div>
+                <div class="col s12 m12 l4" style="text-align: right;">
+                    <label>TERM1 : </label>
+                </div>
+                <div class="col s12 m12 l8">
+                    <input id="C11_1_VLT1" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l4" style="text-align: right;">
+                    <label>APPLICATOR1 : </label>
+                </div>
+                <div class="col s12 m12 l4">
+                    <input id="C11_1_VLA1" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l4">
+                    <input id="C11_1_VLA11" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l4">
+                <div class="KhungOverflow25" style="background-color: white;">
+                    <table class="responsive-table" id="C11_1_DGV_LHTable">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>NO</th>
+                                <th>TERM 1</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C11_1_DGV_LH">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col s12 m12 l8">
+                <div class="row">
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <input id="C11_1_ST_DSTR1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <input id="C11_1_C11_L11" type="text" class="form-control" readonly value="STR.1" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="C11_1_ST_DWIRE1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <img id="C11_1_LEAD_PIC" src="@DomainSite/Image/LEAD_R.png" height="79" width="900" />
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="C11_1_WIRE_Length" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l4">
+                        <input id="C11_1_TOOL_CONT" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; background-color: green !important; color: white; font-size: 30px; height: 40px !important;">
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <label>CCH/CCW1 :</label>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <input id="C11_1_ST_DCC1" type="text" class="form-control" readonly value="/" style="border-width: 0px !important; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l4">
+                        <input id="C11_1_Label1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <label>ICH/ICW1 :</label>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <input id="C11_1_ST_DIC1" type="text" class="form-control" readonly value="/" style="border-width: 0px !important; font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <hr />
+            <div class="col s12 m12 l6">
+                <div class="col s12 m12 l2">
+                    <label>COUNT : </label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_1_C11_COUNT1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; color: blue; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l1" style="text-align: center;">
+                    <label>/</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_1_C11_COUNT2" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l3">
+                    <label>BUNDLE_SIZE :</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_1_C11_COUNT3" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+                <div class="col s12 m12 l4">
+                    <label style="color: blue;">INSPECTION</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button id="C11_1_SPC1" title="First" class="btn waves-effect waves-light green lighten-1" style="width: 100%; color: blue;">First</button>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button id="C11_1_SPC2" title="Middle" class="btn waves-effect waves-light green lighten-1" style="width: 100%; color: blue;">Middle</button>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button id="C11_1_SPC3" title="End" class="btn waves-effect waves-light green lighten-1" style="width: 100%; color: blue;">End</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l3">
+            </div>
+            <div class="col s12 m12 l6">
+                <button id="C11_1_Buttonprint" title="Complete" class="btn waves-effect waves-light cyan lighten-1" style="width: 100%; text-transform: none !important; font-size: 24px;">Complete</button>
+            </div>
+            <div class="col s12 m12 l3">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_SPC_L" class="modal modal-fixed-footer" style="width: 100vw !important; height: 70vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <h6><b>SPC (C11_SPC_L)</b></h6>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_SPC_L_Label6" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_SPC_L_Label10" type="text" class="form-control" readonly value="Label10" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div>
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div>
+                </div>
+            </div>
+            <div class="col s12 m12 l3" style="text-align:center;">
+                <div>
+                    <label style="font-size: 24px;">Standard</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <label style="font-size: 24px;">Inspection value</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l1" style="text-align:center;">
+                <div>
+                    <label style="font-size: 24px;">Result</label>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border: 1px dashed #000000;">
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <br />
+                    <input id="C11_SPC_L_Label4" type="text" class="form-control" readonly value="T1" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    <br />
+                    <label style="font-size: 24px;">CCH/CCW1</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <img id="C11_SPC_L_PictureBox1" src="@DomainSite/Image/CCH.jpg" height="75" width="164" />
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <img id="C11_SPC_L_PictureBox2" src="@DomainSite/Image/CCW.jpg" height="108" width="114" />
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <input id="C11_SPC_L_ST11" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_L_STS1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_L_STS2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_L_STL1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_L_STL2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_L_STM1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_L_STM2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                    <br />
+                    <input id="C11_SPC_L_TextBox1" type="number" class="form-control" style="height: 30px !important; font-size: 24px;">
+                    <br />
+                    <input id="C11_SPC_L_TextBox2" type="number" class="form-control" style="height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                    <br />
+                    <input id="C11_SPC_L_LR1" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                    <br />
+                    <input id="C11_SPC_L_LR2" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border: 1px dashed #000000;">
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <br />
+                    <input id="C11_SPC_L_Label5" type="text" class="form-control" readonly value="T1" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    <br />
+                    <label style="font-size: 24px;">ICH/ICW1</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <img id="C11_SPC_L_PictureBox4" src="@DomainSite/Image/ICH.jpg" height="75" width="164" />
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <img id="C11_SPC_L_PictureBox3" src="@DomainSite/Image/ICW.jpg" height="108" width="114" />
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <input id="C11_SPC_L_ST12" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_L_STS3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_L_STS4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_L_STL3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_L_STL4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_L_STM3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_L_STM4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                    <br />
+                    <input id="C11_SPC_L_TextBox3" type="number" class="form-control" style="height: 30px !important; font-size: 24px;">
+                    <br />
+                    <input id="C11_SPC_L_TextBox4" type="number" class="form-control" style="height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                    <br />
+                    <input id="C11_SPC_L_LR3" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                    <br />
+                    <input id="C11_SPC_L_LR4" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border: 1px dashed #000000;">
+            <div class="col s12 m12 l4" style="text-align:center;">
+                <div>
+                    <input id="C11_SPC_L_Label8" type="text" class="form-control" readonly value="WIRE" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1" style="text-align:center;">
+                <div>
+                    <input id="C11_SPC_L_Label18" type="text" class="form-control" readonly value="WIRE" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1" style="text-align:center;">
+                <div>
+                    <input id="C11_SPC_L_Label19" type="text" class="form-control" readonly value="WIRE" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <label style="font-size: 24px;">STRENGTH : </label>
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <input id="C11_SPC_L_Label17" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_SPC_L_TextBox10" type="number" class="form-control" style="height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <input id="C11_SPC_L_LR9" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l10">
+                <div>
+                    <button id="C11_SPC_L_Button1" title="SAVE" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">SAVE</button>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_SPC_L_MRUS" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center; height: 40px !important; font-size: 32px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_APPLICATION" class="modal modal-fixed-footer" style="width: 60vw !important; height: 60vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l6">
+                <h6><b>(C11_APPLICATION)</b></h6>
+            </div>
+            <div class="col s12 m12 l4">
+                <input id="C11_APPLICATION_Label3" type="text" class="form-control" value="-" readonly style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l2 right-align-md">
+                <button id="C11_APPLICATION_Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div>
+                </div>
+            </div>
+            <div class="col s12 m12 l8">
+                <div>
+                    <input id="C11_APPLICATION_TextBox1" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <button id="C11_APPLICATION_Button1" title="Reading" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Reading</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div>
+                    <label style="color: blue;">Before change</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div>
+                    <input id="C11_APPLICATION_Label1" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div>
+                    <input id="C11_APPLICATION_Label2" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <button id="C11_APPLICATION_Button2" title="SAVE" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">SAVE</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div>
+                    <label style="color: blue;">After change</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_APPLICATION_Label5" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_APPLICATION_Label4" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <label>Work_Count : </label>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_APPLICATION_Label9" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_APPLICATION_Label10" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_2" class="modal modal-fixed-footer" style="width: 100vw !important; height: 85vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <h6><b>WORK (C11_2)</b></h6>
+            </div>
+            <div class="col s12 m12 l1">
+                <label>LEAD NO :</label>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_2_C11_D01" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1">
+                <label>MC :</label>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_2_C11_D02" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1">
+                <input id="C11_2_C11_D03" type="text" class="form-control" readonly value="R" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_2_ORDER" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1 right-align-md">
+                <button id="C11_2_Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l6" style="border: 1px solid #000000;">
+                <div class="col s12 m12 l12" style="text-align: center;">
+                    <label style="font-size: 24px; font-weight: bold;">Standard specification(정사양 자재)</label>
+                </div>
+                <div class="col s12 m12 l12" style="height: 76px;">
+                </div>
+                <div class="col s12 m12 l4" style="text-align: right;">
+                    <label>TERM2 : </label>
+                </div>
+                <div class="col s12 m12 l8">
+                    <input id="C11_2_C11_D04" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: yellow !important; color: black; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l6" style="border: 1px solid #000000;">
+                <div class="col s12 m12 l12" style="text-align: center;">
+                    <label style="font-size: 24px; font-weight: bold; color: blue;">Current material(현사용 자재)</label>
+                </div>
+                <div class="col s12 m12 l4" style="text-align: right;">
+                    <label></label>
+                </div>
+                <div class="col s12 m12 l8">
+                    <button id="C11_2_BT_APP1" title="APPLICATOR Change" class="btn waves-effect waves-light green darken-1" style="width: 100%;">APPLICATOR Change</button>
+                </div>
+                <div class="col s12 m12 l4" style="text-align: right;">
+                    <label>TERM2 : </label>
+                </div>
+                <div class="col s12 m12 l8">
+                    <input id="C11_2_VLT1" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l4" style="text-align: right;">
+                    <label>APPLICATOR2 : </label>
+                </div>
+                <div class="col s12 m12 l4">
+                    <input id="C11_2_VLA1" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l4">
+                    <input id="C11_2_VLA11" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l8">
+                <div class="row">
+                    <div class="col s12 m12 l8">
+                        <div>
+                            <input id="C11_2_ST_DWIRE1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <input id="C11_2_ST_DSTR2" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <input id="C11_2_C11_L11" type="text" class="form-control" readonly value="STR.2" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <img id="C11_2_LEAD_PIC" src="@DomainSite/Image/LEAD_L.png" height="79" width="1073" />
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="C11_2_WIRE_Length" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l4">
+                        <label>CCH/CCW2 :</label>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <input id="C11_2_ST_DCC1" type="text" class="form-control" readonly value="/" style="border-width: 0px !important; font-size: 24px;">
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <input id="C11_2_TOOL_CONT" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; background-color: green !important; color: white; font-size: 30px; height: 40px !important;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l4">
+                        <label>ICH/ICW2 :</label>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <input id="C11_2_ST_DIC1" type="text" class="form-control" readonly value="/" style="border-width: 0px !important; font-size: 24px;">
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <input id="C11_2_Label1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div class="KhungOverflow25" style="background-color: white;">
+                    <table class="responsive-table" id="C11_2_DGV_RHTable">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>NO</th>
+                                <th>TERM 2</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C11_2_DGV_RH">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <hr />
+            <div class="col s12 m12 l6">
+                <div class="col s12 m12 l2">
+                    <label>COUNT : </label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_2_C11_COUNT1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; color: blue; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l1" style="text-align: center;">
+                    <label>/</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_2_C11_COUNT2" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l3">
+                    <label>BUNDLE_SIZE :</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_2_C11_COUNT3" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+                <div class="col s12 m12 l4">
+                    <label style="color: blue;">INSPECTION</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button id="C11_2_SPC1" title="First" class="btn waves-effect waves-light green lighten-1" style="width: 100%; color: blue;">First</button>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button id="C11_2_SPC2" title="Middle" class="btn waves-effect waves-light green lighten-1" style="width: 100%; color: blue;">Middle</button>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button id="C11_2_SPC3" title="End" class="btn waves-effect waves-light green lighten-1" style="width: 100%; color: blue;">End</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l3">
+            </div>
+            <div class="col s12 m12 l6">
+                <button id="C11_2_Buttonprint" title="Complete" class="btn btn-large waves-effect waves-light cyan lighten-1" style="width: 100%; font-size: 32px; text-transform: none !important;">Complete</button>
+            </div>
+            <div class="col s12 m12 l3">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_ER_R" class="modal modal-fixed-footer" style="width: 100vw !important; height: 70vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <h6><b>ERROR (C11_ER_R)</b></h6>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_ER_R_Label1" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l6">
+            </div>
+            <div class="col s12 m12 l2">
+                <button id="C11_ER_R_Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div>
+                    <select id="C11_ER_R_ComboBox1" class="browser-default form-select">
+                    </select>
+                </div>
+            </div>
+            <div class="col s12 m12 l8">
+                <div>
+                    <input id="C11_ER_R_TextBox1" type="text" class="form-control" style="font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <button id="C11_ER_R_Button1" title="Search" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l10">
+                <div>
+                    <img id="C11_ER_R_PictureBox1" src="@DomainSite/Image/LEAD_L.png" height="79" width="1073" />
+
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="C11_ER_R_LBR4" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div style="padding-top: 10px;">
+                    <input id="C11_ER_R_LBR2" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    <br />
+                    <input id="C11_ER_R_LBR22" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row card-panel yellow lighten-4">
+            <div class="col s12 m12 l10">
+                <div>
+                    <table class="responsive-table">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>Check</th>
+                                <th>Standard</th>
+                                <th>Input value</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background-color: transparent;">
+                                <td><input id="C11_ER_R_CHBT2" class='form-check-input' type='checkbox'><span></span></td>
+                                <td><input id="C11_ER_R_LBT2S" type="text" class="form-control" readonly value="T2_ST" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td><input id="C11_ER_R_LBT2V" type="text" class="form-control" readonly value="T2_VL" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td><input id="C11_ER_R_LBT2R" type="text" class="form-control" readonly value="T2_RES" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                            </tr>
+                            <tr style="background-color: transparent;">
+                                <td rowspan="2"><input id="C11_ER_R_CHBA2" class='form-check-input' type='checkbox'><span></span></td>
+                                <td><input id="C11_ER_R_LBA2S" type="text" class="form-control" readonly value="APP2_ST" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td><input id="C11_ER_R_LBA2V" type="text" class="form-control" readonly value="APP2_VL" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td rowspan="2"><input id="C11_ER_R_LBA2R" type="text" class="form-control" readonly value="APP2_RES" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                            </tr>
+                            <tr style="background-color: transparent;">
+                                <td><input id="C11_ER_R_LBA2SEQ" type="text" class="form-control" readonly value="APP2_SEQ" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                                <td><input id="C11_ER_R_LBA2IDX" type="text" class="form-control" readonly value="APP2_IDX" style="border-width: 0px !important; text-align:center; font-size: 24px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l3">
+            </div>
+            <div class="col s12 m12 l6">
+                <button id="C11_ER_R_Button2" title="Complete" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">Complete</button>
+            </div>
+            <div class="col s12 m12 l3">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_SPC_R" class="modal modal-fixed-footer" style="width: 100vw !important; height: 70vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <h6><b>SPC (C11_SPC_R)</b></h6>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_SPC_R_Label6" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_SPC_R_Label10" type="text" class="form-control" readonly value="Label10" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div>
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div>
+                </div>
+            </div>
+            <div class="col s12 m12 l3" style="text-align:center;">
+                <div>
+                    <label style="font-size: 24px;">Standard</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <label style="font-size: 24px;">Inspection value</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l1" style="text-align:center;">
+                <div>
+                    <label style="font-size: 24px;">Result</label>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border: 1px dashed #000000;">
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <br />
+                    <input id="C11_SPC_R_Label4" type="text" class="form-control" readonly value="T1" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    <br />
+                    <label style="font-size: 24px;">CCH/CCW1</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <img id="C11_SPC_R_PictureBox1" src="@DomainSite/Image/CCH.jpg" height="75" width="164" />
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <img id="C11_SPC_R_PictureBox2" src="@DomainSite/Image/CCW.jpg" height="108" width="114" />
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <input id="C11_SPC_R_ST11" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_R_STS1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_R_STS2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_R_STL1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_R_STL2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_R_STM1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_R_STM2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                    <br />
+                    <input id="C11_SPC_R_TextBox1" type="number" class="form-control" style="height: 30px !important; font-size: 24px;">
+                    <br />
+                    <input id="C11_SPC_R_TextBox2" type="number" class="form-control" style="height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                    <br />
+                    <input id="C11_SPC_R_LR1" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                    <br />
+                    <input id="C11_SPC_R_LR2" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border: 1px dashed #000000;">
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <br />
+                    <input id="C11_SPC_R_Label5" type="text" class="form-control" readonly value="T1" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    <br />
+                    <label style="font-size: 24px;">ICH/ICW1</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <img id="C11_SPC_R_PictureBox4" src="@DomainSite/Image/ICH.jpg" height="75" width="164" />
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <img id="C11_SPC_R_PictureBox3" src="@DomainSite/Image/ICW.jpg" height="108" width="114" />
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <input id="C11_SPC_R_ST12" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_R_STS3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_R_STS4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_R_STL3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_R_STL4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C11_SPC_R_STM3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                        <br />
+                        <input id="C11_SPC_R_STM4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                    <br />
+                    <input id="C11_SPC_R_TextBox3" type="number" class="form-control" style="height: 30px !important; font-size: 24px; font-size: 24px;">
+                    <br />
+                    <input id="C11_SPC_R_TextBox4" type="number" class="form-control" style="height: 30px !important; font-size: 24px; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                    <br />
+                    <input id="C11_SPC_R_LR3" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                    <br />
+                    <input id="C11_SPC_R_LR4" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border: 1px dashed #000000;">
+            <div class="col s12 m12 l4" style="text-align:center;">
+                <div>
+                    <input id="C11_SPC_R_Label8" type="text" class="form-control" readonly value="WIRE" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1" style="text-align:center;">
+                <div>
+                    <input id="C11_SPC_R_Label18" type="text" class="form-control" readonly value="WIRE" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1" style="text-align:center;">
+                <div>
+                    <input id="C11_SPC_R_Label19" type="text" class="form-control" readonly value="WIRE" style="border-width: 0px !important; text-align:center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2" style="text-align:center;">
+                <div>
+                    <label style="font-size: 24px;">STRENGTH : </label>
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <input id="C11_SPC_R_Label17" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_SPC_R_TextBox10" type="number" class="form-control" style="height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <input id="C11_SPC_R_LR9" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center; height: 30px !important; font-size: 24px;">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l10">
+                <div>
+                    <button id="C11_SPC_R_Button1" title="SAVE" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">SAVE</button>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C11_SPC_R_MRUS" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center; height: 40px !important; font-size: 32px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_3" class="modal modal-fixed-footer" style="width: 100vw !important; height: 60vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <h6><b>WORK (C11_3)</b></h6>
+            </div>
+            <div class="col s12 m12 l1">
+                <label>LEAD NO :</label>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_3_C11_D01" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1">
+                <label>MC :</label>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_3_C11_D02" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1">
+                <input id="C11_3_C11_D03" type="text" class="form-control" readonly value="J" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_3_ORDER" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1 right-align-md">
+                <button id="C11_3_Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l12" style="text-align: center;">
+                <label style="font-size: 24px; font-weight: bold; color: blue;">Current material(현사용 자재)</label>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l4">
+                </div>
+                <div class="col s12 m12 l4">
+                    <button id="C11_3_BT_APP1" title="APPLICATOR Change" class="btn waves-effect waves-light green darken-1" style="width: 100%;">APPLICATOR Change</button>
+                </div>
+                <div class="col s12 m12 l4">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l3" style="text-align: right;">
+                    <label>APPLICATOR1 : </label>
+                </div>
+                <div class="col s12 m12 l3">
+                    <input id="C11_3_VLA1" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l3">
+                    <input id="C11_3_VLA11" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l3">
+                    <input id="C11_3_TOOL_CONT" type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center; background-color: green !important; color: white; font-size: 30px; height: 40px !important;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l3" style="text-align: right;">
+                    <label>LH_WORK_COUNT :</label>
+                </div>
+                <div class="col s12 m12 l5">
+                    <input id="C11_3_COUNT_L" type="text" class="form-control" value="0" readonly style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l2" style="text-align: right;">
+                    <label>RH_WORK_COUNT :</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_3_COUNT_R" type="text" class="form-control" value="0" readonly style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="row">
+                <hr />
+                <div class="col s12 m12 l3" style="text-align: right;">
+                    <label>COUNT : </label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_3_C11_COUNT1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; color: blue; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l1" style="text-align: center;">
+                    <label>/</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_3_C11_COUNT2" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l2" style="text-align: right;">
+                    <label>BUNDLE_SIZE :</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_3_C11_COUNT3" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l3">
+                </div>
+                <div class="col s12 m12 l6">
+                    <button id="C11_3_Buttonprint" title="Complete" class="btn btn-large waves-effect waves-light cyan darken-1" style="width: 100%; font-size: 32px; text-transform: none !important;">Complete</button>
+                </div>
+                <div class="col s12 m12 l3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C11_4" class="modal modal-fixed-footer" style="width: 100vw !important; height: 60vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <h6><b>WORK (C11_4)</b></h6>
+            </div>
+            <div class="col s12 m12 l1">
+                <label>LEAD NO :</label>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_4_C11_D01" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1">
+                <label>MC :</label>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_4_C11_D02" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1">
+                <input id="C11_4_C11_D03" type="text" class="form-control" readonly value="J" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C11_4_ORDER" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l1 right-align-md">
+                <button id="C11_4_Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l12" style="text-align: center;">
+                <label style="font-size: 24px; font-weight: bold; color: blue;">Current material(현사용 자재)</label>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l4">
+                </div>
+                <div class="col s12 m12 l4">
+                    <button id="C11_4_BT_APP1" title="APPLICATOR Change" class="btn waves-effect waves-light green darken-1" style="width: 100%;">APPLICATOR Change</button>
+                </div>
+                <div class="col s12 m12 l4">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l3" style="text-align: right;">
+                    <label>APPLICATOR1 : </label>
+                </div>
+                <div class="col s12 m12 l3">
+                    <input id="C11_4_VLA1" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l3">
+                    <input id="C11_4_VLA11" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: blue !important; color: white; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l3">
+                    <input id="C11_4_TOOL_CONT" type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center; background-color: green !important; color: white; font-size: 30px; height: 40px !important;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l3" style="text-align: right;">
+                    <label>LH_WORK_COUNT :</label>
+                </div>
+                <div class="col s12 m12 l5">
+                    <input id="C11_4_COUNT_L" type="text" class="form-control" value="0" readonly style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l2" style="text-align: right;">
+                    <label>RH_WORK_COUNT :</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_4_COUNT_R" type="text" class="form-control" value="0" readonly style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="row">
+                <hr />
+                <div class="col s12 m12 l3" style="text-align: right;">
+                    <label>COUNT : </label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_4_C11_COUNT1" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; color: blue; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l1" style="text-align: center;">
+                    <label>/</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_4_C11_COUNT2" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+                <div class="col s12 m12 l2" style="text-align: right;">
+                    <label>BUNDLE_SIZE :</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="C11_4_C11_COUNT3" type="text" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l3">
+                </div>
+                <div class="col s12 m12 l6">
+                    <button id="C11_4_Buttonprint" title="Complete" class="btn btn-large waves-effect waves-light cyan darken-1" style="width: 100%; font-size: 32px; text-transform: none !important;">Complete</button>
+                </div>
+                <div class="col s12 m12 l3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C11.js?v=@GlobalHelper.GetVersionScrip("C11.js")"></script>
+

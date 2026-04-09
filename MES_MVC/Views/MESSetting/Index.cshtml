@@ -1,0 +1,254 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IMESSettingService _MESSettingService
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "MESSetting";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _MESSettingService.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Giao diện chuyển đổi máy -->
+                <div class="col s12">
+                    <!-- Before change section -->
+                    <div class="section">
+                        <h5>Before change</h5>
+                        <div class="row">
+                            <div class="input-field col s12 m6 l4">
+                                <span style="font-size: 24px; font-weight: bold;">Machine : </span>
+                                <span id="MC_Label" style="font-size: 24px;">---</span>
+                            </div>
+                        </div>
+
+                        <!-- Office Section -->
+                        <div class="section-group">
+                            <div class="section-title blue-text">Office</div>
+                            <div class="row">
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="A_RD_01" />
+                                        <span style="font-size: 20px;">---</span>
+                                    </label>
+                                </div>
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="A_RD_02" />
+                                        <span style="font-size: 20px;">Staff</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1st Factory Section -->
+                        <div class="section-group">
+                            <div class="section-title blue-text">1st Factory</div>
+                            <div class="row">
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="B_RD_01" />
+                                        <span style="font-size: 20px;">KOMAX</span>
+                                    </label>
+                                </div>
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="B_RD_02" />
+                                        <span style="font-size: 20px;">LP</span>
+                                    </label>
+                                </div>
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="B_RD_03" />
+                                        <span style="font-size: 20px;">FG_Inspectio</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="B_RD_04" />
+                                        <span style="font-size: 20px;">Twist</span>
+                                    </label>
+                                </div>
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="B_RD_05" />
+                                        <span style="font-size: 20px;">Welding</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2nd Factory Section -->
+                        <div class="section-group">
+                            <div class="section-title blue-text">2nd Factory</div>
+                            <div class="row">
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="C_RD_01" />
+                                        <span style="font-size: 20px;">ZDA_KOMAX</span>
+                                    </label>
+                                </div>
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="C_RD_02" />
+                                        <span style="font-size: 20px;">ZDA_LP</span>
+                                    </label>
+                                </div>
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="C_RD_03" />
+                                        <span style="font-size: 20px;">Twist</span>
+                                    </label>
+                                </div>
+                                <div class="col s6 m4 l3">
+                                    <label>
+                                        <input type="radio" name="location" class="with-gap" id="C_RD_04" />
+                                        <span style="font-size: 20px;">Welding</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- After change section -->
+                    <div class="section" style="margin-top: 20px;">
+                        <h5>After change</h5>
+                        <div class="row">
+                            <div class="input-field col s12 m6 l4">
+                                <span style="font-size: 24px; font-weight: bold;">Machine : </span>
+                                <select id="ComboBox3" style="font-size: 24px; height: auto;">
+                                    <option value="---">---</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12 m6 l4">
+                                <button id="Button1" class="btn waves-effect waves-light cyan darken-1 btn-large" style="width: 100%; font-size: 28px; height: 60px;">
+                                    SAVE
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .machine-change-form {
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+            .section h5 {
+                font-size: 28px;
+                font-weight: bold;
+                margin-bottom: 15px;
+                display: inline-block;
+            }
+
+        .section-group {
+            margin-bottom: 20px;
+            margin-left: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        [type="radio"]:not(:checked) + span,
+        [type="radio"]:checked + span {
+            padding-left: 25px;
+            font-size: 18px;
+        }
+
+        .input-field span, select, option, button {
+            font-size: 20px !important;
+        }
+
+        .btn {
+            font-size: 22px !important;
+            height: auto;
+            line-height: 42px;
+        }
+
+        .btn-large {
+            font-size: 24px !important;
+        }
+
+        /* Thêm khoảng cách giữa các radio */
+        .machine-change-form label {
+            margin-bottom: 10px;
+        }
+
+        /* Căn chỉnh "Machine:" ngang hàng với tiêu đề */
+        .valign-wrapper {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+
+    <script src="~/Scripts/MESSetting.js?v=@version"></script>

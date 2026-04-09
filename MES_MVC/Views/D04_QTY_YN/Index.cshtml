@@ -1,0 +1,67 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string url = "D04_QTY_YN";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "Notification ERROR (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l12 card-panel grey lighten-1">
+					<h4><b>Notification ERROR (@url)</b></h4>
+				</div>
+				<div class="col s12 m12 l12 card-panel red darken-4 center-align white-text">
+					<div>
+						<h4 class="center-align white-text">Số lượng vượt quá. Bạn có muốn tiếp tục đăng ký không?</h4>
+						<h4 class="center-align white-text">QTY OVER. Would you like to continue?</h4>
+						<h4 class="center-align white-text">수량 초과 계속 등록 하시겠습니까?</h4>
+					</div>
+					<div class="col s12 m12 l3">
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<button id="Button1" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">YES</button>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<button id="Button2" class="btn waves-effect waves-light green darken-1" style="width: 100%;">NO</button>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+					</div>
+					<br />
+					<br />
+					<br />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/D04_QTY_YN.js?v=@version"></script>
+

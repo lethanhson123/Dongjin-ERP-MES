@@ -1,0 +1,617 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH09Service _H09Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H09";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _H09Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<link rel="stylesheet" type="text/css" href="~/css/H09.css?v=@version">
+
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <!-- HEADER - 10% chiều cao -->
+                <div class="col s12 dashboard-header">
+                    <div class="header-reload">
+                        <button id="Button1" class="reload-btn" style="display: none;">Reload</button>
+                    </div>
+
+                    <div class="header-section-names">
+                        <div class="section-name">TWIST</div>
+                        <div class="section-name">WELDING</div>
+                        <div class="section-name">CRIMPING</div>
+                    </div>
+                    <div class="header-production-title">
+                        <div class="production-title-text">생산실적</div>
+                        <div class="production-title-text">(Kết quả sản xuất)</div>
+                    </div>
+                    <div class="header-production-values">
+                        <!-- Matches Label2 (Twist), Label12 (Welding), Label19 (Crimping) -->
+                        <div id="Label2" class="production-value">0</div>
+                        <div id="Label12" class="production-value">0</div>
+                        <div id="Label19" class="production-value">0</div>
+                    </div>
+                    <div class="header-operation-title">
+                        <div class="operation-title-text">가동률</div>
+                        <div class="operation-title-text">(Tỷ lệ vận hành)</div>
+                    </div>
+                    <div class="header-operation-values">
+                        <!-- Matches Label3 (Twist), Label11 (Welding), Label18 (Crimping) -->
+                        <div id="Label3" class="operation-value">0</div>
+                        <div id="Label11" class="operation-value">0</div>
+                        <div id="Label18" class="operation-value">0</div>
+                    </div>
+                    <div class="header-uph-title">
+                        <div class="uph-title">UPH</div>
+                    </div>
+                    <div class="header-uph-values">
+                        <!-- Matches Label4 (Twist), Label9 (Welding), Label17 (Crimping) -->
+                        <div id="Label4" class="uph-value">0</div>
+                        <div id="Label9" class="uph-value">0</div>
+                        <div id="Label17" class="uph-value">0</div>
+                    </div>
+                </div>
+
+                <!-- BODY - 4 cột -->
+                <div class="col s12" style="display: flex; height: 78vh;">
+                    <!-- SIDEBAR - 10% -->
+                    <div class="dashboard-sidebar">
+                        <!-- Matches Button2 in VB.NET for showing H00_LIST dialog -->
+                        <div id="Button2" class="sidebar-button">
+                            실적데이터 보기
+                        </div>
+
+                        <!-- Tiêu đề Notes -->
+                        <div class="sidebar-title">Notes</div>
+
+                        <!-- Hộp thông tin sản xuất -->
+                        <div class="sidebar-box">
+                            <div class="production-text">생산실적</div>
+                            <div class="production-text">(Kết quả sản xuất)</div>
+                            <div class="production-text">가동률</div>
+                            <div class="production-text">(Tỷ lệ vận hành)</div>
+                            <div class="production-text">UPH</div>
+                        </div>
+
+                        <!-- Chú thích biểu tượng -->
+                        <div class="sidebar-legend">
+                            <div class="legend-item">
+                                <div class="legend-symbol">S= </div>
+                                <div class="legend-text">설비준비<br>Chuẩn bị thiết bị</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-symbol">I= </div>
+                                <div class="legend-text">자재결품<br>Thiếu nguyên vật liệu</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-symbol">Q= </div>
+                                <div class="legend-text">품질문제<br>Vấn đề chất lượng</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-symbol">M= </div>
+                                <div class="legend-text">설비고장<br>Máy hư</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-symbol">T= </div>
+                                <div class="legend-text">교육/회의<br>Đào tạo/họp</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-symbol">L= </div>
+                                <div class="legend-text">식사시간<br>Giờ ăn</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TWIST - 27% -->
+                    <div id="FLP_Z" style="width: 27%; border: 1px solid #ccc; padding: 10px;">
+                        <h5 style="color: blue; text-align: center; margin-bottom: 15px;">TWIST</h5>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); gap: 10px; height: 95%;">
+                            <!-- Machine Z101 -->
+                            <div id="TW_LY01" class="machine-container">
+                                <div id="TW_NM01" class="machine-title">Z101</div>
+                                <div class="machine-data">
+                                    <div>0</div> <!-- Production Quantity -->
+                                    <div>0</div> <!-- Run Rate -->
+                                    <div>0</div> <!-- UPH -->
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z102 -->
+                            <div id="TW_LY02" class="machine-container">
+                                <div id="TW_NM02" class="machine-title">Z102</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z103 -->
+                            <div id="TW_LY03" class="machine-container">
+                                <div id="TW_NM03" class="machine-title">Z103</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z104 -->
+                            <div id="TW_LY04" class="machine-container">
+                                <div id="TW_NM04" class="machine-title">Z104</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z105 -->
+                            <div id="TW_LY05" class="machine-container">
+                                <div id="TW_NM05" class="machine-title">Z105</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z106 -->
+                            <div id="TW_LY06" class="machine-container">
+                                <div id="TW_NM06" class="machine-title">Z106</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z107 -->
+                            <div id="TW_LY07" class="machine-container">
+                                <div id="TW_NM07" class="machine-title">Z107</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z108 -->
+                            <div id="TW_LY08" class="machine-container">
+                                <div id="TW_NM08" class="machine-title">Z108</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z109 -->
+                            <div id="TW_LY09" class="machine-container">
+                                <div id="TW_NM09" class="machine-title">Z109</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z110 -->
+                            <div id="TW_LY10" class="machine-container">
+                                <div id="TW_NM10" class="machine-title">Z110</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z111 -->
+                            <div id="TW_LY11" class="machine-container">
+                                <div id="TW_NM11" class="machine-title">Z111</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine Z112 -->
+                            <div id="TW_LY12" class="machine-container">
+                                <div id="TW_NM12" class="machine-title">Z112</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WELDING - 27% -->
+                    <div id="FLP_S" style="width: 27%; border: 1px solid #ccc; padding: 10px;">
+                        <h5 style="color: blue; text-align: center; margin-bottom: 15px;">WELDING</h5>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); gap: 10px; height: 95%;">
+                            <!-- Machine S101 -->
+                            <div id="WD_LY01" class="machine-container">
+                                <div id="WD_NM01" class="machine-title">S101</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S102 -->
+                            <div id="WD_LY02" class="machine-container">
+                                <div id="WD_NM02" class="machine-title">S102</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S103 -->
+                            <div id="WD_LY03" class="machine-container">
+                                <div id="WD_NM03" class="machine-title">S103</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S104 -->
+                            <div id="WD_LY04" class="machine-container">
+                                <div id="WD_NM04" class="machine-title">S104</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S105 -->
+                            <div id="WD_LY05" class="machine-container">
+                                <div id="WD_NM05" class="machine-title">S105</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S106 -->
+                            <div id="WD_LY06" class="machine-container">
+                                <div id="WD_NM06" class="machine-title">S106</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S107 -->
+                            <div id="WD_LY07" class="machine-container">
+                                <div id="WD_NM07" class="machine-title">S107</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S108 -->
+                            <div id="WD_LY08" class="machine-container">
+                                <div id="WD_NM08" class="machine-title">S108</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S109 -->
+                            <div id="WD_LY09" class="machine-container">
+                                <div id="WD_NM09" class="machine-title">S109</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S110 -->
+                            <div id="WD_LY10" class="machine-container">
+                                <div id="WD_NM10" class="machine-title">S110</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S111 -->
+                            <div id="WD_LY11" class="machine-container">
+                                <div id="WD_NM11" class="machine-title">S111</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine S112 -->
+                            <div id="WD_LY12" class="machine-container">
+                                <div id="WD_NM12" class="machine-title">S112</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CRIMPING - 36% -->
+                    <div id="PLP_CR" style="width: 36%; border: 1px solid #ccc; padding: 10px;">
+                        <h5 style="color: blue; text-align: center; margin-bottom: 15px;">CRIMPING</h5>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 10px; height: 95%;">
+                            <!-- Machine B201 -->
+                            <div id="CR_LY01" class="machine-container">
+                                <div id="CR_NM01" class="machine-title">B201</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B202 -->
+                            <div id="CR_LY02" class="machine-container">
+                                <div id="CR_NM02" class="machine-title">B202</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B203 -->
+                            <div id="CR_LY03" class="machine-container">
+                                <div id="CR_NM03" class="machine-title">B203</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B204 -->
+                            <div id="CR_LY04" class="machine-container">
+                                <div id="CR_NM04" class="machine-title">B204</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B205 -->
+                            <div id="CR_LY05" class="machine-container">
+                                <div id="CR_NM05" class="machine-title">B205</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B206 -->
+                            <div id="CR_LY06" class="machine-container">
+                                <div id="CR_NM06" class="machine-title">B206</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B207 -->
+                            <div id="CR_LY07" class="machine-container">
+                                <div id="CR_NM07" class="machine-title">B207</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B208 -->
+                            <div id="CR_LY08" class="machine-container">
+                                <div id="CR_NM08" class="machine-title">B208</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B209 -->
+                            <div id="CR_LY09" class="machine-container">
+                                <div id="CR_NM09" class="machine-title">B209</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B210 -->
+                            <div id="CR_LY10" class="machine-container">
+                                <div id="CR_NM10" class="machine-title">B210</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B211 -->
+                            <div id="CR_LY11" class="machine-container">
+                                <div id="CR_NM11" class="machine-title">B211</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B212 -->
+                            <div id="CR_LY12" class="machine-container">
+                                <div id="CR_NM12" class="machine-title">B212</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B213 -->
+                            <div id="CR_LY13" class="machine-container">
+                                <div id="CR_NM13" class="machine-title">B213</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B214 -->
+                            <div id="CR_LY14" class="machine-container">
+                                <div id="CR_NM14" class="machine-title">B214</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B215 -->
+                            <div id="CR_LY15" class="machine-container">
+                                <div id="CR_NM15" class="machine-title">B215</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                            <!-- Machine B216 -->
+                            <div id="CR_LY16" class="machine-container">
+                                <div id="CR_NM16" class="machine-title">B216</div>
+                                <div class="machine-data">
+                                    <div>0</div>
+                                    <div>0</div>
+                                    <div>0</div>
+                                </div>
+                                <div class="machine-status"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="H00_LISTModal" class="modal modal-fixed-footer" style="width: 95%; height: 85%;">
+    <div class="modal-content">
+
+        <div class="modal-header-info">
+            <div class="info-row">
+                <span><strong>가동율:</strong> (작업 시간 - (비가동 - L, T, M 비가동)) / 작업시간</span>
+                <span style="margin-left: 30px;"><strong>비가동:</strong> L : 식사시간, T : 교육시간, M : 설비교정</span>
+            </div>
+            <div class="info-row">
+                <span><strong>UPH:</strong> 생산수량 / (작업시간 - 비가동)</span>
+            </div>
+        </div>
+
+        <div class="KhungOverflow">
+            <table class="responsive-table" id="DataGridView1Table">
+                <thead class="sticky-header">
+                    <tr>
+                       
+                        <th>DATE</th>
+                        <th>MC_NO</th>
+                        <th>시작시간</th>
+                        <th>종료시간</th>
+                        <th>QTY</th>
+                        <th>STOP_TIME</th>
+                        <th>STOP_TIME(L,T 제외)</th>
+                        <th>WORK_TIME</th>
+                        <th>Operating rate</th>
+                        <th>UPH</th>
+
+                    </tr>
+                </thead>
+                <tbody id="DataGridView1">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/H09.js?v=@version"></script>

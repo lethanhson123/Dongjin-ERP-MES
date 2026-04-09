@@ -1,0 +1,122 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string cookie = string.Empty;
+	cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+	string UserID = cookie;
+	string url = "C05_APPLICATION";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "APPLICATOR (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l4">
+					<h6><b>APPLICATOR (@url)</b></h6>
+				</div>
+				<div class="col s12 m12 l6">
+					<input id="Label3" type="text" class="form-control" value="-" readonly style="border-width: 0px !important;">
+				</div>
+				<div class="col s12 m12 l2 right-align-md">					
+					<button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m12 l2">
+					<div>						
+					</div>
+				</div>
+				<div class="col s12 m12 l8">
+					<div>						
+						<input id="TextBox1" type="text" class="form-control">
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<button id="Button1" title="Reading" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Reading</button>
+					</div>
+				</div>
+			</div>			
+			<div class="row">
+				<div class="col s12 m12 l2">
+					<div>
+						<label style="color: blue;">Before change</label>
+					</div>
+				</div>
+				<div class="col s12 m12 l4">
+					<div>
+						<input id="Label1" type="text" class="form-control" readonly value="---" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l4">
+					<div>
+						<input id="Label2" type="text" class="form-control" readonly value="---" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<button id="Button2" title="SAVE" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">SAVE</button>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m12 l2">
+					<div>
+						<label style="color: blue;">After change</label>
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<input id="Label1" type="text" class="form-control" readonly value="---" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<input id="Label2" type="text" class="form-control" readonly value="---" style="border-width: 0px !important;">
+					</div>
+				</div>				
+				<div class="col s12 m12 l2">
+					<div>
+						<label>Work_Count : </label>
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<input id="Label9" type="text" class="form-control" readonly value="---" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<input id="Label10" type="text" class="form-control" readonly value="---" style="border-width: 0px !important;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/C05_APPLICATION.js?v=@version"></script>
+

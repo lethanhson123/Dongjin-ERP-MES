@@ -1,0 +1,521 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH08Service _H08Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    ViewData["Title"] = "Machine Status Dashboard (H08)";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default">
+        <div class="card-content">
+            <!-- Dashboard Container -->
+            <div id="DashboardContainer" class="dashboard-grid">
+                <!-- Filled by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Maintenance Detail Modal -->
+<div id="maintenanceModal" class="maintenance-modal" style="display: none;">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content" id="modalContent">
+        <div class="modal-header">
+            <h5 id="modalTitle">🔧 ĐANG BẢO TRÌ 보전 중</h5>
+            <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Machine Info -->
+            <div class="info-section">
+                <div class="info-row">
+                    <strong>Máy(기계):</strong>
+                    <span id="mdSubCode"></span> - <span id="mdNameVN"></span>
+                </div>
+                <div class="info-row">
+                    <strong>Dây chuyền(라인):</strong>
+                    <span id="mdProductionLine"></span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Maintenance Info -->
+            <div class="info-section">
+                <div class="info-row">
+                    <strong>👤 Người sửa(수리자):</strong>
+                    <span id="mdMaintenedBy"></span>
+                </div>
+                <div class="info-row">
+                    <strong>⏰ Bắt đầu(시작):</strong>
+                    <span id="mdStartDate"></span>
+                </div>
+                <div class="info-row">
+                    <strong>⏱️ Đã sửa(수리 완료):</strong>
+                    <span id="mdDuration" class="text-bold"></span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="info-section">
+                <div class="info-row">
+                    <strong>📌 Trạng thái(상태):</strong>
+                    <span id="mdCurrentStatus" class="badge-status"></span>
+                </div>
+                <div class="info-row-full">
+                    <strong>❗ Lý do(이유):</strong>
+                    <div id="mdReason" class="info-text"></div>
+                </div>
+                <div class="info-row-full">
+                    <strong>🔨 Đang thực hiện(진행 중):</strong>
+                    <div id="mdSolution" class="info-text"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-close" id="btnModalClose">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Legend Status Boxes */
+    .status-legend-inline {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+    }
+
+ .legend-box-inline {
+    min-width: 130px;
+    height: 65px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 36px !important;       
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.legend-box-inline span {
+    font-size: 32px !important;
+    font-weight: bold;
+}
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px; 
+    }
+
+    .dashboard-section {
+        margin-bottom: 0;
+    }
+
+    /* Line Header - Tiêu đề dây chuyền và Legend */
+    .line-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #2196F3;
+    }
+
+    .line-title {
+        font-size: 28px; /* TĂNG TỪ 18px LÊN 24px */
+        font-weight: bold;
+        color: #333;
+        margin: 0;
+    }
+
+    .status-legend-inline {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-right: 200px; 
+    }
+
+    .legend-box-inline {
+        min-width: 130px; /* TĂNG TỪ 100px LÊN 130px */
+        height: 65px; /* TĂNG TỪ 50px LÊN 65px */
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 38px;
+        color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .machines-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+ /* Machine Cards */
+.machine-card {
+    min-width: 200px;      /* TĂNG TỪ 180px LÊN 200px */
+    max-width: 200px;      /* TĂNG TỪ 180px LÊN 200px */
+    height: 110px;         /* TĂNG TỪ 100px LÊN 110px */
+    padding: 15px 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+        .machine-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .machine-code {
+        display: block;
+        font-size: 38px;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+
+    .maintenance-badge {
+        display: block;
+        font-size: 11px;
+        margin-top: 4px;
+        opacity: 0.8;
+        font-weight: normal;
+    }
+
+    /* Status Colors */
+    .status-green {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+        .status-green:hover {
+            background-color: #45a049;
+        }
+
+    .status-yellow {
+        background-color: #ff9800;
+        color: white;
+    }
+
+        .status-yellow:hover {
+            background-color: #e68900;
+        }
+
+    .status-red {
+        background-color: #f44336;
+        color: white;
+    }
+
+        .status-red:hover {
+            background-color: #da190b;
+        }
+
+    .status-gray {
+        background-color: #9E9E9E;
+        color: white;
+    }
+
+    .status-indicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Modal Styles */
+    .maintenance-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+    }
+
+    .modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+        position: relative;
+        width: 90%;
+        max-width: 500px;
+        margin: 80px auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: slideDown 0.3s ease;
+    }
+
+    /* Modal Header */
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 8px 8px 0 0;
+    }
+
+        .modal-header h5 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+    .modal-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s;
+    }
+
+        .modal-close:hover {
+            transform: scale(1.2);
+        }
+
+    /* Modal Body */
+    .modal-body {
+        padding: 20px;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .info-section {
+        margin-bottom: 15px;
+    }
+
+    .info-row {
+        display: flex;
+        padding: 8px 0;
+        align-items: center;
+    }
+
+        .info-row strong {
+            min-width: 130px;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .info-row span {
+            color: #333;
+            font-size: 16px;
+        }
+
+    .info-row-full {
+        padding: 8px 0;
+    }
+
+        .info-row-full strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 16px;
+        }
+
+    .info-text {
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 4px;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.6;
+        min-height: 40px;
+    }
+
+    .divider {
+        height: 1px;
+        background: #e0e0e0;
+        margin: 15px 0;
+    }
+
+    .badge-status {
+        background: #ff9800;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .text-bold {
+        font-weight: bold;
+        color: #ff9800;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 15px 20px;
+        background: #f9f9f9;
+        border-radius: 0 0 8px 8px;
+        text-align: center;
+    }
+
+    .btn-close {
+        background: #666;
+        color: white;
+        border: none;
+        padding: 12px 40px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: background 0.3s;
+    }
+
+        .btn-close:hover {
+            background: #444;
+        }
+
+    /* Animations */
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+    }
+
+    @@keyframes slideDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .status-legend-inline
+
+    {
+        justify-content: flex-start;
+        margin-top: 10px;
+    }
+
+    .legend-box-inline {
+        min-width: 80px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .machines-container {
+        gap: 8px;
+    }
+
+    .machine-card {
+        min-width: 100px;
+        padding: 15px 12px;
+        font-size: 14px;
+    }
+
+    .machine-code {
+        font-size: 16px;
+    }
+
+    .line-title {
+        font-size: 16px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        .info-row strong {
+            min-width: auto;
+            margin-bottom: 5px;
+        }
+
+    }
+
+    @@media (max-width: 480px) {
+        .machines-container
+
+    {
+        gap: 6px;
+    }
+
+    .machine-card {
+        min-width: 80px;
+        padding: 12px 8px;
+        font-size: 12px;
+    }
+
+    .machine-code {
+        font-size: 14px;
+    }
+
+    }
+    /* Downtime Timer */
+    .downtime-timer {
+        display: block;
+        font-size: 16px; /* TĂNG TỪ 13px LÊN 16px */
+        margin-top: 6px;
+        font-weight: 600;
+        font-family: 'Courier New', monospace;
+        background: rgba(0, 0, 0, 0.15);
+        padding: 4px 10px; /* TĂNG PADDING */
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+    }
+
+/* Timer trên nền đỏ và vàng vẫn rõ */
+.status-red .downtime-timer,
+.status-yellow .downtime-timer {
+    color: white;
+}
+</style>
+
+<script src="~/Scripts/H08.js?v=@version"></script>

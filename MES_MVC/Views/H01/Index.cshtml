@@ -1,0 +1,815 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH01Service _H01Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H01";
+    try
+    {
+        //truyền biến User ID thay thế cho Cookies để lấy phân quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _H01Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<style>
+    .production-header {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #ddd;
+        font-weight: bold;
+    }
+
+    .dashboard-container {
+        margin-top: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .dashboard-header {
+        background-color: #f5d7b5 !important;
+        padding: 10px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    .reload-container {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+        .reload-container label {
+            display: flex !important;
+            align-items: center !important;
+            font-weight: bold !important;
+            font-size: 15px !important;
+            margin: 0 !important;
+        }
+
+            .reload-container label span {
+                margin-left: 5px !important;
+            }
+
+        .reload-container input[type="checkbox"] {
+            transform: scale(1.15) !important;
+            margin-right: 3px !important;
+        }
+
+    .reload-btn {
+        padding: 6px 12px !important;
+        font-weight: bold !important;
+        font-size: 14px !important;
+        background-color: #fff !important;
+        border: 2px solid #ddd !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+    }
+
+        .reload-btn:hover {
+            background-color: #e9ecef !important;
+        }
+
+    .status-counters {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        gap: 32px;
+    }
+
+    .status-counter {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .counter-label {
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+
+    .production-grid {
+        display: grid;
+        grid-template-columns: 170px repeat(6, 1fr);
+        border: 1px solid #ddd;
+        margin-bottom: 18px;
+        gap: 6px;
+        padding: 6px;
+        background-color: #f0f0f0;
+    }
+
+    .grid-header {
+        text-align: center;
+        font-weight: bold;
+        background-color: #f8f9fa;
+        padding: 7px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .grid-item {
+        padding: 0;
+        text-align: center;
+        position: relative;
+        height: 160px;
+        border: none;
+    }
+
+    .note-cell {
+        height: 195px;
+        min-height: 195px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+        .note-cell, .note-cell * {
+            font-weight: bold !important;
+            font-size: 15px !important;
+        }
+
+    .note-title {
+        padding: 7px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .note-content {
+        padding: 6px;
+        text-align: left;
+    }
+
+    .note-row {
+        padding: 4px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .warning-note {
+        background-color: #ffeeee;
+        padding: 6px;
+        text-align: center;
+        border-top: 1px solid #ffcccc;
+    }
+
+    .machine-cell {
+        background-color: #aaaaaa;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        border-radius: 7px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .machine-header {
+        padding: 6px 4px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid #999;
+        background-color: #888;
+        font-size: 22px;
+        color: white;
+    }
+
+    .machine-values {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .machine-value {
+        font-size: 26px;
+        padding: 4px 0;
+        height: 1.65em;
+        line-height: 1.65em;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: bold !important;
+        color: black !important;
+    }
+
+    .machine-footer {
+        padding: 5px;
+        text-align: center;
+        border-top: 1px solid #999;
+        font-size: 12px;
+        color: #333;
+        background-color: rgba(255,255,255,0.2);
+    }
+
+    .legend-container {
+        margin-top: 11px;
+        border: 1px solid #ddd;
+        padding: 7px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+    .legend-title {
+        font-weight: bold;
+        margin-bottom: 4px;
+        font-size: 14px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2px;
+    }
+
+    .legend-key {
+        font-weight: bold;
+        margin-right: 7px;
+        width: 24px;
+        font-size: 13px;
+    }
+
+    .korean-text {
+        font-size: 17px;
+        font-style: italic;
+        font-weight: bold;
+    }
+
+    .vietnamese-text {
+        font-size: 17px;
+        font-style: italic;
+        font-weight: bold;
+    }
+
+    .counter-value {
+        font-size: 30px;
+        font-weight: bold;
+        color: #0000cc;
+    }
+
+    #Button2 {
+        background-color: pink !important;
+        color: black !important;
+        font-weight: bold !important;
+        font-size: 14px !important;
+        padding: 5px 10px !important;
+    }
+
+    #Button1 {
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    /* CSS cho modal */
+    #H00_LISTModal {
+        width: 88% !important;
+        height: 78% !important;
+    }
+
+    .modal-header-info {
+        font-size: 13px;
+    }
+
+    .KhungOverflow table {
+        font-size: 13px;
+    }
+
+    .sticky-header th {
+        padding: 7px 5px;
+        font-size: 13px;
+    }
+
+    .machine-filter {
+        margin-left: 15px;
+    }
+
+    #machineTypeFilter {
+        padding: 5px 10px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        background-color: #fff;
+        font-weight: bold;
+        font-size: 14px;
+        height: auto;
+        width: 120px;
+    }
+
+    /* CSS cho tính năng lọc máy */
+    .production-grid.hidden {
+        display: none !important;
+    }
+
+    .machine-cell.hidden {
+        display: none !important;
+    }
+
+    /* Thêm CSS cho clone và FA machines */
+    .machine-cell.fa-machine {
+        background-color: #a6caf0;
+    }
+
+        .machine-cell.fa-machine .machine-header {
+            background-color: #4a86e8;
+        }
+
+    .machine-cell.original {
+        display: none !important;
+    }
+
+    .machine-cell.clone {
+        display: flex !important;
+    }
+
+    .chart-container {
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: white;
+    }
+
+    .chart-header {
+        background-color: #f5d7b5;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chart-title {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .chart-body {
+        padding: 20px;
+        height: 350px;
+    }
+
+    #productionChart {
+        max-height: 310px;
+    }
+</style>
+
+
+<div class="card card card-default scrollspy">
+    <div class="card-content">
+        <!-- Bảng điều khiển sản xuất -->
+
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div class="reload-container">
+                    <input type="date" id="fromDate" class="form-control" style="margin-right:12px;">
+                    <input type="date" id="toDate" class="form-control" style="margin-right:18px;">
+                    <button class="reload-btn" id="Button1">Reload</button>
+                    <div class="machine-filter">
+                        <select id="machineTypeFilter" class="browser-default">
+                            <option value="ALL">ALL</option>
+                            <option value="CUTTING">CUTTING</option>
+                            <option value="FA">FA</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="status-counters">
+                    <div class="status-counter">
+                        <div class="counter-label">
+                            <label>
+                                <input type="checkbox" class="form-check-input" id="check_AutoReload" name="AutoReload" />
+                                <span>Auto Reload</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="status-counter">
+                        <div class="counter-label">
+                            <span class="korean-text">생산실적 (Kế hoạch sản xuất)</span>
+                        </div>
+                        <div class="counter-value" id="Label2">00</div>
+                    </div>
+                    <div class="status-counter">
+                        <div class="counter-label">
+                            <span class="korean-text">가동률 (Tỷ lệ vận hành)</span>
+                        </div>
+                        <div class="counter-value" id="Label3">00</div>
+                    </div>
+                    <div class="status-counter">
+                        <div class="counter-label">
+                            <span class="korean-text">UPH</span>
+                        </div>
+                        <div class="counter-value" id="Label4">00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 1: A801-A806 -->
+            <div class="production-grid" id="grid-row1">
+                <div class="grid-item note-cell" id="note-cell-row1">
+                    <div class="note-title">Notes</div>
+                    <div class="note-content">
+                        <div class="note-row">생산실적</div>
+                        <div class="note-row">가동률<br />(Tỷ lệ vận hành)</div>
+                        <div class="note-row">UPH</div>
+                    </div>
+                    <button class="warning-note-btn" id="Button2">실적데이터 보기</button>
+                </div>
+
+                <!-- A801 -->
+                <div class="grid-item machine-cell" id="LY01">
+                    <div class="machine-header" id="MC_NM01">A801</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8011">0</div>
+                        <div class="machine-value" id="A8012">0</div>
+                        <div class="machine-value" id="A8013">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP01">--</div>
+                </div>
+
+                <!-- A802 -->
+                <div class="grid-item machine-cell" id="LY02">
+                    <div class="machine-header" id="MC_NM02">A802</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8021">0</div>
+                        <div class="machine-value" id="A8022">0</div>
+                        <div class="machine-value" id="A8023">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP02">--</div>
+                </div>
+
+                <!-- A803 -->
+                <div class="grid-item machine-cell" id="LY03">
+                    <div class="machine-header" id="MC_NM03">A803</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8031">0</div>
+                        <div class="machine-value" id="A8032">0</div>
+                        <div class="machine-value" id="A8033">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP03">--</div>
+                </div>
+
+                <!-- A804 -->
+                <div class="grid-item machine-cell" id="LY04">
+                    <div class="machine-header" id="MC_NM04">A804</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8041">0</div>
+                        <div class="machine-value" id="A8042">0</div>
+                        <div class="machine-value" id="A8043">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP04">--</div>
+                </div>
+
+                <!-- A805 -->
+                <div class="grid-item machine-cell" id="LY05">
+                    <div class="machine-header" id="MC_NM05">A805</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8051">0</div>
+                        <div class="machine-value" id="A8052">0</div>
+                        <div class="machine-value" id="A8053">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP05">--</div>
+                </div>
+
+                <!-- A806 -->
+                <div class="grid-item machine-cell" id="LY06">
+                    <div class="machine-header" id="MC_NM06">A806</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8061">0</div>
+                        <div class="machine-value" id="A8062">0</div>
+                        <div class="machine-value" id="A8063">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP06">--</div>
+                </div>
+            </div>
+
+            <!-- Row 2: A807-A812 -->
+            <div class="production-grid" id="grid-row2">
+                <div class="grid-item note-cell" id="note-cell-row2">
+                    <div class="note-content" style="padding-top: 15px;">
+                        <div class="legend-title">비가동코드</div>
+                        <div class="legend-item">
+                            <span class="legend-key">S =</span>
+                            <span>설비준비<br /><span class="vietnamese-text">Chuẩn bị thiết bị</span></span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-key">I =</span>
+                            <span>자재결품<br /><span class="vietnamese-text">Thiếu nguyên vật liệu</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- A807 -->
+                <div class="grid-item machine-cell" id="LY07">
+                    <div class="machine-header" id="MC_NM07">A807</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8071">0</div>
+                        <div class="machine-value" id="A8072">0</div>
+                        <div class="machine-value" id="A8073">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP07">--</div>
+                </div>
+
+                <!-- A808 -->
+                <div class="grid-item machine-cell" id="LY08">
+                    <div class="machine-header" id="MC_NM08">A808</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8081">0</div>
+                        <div class="machine-value" id="A8082">0</div>
+                        <div class="machine-value" id="A8083">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP08">--</div>
+                </div>
+
+                <!-- A809 -->
+                <div class="grid-item machine-cell" id="LY09">
+                    <div class="machine-header" id="MC_NM09">A809</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8091">0</div>
+                        <div class="machine-value" id="A8092">0</div>
+                        <div class="machine-value" id="A8093">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP09">--</div>
+                </div>
+
+                <!-- A810 -->
+                <div class="grid-item machine-cell" id="LY10">
+                    <div class="machine-header" id="MC_NM10">A810</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8101">0</div>
+                        <div class="machine-value" id="A8102">0</div>
+                        <div class="machine-value" id="A8103">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP10">--</div>
+                </div>
+
+                <!-- A811 -->
+                <div class="grid-item machine-cell" id="LY11">
+                    <div class="machine-header" id="MC_NM11">A811</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8111">0</div>
+                        <div class="machine-value" id="A8112">0</div>
+                        <div class="machine-value" id="A8113">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP11">--</div>
+                </div>
+
+                <!-- A812 -->
+                <div class="grid-item machine-cell" id="LY12">
+                    <div class="machine-header" id="MC_NM12">A812</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8121">0</div>
+                        <div class="machine-value" id="A8122">0</div>
+                        <div class="machine-value" id="A8123">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP12">--</div>
+                </div>
+            </div>
+
+            <!-- Row 3: A813-A816, A501-A502 -->
+            <div class="production-grid" id="grid-row3">
+                <div class="grid-item note-cell" id="note-cell-row3">
+                    <div class="note-content">
+                        <div class="legend-item">
+                            <span class="legend-key">Q =</span>
+                            <span>품질문제<br /><span class="vietnamese-text">Vấn đề chất lượng</span></span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-key">M =</span>
+                            <span>설비고장<br /><span class="vietnamese-text">Máy hư</span></span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-key">T =</span>
+                            <span>교육/회의<br /><span class="vietnamese-text">Đào tạo/ họp</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- A813 -->
+                <div class="grid-item machine-cell" id="LY13">
+                    <div class="machine-header" id="MC_NM13">A813</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8131">0</div>
+                        <div class="machine-value" id="A8132">0</div>
+                        <div class="machine-value" id="A8133">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP13">--</div>
+                </div>
+
+                <!-- A814 -->
+                <div class="grid-item machine-cell" id="LY14">
+                    <div class="machine-header" id="MC_NM14">A814</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8141">0</div>
+                        <div class="machine-value" id="A8142">0</div>
+                        <div class="machine-value" id="A8143">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP14">--</div>
+                </div>
+
+                <!-- A815 -->
+                <div class="grid-item machine-cell" id="LY15">
+                    <div class="machine-header" id="MC_NM15">A815</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8151">0</div>
+                        <div class="machine-value" id="A8152">0</div>
+                        <div class="machine-value" id="A8153">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP15">--</div>
+                </div>
+                <!-- A816 -->
+                <div class="grid-item machine-cell" id="LY16">
+                    <div class="machine-header" id="MC_NM16">A816</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8161">0</div>
+                        <div class="machine-value" id="A8162">0</div>
+                        <div class="machine-value" id="A8163">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP16">--</div>
+                </div>
+
+
+                <!-- A501 -->
+                <div class="grid-item machine-cell" id="LY_A501">
+                    <div class="machine-header" id="MC_NM_A501">A501</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A5011">0</div>
+                        <div class="machine-value" id="A5012">0</div>
+                        <div class="machine-value" id="A5013">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP_A501">--</div>
+                </div>
+
+                <!-- A502 -->
+                <div class="grid-item machine-cell" id="LY_A502">
+                    <div class="machine-header" id="MC_NM_A502">A502</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A5021">0</div>
+                        <div class="machine-value" id="A5022">0</div>
+                        <div class="machine-value" id="A5023">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP_A502">--</div>
+                </div>
+            </div>
+
+            <!-- Row 4: Máy FA - A830, A831, A832, A833 -->
+            <div class="production-grid" id="grid-row4">
+                <div class="grid-item note-cell" id="note-cell-row4">
+                    <div class="note-title"></div>
+                    <div class="note-content"></div>
+                </div>
+
+                <!-- A830 (Chuyển từ row 3 xuống row 4) -->
+                <div class="grid-item machine-cell" id="LY_A830">
+                    <div class="machine-header" id="MC_NM_A830">A830</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8301">0</div>
+                        <div class="machine-value" id="A8302">0</div>
+                        <div class="machine-value" id="A8303">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP_A830">--</div>
+                </div>
+
+                <!-- A831 -->
+                <div class="grid-item machine-cell" id="LY_A831">
+                    <div class="machine-header" id="MC_NM_A831">A831</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8311">0</div>
+                        <div class="machine-value" id="A8312">0</div>
+                        <div class="machine-value" id="A8313">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP_A831">--</div>
+                </div>
+
+                <!-- A832 -->
+                <div class="grid-item machine-cell" id="LY_A832">
+                    <div class="machine-header" id="MC_NM_A832">A832</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8321">0</div>
+                        <div class="machine-value" id="A8322">0</div>
+                        <div class="machine-value" id="A8323">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP_A832">--</div>
+                </div>
+
+                <!-- A833 -->
+                <div class="grid-item machine-cell" id="LY_A833">
+                    <div class="machine-header" id="MC_NM_A833">A833</div>
+                    <div class="machine-values">
+                        <div class="machine-value" id="A8331">0</div>
+                        <div class="machine-value" id="A8332">0</div>
+                        <div class="machine-value" id="A8333">0</div>
+                    </div>
+                    <div class="machine-footer" id="STOP_A833">--</div>
+                </div>
+            </div>
+
+            <!-- Container cho máy FA khi hiển thị ở row 1 (ẩn mặc định) -->
+            <div id="fa-machines-container" style="display: none;">
+                <!-- Vị trí giữ các máy FA khi cần hiển thị ở row 1 -->
+                <div class="grid-item machine-cell fa-machine" id="fa_LY_A830">
+                    <!-- Nội dung sẽ được clone từ LY_A830 -->
+                </div>
+                <div class="grid-item machine-cell fa-machine" id="fa_LY_A831">
+                    <!-- Nội dung sẽ được clone từ LY_A831 -->
+                </div>
+                <div class="grid-item machine-cell fa-machine" id="fa_LY_A832">
+                    <!-- Nội dung sẽ được clone từ LY_A832 -->
+                </div>
+                <div class="grid-item machine-cell fa-machine" id="fa_LY_A833">
+                    <!-- Nội dung sẽ được clone từ LY_A833 -->
+                </div>
+            </div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-header">
+                <span class="chart-title">월간 생산량 차트 (Biểu đồ sản lượng tháng)</span>
+                <input type="month" id="chartMonth" style="padding:6px; border:2px solid #ddd; border-radius:4px; font-weight:bold;">
+            </div>
+            <div class="chart-body">
+                <canvas id="productionChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal hiển thị dữ liệu sản xuất -->
+<div id="H00_LISTModal" class="modal modal-fixed-footer" style="width: 95%; height: 85%;">
+    <div class="modal-content">
+        <div class="modal-header-info">
+            <div class="info-row">
+                <span><strong>가동율:</strong> (작업 시간 - (비가동 - L, T, M 비가동)) / 작업시간</span>
+                <span style="margin-left: 30px;"><strong>비가동:</strong> L : 식사시간, T : 교육시간, M : 설비교정</span>
+            </div>
+            <div class="info-row">
+                <span><strong>UPH:</strong> 생산수량 / (작업시간 - 비가동)</span>
+            </div>
+        </div>
+
+        <div class="KhungOverflow">
+            <table class="responsive-table" id="DataGridView1Table">
+                <thead class="sticky-header">
+                    <tr>
+                        <th></th>
+                        <th>DATE</th>
+                        <th>MC_NO</th>
+                        <th>시작시간</th>
+                        <th>종료시간</th>
+                        <th>QTY</th>
+                        <th>STOP_TIME</th>
+                        @* <th>STOP_TIME(L,T 제외)</th> *@
+                        <th>WORK_TIME</th>
+                        <th>Operating rate</th>
+                        <th>UPH</th>
+                    </tr>
+                </thead>
+                <tbody id="DataGridView1">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="~/Scripts/H01.js?v=@version"></script>
+

@@ -1,0 +1,294 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IZ02Service _Z02Service
+
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "Z02";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _Z02Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l6 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <ul class="tabs">
+                        <li class="tab col s4 p-0"><a id="ATag002" class="p-0" href="#TabPage2">Request List</a></li>
+                        <li class="tab col s4 p-0"><a id="ATag001" class="p-0" href="#TabPage1">Request to use MES</a></li>
+
+                        <li class="tab col s4 p-0"><a id="ATag003" class="p-0" href="#TabPage3">Approve Request</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" id="TabPage2">
+                <div class="col s12 m12 l12 card-panel green lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Date</label>
+                                <input id="DateTimePicker1" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Complete</label>
+                                <select id="ComboBox5" class="browser-default form-select">
+                                    <option value="ALL">ALL</option>
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>New ID</label>
+                                <input id="TextBox3" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView2">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView2Sort()">
+                                <th>Apply</th>
+                                <th>Complete</th>
+                                <th>DATE</th>
+                                <th>NOTE</th>
+                                <th>NEW ID</th>
+                                <th>NAME</th>
+                                <th>Department</th>
+                                <th>Use_LEVEL</th>
+                                <th>IDX</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- TabPage1: User Request -->
+            <div class="row" id="TabPage1">
+                <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>MES ID</label>
+                                <input id="TextBox1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Name</label>
+                                <input id="TextBox2" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Department</label>
+                                <select id="ComboBox1" class="browser-default form-select">
+                                    <option value="">Select Item...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Usage Purpose</label>
+                                <select id="ComboBox2" class="browser-default form-select">
+                                    <option value="">Select Item...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Authority</label>
+                                <select id="ComboBox3" class="browser-default form-select">
+                                    <option value="">Select Item...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow50">
+                    <table class="responsive-table" id="DataGridView1">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>Requester</th>
+                                <th>DATE</th>
+                                <th>MES ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>USED</th>
+                                <th>Level</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- TabPage2: Search Request -->
+            <!-- TabPage3: User Management -->
+            <div class="row" id="TabPage3">
+                <div class="col s12 m12 l12 card-panel yellow lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Request ID</label>
+                                <input id="Label7" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>User ID</label>
+                                <input id="TextBox5" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>User Name</label>
+                                <input id="TextBox6" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Department</label>
+                                <input id="TextBox8" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Authority</label>
+                                <input id="TextBox7" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Authority Level</label>
+                                <select id="ComboBox6" class="browser-default form-select">
+                                    <option value="">Select Item...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>Filter</label>
+                                <div class="col s12 m12 l12">
+                                    <label><input id="RadioButton1" name="filter" type="radio" checked><span>Open List</span></label>
+                                    <label><input id="RadioButton2" name="filter" type="radio"><span>All List</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow50">
+                    <table class="responsive-table" id="DataGridView3">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView3Sort()">
+                                <th>Apply</th>
+                                <th>Complete</th>
+                                <th>DATE</th>
+                                <th>NOTE</th>
+                                <th>NEW ID</th>
+                                <th>NAME</th>
+                                <th>Department</th>
+                                <th>Use_LEVEL</th>
+                                <th>IDX</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Z02.js?v=@version"></script>

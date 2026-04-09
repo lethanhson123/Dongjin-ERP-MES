@@ -1,0 +1,109 @@
+﻿@model List<NGList>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>In QR Code Mã Lỗi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 15px;
+            font-size: 13px;
+        }
+        .qr-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-between;
+        }
+        .qr-item {
+            width: 48%;
+            display: flex;
+            border: 1px solid #000;
+            margin-bottom: 15px;
+        }
+        .qr-col {
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+        .error-code-col {
+            width: 25%;
+            background-color: #f8d7da;
+            border-right: 1px solid #000;
+            text-align: center;
+        }
+        .error-desc-col {
+            width: 35%;
+            border-right: 1px solid #000;
+            text-align: center;
+        }
+        .qr-code-col {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .print-btn {
+            margin: 10px 5px 15px 0;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        @@media print {
+            .no-print {
+                display: none;
+            }
+            @@page {
+                margin: 0.5cm;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print">
+        <button class="print-btn" onclick="window.print()">In QR Code</button>
+        <button class="print-btn" style="background-color: #f44336;" onclick="window.close()">Đóng</button>
+    </div>
+    
+    <div class="qr-container">
+        @foreach (var item in Model)
+        {
+            <div class="qr-item">
+                <div class="qr-col error-code-col">@item.ErrorCode</div>
+                <div class="qr-col error-desc-col">@item.ErrorDescription</div>
+                <div class="qr-col qr-code-col">
+                    <div id="qr-@item.ErrorCode.Replace("-", "")"></div>
+                </div>
+            </div>
+        }
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @foreach (var item in Model)
+            {
+                <text>
+                new QRCode(document.getElementById("qr-@item.ErrorCode.Replace("-", "")"), {
+                    text: "@item.ErrorCode",
+                    width: 90,
+                    height: 90
+                });
+                </text>
+            }
+        });
+    </script>
+</body>
+</html>

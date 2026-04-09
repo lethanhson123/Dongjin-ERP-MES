@@ -1,0 +1,102 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "D04_PLT_PRNT";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "Pallet number output (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <h6><b>Pallet number output (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l6 right-align-md">
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel green lighten-4" style="padding-top: 0px; padding-bottom: 0px;">
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>PO CODE : </label>
+                        <input id="MaskedTextBox1" type="text" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Start NO : </label>
+                        <input id="MaskedTextBox2" type="number" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Prient(2EA) :</label>
+                        <input id="NumericUpDown1" type="number" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>End NO : </label>
+                        <input id="Label3" type="text" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <br/>
+                        <button id="Buttonprint" title="Print" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Print</button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <br />
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                    </div>
+                </div>              
+                <div class="col s12 m12 l12">
+                    <div>                        
+                        <input id="Label5" type="text" class="form-control" readonly style="border-width: 0px !important; color: red;">
+                    </div>
+                </div>                
+            </div>
+            <div class="KhungOverflow60">
+                <table class="responsive-table" id="DataGridView1Table">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th>PO_CODE</th>
+                            <th>CREATE_DTM</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView1">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/D04_PLT_PRNT.js?v=@version"></script>
+

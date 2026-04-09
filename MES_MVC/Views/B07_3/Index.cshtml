@@ -1,0 +1,126 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string cookie = string.Empty;
+	cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+	string UserID = cookie;
+	string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+	string url = "B07_3";
+	string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "PART ID (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l12">
+					<h6><b>PART ID (@url)</b></h6>
+				</div>
+			</div>
+			<div class="row card-panel light-blue lighten-4">
+				<div class="col s6 m6 l4">
+					<div>						
+						<input id="Label7" type="text" class="form-control" readonly> 						
+					</div>
+				</div>
+				<div class="col s6 m6 l4">
+					<div>
+						<input id="Label6" type="text" class="form-control" readonly>
+					</div>
+				</div>
+				<div class="col s3 m3 l1">
+					<div>
+						<button id="Buttonfind" class="btn waves-effect waves-light green darken-1">Verify</button>
+					</div>
+				</div>
+				<div class="col s3 m3 l1">
+					<div>
+						<button id="Buttonsave" class="btn waves-effect waves-light green darken-1">Save</button>
+					</div>
+				</div>
+				<div class="col s3 m3 l1">
+					<div>
+						<button id="Buttoninport" class="btn waves-effect waves-light green darken-1">Import</button>
+					</div>
+				</div>
+				<div class="col s3 m3 l1">
+					<div>
+						<button id="Buttonclose" class="btn waves-effect waves-light purple darken-1">Close</button>
+					</div>
+				</div>
+			</div>
+			<div class="row card-panel green lighten-4">
+				<div class="col s12 m12 l1">
+					<div>
+						<label>ERROR : </label>						
+					</div>
+				</div>
+				<div class="col s12 m12 l3">
+					<div>
+						<label>Tube_Cutting_Part_No</label>
+						<input id="Label1" type="number" class="form-control" readonly>
+					</div>
+				</div>
+				<div class="col s12 m12 l3">
+					<div>
+						<label>Raw_Material_Part</label>
+						<input id="Label2" type="number" class="form-control" readonly>
+					</div>
+				</div>
+				<div class="col s12 m12 l5">
+					<div>
+						<label>Download <a href="@ExcelTemplateURL" title="@ExcelTemplateURL">Excel Template</a> (if you don't have it)</label>
+						<br />
+						<input id="FileToUpload" type="file" class="form-control" accept=".xls,.xlsx" style="display:none;">
+					</div>
+				</div>
+			</div>
+			<div class="KhungOverflow">
+				<table class="responsive-table">
+					<thead class="sticky-header">
+						<tr onclick="DataGridView1Sort()">
+							<th></th>
+							<th>CHK</th>
+							<th>NO</th>
+							<th>Tube_Cutting_Part_No</th>
+							<th>Description</th>
+							<th>Raw_Material_Part</th>
+							<th>Size</th>
+							<th>Machine</th>
+							<th>Packing_unit</th>
+							<th>Location</th>							
+						</tr>
+					</thead>
+					<tbody id="DataGridView1">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/B07_3.js?v=@version"></script>
+

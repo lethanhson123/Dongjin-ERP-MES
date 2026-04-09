@@ -1,0 +1,115 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string url = "D04_POADD";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "D04_PO_ADD (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l6">
+					<h6><b>D04_PO_ADD (@url)</b></h6>
+				</div>
+				<div class="col s12 m12 l6 right-align-md">
+					<div>						
+					</div>
+				</div>
+			</div>
+			<div class="row card-panel light-blue lighten-4">
+				<div class="col s6 m6 l2">
+					<div>
+						<label>CODE :</label>
+						<input id="TextBoxA0" type="text" class="form-control" readonly>
+					</div>
+				</div>
+				<div class="col s6 m6 l2">
+					<div>
+						<label>.</label>
+						<input id="Label1" type="text" class="form-control" readonly style="color: red;">						
+					</div>
+				</div>			
+				<div class="col s6 m6 l2">
+					<div>
+						<label>.</label>						
+						<input id="Label2" type="number" class="form-control" readonly>
+					</div>
+				</div>
+				<div class="col s6 m6 l2">
+					<div>
+						<label>.</label>
+						<input id="Label3" type="number" class="form-control" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="row card-panel yellow lighten-4">
+				<div class="col s6 m6 l2">
+					<div>
+						<label>PO code (*): </label>
+						<input id="TextBoxA1" type="text" class="form-control" readonly>
+					</div>
+				</div>
+				<div class="col s6 m6 l2">
+					<div>
+						<label>PART NO : </label>
+						<input id="TextBoxA2" type="text" class="form-control">
+					</div>
+				</div>
+				<div class="col s12 m12 l2">
+					<div>
+						<br />
+						<label>
+							<input id="CheckBox1" type="checkbox" class="form-check-input" />
+							<span>LABEL BARCODE(P)</span>
+						</label>
+					</div>
+				</div>
+				<div class="col s6 m6 l2">
+					<div>
+						<label>PO QTY :</label>
+						<input id="TextBoxA3" type="number" class="form-control">
+					</div>
+				</div>
+				<div class="col s6 m6 l2">
+					<div>
+						<label>PACK_QTY :</label>
+						<input id="TextBox6" type="number" class="form-control" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s6 m6 l12">
+					<div>
+						<button id="Button3" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">PO Save(Edit)</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/D04_POADD.js?v=@version"></script>
+

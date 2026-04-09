@@ -1,0 +1,479 @@
+﻿/* H14.css - Dark Theme Dashboard */
+:root {
+    --primary-color: #2563eb;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --dark-bg: #1e293b;
+    --card-bg: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+}
+
+body {
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Header Styles */
+.header {
+    background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-stats {
+    display: flex;
+    gap: 4rem; 
+    justify-content: center;
+    margin: 0 auto; 
+}
+
+.stat-item {
+    text-align: center;
+    padding: 0 4rem; 
+}
+
+.stat-value {
+    font-size: 2rem; 
+    font-weight: 700; 
+}
+
+.stat-label {
+    font-size: 1rem; 
+    color: rgba(255, 255, 255, 0.9); 
+    margin-top: 0.5rem; 
+}
+/* Main Container */
+.main-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+/* KPI Cards */
+.kpi-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.kpi-card {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+    .kpi-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .kpi-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-color);
+    }
+
+    .kpi-card.success::before {
+        background: var(--success-color);
+    }
+
+    .kpi-card.warning::before {
+        background: var(--warning-color);
+    }
+
+    .kpi-card.danger::before {
+        background: var(--danger-color);
+    }
+
+.kpi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.kpi-title {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.kpi-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(37, 99, 235, 0.2);
+    color: var(--primary-color);
+}
+
+.kpi-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.kpi-trend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.trend-up {
+    color: var(--success-color);
+}
+
+.trend-down {
+    color: var(--danger-color);
+}
+
+/* Machines Section */
+.machines-section {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.machines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.machine-card {
+    background: var(--dark-bg);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.machine-status {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.status-running {
+    background: var(--success-color);
+    color: var(--success-color);
+}
+
+.status-warning {
+    background: var(--warning-color);
+    color: var(--warning-color);
+}
+
+.status-stopped {
+    background: var(--danger-color);
+    color: var(--danger-color);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 currentColor;
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px transparent;
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 transparent;
+    }
+}
+
+.machine-name {
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    margin-bottom: 0.75rem;
+    color: white;
+}
+
+.machine-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.metric-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8125rem;
+}
+
+.metric-label {
+    color: var(--text-secondary);
+}
+
+.metric-value {
+    font-weight: 600;
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--success-color);
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+
+/* Charts Section */
+.charts-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+.chart-card {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.chart-placeholder {
+    height: 250px;
+    background: var(--dark-bg);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: rgba(37, 99, 235, 0.2);
+    color: var(--primary-color);
+}
+
+    .btn:hover {
+        background: rgba(37, 99, 235, 0.3);
+    }
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+    .btn-primary:hover {
+        background: #1d4ed8;
+    }
+
+/* Modal Styling */
+.modal {
+    background: var(--dark-bg);
+    border-radius: 1rem;
+    color: var(--text-primary);
+}
+
+.modal-content {
+    padding: 1.5rem;
+}
+
+.modal-header-info {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-row {
+    margin-bottom: 0.5rem;
+}
+
+.KhungOverflow {
+    max-height: 65vh;
+    overflow-y: auto;
+}
+
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.machine-status-text {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--danger-color);
+    font-weight: 600;
+    min-height: 1rem;
+    text-align: center;
+}
+
+    .responsive-table th {
+        background: var(--card-bg);
+        padding: 0.75rem 1rem;
+        text-align: left;
+        color: var(--text-secondary);
+        position: sticky;
+        top: 0;
+    }
+
+    .responsive-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .responsive-table tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+/* Context Menu */
+.context-menu {
+    position: absolute;
+    background: var(--card-bg);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 180px;
+    overflow: hidden;
+}
+.chart-container {
+    height: 300px;
+    position: relative;
+    margin: 1rem 0;
+}
+
+/* Tùy chỉnh tooltip của biểu đồ */
+.chartjs-tooltip {
+    background-color: rgba(51, 65, 85, 0.9);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.menu-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    .menu-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+/* Background Overlay */
+#BackGround {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+}
+
+    #BackGround::after {
+        content: 'Loading...';
+        color: white;
+        font-size: 1.25rem;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-stats {
+        display: none;
+    }
+
+    .machines-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+
+    .kpi-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Compatibility with Materialize CSS */
+.card {
+    background: transparent;
+    box-shadow: none;
+}
+
+.card-content {
+    padding: 0;
+}
+
+.modal-fixed-footer {
+    height: 85vh !important;
+}
+
+    .modal-fixed-footer .modal-content {
+        height: calc(100% - 56px);
+    }

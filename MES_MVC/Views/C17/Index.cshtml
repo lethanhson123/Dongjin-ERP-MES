@@ -1,0 +1,416 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC17Service _C17Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+BaseParameter BaseParameter = new BaseParameter();
+string url = "C17";
+try
+{
+	//truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+	BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+	BaseResult = await _MAINService.Main_Shown(BaseParameter);
+	if (BaseResult.ListtsauthTranfer != null)
+	{
+		BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+		if (BaseResult.tsauthTranfer != null)
+		{
+			IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+			IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+			IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+			IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+			IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+			IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+			IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+			IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+		}
+	}
+}
+catch (Exception ex)
+{
+	string mes = ex.Message;
+}
+    try
+    {
+        BaseResult = await _C17Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled" ) id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled" ) id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled" ) id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled" ) id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled" ) id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled" ) id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled" ) id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled" ) id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <ul class="tabs">
+                        <li class="tab col s4 p-0">
+                            <a id="ATag001" class="active p-0" href="#Tag001">Material Order</a>
+                        </li>
+                        <li class="tab col s4 p-0">
+                            <a id="ATag002" class="p-0" href="#Tag002">Material Approve</a>
+                        </li>
+                        <li class="tab col s4 p-0">
+                            <a id="ATag003" class="p-0" href="#Tag003">Material List</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col s12 m6 l8">
+                </div>
+            </div>
+            <div class="row" id="Tag001">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>Factory : </label>
+                            <select id="CB_FCTRY1" class="browser-default form-select">
+                            </select>
+                        </div>
+                    </div>
+                   
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>STAGE(공정) : </label>
+                            <select id="ComboBox2" class="browser-default form-select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>DATE :</label>
+                            <input id="DateTimePicker2" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>.</label>
+                            <input id="LB_DT" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>.</label>
+                            <input id="LB_STG" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                </div>
+                <div class="col s12 m12 l9">
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l3">
+                            <br />
+                            <div>
+                                <label>
+                                    <input id="RadioButton2" name="Tag001" type="radio" />
+                                    <span>Select All</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton1" name="Tag001" type="radio" />
+                                    <span>Select Cancel</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>.</label>
+                                <input id="Label12" type="text" class="form-control" readonly value="Select MAX : 10EA">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>.</label>
+                                <input id="Label21" type="text" class="form-control" readonly value="TIME : 0" style="color: blue;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>.</label>
+                                <input id="Label22" type="text" class="form-control" readonly value="TIME 15  Refresh" style="color: blue;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div class="KhungOverflow60">
+                        <table class="responsive-table" id="DataGridView2Table">
+                            <thead class="sticky-header">
+                                <tr onclick="DataGridView2Sort()">
+                                    <th>DATE</th>
+                                    <th>STAGE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView2">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l9">
+                    <div class="KhungOverflow60">
+                        <table class="responsive-table" id="DataGridView3Table">
+                            <thead class="sticky-header">
+                                <tr onclick="DataGridView3Sort()">
+                                    <th></th>
+                                    <th>ORDER_NO</th>
+                                    <th>STAGE</th>
+                                    <th>Location</th>
+                                    <th>DATE</th>
+                                    <th>DJG_CODE</th>
+                                    <th>PART_NO</th>
+                                    <th>PART_NAME</th>
+                                    <th>FAMILY(SIZE)</th>
+                                    <th>PART_SNP</th>
+                                    <th>QTY</th>
+                                    <th>STOCK</th>
+                                    <th>BOX_QTY</th>
+                                    <th>TYPE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView3">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="Tag002">
+                <div class="col s12 m6 l12 card-panel green lighten-4">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>Factory : </label>
+                            <select id="CB_FCTRY3" class="browser-default form-select">
+                            </select>
+                        </div>
+                    </div>
+                   
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>STAGE(공정) : </label>
+                            <select id="T3_S1" class="browser-default form-select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>DATE :</label>
+                            <input id="T3_S2" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>검색 Tìm :</label>
+                            <input id="T3_S3" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>Sheet NO :</label>
+                            <input id="T3_S4" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>.</label>
+                            <input id="Label7" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>.</label>
+                            <input id="Label6" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div>
+                        <label>
+                            <input id="rbchk1" name="Tag002" type="radio" />
+                            <span>Select All</span>
+                        </label>
+                        <label>
+                            <input id="rbchk2" name="Tag002" type="radio" />
+                            <span>Select Cancel</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="KhungOverflow">
+                    <table class="responsive-table" id="DataGridView4Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView4Sort()">
+                                <th></th>
+                                <th>STAGE</th>
+                                <th>Complete</th>
+                                <th>DATE</th>
+                                <th>DJG_CODE</th>
+                                <th>PART_NO</th>
+                                <th>PART_NAME</th>
+                                <th>FAMILY(SIZE)</th>
+                                <th>PART_SNP</th>
+                                <th>QTY</th>
+                                <th>LOCATION</th>
+                                <th>BOX</th>
+                                <th>Sheet_NO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView4">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag003">
+                <div class="row card-panel yellow lighten-4" style="margin-bottom: 16px;">
+                    <!-- Cột 1 -->
+                    <div class="col l2 m4 s12">
+                        <div>
+                            <label>Factory :</label>
+                            <select id="CB_FCTRY2" class="browser-default form-select"></select>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <label>STAGE(공정) :</label>
+                            <select id="T2_S1" class="browser-default form-select"></select>
+                        </div>
+                    </div>
+                    <!-- Cột 2 -->
+                    <div class="col l2 m4 s12">
+                        <div>
+                            <label>DATE :</label>
+                            <input id="T2_S2" type="date" class="form-control">
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <label>
+                                <input id="CheckBox1" type="checkbox" class="form-check-input" />
+                                <span>Month</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Cột 3 -->
+                    <div class="col l2 m4 s12">
+                        <div>
+                            <label>PART NO(검색 Tìm) :</label>
+                            <input id="T2_S3" type="text" class="form-control">
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <label>Sheet NO :</label>
+                            <input id="T2_S5" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <!-- Cột 4 -->
+                    <div class="col l2 m4 s12">
+                        <div>
+                            <label>NAME(검색 Tìm) :</label>
+                            <input id="T2_S4" type="text" class="form-control">
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <label>Complete :</label>
+                            <select id="T2_S6" class="browser-default form-select">
+                                <option value="ALL">ALL</option>
+                                <option value="Y">Y</option>
+                                <option value="N">N</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <!-- Cột 5 -->
+                    <div class="col l4 m12 s12" style="display: flex; align-items: center;">
+                        <label style="font-size: 30px; margin-bottom:0; margin-right: 8px;">SUM_BOX :</label>
+                        <input id="Label16" type="text" class="form-control" readonly style="font-size: 30px; height: 50px;width:200px;">
+                    </div>
+                </div>
+
+
+                <div class="KhungOverflow">
+                    <table class="responsive-table" id="T2_DGV1Table">
+                        <thead class="sticky-header">
+                            <tr onclick="T2_DGV1Sort()">
+                                <th>Order_Chk</th>
+                                <th>Complete</th>
+                                <th>STAGE</th>
+                                <th>PART_NO</th>
+                                <th>PART_SNP</th>
+                                <th>QTY</th>
+                                <th>PART_NAME</th>
+                                <th>Date of Request</th>
+                                <th>Order</th>
+                                <th>Sheet_NO</th>
+                                <th>BOX_COUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="T2_DGV1">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C17.js?v=@version"></script>
+

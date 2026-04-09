@@ -1,0 +1,805 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IV01Service _V01Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "V01";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        string Language = CookieHelper.GetCookie(GlobalHelper.Language);
+        BaseResult = await _V01Service.Load();
+        if (BaseResult.DGV_V01_CB1 != null)
+        {
+            for (int i = 0; i < BaseResult.DGV_V01_CB1.Count; i++)
+            {
+                BaseResult.DGV_V01_CB1[i].CD_SYS_NOTE = BaseResult.DGV_V01_CB1[i].CD_NM_HAN;
+                if (Language == GlobalHelper.LanguageCodeVI)
+                {
+                    BaseResult.DGV_V01_CB1[i].CD_SYS_NOTE = BaseResult.DGV_V01_CB1[i].CD_NM_VN;
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<style>
+    .responsive-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        .responsive-table th,
+        .responsive-table td {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+</style>
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                    <input id="FileToUpload" type="file" class="form-control" style="display:none;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l8">
+                    <ul class="tabs">
+                        <li class="tab col s3 p-0">
+                            <a id="ATag001" class="active p-0" href="#Tag001">List management</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="ATag002" class="p-0" href="#Tag002">Machine parts List</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="ATag003" class="p-0" href="#Tag003">Company</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="ATag004" class="p-0" href="#Tag004">DMPS_COST</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" id="Tag001">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.V_S09</label>
+                            <input id="TextBoxS3" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>NAME : </label>
+                            <input id="TextBoxS1" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>USE_Y/N</label>
+                            <br />
+                            <label>
+                                <input id="RadioButton7" name="V01_RadioButton01" type="radio" />
+                                <span>Y</span>
+                            </label>
+                            <label>
+                                <input id="RadioButton6" name="V01_RadioButton01" type="radio" />
+                                <span>N</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l12 card-panel green lighten-4">
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S01 _VN</label>
+                                <input id="PART_ADD01" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S02 _VN</label>
+                                <input id="PART_ADD02" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S03</label>
+                                <select id="PART_ADD06" class="browser-default form-select">
+                                    @{
+                                        if (BaseResult.DGV_V01_CB1 != null)
+                                        {
+                                            foreach (var item in BaseResult.DGV_V01_CB1)
+                                            {
+                                                <option value="@item.CD_IDX">
+                                                    @item.CD_SYS_NOTE
+                                                </option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S04</label>
+                                <input id="PART_ADD07" type="number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div style="padding-top: 10px;">
+                                <button id="Button1" title="PHOTO" class="btn waves-effect waves-light green darken-1">PHOTO</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S01 _KR</label>
+                                <input id="PART_ADD03" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S02 _KR</label>
+                                <input id="PART_ADD04" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S09</label>
+                                <input id="PART_ADD05" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>USE_Y/N</label>
+                                <br />
+                                <label>
+                                    <input id="RadioButton4" name="V01_RadioButton02" type="radio" />
+                                    <span>Y</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton5" name="V01_RadioButton02" type="radio" />
+                                    <span>N</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>.</label>
+                                <input id="PART_ADD08" type="text" class="form-control" readonly style="display: none;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div>
+                        <label>
+                            <input id="RadioButton1" name="V01_RadioButton03" type="radio" />
+                            <span>ALL</span>
+                        </label>
+                        <label>
+                            <input id="RadioButton2" name="V01_RadioButton03" type="radio" />
+                            <span>Hide_VN</span>
+                        </label>
+                        <label>
+                            <input id="RadioButton3" name="V01_RadioButton03" type="radio" />
+                            <span>Hide_KR</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="KhungOverflow45">
+                    <table class="responsive-table" id="DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>CODE</th>
+                                <th>P_NAME_VN</th>
+                                <th>SPEC_VN</th>
+                                <th>UNIT_VN</th>
+                                <th>P_NAME_KR</th>
+                                <th>SPEC_KR</th>
+                                <th>UNIT_KR</th>
+                                <th>Bundles_QTY</th>
+                                <th>Product_NO</th>
+                                <th>CREATE_DATE</th>
+                                <th>CREATE_USER</th>
+                                <th>UPDATE_DATE</th>
+                                <th>UPDATE_USER</th>
+                                <th>USED</th>
+                                <th>PHOTO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1">
+                        </tbody>
+                    </table>
+                    <table class="responsive-table" id="DataGridView1TableRadioButton2" style="display: none;">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>CODE</th>
+                                <th>P_NAME_VN</th>
+                                <th>SPEC_VN</th>
+                                <th>UNIT_VN</th>
+                                <th>Bundles_QTY</th>
+                                <th>Product_NO</th>
+                                <th>CREATE_DATE</th>
+                                <th>CREATE_USER</th>
+                                <th>UPDATE_DATE</th>
+                                <th>UPDATE_USER</th>
+                                <th>USED</th>
+                                <th>PHOTO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1RadioButton2">
+                        </tbody>
+                    </table>
+                    <table class="responsive-table" id="DataGridView1TableRadioButton3" style="display: none;">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>CODE</th>
+                                <th>P_NAME_KR</th>
+                                <th>SPEC_KR</th>
+                                <th>UNIT_KR</th>
+                                <th>Bundles_QTY</th>
+                                <th>Product_NO</th>
+                                <th>CREATE_DATE</th>
+                                <th>CREATE_USER</th>
+                                <th>UPDATE_DATE</th>
+                                <th>UPDATE_USER</th>
+                                <th>USED</th>
+                                <th>PHOTO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1RadioButton3">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag002">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Product NO : </label>
+                                <input id="TextBox10" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>NAME : </label>
+                                <input id="TextBox2" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>MC_TYPE</label>
+                                <input id="TextBox1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>USE_Y/N</label>
+                                <br />
+                                <label>
+                                    <input id="RadioButton8" name="V01_RadioButton04" type="radio" />
+                                    <span>Y</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton9" name="V01_RadioButton04" type="radio" />
+                                    <span>N</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l12 card-panel yellow lighten-4">
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Part Name : </label>
+                                <input id="T2_PN_K" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>MC_Type : </label>
+                                <input id="T2_PSPEC_V" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Product NO : </label>
+                                <input id="T2_PN_NM" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div style="padding-top: 10px;">
+                                <button id="Button2" title="PHOTO" class="btn waves-effect waves-light green darken-1">PHOTO</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <img id="PictureBox1" width="161" height="82" alt="PictureBox1" title="PictureBox1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Part NO : </label>
+                                <input id="T2_PN_V" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Description : </label>
+                                <input id="T2_PSPEC_K" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>USE_Y/N</label>
+                                <br />
+                                <label>
+                                    <input id="RadioButton14" name="V01_RadioButton05" type="radio" />
+                                    <span>Y</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton13" name="V01_RadioButton05" type="radio" />
+                                    <span>N</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>.</label>
+                                <input id="T2_PHOTO" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow">
+                    <table class="responsive-table" id="DataGridView2Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView2Sort()">
+                                <th>CODE</th>
+                                <th>PART NO</th>
+                                <th>PART NAME</th>
+                                <th>MC_Type</th>
+                                <th>Description</th>
+                                <th>UNIT_EN</th>
+                                <th>Bundles_QTY</th>
+                                <th>Product_NO</th>
+                                <th>CREATE_DATE</th>
+                                <th>CREATE_USER</th>
+                                <th>UPDATE_DATE</th>
+                                <th>UPDATE_USER</th>
+                                <th>USED</th>
+                                <th>PHOTO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView2">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag003">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Division : </label>
+                                <input id="SUCH1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Company Name : </label>
+                                <input id="SUCH2" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Manager : </label>
+                                <input id="SUCH3" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l12 card-panel green lighten-4">
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Company Name : </label>
+                                <input id="TBA01" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Division : </label>
+                                <input id="TBA02" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Address : </label>
+                                <input id="TBA03" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Remark : </label>
+                                <input id="TBA05" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>.</label>
+                                <input id="TBA08" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Manager : </label>
+                                <input id="TBA04" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>TEL. : </label>
+                                <input id="TBA06" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Company NO : </label>
+                                <input id="TBA09" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>FAX : </label>
+                                <input id="TBA07" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow">
+                    <table class="responsive-table" id="DGV_01Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DGV_01Sort()">
+                                <th></th>
+                                <th>CODE</th>
+                                <th>COMPANY NAME</th>
+                                <th>DIVISION</th>
+                                <th>ADDRESS</th>
+                                <th>COMPANY_NO</th>
+                                <th>Phone Number</th>
+                                <th>FAX</th>
+                                <th>MANAGER</th>
+                                <th>REMARK</th>
+                                <th>CREATE DATE</th>
+                                <th>CREATE USER</th>
+                                <th>UPDATE_DATE</th>
+                                <th>UPDATE_USER</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DGV_01">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag004">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S09</label>
+                                <input id="TextBox4" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>NAME : </label>
+                                <input id="TextBox3" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>MONTH : </label>
+                                <select id="ComboBox1" class="browser-default form-select">
+                                    <option value="ALL">
+                                        ALL
+                                    </option>
+                                    <option value="OVER 1">
+                                        OVER 1
+                                    </option>
+                                    <option value="OVER 2">
+                                        OVER 2
+                                    </option>
+                                    <option value="OVER 3">
+                                        OVER 3
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Company Name : </label>
+                                <input id="TextBox15" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div style="padding-top: 10px;">
+                                <button id="Button3" title="PHOTO" class="btn waves-effect waves-light green darken-1">견적서 Bảng báo giá</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l12 card-panel yellow lighten-4">
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S01 _VN</label>
+                                <input id="TAB4_TB01" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S02 _VN</label>
+                                <input id="TAB4_TB02" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S03</label>
+                                <input id="TextBox5" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S03</label>
+                                <input id="TextBox6" type="number" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S01 _KR</label>
+                                <input id="TAB4_TB03" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S02 _KR</label>
+                                <input id="TAB4_TB04" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S09</label>
+                                <input id="TAB4_TB00" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>.</label>
+                                <input id="Label26" type="number" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l12">
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <label>Company Name</label>
+                                <input id="TAB4_TB05" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>DATE</label>
+                                <input id="DateTimePicker1" type="date" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>COST</label>
+                                <input id="TextBox14" type="number" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="RadioButton16" name="V01_RadioButton06" type="radio" />
+                                    <span>ALL</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton15" name="V01_RadioButton06" type="radio" />
+                                    <span>Hide_VN</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton12" name="V01_RadioButton06" type="radio" />
+                                    <span>Hide_KR</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow40">
+                    <table class="responsive-table" id="DataGridView3Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView3Sort()">
+                                <th>Product_NO</th>
+                                <th>P_NAME_VN</th>
+                                <th>SPEC_VN</th>
+                                <th>UNIT_VN</th>
+                                <th>P_NAME_KR</th>
+                                <th>SPEC_KR</th>
+                                <th>UNIT_KR</th>
+                                <th>Bundles_QTY</th>
+                                <th>DATE</th>
+                                <th>COST</th>
+                                <th>Company Name</th>
+                                <th>CREATE DATE</th>
+                                <th>CREATE USER</th>
+                                <th>UPDATE_DATE</th>
+                                <th>UPDATE_USER</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView3">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ModalImportNameKR" class="modal">
+    <div class="modal-content">
+        <h4>Import Korean Names</h4>
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>File</span>
+                <input id="FileImportNameKR" type="file" accept=".xlsx,.xls">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Upload Excel file">
+            </div>
+        </div>
+
+        <div class="KhungOverflow">
+            <table class="responsive-table striped">
+                <thead>
+                    <tr>
+                        <th>P_NAME_VN</th>
+                        <th>P_NAME_KR</th>
+                    </tr>
+                </thead>
+                <tbody id="ImportPreviewTable">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="BtnSaveImport" class="btn waves-effect waves-light green darken-1">
+            <i class="material-icons left">save</i>Save
+        </button>
+        <button class="modal-close btn waves-effect waves-light red">
+            <i class="material-icons left">close</i>Cancel
+        </button>
+    </div>
+</div>
+<script src="~/Scripts/V01.js?v=@version"></script>
+

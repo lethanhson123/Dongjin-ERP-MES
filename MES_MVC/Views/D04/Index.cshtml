@@ -1,0 +1,1101 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject ID04Service _D04Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "D04";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _D04Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <ul class="tabs">
+                        <li class="tab col s2 p-0">
+                            <a id="ATag001" class="active p-0" href="#Tag001">Shipping Output check</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag007" class="p-0" href="#Tag007">Move Location</a>
+                        </li>
+                        <li class="tab col s1 p-0">
+                            <a id="ATag005" class="p-0" href="#Tag005">Pallet NO</a>
+                        </li>
+                        <li class="tab col s1 p-0">
+                            <a id="ATag006" class="p-0" href="#Tag006">Shipping List</a>
+                        </li>
+                        <li class="tab col s1 p-0">
+                            <a id="ATag002" class="p-0" href="#Tag002">LIST</a>
+                        </li>
+                        <li class="tab col s1 p-0">
+                            <a id="ATag004" class="p-0" href="#Tag004">Shipping QTY</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag008" class="p-0" href="#Tag008">Location Information</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag009" class="p-0" href="#Tag009">Shipping Report</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" id="Tag001">
+                <div class="row card-panel green lighten-4" style="padding-top: 0px; padding-bottom: 0px;">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label id="Label24" style="cursor: pointer;">PO code (*): </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="TextBoxA1" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>PART NO : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="TextBoxA2" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>PO QTY :</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="TextBoxA3" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>NEXT PO : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="TextBox22" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <button id="Button4" title="Add" class="btn waves-effect waves-light grey darken-1" style="width: 100%;">Add</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <button id="Button3" title="PO Save(Edit)" class="btn waves-effect waves-light grey darken-1" style="width: 100%;">PO Save(Edit)</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>CODE :</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="TextBoxA0" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>
+                                    <input id="CheckBox2" type="checkbox" class="form-check-input" />
+                                    <span>Fixing</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>PACK_QTY :</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="TextBox6" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="Label5" class="row card-panel light-blue lighten-4" style="text-align: center; font-size: 18px; font-weight: bold; color: #000000; padding-top: 0px; padding-bottom: 0px; cursor: pointer; margin-top: -2px;  margin-bottom: -3px;">
+                    FINISH GOODS SHIPPING CHECK
+                </div>
+                <div class="row card-panel yellow lighten-4" style="padding-top: 0px; padding-bottom: 0px;">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label id="Label15" style="cursor: pointer;">PO CODE : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="MaskedTextBox1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>(*)Pallet NO : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="MaskedTextBox6" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>PART NO :</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="TextBox10" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>
+                                    <input id="CheckBox3" type="checkbox" class="form-check-input" />
+                                    <span>All</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <button id="Button5" title="PO Add" class="btn waves-effect waves-light blue darken-1" style="width: 100%;">PO Add</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>Not Yet QTY : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="Label28" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>Customer_Pallet</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="MaskedTextBox5" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>
+                                    <input id="CheckBox1" type="checkbox" class="form-check-input" />
+                                    <span>Split</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label id="Label4">Serial BARCODE ID : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <input id="ITEMBCID" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <button id="Button2" title="Add" class="btn waves-effect waves-light grey darken-1" style="width: 100%;">Add</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="Label29" type="number" class="form-control" readonly value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 0px; padding-bottom: 0px;">
+                    <div class="col s12 m12 l10">
+                        <div class="KhungOverflow25">
+                            <table class="responsive-table" id="DGV_OUTTable">
+                                <thead class="sticky-header">
+                                    <tr onclick="DGV_OUTSort()">
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">PO_CODE</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">PART_NO</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">PART_LINE</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">PART_NM</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">SNP</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">PO_QTY</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">NEXT_PO</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">STOCK</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">QTY</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">BOX_QTY</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">PACK_QTY</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">Not_yet_packing</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">STATUS</th>
+                                        <th style="padding-top: 0px; padding-bottom: 0px;">QTY1</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DGV_OUT">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" style="padding-top: 0px; padding-bottom: 0px;">
+                            <div class="col s12 m12 l4">
+                                <div class="KhungOverflow25" style="border: 1px solid #000000;">
+                                    <table class="responsive-table" id="DataGridView1Table">
+                                        <thead class="sticky-header">
+                                            <tr onclick="DataGridView1Sort()">
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">PART_NO</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">PART_LINE</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">QTY</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">BOX Count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="DataGridView1">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l8">
+                                <div class="KhungOverflow25" style="border: 1px solid #000000;">
+                                    <table class="responsive-table" id="DataGridView3Table">
+                                        <thead class="sticky-header">
+                                            <tr onclick="DataGridView3Sort()">
+                                                <th style="padding-top: 0px; padding-bottom: 0px;"></th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">Pallet_NO</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">Customer_Pallet</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">Serial Barcode</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">QTY</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">PART_NO</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">PO CODE</th>
+                                                <th style="padding-top: 0px; padding-bottom: 0px;">Split</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="DataGridView3">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div class="card-panel light-blue lighten-4" style="text-align: center; font-size: 20px; color: #000000; padding-top: 0px; padding-bottom: 0px;">
+                            BOX COUNT
+                        </div>
+                        <div style="border: 1px solid #000000;">
+                            <input id="Label36" type="text" class="form-control" readonly style="font-size: 50px; height: 60px !important; text-align: center; border-width: 0px !important;" value="0">
+                        </div>
+                        <div class="card-panel light-blue lighten-4" style="text-align: center; font-size: 20px; color: #000000; padding-top: 0px; padding-bottom: 0px;">
+                            QTY
+                        </div>
+                        <div style="border: 1px solid #000000;">
+                            <input id="LBQTY" type="text" class="form-control" readonly style="font-size: 50px; height: 60px !important; text-align: center; border-width: 0px !important;" value="0">
+                        </div>
+                        <div class="card-panel light-blue lighten-4" style="text-align: center; font-size: 20px; color: #000000; padding-top: 0px; padding-bottom: 0px;">
+                            RESULT
+                        </div>
+                        <div style="border: 1px solid #000000;">
+                            <input id="LBRESULT" type="text" class="form-control" readonly style="font-size: 50px; height: 60px !important; text-align: center; border-width: 0px !important;" value="--">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="Tag007">
+                <div class="row card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>SERIAL NO Barcode : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="LOC_TextBox1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Move Location : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="LOC_TextBox2" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row card-panel green lighten-4">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label style="font-size: 30px;">Part No : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="LOC_Label11" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 30px;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label style="font-size: 30px;">Qty : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="LOC_Label13" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 30px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label style="font-size: 30px;">Name : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="LOC_Label12" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 30px;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label style="font-size: 30px;">SERIAL NO Barcode : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="LOC_Label14" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 30px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row card-panel yellow lighten-4">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label style="font-size: 30px;">Now Location : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="LOC_Label15" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 30px; height: 40px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label style="font-size: 30px;">Move Location : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="LOC_Label17" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 30px; height: 40px !important;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="Tag005">
+                <div class="row card-panel yellow lighten-4" style="padding-top: 0px; padding-bottom: 0px;">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PO_CODE(*) : </label>
+                                <select id="TextBox2" class="browser-default form-select">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PO_CODE(*) : </label>
+                                <input id="TextBox211" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Pallet NO :</label>
+                                <select id="TextBox14" class="browser-default form-select">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Serial_ID:</label>
+                                <input id="TextBox3" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>
+                                    <input id="RadioButton9" name="D04Tag003001" type="radio" />
+                                    <span>Vertical(PKI)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>
+                                    <input id="RadioButton10" name="D04Tag003001" type="radio" />
+                                    <span>Horizontal(ZDA)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>
+                                    <input id="RadioButton14" name="D04Tag003001" type="radio" />
+                                    <span>Horizontal(AIR)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>
+                            <input id="PalletNOCheckBox" type="checkbox" class="form-check-input" onclick="PalletNODataGridViewCHKChangedAll()" />
+                            <span>All</span>
+                        </label>
+                    </div>
+                    <div class="KhungOverflow60">
+                        <table class="responsive-table" id="PalletNODataGridViewTable">
+                            <thead class="sticky-header">
+                                <tr onclick="PalletNODataGridViewSort()" id="PalletNODataGridViewThead">
+                                    <th></th>
+                                    <th>Pallet NO</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody id="PalletNODataGridView">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l10">
+                    <div class="row card-panel light-blue lighten-4" style="padding-top: 0px; padding-bottom: 0px;">
+                        <div class="col s12 m12 l12">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>
+                                        <input id="RadioButton5" name="D04Tag003002" type="radio" />
+                                        <span>Edit all(Sửa toàn bộ)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>
+                                        <input id="RadioButton6" name="D04Tag003002" type="radio" />
+                                        <span>Partial edit(Sửa 1 phần)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="Label34" type="text" class="form-control" readonly style="border-width: 0px !important;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>BOX QTY : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="Label54" type="text" class="form-control" readonly style="border-width: 0px !important;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="Label22" type="text" class="form-control" readonly style="border-width: 0px !important;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>Pallet NO : </label>
+                                    <input id="MaskedTextBox2" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>.</label>
+                                    <input id="MaskedTextBox4" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>Serial_ID:</label>
+                                    <input id="TextBox4" type="text" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>PART NO :</label>
+                                    <input id="TextBox5" type="text" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DataGridView7Table">
+                            <thead class="sticky-header">
+                                <tr onclick="DataGridView7Sort()" id="DataGridView7Thead">
+                                    <th>CODE</th>
+                                    <th>PO_CODE</th>
+                                    <th>PLET_NO</th>
+                                    <th>SERIAL_ID</th>
+                                    <th>PART_NO</th>
+                                    <th>PART_GRP</th>
+                                    <th>PART_NAME</th>
+                                    <th>PART_SNP</th>
+                                    <th>PO_QTY</th>
+                                    <th>QTY</th>
+                                    <th>BOX_QTY</th>
+                                    <th>Not_yet_packing</th>
+                                    <th>Inventory</th>
+                                    @*  <th>TDPDOTPLMU_IDX</th>
+                                <th>PDOTPL_IDX</th> *@
+                                    <th>NAME</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView7">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="Tag006">
+                <div class="row card-panel green lighten-4" style="padding-top: 0px; padding-bottom: 0px;">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PO code : </label>
+                                <select id="TextBox9" class="browser-default form-select">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NO : </label>
+                                <input id="TextBox7" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>PART NAME : </label>
+                                <input id="TextBox8" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>PLET_NO : </label>
+                                <input id="TextBox13" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>Palette QTY : </label>
+                                <input id="Label57" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>BOX QTY : </label>
+                                <input id="Label55" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>SUM QTY : </label>
+                                <input id="Label61" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>
+                                    <input id="RadioButton8" name="D04Tag004" type="radio" />
+                                    <span>Select All</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton7" name="D04Tag004" type="radio" />
+                                    <span>Inversion of choice</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow25">
+                    <table class="responsive-table" id="DataGridView10Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView10Sort()">
+                                <th>PO_CODE</th>
+                                <th>PART_NO</th>
+                                <th>PART_LINE</th>
+                                <th>PART_NM</th>
+                                <th>PART_SNP</th>
+                                <th>PO_QTY</th>
+                                <th>QTY</th>
+                                <th>BOX_QTY</th>
+                                <th>Not_yet_packing</th>
+                                <th>Inventory</th>
+                                <th>Ship_Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView10">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="KhungOverflow40">
+                    <table class="responsive-table" id="DataGridView8Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView8Sort()">
+                                <th></th>
+                                <th>CODE</th>
+                                <th>PO_CODE</th>
+                                <th>PALLET_NO</th>
+                                <th>CM_PALLET_NO</th>
+                                <th>PART_NO</th>
+                                <th>PART_LINE</th>
+                                <th>PART_NM</th>
+                                <th>PART_SNP</th>
+                                <th>Serial ID</th>
+                                <th>SCAN_DATE</th>
+                                <th>PO_QTY</th>
+                                <th>QTY</th>
+                                <th>BOX_QTY</th>
+                                <th>Not_yet_packing</th>
+                                <th>Inventory</th>
+                                <th>Ship_Status</th>
+                                <th>DONE_YN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView8">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag002">
+                <div class="row card-panel light-blue lighten-4" style="padding-bottom: 0px; padding-top: 0px;">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Date : </label>
+                                <input id="DTPsuck1" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>.</label>
+                                <input id="DTPsuck2" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>
+                                    <input id="RBY" name="D04Tag005001" type="radio" />
+                                    <span>Complete(Y)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>
+                                    <input id="RBN" name="D04Tag005001" type="radio" />
+                                    <span>Stay(N)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PALLET_NO : </label>
+                                <input id="TextBox12" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NO :</label>
+                                <input id="TB_LIST_PARTNO" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Serial ID :</label>
+                                <input id="TextBox1" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PO CODE :</label>
+                                <input id="TextBox11" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NAME :</label>
+                                <input id="TextBox15" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>RO Barcode : </label>
+                                <input id="TextBox21" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label>
+                                    <input id="RadioButton4" name="D04Tag005002" type="radio" />
+                                    <span>Select All</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton3" name="D04Tag005002" type="radio" />
+                                    <span>Inversion of choice</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>SUM QTY : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="Label67" type="text" class="form-control" readonly style="border-width: 0px !important; font-size: 20px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow55">
+                    <table class="responsive-table" id="DataGridView2Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView2Sort()">
+                                <th></th>
+                                <th>PO_CODE</th>
+                                <th>PART_NO</th>
+                                <th>PART_NAME</th>
+                                <th>PART_FML</th>
+                                <th>PART_STAGE</th>
+                                <th>PART_SNP</th>
+                                <th>PO_QTY</th>
+                                <th>PALLET_NO</th>
+                                <th>PALLET_CODE</th>
+                                <th>SERIAL_ID</th>
+                                <th>INPUT_DATE</th>
+                                <th>Good_BRCODE</th>
+                                <th>VLID_REMARK</th>
+                                <th>SHIPPING_DATE</th>
+                                <th>VLID_DSCN_YN</th>
+                                <th>STOCK</th>
+                                <th>PDMTIN_IDX</th>
+                                <th>DONE_YN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView2">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag004">
+                <div class="row card-panel yellow lighten-4">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Date : </label>
+                                <input id="DateTimePicker2" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>.</label>
+                                <input id="DateTimePicker1" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NO :</label>
+                                <input id="TextBox20" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PART NAME :</label>
+                                <input id="TextBox16" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>Customer : </label>
+                                <input id="TextBox18" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>STAGE : </label>
+                                <input id="TextBox19" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView6Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView6Sort()">
+                                <th>PART_NO</th>
+                                <th>PART_NAME</th>
+                                <th>Customer</th>
+                                <th>PART_STAGE</th>
+                                <th>SHIPPING_DATE</th>
+                                <th>QTY</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView6">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag008">
+                <div class="row card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label>
+                                    <input id="RadioButton12" name="D04Tag007" type="radio" />
+                                    <span>PART NO</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton13" name="D04Tag007" type="radio" />
+                                    <span>Serial NO</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton11" name="D04Tag007" type="radio" />
+                                    <span>Location</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>TEXT : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="TextBox17" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView9Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView9Sort()">
+                                <th>PART_NO</th>
+                                <th>NAME</th>
+                                <th>DATE</th>
+                                <th>Location</th>
+                                <th>QTY</th>
+                                <th>Serial_NO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView9">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag009">
+                <div class="row card-panel green lighten-4">
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PO code : </label>
+                                <select id="ComboBox2" class="browser-default form-select">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>PO code : </label>
+                                <input id="ComboBox20" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView11Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView11Sort()">
+                                <th>PALLET_NO</th>
+                                <th>PART_NM</th>
+                                <th>PART_NO</th>
+                                <th>PART_SNP</th>
+                                <th>BOX_QTY</th>
+                                <th>PALLET_SERIAL_NO</th>
+                                <th>REMARK</th>
+                                <th>QTY</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView11">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/D04.js?v=@version"></script>
+

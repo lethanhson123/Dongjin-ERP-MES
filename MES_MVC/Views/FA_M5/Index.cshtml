@@ -1,0 +1,280 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IFA_M5Service _FA_M5Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonexport = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "FA_M5";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _FA_M5Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = "Attendance System (FA_M5)";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <!-- Header -->
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>Attendance System (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="Export" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> Export
+                    </button>
+                    <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> Close
+                    </button>
+                </div>
+            </div>
+
+            <!-- Input Row -->
+            <div class="row">
+                <div class="col s12 m2">
+                    <label for="SelectedDate">Chọn ngày</label>
+                    <input id="SelectedDate" type="date" class="form-control"
+                           style="padding: 8px; font-size: 14px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="col s12 m2">
+                    <label for="LineFilter">Line</label>
+                    <select id="LineFilter" class="browser-default">
+                        <option value="">-- Tất cả Line --</option>
+                    </select>
+                </div>
+                <div class="col s12 m4">
+                    <label for="ScanQR">Scan QR</label>
+                    <input id="ScanQR" type="text" class="form-control" placeholder="Scan QR Code or Enter Emp Code" autofocus />
+                </div>
+                <div class="col s12 m2" style="padding-top: 20px;">
+                    <button id="BtnStopLine" class="btn red darken-1" style="width: 100%;">
+                        <i class="material-icons left">stop</i>
+                        Stop Line
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tables Row -->
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-title" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #4caf50; padding-bottom: 10px; margin-bottom: 15px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <i class="material-icons green-text" style="font-size: 32px;">login</i>
+                                    <span style="font-size: 20px; font-weight: bold;">Staff List:</span>
+                                    <span id="TotalScanIn" style="background: #4caf50; color: white; padding: 5px 15px; border-radius: 20px; font-size: 18px; font-weight: bold; min-width: 40px; text-align: center;">0</span>
+                                </div>
+                                <div style="display: flex; gap: 20px; align-items: center;">
+                                    <label style="margin: 0;">
+                                        <input type="checkbox" id="ChkScanIn" checked />
+                                        <span style="font-weight: bold; font-size: 14px;">Scan In</span>
+                                    </label>
+                                    <label style="margin: 0;">
+                                        <input type="checkbox" id="ChkScanOut" />
+                                        <span style="font-weight: bold; font-size: 14px;">Scan Out</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="KhungOverflow60" style="max-height: 500px;">
+                                <table class="highlight responsive-table">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th>Emp ID</th>
+                                            <th>Full Name</th>
+                                            <th>Shift</th>
+                                            <th>Scan In</th>
+                                            <th>Method</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="StaffListTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-title" style="border-bottom: 2px solid #f44336; padding-bottom: 10px; margin-bottom: 15px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <i class="material-icons red-text" style="font-size: 32px;">logout</i>
+                                    <span style="font-size: 20px; font-weight: bold;">Worker List: Scan Out</span>
+                                    <span id="TotalScanOut" style="background: #f44336; color: white; padding: 5px 15px; border-radius: 20px; font-size: 18px; font-weight: bold; min-width: 40px; text-align: center;">0</span>
+                                </div>
+                            </div>
+                            <div class="KhungOverflow60" style="max-height: 500px;">
+                                <table class="highlight responsive-table">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th>Emp ID</th>
+                                            <th>Full Name</th>
+                                            <th>Shift</th>
+                                            <th>Scan In</th>
+                                            <th>Scan Out</th>
+                                            <th>Working Time</th>
+                                            <th>Downtime</th>
+                                            <th>Method</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="WorkerListTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ✅ MODAL STOP LINE -->
+<div id="ModalStopLine" class="modal" style="max-width: 550px;">
+    <div class="modal-content" style="padding: 32px; background-color: #ffcdd2;">
+
+        <!-- Line Name & Timer -->
+        <div style="text-align: center; margin-bottom: 32px; padding: 24px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h5 style="margin: 0 0 12px 0; font-weight: bold; font-size: 22px; color: #c62828;" id="ModalLineName">PKI-9BUX-AWD</h5>
+            <h3 style="margin: 0; font-size: 52px; font-weight: bold; color: #d32f2f;" id="ModalTimer">00:00</h3>
+        </div>
+
+        <!-- Reason -->
+        <div style="margin-bottom: 32px;">
+            <label style="font-size: 18px; font-weight: 600; color: #1a1a1a; display: block; margin-bottom: 12px;">
+                Lý do dừng line:
+            </label>
+            <select id="DowntimeReason" class="browser-default"
+                    style="padding: 12px 16px; font-size: 16px; border: 2px solid #e0e0e0;
+                           border-radius: 6px; width: 100%; background: #fff;">
+                <option value="">-- Chọn lý do --</option>
+                <option value="Dừng để bảo trì">Dừng để bảo trì</option>
+                <option value="Thiếu vật tư">Thiếu vật tư</option>
+                <option value="Máy móc hỏng">Máy móc hỏng</option>
+                <option value="Chờ QC kiểm tra">Chờ QC kiểm tra</option>
+                <option value="Họp/Đào tạo">Họp/Đào tạo</option>
+                <option value="Cúp Điện">Cúp Điện</option>
+                <option value="NVL Hư/Sai">NVL hư/sai</option>
+                <option value="Khác">Khác</option>
+            </select>
+        </div>
+
+        <!-- Buttons -->
+        <div style="text-align: center;">
+            <button id="BtnModalStart" class="btn-large green darken-1"
+                    style="margin-right: 16px; min-width: 140px; font-size: 16px;">
+                <i class="material-icons left">play_arrow</i>
+                Start
+            </button>
+            <button id="BtnModalClose" class="btn-large grey darken-1"
+                    style="min-width: 140px; font-size: 16px;">
+                <i class="material-icons left">close</i>
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+<div id="ModalEditShift" class="modal" style="max-width: 450px;">
+    <div class="modal-content" style="padding: 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px;">
+
+        <!-- Header -->
+        <div style="text-align: center; color: white; margin-bottom: 32px;">
+            <i class="material-icons" style="font-size: 48px; display: block;">schedule</i>
+            <h4 style="margin: 12px 0 0 0; font-weight: bold;">Chỉnh Sửa Ca Làm Việc</h4>
+        </div>
+
+        <!-- Shift Select Dropdown -->
+        <div class="input-field" style="margin-bottom: 24px;">
+            <select id="EditShiftSelect" class="browser-default"
+                    style="padding: 12px 16px; font-size: 16px; border: 2px solid #ddd;
+                           border-radius: 6px; width: 100%; background: #fff;">
+                <option value="">-- Loading ca làm việc... --</option>
+            </select>
+            <label for="EditShiftSelect" style="color: white; font-weight: 600; margin-top: 8px;">
+                📅 Chọn ca làm việc mới
+            </label>
+        </div>
+
+        <!-- Buttons -->
+        <div style="text-align: center; margin-top: 32px; display: flex; gap: 12px; justify-content: center;">
+            <button id="BtnCancelEditShift" class="btn waves-effect waves-light grey darken-1"
+                    style="min-width: 120px; padding: 10px 20px;"
+                    onclick="$('#ModalEditShift').modal('close')">
+                <i class="material-icons left">close</i>
+                Hủy
+            </button>
+            <button id="BtnSaveEditShift" class="btn waves-effect waves-light green darken-1"
+                    style="min-width: 120px; padding: 10px 20px;"
+                    onclick="SaveEditShift()">
+                <i class="material-icons left">check</i>
+                Lưu
+            </button>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/FA_M5.js?v=@version"></script>
+<style>
+    #ModalEditShift .modal-content {
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    #EditShiftSelect {
+        border: 2px solid #ddd !important;
+        border-radius: 6px !important;
+        background: white !important;
+    }
+
+        #EditShiftSelect:focus {
+            border: 2px solid #667eea !important;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3) !important;
+        }
+
+    .btn-edit-shift {
+        padding: 6px 12px !important;
+        height: auto !important;
+        line-height: 1 !important;
+        min-width: 40px;
+    }
+
+        .btn-edit-shift i {
+            font-size: 18px;
+            margin: 0 !important;
+        }
+
+    /* Loading state */
+    .shift-loading {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+</style>

@@ -1,0 +1,98 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IG01_1Service _G01_1Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "G01_1";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "Stock Excel (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>Stock Excel (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l3">
+                    <input id="Label1" type="text" class="form-control" readonly style="color: blue;">
+                </div>
+                <div class="col s12 m12 l6 right-align-md">
+                    <button id="Buttonsave" title="Save" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">Save</button>
+                    <button id="Buttoninport" title="Import" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">Import</button>
+                    <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1">Close</button>
+                    <input id="FileToUpload" type="file" class="form-control" accept=".xls,.xlsx" style="display:none;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>Part NO Count : </label>
+                            <input id="Label57" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>Stock Sum QTY : </label>
+                            <input id="Label55" type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label style="color: red;">Error Part NO Count : </label>
+                            <input id="Label61" type="text" class="form-control" readonly style="color: red;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>Download <a href="@ExcelTemplateURL" title="@ExcelTemplateURL">Excel Template</a> (if you don't have it)</label>
+                            <input id="Label3" type="text" class="form-control" readonly style="color: blue;">
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>Check</th>
+                                <th>Group</th>
+                                <th>PART NO</th>
+                                <th>STOCK</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/G01_1.js?v=@version"></script>
+

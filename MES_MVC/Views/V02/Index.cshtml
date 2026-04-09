@@ -1,0 +1,443 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IV02Service _V02Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "V02";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _V02Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l8 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l8">
+                    <ul class="tabs">
+                        <li class="tab col s3 p-0">
+                            <a id="ATabPage1" class="active p-0" href="#TabPage1">Yêu cầu mua hàng</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="ATabPage2" class="p-0" href="#TabPage2">Kiểm tra mua hàng</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="ATabPage3" class="p-0" href="#TabPage3">ME Spare parts</a>
+                        </li>
+                        <li class="tab col s3 p-0">
+                            <a id="ATabPage4" class="p-0" href="#TabPage4">Order_cancel</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col s12 m6 l4">
+                </div>
+            </div>
+            <!-- Tab 1: Yêu cầu mua hàng -->
+            <div class="row" id="TabPage1">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S08 :</label>
+                                <select id="ComboBox4" class="browser-default form-select">
+                                    <option value="Factory 1">Factory 1</option>
+                                    <option value="Factory 2">Factory 2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S05 :</label>
+                                <select id="ComboBox1" class="browser-default form-select">
+                                    <!-- Populated by JavaScript from _V02Service -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.Buttonfind :</label>
+                                <input id="TextBox1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <br />
+                                <label>
+                                    <input id="RadioButton1" name="SearchOption" type="radio" checked />
+                                    <span>ALL</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton2" name="SearchOption" type="radio" />
+                                    <span>Hide_VN</span>
+                                </label>
+                                <label>
+                                    <input id="RadioButton3" name="SearchOption" type="radio" />
+                                    <span>Hide_KR</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S06 :</label>
+                                <input id="TextBox2" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S07 :</label>
+                                <input id="Label3" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow30">
+                    <table class="responsive-table" id="DataGridView1">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>ORDER</th>
+                                <th>Product_NO</th>
+                                <th>CODE</th>
+                                <th>P_NAME_VN</th>
+                                <th>SPEC_VN</th>
+                                <th>UNIT_VN</th>
+                                <th>P_NAME_KR</th>
+                                <th>SPEC_KR</th>
+                                <th>UNIT_KR</th>
+                                <th>STOCK</th>
+                                <th>Bundles_QTY</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1Body">
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+                <div class="KhungOverflow30">
+                    <table class="responsive-table" id="DataGridView2">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView2Sort()">
+                                <th>Factory</th>
+                                <th>Department</th>
+                                <th>P_NAME_VN</th>
+                                <th>SPEC_VN</th>
+                                <th>UNIT_VN</th>
+                                <th>P_NAME_KR</th>
+                                <th>SPEC_KR</th>
+                                <th>UNIT_KR</th>
+                                <th>Bundles_QTY</th>
+                                <th>Product_NO</th>
+                                <th>PO_QTY</th>
+                                <th>Purpose of purchase</th>
+                                <th>Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView2Body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Tab 3: ME Spare parts -->
+            <div class="row" id="TabPage3">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S09 :</label>
+                                <select id="ComboBox3" class="browser-default form-select">
+                                    <!-- Populated by JavaScript from _V02Service -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.Buttonfind :</label>
+                                <input id="TextBox5" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S06 :</label>
+                                <input id="TextBox4" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>@MES_MVC.Resources.Resource.V_S07 :</label>
+                                <input id="Label8" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l8">
+                        <div class="KhungOverflow30">
+                            <table class="responsive-table" id="DataGridView5">
+                                <thead class="sticky-header">
+                                    <tr onclick="DataGridView5Sort()">
+                                        <th>ORDER</th>
+                                        <th>pdpart_IDX</th>
+                                        <th>PN_V</th>
+                                        <th>PSPEC_V</th>
+                                        <th>UNIT_VN</th>
+                                        <th>PN_K</th>
+                                        <th>PSPEC_K</th>
+                                        <th>UNIT_KR</th>
+                                        <th>PQTY</th>
+                                        <th>PN_NM</th>
+                                        <th>STOCK</th>
+                                        <th>PN_PHOTO</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView5Body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div class="card" style="height: 100%; min-height: 300px;">
+                            <div class="card-content">
+                                <img id="PictureBox1" src="" alt="Product Photo" style="width: 100%; height: auto;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="KhungOverflow30">
+                    <table class="responsive-table" id="DataGridView6">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView6Sort()">
+                                <th>MC_NO</th>
+                                <th>DEP_CODE</th>
+                                <th>pdpart_IDX</th>
+                                <th>PN_V</th>
+                                <th>PSPEC_V</th>
+                                <th>UNIT_VN</th>
+                                <th>PN_K</th>
+                                <th>PSPEC_K</th>
+                                <th>UNIT_KR</th>
+                                <th>PQTY</th>
+                                <th>PN_NM</th>
+                                <th>PO_QTY</th>
+                                <th>Purpose</th>
+                                <th>Progress</th>
+                                <th>DEP_CODE2</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView6Body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Tab 2: Kiểm tra mua hàng -->
+            <div class="row" id="TabPage2">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <label>Order NO. :</label>
+                                <select id="ComboBox2" class="browser-default form-select">
+                                    <!-- Populated by JavaScript from _V02Service -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l6">
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow70">
+                    <table class="responsive-table" id="DataGridView3">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView3Sort()">
+                                <th>ORDER</th>
+                                <th>ORDER_NO</th>
+                                <th>ORDER_DATE</th>
+                                <th>Department</th>
+                                <th>Product_NO</th>
+                                <th>P_NAME_VN / PART_NO</th>
+                                <th>SPEC_VN / TYPE</th>
+                                <th>UNIT_VN</th>
+                                <th>P_NAME_KR / NAEM</th>
+                                <th>SPEC_KR / Description</th>
+                                <th>UNIT_KR</th>
+                                <th>Bundles_QTY</th>
+                                <th>PO_QTY</th>
+                                <th>Purpose of purchase</th>
+                                <th>CREATE_DATE</th>
+                                <th>CREATE_USER</th>
+                                <th>USER NAME</th>
+                                <th>MC_NO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView3Body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Tab 4: Order_cancel -->
+            <div class="row" id="TabPage4">
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <label>Order NO. :</label>
+                                <input id="TextBox3" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <br />
+                                <label>
+                                    <input id="OR_NO_CHK" name="DeleteOption" type="radio" checked />
+                                    <span>Order NO. Delete</span>
+                                </label>
+                                <label style="margin-left: 20px;">
+                                    <input id="CMPY_NO_CHK" name="DeleteOption" type="radio" />
+                                    <span>Product Delete</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView4">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView4Sort()">
+                                <th>PDP_CONF</th>
+                                <th>PDP_NO</th>
+                                <th>PDP_DATE1</th>
+                                <th>DEP</th>
+                                <th>PN_NM</th>
+                                <th>PN_V</th>
+                                <th>PSPEC_V</th>
+                                <th>UNIT_VN</th>
+                                <th>PN_K</th>
+                                <th>PSPEC_K</th>
+                                <th>UNIT_KR</th>
+                                <th>PQTY</th>
+                                <th>PDP_QTY</th>
+                                <th>PDP_MEMO</th>
+                                <th>CREATE_DTM</th>
+                                <th>CREATE_USER</th>
+                                <th>NAME</th>
+                                <th>PDPUSCH_IDX</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView4Body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/V02.js?v=@version"></script>
+<style>
+    /* #DataGridView1 th, #DataGridView1 td {
+        max-width: 120px;
+        min-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #DataGridView2 th, #DataGridView2 td {
+        max-width: 120px;
+        min-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    } */
+
+    #DataGridView3 th, #DataGridView3 td {
+        max-width: 120px;
+        min-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

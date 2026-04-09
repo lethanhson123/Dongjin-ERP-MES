@@ -1,0 +1,4220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Btn_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Btn_AddDrawingFile" xml:space="preserve">
+    <value>Drawing File</value>
+  </data>
+  <data name="Btn_Authorization" xml:space="preserve">
+    <value>Authorization</value>
+  </data>
+  <data name="Btn_Block" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Btn_ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Btn_CheckIn" xml:space="preserve">
+    <value>Check In</value>
+  </data>
+  <data name="Btn_CheckOut" xml:space="preserve">
+    <value>Check Out</value>
+  </data>
+  <data name="Btn_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Btn_Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Btn_Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="Btn_Divide" xml:space="preserve">
+    <value>Divide</value>
+  </data>
+  <data name="Btn_Document" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="Btn_DownloadApp" xml:space="preserve">
+    <value>Download App</value>
+  </data>
+  <data name="Btn_DownloadDemoFile" xml:space="preserve">
+    <value>Demo File</value>
+  </data>
+  <data name="Btn_DownloadFile" xml:space="preserve">
+    <value>Download File</value>
+  </data>
+  <data name="Btn_Excel" xml:space="preserve">
+    <value>Excel</value>
+  </data>
+  <data name="Btn_ExportExcel" xml:space="preserve">
+    <value>Export to Excel</value>
+  </data>
+  <data name="Btn_Finish" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="Btn_Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="Btn_ImportExcel" xml:space="preserve">
+    <value>Import Excel File</value>
+  </data>
+  <data name="Btn_ImportTextFile" xml:space="preserve">
+    <value>Import Text File</value>
+  </data>
+  <data name="Btn_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Btn_Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Btn_LotCodeReprint" xml:space="preserve">
+    <value>Reprint Lot Code</value>
+  </data>
+  <data name="Btn_Modify" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="Btn_No" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="Btn_Packing" xml:space="preserve">
+    <value>Packing</value>
+  </data>
+  <data name="Btn_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Btn_Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="Btn_Recall" xml:space="preserve">
+    <value>Recall</value>
+  </data>
+  <data name="Btn_Release" xml:space="preserve">
+    <value>Release</value>
+  </data>
+  <data name="Btn_ReStart" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Btn_Scan" xml:space="preserve">
+    <value>Scan</value>
+  </data>
+  <data name="Btn_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Btn_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Btn_Sub" xml:space="preserve">
+    <value>Subsidiary</value>
+  </data>
+  <data name="Btn_Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Btn_Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="Btn_Used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="Btn_Yes" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="Caption_InventoryList" xml:space="preserve">
+    <value>Inventory List</value>
+  </data>
+  <data name="Caption_ScanedList" xml:space="preserve">
+    <value>Scanned List</value>
+  </data>
+  <data name="Caption_StockList" xml:space="preserve">
+    <value>Stock list</value>
+  </data>
+  <data name="DbTbl_ActionInfo" xml:space="preserve">
+    <value>Action Info</value>
+  </data>
+  <data name="DbTbl_Active" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="DbTbl_Actual" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="DbTbl_ActualLocation" xml:space="preserve">
+    <value>Actual Location</value>
+  </data>
+  <data name="DbTbl_Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="DbTbl_AllowAnyCode" xml:space="preserve">
+    <value>All Code</value>
+  </data>
+  <data name="DbTbl_AnyCode" xml:space="preserve">
+    <value>Any Code</value>
+  </data>
+  <data name="DbTbl_Applies" xml:space="preserve">
+    <value>Applies</value>
+  </data>
+  <data name="DbTbl_ApplyDate" xml:space="preserve">
+    <value>Applied Date</value>
+  </data>
+  <data name="DbTbl_Available" xml:space="preserve">
+    <value>Ready to Used.</value>
+  </data>
+  <data name="DbTbl_BOMMasterCod" xml:space="preserve">
+    <value>Bom Master Code</value>
+  </data>
+  <data name="DbTbl_BundleQuantity" xml:space="preserve">
+    <value>Bundle Quantity</value>
+  </data>
+  <data name="DbTbl_CarType" xml:space="preserve">
+    <value>Car Type</value>
+  </data>
+  <data name="DbTbl_Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="DbTbl_CategoryName" xml:space="preserve">
+    <value>Category name</value>
+  </data>
+  <data name="DbTbl_CCH1" xml:space="preserve">
+    <value>CCH1</value>
+  </data>
+  <data name="DbTbl_CCH2" xml:space="preserve">
+    <value>CCH2</value>
+  </data>
+  <data name="DbTbl_CCW1" xml:space="preserve">
+    <value>CCW1</value>
+  </data>
+  <data name="DbTbl_CCW2" xml:space="preserve">
+    <value>CCW2</value>
+  </data>
+  <data name="DbTbl_CheckBy" xml:space="preserve">
+    <value>Check By</value>
+  </data>
+  <data name="DbTbl_Checked" xml:space="preserve">
+    <value>Checked</value>
+  </data>
+  <data name="DbTbl_CheckTime" xml:space="preserve">
+    <value>Check time</value>
+  </data>
+  <data name="DbTbl_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="DbTbl_Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="DbTbl_Combine" xml:space="preserve">
+    <value>Combine</value>
+  </data>
+  <data name="DbTbl_CommonMaster" xml:space="preserve">
+    <value>Common Master</value>
+  </data>
+  <data name="DbTbl_Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="DbTbl_ComponentCode" xml:space="preserve">
+    <value>Component Code</value>
+  </data>
+  <data name="DbTbl_ContactPerson" xml:space="preserve">
+    <value>Contact Person</value>
+  </data>
+  <data name="DbTbl_ContactPhone" xml:space="preserve">
+    <value>Contact Phone</value>
+  </data>
+  <data name="DbTbl_Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="DbTbl_ControlNo" xml:space="preserve">
+    <value>Control No</value>
+  </data>
+  <data name="DbTbl_Countable" xml:space="preserve">
+    <value>Countable</value>
+  </data>
+  <data name="DbTbl_CreateBy" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="DbTbl_CreateDate" xml:space="preserve">
+    <value>Create Date</value>
+  </data>
+  <data name="DbTbl_CreatedBy" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="DbTbl_CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="DbTbl_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DbTbl_DeliveryBy" xml:space="preserve">
+    <value>Delivery By</value>
+  </data>
+  <data name="DbTbl_DepartmentGroupName" xml:space="preserve">
+    <value>Department Group</value>
+  </data>
+  <data name="DbTbl_DepartmentName" xml:space="preserve">
+    <value>Department Name</value>
+  </data>
+  <data name="DbTbl_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DbTbl_Diameter" xml:space="preserve">
+    <value>Diameter</value>
+  </data>
+  <data name="DbTbl_Division" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="DbTbl_DivisionCategory" xml:space="preserve">
+    <value>Division Category</value>
+  </data>
+  <data name="DbTbl_Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="DbTbl_DrawingName" xml:space="preserve">
+    <value>Drawing Name</value>
+  </data>
+  <data name="DbTbl_DrawingNo" xml:space="preserve">
+    <value>Drawing No</value>
+  </data>
+  <data name="DbTbl_DueDate" xml:space="preserve">
+    <value>Due Date</value>
+  </data>
+  <data name="DbTbl_ECN_No" xml:space="preserve">
+    <value>ECN No</value>
+  </data>
+  <data name="DbTbl_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="DbTbl_EmployID" xml:space="preserve">
+    <value>Employ ID</value>
+  </data>
+  <data name="DbTbl_EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="DbTbl_EndTestTime" xml:space="preserve">
+    <value>End Test Time</value>
+  </data>
+  <data name="DbTbl_ErrorConfirm" xml:space="preserve">
+    <value>Error Confirm</value>
+  </data>
+  <data name="DbTbl_ErrorInfo" xml:space="preserve">
+    <value>Error Info</value>
+  </data>
+  <data name="DbTbl_Family" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="DbTbl_FileName" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="DbTbl_Firmware" xml:space="preserve">
+    <value>Firmware</value>
+  </data>
+  <data name="DbTbl_FixedTotal" xml:space="preserve">
+    <value>Fixed Total</value>
+  </data>
+  <data name="DbTbl_FixtureID" xml:space="preserve">
+    <value>Fixture ID</value>
+  </data>
+  <data name="DbTbl_FromDate" xml:space="preserve">
+    <value>From Date</value>
+  </data>
+  <data name="DbTbl_FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="DbTbl_Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="DbTbl_ICH1" xml:space="preserve">
+    <value>ICH1</value>
+  </data>
+  <data name="DbTbl_ICH2" xml:space="preserve">
+    <value>ICH2</value>
+  </data>
+  <data name="DbTbl_ICW1" xml:space="preserve">
+    <value>ICW1</value>
+  </data>
+  <data name="DbTbl_ICW2" xml:space="preserve">
+    <value>ICW2</value>
+  </data>
+  <data name="DbTbl_ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="DbTbl_IncomeStatusCode" xml:space="preserve">
+    <value>Income Status</value>
+  </data>
+  <data name="DbTbl_Indirect" xml:space="preserve">
+    <value>Indirect Local</value>
+  </data>
+  <data name="DbTbl_InspectionFile" xml:space="preserve">
+    <value>Inspection File</value>
+  </data>
+  <data name="DbTbl_InspectionTotalTime" xml:space="preserve">
+    <value>Inspection Total Time</value>
+  </data>
+  <data name="DbTbl_InStock" xml:space="preserve">
+    <value>In Stock</value>
+  </data>
+  <data name="DbTbl_InventoryName" xml:space="preserve">
+    <value>Inventory Name</value>
+  </data>
+  <data name="DbTbl_Invisible" xml:space="preserve">
+    <value>Invisible</value>
+  </data>
+  <data name="DbTbl_Invoice" xml:space="preserve">
+    <value>Invoice No</value>
+  </data>
+  <data name="DbTbl_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="DbTbl_IQC" xml:space="preserve">
+    <value>IQC</value>
+  </data>
+  <data name="DbTbl_IsUsing" xml:space="preserve">
+    <value>Using</value>
+  </data>
+  <data name="DbTbl_JoinedDateToString" xml:space="preserve">
+    <value>Joined Date</value>
+  </data>
+  <data name="DbTbl_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="DbTbl_LastRunningMode" xml:space="preserve">
+    <value>Last Running Mode</value>
+  </data>
+  <data name="DbTbl_LeadNO" xml:space="preserve">
+    <value>Lead No</value>
+  </data>
+  <data name="DbTbl_Length" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="DbTbl_Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="DbTbl_Line" xml:space="preserve">
+    <value>Production Line</value>
+  </data>
+  <data name="DbTbl_Link" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="DbTbl_LOCAL_SET" xml:space="preserve">
+    <value>LOCAL SET</value>
+  </data>
+  <data name="DbTbl_Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="DbTbl_LocationMatch" xml:space="preserve">
+    <value>Location Match</value>
+  </data>
+  <data name="DbTbl_LotCode" xml:space="preserve">
+    <value>LOT Code</value>
+  </data>
+  <data name="DbTbl_MachineNo" xml:space="preserve">
+    <value>Machine No</value>
+  </data>
+  <data name="DbTbl_Mainboard" xml:space="preserve">
+    <value>VD-Mainboard</value>
+  </data>
+  <data name="DbTbl_MasterName" xml:space="preserve">
+    <value>Master Name</value>
+  </data>
+  <data name="DbTbl_MaterialCategory" xml:space="preserve">
+    <value>Material Category</value>
+  </data>
+  <data name="DbTbl_MaterialCode" xml:space="preserve">
+    <value>Material Code</value>
+  </data>
+  <data name="DbTbl_MaterialLotNo" xml:space="preserve">
+    <value>Material Lot No</value>
+  </data>
+  <data name="DbTbl_MaterialType" xml:space="preserve">
+    <value>Material Type</value>
+  </data>
+  <data name="DbTbl_MenuFullName" xml:space="preserve">
+    <value>Full Direction</value>
+  </data>
+  <data name="DbTbl_MenuLevel" xml:space="preserve">
+    <value>Menu Level</value>
+  </data>
+  <data name="DbTbl_MESLocation" xml:space="preserve">
+    <value>MES Location</value>
+  </data>
+  <data name="DbTbl_MESQuantity" xml:space="preserve">
+    <value>MES Quantity</value>
+  </data>
+  <data name="DbTbl_Minus" xml:space="preserve">
+    <value>Minus</value>
+  </data>
+  <data name="DbTbl_Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="DbTbl_ModifiedBy" xml:space="preserve">
+    <value>Modified By</value>
+  </data>
+  <data name="DbTbl_ModifiedDate" xml:space="preserve">
+    <value>Modified Date</value>
+  </data>
+  <data name="DbTbl_MOQ" xml:space="preserve">
+    <value>MOQ</value>
+    <comment>Số lượng đóng Gói</comment>
+  </data>
+  <data name="DbTbl_Musang" xml:space="preserve">
+    <value>Musang</value>
+  </data>
+  <data name="DbTbl_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DbTbl_NGQty" xml:space="preserve">
+    <value>NG</value>
+  </data>
+  <data name="DbTbl_Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="DbTbl_OKQty" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="DbTbl_PackingLotNo" xml:space="preserve">
+    <value>Packing LOT</value>
+  </data>
+  <data name="DbTbl_PackingUnit" xml:space="preserve">
+    <value>Packing Unit</value>
+  </data>
+  <data name="DbTbl_ParentCode" xml:space="preserve">
+    <value>Parent Code</value>
+  </data>
+  <data name="DbTbl_PartCode" xml:space="preserve">
+    <value>Part Code</value>
+  </data>
+  <data name="DbTbl_PartName" xml:space="preserve">
+    <value>Part Name</value>
+  </data>
+  <data name="DbTbl_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="DbTbl_Phone" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="DbTbl_PIC" xml:space="preserve">
+    <value>PIC</value>
+  </data>
+  <data name="DbTbl_Picture" xml:space="preserve">
+    <value>Picture</value>
+  </data>
+  <data name="DbTbl_PositionName" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="DbTbl_PreviousVersion" xml:space="preserve">
+    <value>Previous Version</value>
+  </data>
+  <data name="DbTbl_PrimaryMenu" xml:space="preserve">
+    <value>Primary Menu</value>
+  </data>
+  <data name="DbTbl_PrimaryMenuOrder" xml:space="preserve">
+    <value>Primary Menu Order</value>
+  </data>
+  <data name="DbTbl_Process" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="DbTbl_ProcessCategory" xml:space="preserve">
+    <value>Process Category</value>
+  </data>
+  <data name="DbTbl_ProcessCategoryName" xml:space="preserve">
+    <value>Process Category Name</value>
+  </data>
+  <data name="DbTbl_ProcessCount" xml:space="preserve">
+    <value>Number of processes</value>
+  </data>
+  <data name="DbTbl_ProcessLevel" xml:space="preserve">
+    <value>Process Level</value>
+  </data>
+  <data name="DbTbl_Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="DbTbl_ProductCode" xml:space="preserve">
+    <value>Product Code</value>
+  </data>
+  <data name="DbTbl_ProductFamily" xml:space="preserve">
+    <value>Product Family</value>
+  </data>
+  <data name="DbTbl_ProductName" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="DbTbl_ProductType" xml:space="preserve">
+    <value>Product Type</value>
+  </data>
+  <data name="DbTbl_ProgramVersion" xml:space="preserve">
+    <value>Program Version</value>
+  </data>
+  <data name="DbTbl_QCCode" xml:space="preserve">
+    <value>QCCode</value>
+  </data>
+  <data name="DbTbl_QtyMatch" xml:space="preserve">
+    <value>Qty Match</value>
+  </data>
+  <data name="DbTbl_Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="DbTbl_QuantityScanned" xml:space="preserve">
+    <value>Quantity Scanned</value>
+  </data>
+  <data name="DbTbl_ReasonReceived" xml:space="preserve">
+    <value>Reason Received</value>
+  </data>
+  <data name="DbTbl_ReasonReplace" xml:space="preserve">
+    <value>Reason Replace</value>
+  </data>
+  <data name="DbTbl_RecallDate" xml:space="preserve">
+    <value>Recall Date</value>
+  </data>
+  <data name="DbTbl_ReceivedBy" xml:space="preserve">
+    <value>Received By</value>
+  </data>
+  <data name="DbTbl_ReceivedDate" xml:space="preserve">
+    <value>Received Date</value>
+  </data>
+  <data name="DbTbl_ReceiveStatus" xml:space="preserve">
+    <value>ReceiveStatus</value>
+  </data>
+  <data name="DbTbl_ReleaseDate" xml:space="preserve">
+    <value>Release Date</value>
+  </data>
+  <data name="DbTbl_Remain" xml:space="preserve">
+    <value>Remain</value>
+  </data>
+  <data name="DbTbl_RemainSlot" xml:space="preserve">
+    <value>Remain Slot</value>
+  </data>
+  <data name="DbTbl_Remark" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="DbTbl_RepairedDate" xml:space="preserve">
+    <value>Repaired Date</value>
+  </data>
+  <data name="DbTbl_RepairedUser" xml:space="preserve">
+    <value>Repaired User</value>
+  </data>
+  <data name="DbTbl_RepairListID" xml:space="preserve">
+    <value>Repair List ID</value>
+  </data>
+  <data name="DbTbl_RepairTime" xml:space="preserve">
+    <value>Repair Time</value>
+  </data>
+  <data name="DbTbl_ReWork" xml:space="preserve">
+    <value>Re-Work</value>
+  </data>
+  <data name="DbTbl_RO_Program" xml:space="preserve">
+    <value>RO Program</value>
+  </data>
+  <data name="DbTbl_RunningMode" xml:space="preserve">
+    <value>Running Mode</value>
+  </data>
+  <data name="DbTbl_ScheduleTimeEnd" xml:space="preserve">
+    <value>Schedule Time End</value>
+  </data>
+  <data name="DbTbl_ScheduleTimeStart" xml:space="preserve">
+    <value>Schedule Time Start</value>
+  </data>
+  <data name="DbTbl_SecondaryMenu" xml:space="preserve">
+    <value>Secondary Menu</value>
+  </data>
+  <data name="DbTbl_SecondaryMenuOrder" xml:space="preserve">
+    <value>Secondary Menu Order</value>
+  </data>
+  <data name="DbTbl_Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="DbTbl_Selected" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="DbTbl_SelectMenu" xml:space="preserve">
+    <value>SelectMenu</value>
+  </data>
+  <data name="DbTbl_SemiProduct" xml:space="preserve">
+    <value>Semi Product</value>
+  </data>
+  <data name="DbTbl_SendTo" xml:space="preserve">
+    <value>Send To</value>
+  </data>
+  <data name="DbTbl_ShiftTime" xml:space="preserve">
+    <value>Shift Time</value>
+  </data>
+  <data name="DbTbl_ShippedDate" xml:space="preserve">
+    <value>Shipped Date</value>
+  </data>
+  <data name="DbTbl_SS1" xml:space="preserve">
+    <value>SS1</value>
+  </data>
+  <data name="DbTbl_SS2" xml:space="preserve">
+    <value>SS2</value>
+  </data>
+  <data name="DbTbl_StandardDuration" xml:space="preserve">
+    <value>Standard Duration</value>
+  </data>
+  <data name="DbTbl_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="DbTbl_StatusROM" xml:space="preserve">
+    <value>Status ROM</value>
+  </data>
+  <data name="DbTbl_Strip1" xml:space="preserve">
+    <value>Strip1</value>
+  </data>
+  <data name="DbTbl_Strip2" xml:space="preserve">
+    <value>Strip2</value>
+  </data>
+  <data name="DbTbl_Subsidiary" xml:space="preserve">
+    <value>Subsidiary</value>
+  </data>
+  <data name="DbTbl_SupplierCode" xml:space="preserve">
+    <value>Supplier Code</value>
+  </data>
+  <data name="DbTbl_T1Dir" xml:space="preserve">
+    <value>T1_Dir</value>
+  </data>
+  <data name="DbTbl_T1No" xml:space="preserve">
+    <value>T1_No</value>
+  </data>
+  <data name="DbTbl_T1Auto" xml:space="preserve">
+    <value>T1_Auto</value>
+  </data>
+  <data name="DbTbl_T2Dir" xml:space="preserve">
+    <value>T2_Dir</value>
+  </data>
+  <data name="DbTbl_T2No" xml:space="preserve">
+    <value>T2_No</value>
+  </data>
+  <data name="DbTbl_T2Auto" xml:space="preserve">
+    <value>T2_Auto</value>
+  </data>
+  <data name="DbTbl_TaktTime" xml:space="preserve">
+    <value>Takt Time</value>
+  </data>
+  <data name="DbTbl_Tape" xml:space="preserve">
+    <value>Tape</value>
+  </data>
+  <data name="DbTbl_Target" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="DbTbl_TaxCode" xml:space="preserve">
+    <value>Tax Code</value>
+  </data>
+  <data name="DbTbl_Term1" xml:space="preserve">
+    <value>Term1</value>
+  </data>
+  <data name="DbTbl_Term2" xml:space="preserve">
+    <value>Term2</value>
+  </data>
+  <data name="DbTbl_TertiaryMenu" xml:space="preserve">
+    <value>Tertiary Menu</value>
+  </data>
+  <data name="DbTbl_TertiaryMenuOrder" xml:space="preserve">
+    <value>Tertiary Menu Order</value>
+  </data>
+  <data name="DbTbl_TestCount" xml:space="preserve">
+    <value>Test Count</value>
+  </data>
+  <data name="DbTbl_TestFunction" xml:space="preserve">
+    <value>Test Function</value>
+  </data>
+  <data name="DbTbl_TestModeType" xml:space="preserve">
+    <value>Test Mode Type</value>
+  </data>
+  <data name="DbTbl_TestResult" xml:space="preserve">
+    <value>Test Result</value>
+  </data>
+  <data name="DbTbl_TestTime" xml:space="preserve">
+    <value>Test Time</value>
+  </data>
+  <data name="DbTbl_Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="DbTbl_TimeEnd" xml:space="preserve">
+    <value>Real Time End</value>
+  </data>
+  <data name="DbTbl_TimeStart" xml:space="preserve">
+    <value>Real Time Start</value>
+  </data>
+  <data name="DbTbl_ToDate" xml:space="preserve">
+    <value>To Date</value>
+  </data>
+  <data name="DbTbl_TotalQuantity" xml:space="preserve">
+    <value>Total Quantity</value>
+  </data>
+  <data name="DbTbl_TotalTarget" xml:space="preserve">
+    <value>Total Target</value>
+  </data>
+  <data name="DbTbl_TotalTestFunc" xml:space="preserve">
+    <value>Total Test Func</value>
+  </data>
+  <data name="DbTbl_Tube1" xml:space="preserve">
+    <value>Tube1</value>
+  </data>
+  <data name="DbTbl_Tube2" xml:space="preserve">
+    <value>Tube2</value>
+  </data>
+  <data name="DbTbl_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="DbTbl_TypeName" xml:space="preserve">
+    <value>Type name</value>
+  </data>
+  <data name="DbTbl_UnChecked" xml:space="preserve">
+    <value>Unchecked</value>
+  </data>
+  <data name="DbTbl_Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="dbTbl_UpdateDate" xml:space="preserve">
+    <value>Update Date</value>
+  </data>
+  <data name="DbTbl_UpdateTime" xml:space="preserve">
+    <value>Update Time</value>
+  </data>
+  <data name="DbTbl_UserName" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="DbTbl_UsingDate" xml:space="preserve">
+    <value>Using Date</value>
+  </data>
+  <data name="DbTbl_VendorID" xml:space="preserve">
+    <value>Vendor ID</value>
+  </data>
+  <data name="DbTbl_VIP" xml:space="preserve">
+    <value>VIP</value>
+  </data>
+  <data name="DbTbl_VisualCheck" xml:space="preserve">
+    <value>Visual Check</value>
+  </data>
+  <data name="DbTbl_W_Link" xml:space="preserve">
+    <value>W_Link</value>
+  </data>
+  <data name="DbTbl_WaitTime" xml:space="preserve">
+    <value>Wait Time</value>
+  </data>
+  <data name="DbTbl_Wire" xml:space="preserve">
+    <value>Wire</value>
+  </data>
+  <data name="DbTbl_WireNo" xml:space="preserve">
+    <value>Wire No</value>
+  </data>
+  <data name="DbTbl_WMSLocation" xml:space="preserve">
+    <value>WMS Location</value>
+  </data>
+  <data name="DbTbl_WO" xml:space="preserve">
+    <value>Work Order</value>
+  </data>
+  <data name="DbTbl_WRNo" xml:space="preserve">
+    <value>WR No</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="ERROR_AccountBlocked" xml:space="preserve">
+    <value>Account has been blocked.</value>
+  </data>
+  <data name="ERROR_AccountNotRegistered" xml:space="preserve">
+    <value>Account is not registered.</value>
+  </data>
+  <data name="ERROR_AccountUnAuthorized" xml:space="preserve">
+    <value>Your account has no permission to access.</value>
+  </data>
+  <data name="ERROR_AlreadyExists" xml:space="preserve">
+    <value>Already Exists</value>
+  </data>
+  <data name="ERROR_AlreadyReceived" xml:space="preserve">
+    <value>Already Received..!</value>
+  </data>
+  <data name="ERROR_AlreadyShipped" xml:space="preserve">
+    <value>Already Shipped..!</value>
+  </data>
+  <data name="ERROR_CannotCombine" xml:space="preserve">
+    <value>Can Not Combine</value>
+  </data>
+  <data name="ERROR_CannotCreate" xml:space="preserve">
+    <value>Cannot create new one.</value>
+  </data>
+  <data name="ERROR_CannotDelete" xml:space="preserve">
+    <value>Can't delete.</value>
+  </data>
+  <data name="ERROR_CannotDeleteFile" xml:space="preserve">
+    <value>Can't Delete File</value>
+  </data>
+  <data name="ERROR_CannotDivide" xml:space="preserve">
+    <value>Cannot Divide.</value>
+  </data>
+  <data name="ERROR_CannotModify_Target" xml:space="preserve">
+    <value>Cannot modify target.</value>
+  </data>
+  <data name="ERROR_CannotRepair" xml:space="preserve">
+    <value>Can Not Repair</value>
+  </data>
+  <data name="ERROR_CannotSave" xml:space="preserve">
+    <value>Can't Save</value>
+  </data>
+  <data name="ERROR_CannotUploadFile" xml:space="preserve">
+    <value>Can't Upload File</value>
+  </data>
+  <data name="ERROR_CategoryNotBeChosen" xml:space="preserve">
+    <value>Please select category.</value>
+  </data>
+  <data name="ERROR_CodeBlocked" xml:space="preserve">
+    <value>Code Blocked</value>
+  </data>
+  <data name="ERROR_CodeInvalid" xml:space="preserve">
+    <value>Code is invalid.</value>
+  </data>
+  <data name="ERROR_DateTimeInvalid" xml:space="preserve">
+    <value>DateTime Invalid Format.</value>
+  </data>
+  <data name="ERROR_DuplicatedCode" xml:space="preserve">
+    <value>Duplicated code.</value>
+  </data>
+  <data name="ERROR_DuplicatedName" xml:space="preserve">
+    <value>Duplicated name.</value>
+  </data>
+  <data name="ERROR_DuplicatedUsername" xml:space="preserve">
+    <value>Username had been registered.</value>
+  </data>
+  <data name="ERROR_EnterUsernamePassword" xml:space="preserve">
+    <value>Please enter Username and Password.</value>
+  </data>
+  <data name="ERROR_Existed" xml:space="preserve">
+    <value>Existed !</value>
+  </data>
+  <data name="ERROR_ExistedStock" xml:space="preserve">
+    <value>Exist in Stock</value>
+  </data>
+  <data name="ERROR_FGLocationNotExists" xml:space="preserve">
+    <value>FG Location Not Exists</value>
+  </data>
+  <data name="ERROR_FullFillTheForm" xml:space="preserve">
+    <value>Full fill the form to continue.</value>
+  </data>
+  <data name="ERROR_InvalidInput" xml:space="preserve">
+    <value>Invalid Input data</value>
+  </data>
+  <data name="ERROR_InvalidInputQuantity" xml:space="preserve">
+    <value>Quantity input invalid.</value>
+  </data>
+  <data name="ERROR_LocationInStock" xml:space="preserve">
+    <value>Location In Stock</value>
+  </data>
+  <data name="ERROR_MagazineNotEnoughSpace" xml:space="preserve">
+    <value>Magazine has not enough space !</value>
+  </data>
+  <data name="ERROR_ModifyFail" xml:space="preserve">
+    <value>Modify Fail</value>
+  </data>
+  <data name="ERROR_NameCantNotbeNull" xml:space="preserve">
+    <value>Name cannot be null.</value>
+  </data>
+  <data name="ERROR_NoData" xml:space="preserve">
+    <value>No Data</value>
+  </data>
+  <data name="ERROR_NotEnoughMaterial" xml:space="preserve">
+    <value>Not enough materials in WIP warehouse!</value>
+  </data>
+  <data name="ERROR_NotExisted" xml:space="preserve">
+    <value>Not existed !</value>
+  </data>
+  <data name="ERROR_NotExistedInSystem" xml:space="preserve">
+    <value>Not Existed In MES</value>
+  </data>
+  <data name="ERROR_NotExistedListInv" xml:space="preserve">
+    <value>Not Existed in Inventory List</value>
+  </data>
+  <data name="ERROR_NotFile" xml:space="preserve">
+    <value>Can't get data from excel file or upload file with no data</value>
+  </data>
+  <data name="ERROR_NotFound" xml:space="preserve">
+    <value>Not found.</value>
+  </data>
+  <data name="ERROR_NotInInventoryList" xml:space="preserve">
+    <value>Not inside Inventory list</value>
+  </data>
+  <data name="ERROR_NotReceived" xml:space="preserve">
+    <value>Not Received..!</value>
+  </data>
+  <data name="ERROR_NotSupport" xml:space="preserve">
+    <value>Not Support</value>
+  </data>
+  <data name="ERROR_OQCNOTRECEIVED" xml:space="preserve">
+    <value>OQC NOT RECEIVED</value>
+  </data>
+  <data name="ERROR_PasswordCantNotbeNull" xml:space="preserve">
+    <value>Password cannot be null.</value>
+  </data>
+  <data name="ERROR_PrimaryMenuDuplicated" xml:space="preserve">
+    <value>Primary menu is duplicated.</value>
+  </data>
+  <data name="ERROR_PrimaryMenuNotExist" xml:space="preserve">
+    <value>Primary menu is not exist.</value>
+  </data>
+  <data name="ERROR_SecondMenuDuplicated" xml:space="preserve">
+    <value>Secondary menu is duplicated.</value>
+  </data>
+  <data name="ERROR_SecondMenuNotExist" xml:space="preserve">
+    <value>Secondary menu is not exist.</value>
+  </data>
+  <data name="ERROR_SystemError" xml:space="preserve">
+    <value>System error.</value>
+  </data>
+  <data name="ERROR_ThirdMenuDuplicated" xml:space="preserve">
+    <value>Tertiary menu is duplicated.</value>
+  </data>
+  <data name="ERROR_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ERROR_UsernameCantNotbeNull" xml:space="preserve">
+    <value>Username cannot be null.</value>
+  </data>
+  <data name="ERROR_WrongPassword" xml:space="preserve">
+    <value>Wrong Password.</value>
+  </data>
+  <data name="ERROR_WrongProcess" xml:space="preserve">
+    <value>Wrong Process !</value>
+  </data>
+  <data name="Korean" xml:space="preserve">
+    <value>Korean</value>
+  </data>
+  <data name="Label_ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="Label_CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="Label_NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="MML_Admin" xml:space="preserve">
+    <value>Admin (HRM)</value>
+  </data>
+  <data name="MML_AdminEmp" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="MML_AgingReport" xml:space="preserve">
+    <value>Aging Report</value>
+  </data>
+  <data name="MML_BackingReport" xml:space="preserve">
+    <value>Baking Report</value>
+  </data>
+  <data name="MML_BlockCode" xml:space="preserve">
+    <value>Block Code</value>
+  </data>
+  <data name="MML_BOM" xml:space="preserve">
+    <value>BOM</value>
+  </data>
+  <data name="MML_BOMComparison" xml:space="preserve">
+    <value>BOM Comparison</value>
+  </data>
+  <data name="MML_BreakTime" xml:space="preserve">
+    <value>Break Time</value>
+  </data>
+  <data name="MML_BreakTimeCheck" xml:space="preserve">
+    <value>BreakTime Check</value>
+  </data>
+  <data name="MML_Combine" xml:space="preserve">
+    <value>LOT Combine</value>
+  </data>
+  <data name="MML_Common" xml:space="preserve">
+    <value>Common</value>
+  </data>
+  <data name="MML_COMPARISON" xml:space="preserve">
+    <value>Comparison</value>
+  </data>
+  <data name="MML_Complement" xml:space="preserve">
+    <value>Complement</value>
+  </data>
+  <data name="MML_Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="MML_CTLPDoc" xml:space="preserve">
+    <value>CTLP Document</value>
+  </data>
+  <data name="MML_DailyAttendance" xml:space="preserve">
+    <value>Daily Attendance</value>
+  </data>
+  <data name="MML_Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="MML_Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="MML_DeviceList" xml:space="preserve">
+    <value>Device List</value>
+  </data>
+  <data name="MML_Display" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="MML_Divide" xml:space="preserve">
+    <value>Divide</value>
+  </data>
+  <data name="MML_Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
+  <data name="MML_Documents" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="MML_DrawingManager" xml:space="preserve">
+    <value>Drawing Manager</value>
+  </data>
+  <data name="MML_ECNControl" xml:space="preserve">
+    <value>ECN Control</value>
+  </data>
+  <data name="MML_ECNManagement" xml:space="preserve">
+    <value>ECN Management</value>
+  </data>
+  <data name="MML_ECNReport" xml:space="preserve">
+    <value>ECN Apply</value>
+  </data>
+  <data name="MML_ECNUpdate" xml:space="preserve">
+    <value>ECN Material</value>
+  </data>
+  <data name="MML_EmployeeList" xml:space="preserve">
+    <value>Employee List</value>
+  </data>
+  <data name="MML_Expat" xml:space="preserve">
+    <value>Expat</value>
+  </data>
+  <data name="MML_FABreakdown" xml:space="preserve">
+    <value>FA Breakdown</value>
+  </data>
+  <data name="MML_FADoc" xml:space="preserve">
+    <value>FA Document</value>
+  </data>
+  <data name="MML_FAStandard" xml:space="preserve">
+    <value>FA Standard</value>
+  </data>
+  <data name="MML_FG" xml:space="preserve">
+    <value>FG</value>
+  </data>
+  <data name="MML_FGLocations" xml:space="preserve">
+    <value>FG Locations</value>
+  </data>
+  <data name="MML_FGReceiveReport" xml:space="preserve">
+    <value>ReceiveReport(FG)</value>
+  </data>
+  <data name="MML_FGReceiving" xml:space="preserve">
+    <value>FG Receiving</value>
+  </data>
+  <data name="MML_FGShipping" xml:space="preserve">
+    <value>FG Shipping</value>
+  </data>
+  <data name="MML_FGShippingReport" xml:space="preserve">
+    <value>Shipping Report (FG)</value>
+  </data>
+  <data name="MML_FGStocking" xml:space="preserve">
+    <value>FG Stocking</value>
+  </data>
+  <data name="MML_General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="MML_History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="MML_IE" xml:space="preserve">
+    <value>IE Documents</value>
+  </data>
+  <data name="MML_Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="MML_Inventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="MML_InventoryFG" xml:space="preserve">
+    <value>Inventory (P)</value>
+  </data>
+  <data name="MML_Issues" xml:space="preserve">
+    <value>Issues</value>
+  </data>
+  <data name="MML_IssuesGallary" xml:space="preserve">
+    <value>Issues Gallery</value>
+  </data>
+  <data name="MML_IssuesGraph" xml:space="preserve">
+    <value>Issues Graph</value>
+  </data>
+  <data name="MML_IssuesHistory" xml:space="preserve">
+    <value>Issues History</value>
+  </data>
+  <data name="MML_IssuesReport" xml:space="preserve">
+    <value>Issues Report</value>
+  </data>
+  <data name="MML_KaraOKCompare" xml:space="preserve">
+    <value>Software Compare(Kara)</value>
+  </data>
+  <data name="MML_LeadBOM" xml:space="preserve">
+    <value>Lead BOM</value>
+  </data>
+  <data name="MML_Line" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="MML_LunchTime" xml:space="preserve">
+    <value>Time Break</value>
+  </data>
+  <data name="MML_Machine" xml:space="preserve">
+    <value>Machine</value>
+  </data>
+  <data name="MML_Magazine" xml:space="preserve">
+    <value>Magazine</value>
+  </data>
+  <data name="MML_MagazineStatus" xml:space="preserve">
+    <value>Magazine Status</value>
+  </data>
+  <data name="MML_MainProduction" xml:space="preserve">
+    <value>FA</value>
+  </data>
+  <data name="MML_Maker" xml:space="preserve">
+    <value>Maker</value>
+  </data>
+  <data name="MML_Management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="MML_ManufacturingDrawings" xml:space="preserve">
+    <value>ManufacturingDrawings</value>
+  </data>
+  <data name="MML_Master" xml:space="preserve">
+    <value>Master</value>
+  </data>
+  <data name="MML_Material" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="MML_MaterialList" xml:space="preserve">
+    <value>Material List</value>
+  </data>
+  <data name="MML_MaterialLot" xml:space="preserve">
+    <value>Material LOT</value>
+  </data>
+  <data name="MML_MaterialRequest" xml:space="preserve">
+    <value>Material Request</value>
+  </data>
+  <data name="MML_MaterialTracking" xml:space="preserve">
+    <value>Material Tracking</value>
+  </data>
+  <data name="MML_Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MML_MMProduction" xml:space="preserve">
+    <value>Metal Mask Production</value>
+  </data>
+  <data name="MML_MMS" xml:space="preserve">
+    <value>Production (MMS)</value>
+  </data>
+  <data name="MML_Monitor" xml:space="preserve">
+    <value>Monitor</value>
+  </data>
+  <data name="MML_Monitoring" xml:space="preserve">
+    <value>Monitoring</value>
+  </data>
+  <data name="MML_MWMS" xml:space="preserve">
+    <value>M-WMS</value>
+  </data>
+  <data name="MML_MWMSLocations" xml:space="preserve">
+    <value>M-wms Locations</value>
+  </data>
+  <data name="MML_MWMSReceiveReport" xml:space="preserve">
+    <value>ReceiveReport(MWMS)</value>
+  </data>
+  <data name="MML_MWMSReceiving" xml:space="preserve">
+    <value>M-WMS Receiving</value>
+  </data>
+  <data name="MML_MWMSShipping" xml:space="preserve">
+    <value>M-WMS Shipping</value>
+  </data>
+  <data name="MML_MWMSShippingReport" xml:space="preserve">
+    <value>ShippingReport(MWMS)</value>
+  </data>
+  <data name="MML_MWMSStocking" xml:space="preserve">
+    <value>M-WMS Stocking</value>
+  </data>
+  <data name="MML_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="MML_Operation" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="MML_OQC" xml:space="preserve">
+    <value>OQC</value>
+  </data>
+  <data name="MML_OQCANDFGMonitor" xml:space="preserve">
+    <value>OQC &amp; FG Monitor</value>
+  </data>
+  <data name="MML_OQCNG" xml:space="preserve">
+    <value>OQC Not Good</value>
+  </data>
+  <data name="MML_OQCNGReport" xml:space="preserve">
+    <value>OQCNGReport</value>
+  </data>
+  <data name="MML_OQCReceiving" xml:space="preserve">
+    <value>OQC Receiving</value>
+  </data>
+  <data name="MML_OQCReport" xml:space="preserve">
+    <value>OQC Report</value>
+  </data>
+  <data name="MML_OQCShip" xml:space="preserve">
+    <value>OQC Shipping</value>
+  </data>
+  <data name="MML_OQCStatusReport" xml:space="preserve">
+    <value>OQC Report</value>
+  </data>
+  <data name="MML_OUTStocking" xml:space="preserve">
+    <value>OUT Stocking</value>
+  </data>
+  <data name="MML_OUTWMS" xml:space="preserve">
+    <value>OUT-WMS</value>
+  </data>
+  <data name="MML_Packing" xml:space="preserve">
+    <value>Packing</value>
+  </data>
+  <data name="MML_PackingLotReport" xml:space="preserve">
+    <value>Packing Lot Report</value>
+  </data>
+  <data name="MML_PackingMaster" xml:space="preserve">
+    <value>Packing Master</value>
+  </data>
+  <data name="MML_PackingReport" xml:space="preserve">
+    <value>Packing Report</value>
+  </data>
+  <data name="MML_PalletReport" xml:space="preserve">
+    <value>Pallet Report</value>
+  </data>
+  <data name="MML_Permission" xml:space="preserve">
+    <value>Permission</value>
+  </data>
+  <data name="MML_Plan" xml:space="preserve">
+    <value>Plan</value>
+  </data>
+  <data name="MML_PO" xml:space="preserve">
+    <value>Production Order</value>
+  </data>
+  <data name="MML_Process" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="MML_ProcessReport" xml:space="preserve">
+    <value>Process Report</value>
+  </data>
+  <data name="MML_ProCode" xml:space="preserve">
+    <value>Product Code</value>
+  </data>
+  <data name="MML_Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="MML_Production" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="MML_ProductionReport" xml:space="preserve">
+    <value>Production Reports</value>
+  </data>
+  <data name="MML_Productivities" xml:space="preserve">
+    <value>Productivities</value>
+  </data>
+  <data name="MML_QC" xml:space="preserve">
+    <value>Quality Check</value>
+  </data>
+  <data name="MML_QCList" xml:space="preserve">
+    <value>QC List</value>
+  </data>
+  <data name="MML_QMS" xml:space="preserve">
+    <value>Quality (QMS)</value>
+  </data>
+  <data name="MML_QRGeneration" xml:space="preserve">
+    <value>LOT Code Creation</value>
+  </data>
+  <data name="MML_QualityAdmin" xml:space="preserve">
+    <value>Quality Admin</value>
+  </data>
+  <data name="MML_ReceiveReport" xml:space="preserve">
+    <value>Receive History</value>
+  </data>
+  <data name="MML_Receiving" xml:space="preserve">
+    <value>WIP Receiving</value>
+  </data>
+  <data name="MML_ReceivingSamSung" xml:space="preserve">
+    <value>Receiving</value>
+  </data>
+  <data name="MML_Repair" xml:space="preserve">
+    <value>Repair</value>
+  </data>
+  <data name="MML_Report" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="MML_ReturnsReport" xml:space="preserve">
+    <value>Returns Report</value>
+  </data>
+  <data name="MML_ReturnsUpdate" xml:space="preserve">
+    <value>Returns Update</value>
+  </data>
+  <data name="MML_RMS" xml:space="preserve">
+    <value>Repairing (RMS)</value>
+  </data>
+  <data name="MML_RMSDoc" xml:space="preserve">
+    <value>Repair Document</value>
+  </data>
+  <data name="MML_RMSReceiving" xml:space="preserve">
+    <value>Repair Receiving</value>
+  </data>
+  <data name="MML_RMSReport" xml:space="preserve">
+    <value>Repair Report</value>
+  </data>
+  <data name="MML_RMSShipping" xml:space="preserve">
+    <value>RMS Shipping</value>
+  </data>
+  <data name="MML_RNSOKCompare" xml:space="preserve">
+    <value>Software Compare(RNS)</value>
+  </data>
+  <data name="MML_ROLabel" xml:space="preserve">
+    <value>RO Label</value>
+  </data>
+  <data name="MML_Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="MML_ROProgram" xml:space="preserve">
+    <value>RO Program</value>
+  </data>
+  <data name="MML_ROStampModel" xml:space="preserve">
+    <value>RO Stamp model</value>
+  </data>
+  <data name="MML_SampleManagemen" xml:space="preserve">
+    <value>Sample Management</value>
+  </data>
+  <data name="MML_SampleManagement" xml:space="preserve">
+    <value>Sample Management</value>
+  </data>
+  <data name="MML_Scan" xml:space="preserve">
+    <value>Scan</value>
+  </data>
+  <data name="MML_SemiProcessReport" xml:space="preserve">
+    <value>Twisting</value>
+  </data>
+  <data name="MML_SemiProduct" xml:space="preserve">
+    <value>Semi</value>
+  </data>
+  <data name="MML_SemiProduction" xml:space="preserve">
+    <value>CTLP</value>
+  </data>
+  <data name="MML_SemiWOCreate" xml:space="preserve">
+    <value>Cutting</value>
+  </data>
+  <data name="MML_SemiWOLotcode" xml:space="preserve">
+    <value>Crimping</value>
+  </data>
+  <data name="MML_Shipping" xml:space="preserve">
+    <value>WIP Shipping</value>
+  </data>
+  <data name="MML_ShippingReport" xml:space="preserve">
+    <value>Shipping History</value>
+  </data>
+  <data name="MML_ShippingSummary" xml:space="preserve">
+    <value>Shipping Summary</value>
+  </data>
+  <data name="MML_Software" xml:space="preserve">
+    <value>Software</value>
+  </data>
+  <data name="MML_Staff" xml:space="preserve">
+    <value>Staff</value>
+  </data>
+  <data name="MML_Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="MML_StandardCompany" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="MML_StandardECN" xml:space="preserve">
+    <value>ECN</value>
+  </data>
+  <data name="MML_StandardProcess" xml:space="preserve">
+    <value>Standard Process</value>
+  </data>
+  <data name="MML_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MML_Stocking" xml:space="preserve">
+    <value>Stocking</value>
+  </data>
+  <data name="MML_SUBDesk" xml:space="preserve">
+    <value>SUB Desk</value>
+  </data>
+  <data name="MML_SUBDrawing" xml:space="preserve">
+    <value>SUB Drawing</value>
+  </data>
+  <data name="MML_SUBStandard" xml:space="preserve">
+    <value>SUB Standard</value>
+  </data>
+  <data name="MML_TaskTime" xml:space="preserve">
+    <value>Takt Time</value>
+  </data>
+  <data name="MML_TDM" xml:space="preserve">
+    <value>Technical Drawing</value>
+  </data>
+  <data name="MML_Terminated" xml:space="preserve">
+    <value>Terminated</value>
+  </data>
+  <data name="MML_TerminatedStocking" xml:space="preserve">
+    <value>Scrap Stocking</value>
+  </data>
+  <data name="MML_UpdateInventory" xml:space="preserve">
+    <value>Update Inventory</value>
+  </data>
+  <data name="MML_User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="MML_WIPInventory" xml:space="preserve">
+    <value>Inventory (WIP)</value>
+  </data>
+  <data name="MML_WIPLocations" xml:space="preserve">
+    <value>WIP Locations</value>
+  </data>
+  <data name="MML_WIPReceiveReport" xml:space="preserve">
+    <value>ReceiveReport(WIP)</value>
+  </data>
+  <data name="MML_WIPShippingReport" xml:space="preserve">
+    <value>ShippingReport(WIP)</value>
+  </data>
+  <data name="MML_WIPSMTMaterial" xml:space="preserve">
+    <value>WIP-SMT Material</value>
+  </data>
+  <data name="MML_WIPStocking" xml:space="preserve">
+    <value>WIP Stock</value>
+  </data>
+  <data name="MML_WIPWMS" xml:space="preserve">
+    <value>WIP-WMS</value>
+  </data>
+  <data name="MML_WMS" xml:space="preserve">
+    <value>Warehouse (WMS)</value>
+  </data>
+  <data name="MML_WMSInventory" xml:space="preserve">
+    <value>Inventory (m-WH)</value>
+  </data>
+  <data name="MML_WO" xml:space="preserve">
+    <value>Work Order</value>
+  </data>
+  <data name="MML_WOLotCodes" xml:space="preserve">
+    <value>WO Lotcodes</value>
+  </data>
+  <data name="MML_WOPending" xml:space="preserve">
+    <value>WO Pending</value>
+  </data>
+  <data name="MML_WorkOrderStatus" xml:space="preserve">
+    <value>Work Order Status</value>
+  </data>
+  <data name="MML_WOTracking" xml:space="preserve">
+    <value>WO Tracking</value>
+  </data>
+  <data name="MMS_Remark" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="MSG_BlockCommonDetail" xml:space="preserve">
+    <value>Block CommonDetail.</value>
+  </data>
+  <data name="MSG_CanCreateNew" xml:space="preserve">
+    <value>You can add this code</value>
+  </data>
+  <data name="MSG_ConfirmDelete" xml:space="preserve">
+    <value>Are you sure you want to delete this information?</value>
+  </data>
+  <data name="MSG_ConfirmToLogout" xml:space="preserve">
+    <value>Select "Logout" below if you are ready to end your current session.</value>
+  </data>
+  <data name="MSG_CreateBOM" xml:space="preserve">
+    <value>Create new BOM.</value>
+  </data>
+  <data name="MSG_CreateBreakTime" xml:space="preserve">
+    <value>Create Break Time</value>
+  </data>
+  <data name="MSG_CreateDepartment" xml:space="preserve">
+    <value>Create Department</value>
+  </data>
+  <data name="MSG_CreateDO" xml:space="preserve">
+    <value>Create new PO.</value>
+  </data>
+  <data name="MSG_CreateLine" xml:space="preserve">
+    <value>Create Line</value>
+  </data>
+  <data name="MSG_CreateMachine" xml:space="preserve">
+    <value>Create Machine.</value>
+  </data>
+  <data name="MSG_CreateMagazine" xml:space="preserve">
+    <value>Create Magazine</value>
+  </data>
+  <data name="MSG_CreateMaker" xml:space="preserve">
+    <value>Create Maker.</value>
+  </data>
+  <data name="MSG_CreateMenu" xml:space="preserve">
+    <value>Create Menu.</value>
+  </data>
+  <data name="MSG_CreateNewCommonDetail" xml:space="preserve">
+    <value>Create new CommonDetail.</value>
+  </data>
+  <data name="MSG_CreateNewCommonMaster" xml:space="preserve">
+    <value>Create new CommonMaster.</value>
+  </data>
+  <data name="MSG_CreateNewCompany" xml:space="preserve">
+    <value>Create New Company</value>
+  </data>
+  <data name="MSG_CreateNewMaterial" xml:space="preserve">
+    <value>Create New Material</value>
+  </data>
+  <data name="MSG_CreatePermission" xml:space="preserve">
+    <value>Create permission.</value>
+  </data>
+  <data name="MSG_CreatePO" xml:space="preserve">
+    <value>Create new PO.</value>
+  </data>
+  <data name="MSG_CreateProcess" xml:space="preserve">
+    <value>Create Process.</value>
+  </data>
+  <data name="MSG_CreateProduct" xml:space="preserve">
+    <value>Create Product</value>
+  </data>
+  <data name="MSG_CreateQCDetail" xml:space="preserve">
+    <value>Create QC Detail</value>
+  </data>
+  <data name="MSG_CreateQCMaster" xml:space="preserve">
+    <value>Create QC Master</value>
+  </data>
+  <data name="MSG_CreateQCSubject" xml:space="preserve">
+    <value>Create QC Subject</value>
+  </data>
+  <data name="MSG_CreateRole" xml:space="preserve">
+    <value>Create role.</value>
+  </data>
+  <data name="MSG_CreateStaff" xml:space="preserve">
+    <value>Create new staff.</value>
+  </data>
+  <data name="MSG_CreateUser" xml:space="preserve">
+    <value>Create User.</value>
+  </data>
+  <data name="MSG_CreateWO" xml:space="preserve">
+    <value>Create new Work Order</value>
+  </data>
+  <data name="MSG_DeleteCommonDetail" xml:space="preserve">
+    <value>Delete CommonDetail.</value>
+  </data>
+  <data name="MSG_DeleteCommonMaster" xml:space="preserve">
+    <value>Delete CommonMaster.</value>
+  </data>
+  <data name="MSG_DeleteFile" xml:space="preserve">
+    <value>Delete File</value>
+  </data>
+  <data name="MSG_DeletePermission" xml:space="preserve">
+    <value>Delete Permission.</value>
+  </data>
+  <data name="MSG_DeleteWO" xml:space="preserve">
+    <value>Delete Work Order.</value>
+  </data>
+  <data name="MSG_DeteleMaterial" xml:space="preserve">
+    <value>Delete Material !</value>
+  </data>
+  <data name="MSG_DivideWO" xml:space="preserve">
+    <value>Divide Work Order.</value>
+  </data>
+  <data name="MSG_DivisionNumber" xml:space="preserve">
+    <value>Division Number</value>
+  </data>
+  <data name="MSG_Existed" xml:space="preserve">
+    <value>Existed in system</value>
+  </data>
+  <data name="MSG_Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="MSG_ModifyBOM" xml:space="preserve">
+    <value>Modify BOM.</value>
+  </data>
+  <data name="MSG_ModifyBreakTime" xml:space="preserve">
+    <value>Modify Break Time</value>
+  </data>
+  <data name="MSG_ModifyCommonDetail" xml:space="preserve">
+    <value>Update CommonDetail.</value>
+  </data>
+  <data name="MSG_ModifyCommonMaster" xml:space="preserve">
+    <value>Modify CommonMaster.</value>
+  </data>
+  <data name="MSG_ModifyCompany" xml:space="preserve">
+    <value>Modify Company</value>
+  </data>
+  <data name="MSG_ModifyDepartment" xml:space="preserve">
+    <value>Modify Department</value>
+  </data>
+  <data name="MSG_ModifyLine" xml:space="preserve">
+    <value>Modify Line</value>
+  </data>
+  <data name="MSG_ModifyMachine" xml:space="preserve">
+    <value>Modify Machine.</value>
+  </data>
+  <data name="MSG_ModifyMagazine" xml:space="preserve">
+    <value>Modify Magazine</value>
+  </data>
+  <data name="MSG_ModifyMaker" xml:space="preserve">
+    <value>Modify Maker.</value>
+  </data>
+  <data name="MSG_ModifyMaterial" xml:space="preserve">
+    <value>Modify Material</value>
+  </data>
+  <data name="MSG_ModifyMenu" xml:space="preserve">
+    <value>Modify Menu.</value>
+  </data>
+  <data name="MSG_ModifyPermission" xml:space="preserve">
+    <value>Modify Permission.</value>
+  </data>
+  <data name="MSG_ModifyPO" xml:space="preserve">
+    <value>Modify PO.</value>
+  </data>
+  <data name="MSG_ModifyProcess" xml:space="preserve">
+    <value>Modify Process.</value>
+  </data>
+  <data name="MSG_ModifyProduct" xml:space="preserve">
+    <value>Modify Product</value>
+  </data>
+  <data name="MSG_ModifyQCCode" xml:space="preserve">
+    <value>Modify Code</value>
+  </data>
+  <data name="MSG_ModifyStaff" xml:space="preserve">
+    <value>Modify staff.</value>
+  </data>
+  <data name="MSG_ModifySuccess" xml:space="preserve">
+    <value>Modify Success</value>
+  </data>
+  <data name="MSG_ModifyUser" xml:space="preserve">
+    <value>Modify User.</value>
+  </data>
+  <data name="MSG_ModifyWO" xml:space="preserve">
+    <value>Modify Work Order</value>
+  </data>
+  <data name="MSG_NeedDrawingFile" xml:space="preserve">
+    <value>ECN need  a drawing file</value>
+  </data>
+  <data name="MSG_NewPasswordAndConfirmPasswordIsNotCorrect" xml:space="preserve">
+    <value>New Password And Confirm Password Is Not Correct</value>
+  </data>
+  <data name="MSG_QRGeneration" xml:space="preserve">
+    <value>QR Generation</value>
+  </data>
+  <data name="MSG_ReadyToLeave" xml:space="preserve">
+    <value>Ready to leave ?</value>
+  </data>
+  <data name="PlaceHolder_Password" xml:space="preserve">
+    <value>Enter Password</value>
+  </data>
+  <data name="PlaceHolder_UserName" xml:space="preserve">
+    <value>Enter Username</value>
+  </data>
+  <data name="SUCCESS_Authorization" xml:space="preserve">
+    <value>Authorize successfully.</value>
+  </data>
+  <data name="SUCCESS_Block" xml:space="preserve">
+    <value>Block successfully.</value>
+  </data>
+  <data name="SUCCESS_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="SUCCESS_Create" xml:space="preserve">
+    <value>Create new one successfully.</value>
+  </data>
+  <data name="SUCCESS_CreateAndModify" xml:space="preserve">
+    <value>Create and Modify successfully.</value>
+  </data>
+  <data name="SUCCESS_Delete" xml:space="preserve">
+    <value>Delete successfully.</value>
+  </data>
+  <data name="SUCCESS_Login" xml:space="preserve">
+    <value>Login successfully.</value>
+  </data>
+  <data name="SUCCESS_Modify" xml:space="preserve">
+    <value>Modify successfully.</value>
+  </data>
+  <data name="SUCCESS_Success" xml:space="preserve">
+    <value>Successfully !</value>
+  </data>
+  <data name="Vietnamese" xml:space="preserve">
+    <value>Tiếng Việt</value>
+  </data>
+  <data name="WARN_Existed" xml:space="preserve">
+    <value>Existed.</value>
+  </data>
+  <data name="WARN_InputCannotBeBlank" xml:space="preserve">
+    <value>Cannot be blank !</value>
+  </data>
+  <data name="WARN_MagazineIsEmpty" xml:space="preserve">
+    <value>This magazine is empty !</value>
+  </data>
+  <data name="WARN_NoImportedFile" xml:space="preserve">
+    <value>No imported file.</value>
+  </data>
+  <data name="WARN_NotSelectOnGrid" xml:space="preserve">
+    <value>No value on grid has been chosen.</value>
+  </data>
+  <data name="WARN_PackIsEmpty" xml:space="preserve">
+    <value>This pack is empty !</value>
+  </data>
+  <data name="WARN_ProductionLineIsWorking" xml:space="preserve">
+    <value>Production Line Is Working !</value>
+  </data>
+  <data name="WARN_ScanExisted" xml:space="preserve">
+    <value>Code has been scanned.</value>
+  </data>
+  <data name="WARN_ScanLOTCodeToContinue" xml:space="preserve">
+    <value>Scan LOT Code to continue !</value>
+  </data>
+  <data name="WARN_ScanMagazineToContinue" xml:space="preserve">
+    <value>Scan magazine to continue !</value>
+  </data>
+  <data name="WARN_UpdateFail" xml:space="preserve">
+    <value>Update Fail</value>
+  </data>
+  <data name="WARN_UploadWrongFile" xml:space="preserve">
+    <value>Upload wrong file !</value>
+  </data>
+  <data name="WARN_WOIsNotTheFirstProcess" xml:space="preserve">
+    <value>This WO is NOT the first process !</value>
+  </data>
+  <data name="WARN_WOIsTheFirstProcess" xml:space="preserve">
+    <value>This WO is the first process !</value>
+  </data>
+  <data name="MML_CTLPTrainning" xml:space="preserve">
+    <value>CTLP Trainning</value>
+  </data>
+  <data name="MML_Daily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="DbTbl_DocumentName" xml:space="preserve">
+    <value>Document Name</value>
+  </data>
+  <data name="DbTbl_LinkDownload" xml:space="preserve">
+    <value>Link Download</value>
+  </data>
+  <data name="DbTbl_DocumentType" xml:space="preserve">
+    <value>Document Type</value>
+  </data>
+  <data name="MML_WireBalance" xml:space="preserve">
+    <value>Wire Balance</value>
+  </data>
+  <data name="DbTbl_NameVN" xml:space="preserve">
+    <value>Vietnamese</value>
+  </data>
+  <data name="DbTbl_NameKorea" xml:space="preserve">
+    <value>Korea</value>
+  </data>
+  <data name="ERROR_DuplicatedType" xml:space="preserve">
+    <value>Duplicated Type</value>
+  </data>
+  <data name="ERROR_DataNotFound" xml:space="preserve">
+    <value>Data Not Found</value>
+  </data>
+  <data name="MSG_YouCanAddFile" xml:space="preserve">
+    <value>you can add file</value>
+  </data>
+  <data name="MML_StandardNumberOfPeople" xml:space="preserve">
+    <value>Standard DJG</value>
+  </data>
+  <data name="MML_TaskTimeStandard" xml:space="preserve">
+    <value>T/T Standard</value>
+  </data>
+  <data name="MML_StaskTimeStandard" xml:space="preserve">
+    <value>T/T Standard</value>
+  </data>
+  <data name="DbTbl_ProductionLineName" xml:space="preserve">
+    <value>Production Line Name</value>
+  </data>
+  <data name="DbTbl_CircuitNumber" xml:space="preserve">
+    <value>CircuitNumber</value>
+  </data>
+  <data name="DbTbl_TaskTime" xml:space="preserve">
+    <value>Takt Time</value>
+  </data>
+  <data name="DbTbl_People" xml:space="preserve">
+    <value>People</value>
+  </data>
+  <data name="MSG_ADDNOP" xml:space="preserve">
+    <value>ADDNOP</value>
+  </data>
+  <data name="MSG_ModifyNOP" xml:space="preserve">
+    <value>ModifyNOP</value>
+  </data>
+  <data name="Help_Document" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="DbTbl_CustomerTaskTime" xml:space="preserve">
+    <value>Customer T/T</value>
+  </data>
+  <data name="DbTbl_Gap" xml:space="preserve">
+    <value>Gap</value>
+  </data>
+  <data name="MML_ME" xml:space="preserve">
+    <value>ME Manager</value>
+  </data>
+  <data name="MML_Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="MML_Toolshop" xml:space="preserve">
+    <value>Tools shop</value>
+  </data>
+  <data name="DbTbl_Serial" xml:space="preserve">
+    <value>Serial</value>
+  </data>
+  <data name="DbTbl_InvNumber" xml:space="preserve">
+    <value>InvNumber</value>
+  </data>
+  <data name="DbTbl_CustomDeclaration" xml:space="preserve">
+    <value>CustomDeclaration</value>
+  </data>
+  <data name="DbTbl_UnitPrice" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="DbTbl_Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="DbTbl_Supplier" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="DbTbl_Dept" xml:space="preserve">
+    <value>Dept</value>
+  </data>
+  <data name="DbTbl_ExpiryDate" xml:space="preserve">
+    <value>Expiry Date</value>
+  </data>
+  <data name="ERROR_InvalidAccCode" xml:space="preserve">
+    <value>Invalid AccCode</value>
+  </data>
+  <data name="ERROR_DeleteFailed" xml:space="preserve">
+    <value>Delete Failed</value>
+  </data>
+  <data name="ERROR_ModifyFailed" xml:space="preserve">
+    <value>Modify Failed</value>
+  </data>
+  <data name="MML_WHInput" xml:space="preserve">
+    <value>WH Input</value>
+  </data>
+  <data name="MML_WHStocking" xml:space="preserve">
+    <value>WH Stocking</value>
+  </data>
+  <data name="MML_WHOutput" xml:space="preserve">
+    <value>WH Output</value>
+  </data>
+  <data name="WHOutput" xml:space="preserve">
+    <value>WH Output</value>
+  </data>
+  <data name="Btn_CreateCode" xml:space="preserve">
+    <value>CreateCode</value>
+  </data>
+  <data name="MSG_CreateNewCode" xml:space="preserve">
+    <value>CreateNewCode</value>
+  </data>
+  <data name="DbTbl_LabelQuantity" xml:space="preserve">
+    <value>Label Quantity</value>
+  </data>
+  <data name="MSG_InputCode" xml:space="preserve">
+    <value>InputCode</value>
+  </data>
+  <data name="DbTbl_InputFrom" xml:space="preserve">
+    <value>InputFrom</value>
+  </data>
+  <data name="DbTbl_InputQty" xml:space="preserve">
+    <value>InputQty</value>
+  </data>
+  <data name="DbTbl_DateIn" xml:space="preserve">
+    <value>DateIn</value>
+  </data>
+  <data name="DbTbl_ScanInTime" xml:space="preserve">
+    <value>ScanIn Time</value>
+  </data>
+  <data name="DbTbl_OutputTo" xml:space="preserve">
+    <value>Output To</value>
+  </data>
+  <data name="DbTbl_OutputQty" xml:space="preserve">
+    <value>OutputQty</value>
+  </data>
+  <data name="DbTbl_DateOut" xml:space="preserve">
+    <value>DateOut </value>
+  </data>
+  <data name="DbTbl_ScanOutTime" xml:space="preserve">
+    <value>ScanOutTime</value>
+  </data>
+  <data name="DbTbl_StockQty" xml:space="preserve">
+    <value>Stock Q'ty</value>
+  </data>
+  <data name="Btn_SelectFiles" xml:space="preserve">
+    <value>Files to upload</value>
+  </data>
+  <data name="DbTbl_Vehicle" xml:space="preserve">
+    <value>Vehicle</value>
+  </data>
+  <data name="DbTbl_PartNo" xml:space="preserve">
+    <value>Part  No</value>
+  </data>
+  <data name="MSG_ADDTasktime" xml:space="preserve">
+    <value>ADD Takt time</value>
+  </data>
+  <data name="DbTbl_CT" xml:space="preserve">
+    <value>CT</value>
+  </data>
+  <data name="DbTbl_LP" xml:space="preserve">
+    <value>LP</value>
+  </data>
+  <data name="DbTbl_FA" xml:space="preserve">
+    <value>FA</value>
+  </data>
+  <data name="DbTbl_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="DbTbl_LoaiXe" xml:space="preserve">
+    <value>Car Type</value>
+  </data>
+  <data name="DbTbl_JntNo" xml:space="preserve">
+    <value>JntNo</value>
+  </data>
+  <data name="DbTbl_SQ" xml:space="preserve">
+    <value>SQ</value>
+  </data>
+  <data name="DbTbl_Before" xml:space="preserve">
+    <value>Before</value>
+  </data>
+  <data name="DbTbl_LengAfter" xml:space="preserve">
+    <value>Lenght Change</value>
+  </data>
+  <data name="DbTbl_After2" xml:space="preserve">
+    <value>After 2</value>
+  </data>
+  <data name="ERROR_MaterialNotInMES" xml:space="preserve">
+    <value>Material Not In MES</value>
+  </data>
+  <data name="ERROR_NotExistedInStock" xml:space="preserve">
+    <value>Not Existed In Stock</value>
+  </data>
+  <data name="DbTbl_NameOther" xml:space="preserve">
+    <value>Name Other</value>
+  </data>
+  <data name="Btn_ConfirmUpload" xml:space="preserve">
+    <value>Confirm to Upload</value>
+  </data>
+  <data name="MML_DeviceManagerment" xml:space="preserve">
+    <value>Device Managerment</value>
+  </data>
+  <data name="DbTbl_ENTER" xml:space="preserve">
+    <value>Enter ECNNo</value>
+  </data>
+  <data name="MML_WHBIN" xml:space="preserve">
+    <value>BIN Location</value>
+  </data>
+  <data name="DbTbl_LocationCode" xml:space="preserve">
+    <value>Location Code</value>
+  </data>
+  <data name="DbTbl_WarehouseName" xml:space="preserve">
+    <value>Warehouse Name</value>
+  </data>
+  <data name="MML_POManagerment" xml:space="preserve">
+    <value>PO Managerment</value>
+  </data>
+  <data name="MML_BIN" xml:space="preserve">
+    <value>BIN Location</value>
+  </data>
+  <data name="MML_BOMApplies" xml:space="preserve">
+    <value>BOM Applies</value>
+  </data>
+  <data name="DbTbl_PackingCode" xml:space="preserve">
+    <value>PackingCode</value>
+  </data>
+  <data name="MML_ECNManager" xml:space="preserve">
+    <value>(BOM) Raw material</value>
+  </data>
+  <data name="ERROR_AllowPopupForWEB" xml:space="preserve">
+    <value>You must allow popups for this map to work.</value>
+  </data>
+  <data name="ERROR_NotChoiceItem" xml:space="preserve">
+    <value>haven't choice item</value>
+  </data>
+  <data name="DbTbl_UnitName" xml:space="preserve">
+    <value>Unit Name</value>
+  </data>
+  <data name="MML_Applicator" xml:space="preserve">
+    <value>Applicator</value>
+  </data>
+  <data name="DbTbl_APPLICATOR" xml:space="preserve">
+    <value>APPLICATOR</value>
+  </data>
+  <data name="DbTbl_SEQ" xml:space="preserve">
+    <value>SEQ</value>
+  </data>
+  <data name="DbTbl_Customer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="DbTbl_MAX_Count" xml:space="preserve">
+    <value>MAX_Count</value>
+  </data>
+  <data name="DbTbl_Total_Count" xml:space="preserve">
+    <value>Total_Count</value>
+  </data>
+  <data name="DbTbl_WorkCount" xml:space="preserve">
+    <value>Work Count</value>
+  </data>
+  <data name="DbTbl_SPP_NO" xml:space="preserve">
+    <value>SPP_NO</value>
+  </data>
+  <data name="DbTbl_GAUGE" xml:space="preserve">
+    <value>GAUGE</value>
+  </data>
+  <data name="MML_ApplicatorScanIN" xml:space="preserve">
+    <value>ApplicatorScanIN</value>
+  </data>
+  <data name="DbTbl_SubCode" xml:space="preserve">
+    <value>SUB CODE</value>
+  </data>
+  <data name="DbTbl_NameEN" xml:space="preserve">
+    <value>NameEN</value>
+  </data>
+  <data name="DbTbl_NameKO" xml:space="preserve">
+    <value>NameKO</value>
+  </data>
+  <data name="DbTbl_Owner" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="MML_ApplicatorScanOut" xml:space="preserve">
+    <value>Applicator ScanOut</value>
+  </data>
+  <data name="MML_ApplicatorStock" xml:space="preserve">
+    <value>Applicator Stock</value>
+  </data>
+  <data name="MML_FATasktime" xml:space="preserve">
+    <value>FA T/T</value>
+  </data>
+  <data name="MSG_ADDFATasktime" xml:space="preserve">
+    <value>ADD FA Takt time</value>
+  </data>
+  <data name="DbTbl_CheckNum" xml:space="preserve">
+    <value>CheckNum</value>
+  </data>
+  <data name="DbTbl_DateCheck" xml:space="preserve">
+    <value>DateCheck</value>
+  </data>
+  <data name="DbTbl_SUB" xml:space="preserve">
+    <value>SUB</value>
+  </data>
+  <data name="DbTbl_RO" xml:space="preserve">
+    <value>RO</value>
+  </data>
+  <data name="DbTbl_CLIP" xml:space="preserve">
+    <value>CLIP</value>
+  </data>
+  <data name="MML_Scrap" xml:space="preserve">
+    <value>Scrap</value>
+  </data>
+  <data name="MML_ScrapCreateLot" xml:space="preserve">
+    <value>ScrapCreateLot</value>
+  </data>
+  <data name="MML_FGPalletReport" xml:space="preserve">
+    <value>FGPalletReport</value>
+  </data>
+  <data name="DbTbl_Mass" xml:space="preserve">
+    <value>Mass</value>
+  </data>
+  <data name="DbTbl_ScrapName" xml:space="preserve">
+    <value>ScrapName</value>
+  </data>
+  <data name="MML_ScrapList" xml:space="preserve">
+    <value>ScrapList</value>
+  </data>
+  <data name="MSG_ADDScrapList" xml:space="preserve">
+    <value>ADDScrapList</value>
+  </data>
+  <data name="DbTbl_ScrapCode" xml:space="preserve">
+    <value>ScrapCode</value>
+  </data>
+  <data name="MML_ScrapStock" xml:space="preserve">
+    <value>ScrapStock</value>
+  </data>
+  <data name="MML_ScrapScanIn" xml:space="preserve">
+    <value>ScrapScanIn</value>
+  </data>
+  <data name="MML_ScrapScanOut" xml:space="preserve">
+    <value>ScrapScanOut</value>
+  </data>
+  <data name="DbTbl_OutputFrom" xml:space="preserve">
+    <value>Output To</value>
+  </data>
+  <data name="DbTbl_MCount" xml:space="preserve">
+    <value>MCount</value>
+  </data>
+  <data name="MML_BOMCompare" xml:space="preserve">
+    <value>Compare BOM</value>
+  </data>
+  <data name="MSG_FuntionUnderConstruction" xml:space="preserve">
+    <value>Function under construction</value>
+  </data>
+  <data name="MML_CuttingPlan" xml:space="preserve">
+    <value>Cutting Plan</value>
+  </data>
+  <data name="DbTbl_PLANDATE" xml:space="preserve">
+    <value>Plan Date</value>
+  </data>
+  <data name="DbTbl_AcctualDate" xml:space="preserve">
+    <value>Actual date</value>
+  </data>
+  <data name="DbTbl_MC_PLAN" xml:space="preserve">
+    <value>MC Plan</value>
+  </data>
+  <data name="DbTbl_MC_ACTUAL" xml:space="preserve">
+    <value>MC Actual</value>
+  </data>
+  <data name="DbTbl_QTYPLAN" xml:space="preserve">
+    <value>Qty Plan</value>
+  </data>
+  <data name="DbTbl_QtyActual" xml:space="preserve">
+    <value>Q'Ty Actual</value>
+  </data>
+  <data name="MML_LPProcess" xml:space="preserve">
+    <value>LP Process</value>
+  </data>
+  <data name="MML_ProductionPlan" xml:space="preserve">
+    <value>Production Plan</value>
+  </data>
+  <data name="DbTbl_After" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="DbTbl_After1" xml:space="preserve">
+    <value>After 1</value>
+  </data>
+  <data name="DbTbl_Twist" xml:space="preserve">
+    <value>Twist Leng</value>
+  </data>
+  <data name="MML_TwistDoc" xml:space="preserve">
+    <value>Twist Doc</value>
+  </data>
+  <data name="MML_TubeBOM" xml:space="preserve">
+    <value>Tube BOM</value>
+  </data>
+  <data name="DbTbl_Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="MML_CuttingBlade" xml:space="preserve">
+    <value>Cutting Blade</value>
+  </data>
+  <data name="MML_BladeList" xml:space="preserve">
+    <value>Blade List</value>
+  </data>
+  <data name="MML_BladeScanIn" xml:space="preserve">
+    <value>Blade ScanIn</value>
+  </data>
+  <data name="MML_BladeScanout" xml:space="preserve">
+    <value>Blade ScanOut</value>
+  </data>
+  <data name="MML_BladeStock" xml:space="preserve">
+    <value>Blade Stock</value>
+  </data>
+  <data name="DbTbl_Spec" xml:space="preserve">
+    <value>Spec</value>
+  </data>
+  <data name="DbTbl_CurrentStock" xml:space="preserve">
+    <value>Current Stock</value>
+  </data>
+  <data name="DbTbl_SafetyStock" xml:space="preserve">
+    <value>Safety Stock</value>
+  </data>
+  <data name="Btn_CheckAll" xml:space="preserve">
+    <value>Check All</value>
+  </data>
+  <data name="DbTbl_PONo" xml:space="preserve">
+    <value>PO No</value>
+  </data>
+  <data name="DbTbl_CustomerCode" xml:space="preserve">
+    <value>Customer Code</value>
+  </data>
+  <data name="DbTbl_CustomerName" xml:space="preserve">
+    <value>Customer Name</value>
+  </data>
+  <data name="DbTbl_ETADate" xml:space="preserve">
+    <value>ETA Date</value>
+  </data>
+  <data name="DbTbl_ShippingType" xml:space="preserve">
+    <value>Shipping Type</value>
+  </data>
+  <data name="DbTbl_ShippingAddress" xml:space="preserve">
+    <value>ShippingAddress</value>
+  </data>
+  <data name="MML_PackingListImport" xml:space="preserve">
+    <value>Packing List import</value>
+  </data>
+  <data name="DbTbl_InventoryWarning" xml:space="preserve">
+    <value>Inventory Warning</value>
+  </data>
+  <data name="DbTbl_Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="MML_SpareParts" xml:space="preserve">
+    <value>Spare Parts</value>
+  </data>
+  <data name="MML_SparePartsManager" xml:space="preserve">
+    <value>SpareParts Manager</value>
+  </data>
+  <data name="DbTbl_Cutting" xml:space="preserve">
+    <value>Cutting</value>
+  </data>
+  <data name="DbTbl_Crimping" xml:space="preserve">
+    <value>Crimping</value>
+  </data>
+  <data name="DbTbl_Heating" xml:space="preserve">
+    <value>Heating</value>
+  </data>
+  <data name="DbTbl_Welding" xml:space="preserve">
+    <value>Welding</value>
+  </data>
+  <data name="DbTbl_Hookrack" xml:space="preserve">
+    <value>Hook rack</value>
+  </data>
+  <data name="DbTbl_OQC" xml:space="preserve">
+    <value>OQC</value>
+  </data>
+  <data name="DbTbl_FG" xml:space="preserve">
+    <value>FG</value>
+  </data>
+  <data name="DbTbl_Shipping" xml:space="preserve">
+    <value>Shipping</value>
+  </data>
+  <data name="MML_MaterialStockDetail" xml:space="preserve">
+    <value>Material Stock Detail</value>
+  </data>
+  <data name="DbTbl_WH" xml:space="preserve">
+    <value>WH</value>
+  </data>
+  <data name="DbTbl_POCode" xml:space="preserve">
+    <value>PO Code</value>
+  </data>
+  <data name="DbTbl_POName" xml:space="preserve">
+    <value>PO Name</value>
+  </data>
+  <data name="DbTbl_PODate" xml:space="preserve">
+    <value> PO Date</value>
+  </data>
+  <data name="DbTbl_StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="DbTbl_RequestTime" xml:space="preserve">
+    <value>Request Time</value>
+  </data>
+  <data name="DbTbl_HandlingConfirmation" xml:space="preserve">
+    <value>Handling Confirmation</value>
+  </data>
+  <data name="DbTbl_CompletionTime" xml:space="preserve">
+    <value>Completion Time</value>
+  </data>
+  <data name="DbTbl_IssuePoints" xml:space="preserve">
+    <value>Issue Points</value>
+  </data>
+  <data name="DbTbl_HandlingMethod" xml:space="preserve">
+    <value>Handling Method</value>
+  </data>
+  <data name="DbTbl_OnSiteResolution" xml:space="preserve">
+    <value>On Site Resolution</value>
+  </data>
+  <data name="DbTbl_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="DbTbl_CustomerSatisfaction" xml:space="preserve">
+    <value>Customer Satisfaction</value>
+  </data>
+  <data name="DbTbl_ResponseTimeMinutes" xml:space="preserve">
+    <value>Response Time Minutes</value>
+  </data>
+  <data name="DbTbl_HandlingTimeMinutes" xml:space="preserve">
+    <value>Handling Time (Minutes)</value>
+  </data>
+  <data name="DbTbl_LengthMin" xml:space="preserve">
+    <value>Length Min</value>
+  </data>
+  <data name="DbTbl_LengthMax" xml:space="preserve">
+    <value>Length Max</value>
+  </data>
+  <data name="DbTbl_Seal" xml:space="preserve">
+    <value>Seal</value>
+  </data>
+  <data name="DbTbl_SqMin" xml:space="preserve">
+    <value>SQ Min</value>
+  </data>
+  <data name="DbTbl_SqMax" xml:space="preserve">
+    <value>SQ Max</value>
+  </data>
+  <data name="MML_CTLPTasktime" xml:space="preserve">
+    <value>CT  T/T</value>
+  </data>
+  <data name="MML_Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="MML_MaintenanceRequest" xml:space="preserve">
+    <value>Maintenance Request</value>
+  </data>
+  <data name="MML_POPlan" xml:space="preserve">
+    <value>PO Plan</value>
+  </data>
+  <data name="DbTbl_BranchMin" xml:space="preserve">
+    <value>Branch Min</value>
+  </data>
+  <data name="DbTbl_BranchMax" xml:space="preserve">
+    <value>Branch Max</value>
+  </data>
+  <data name="MML_BRANSONTaktTime" xml:space="preserve">
+    <value>BRANSON T/T</value>
+  </data>
+  <data name="MML_WELDINGTaktTime" xml:space="preserve">
+    <value>WELDING T/T</value>
+  </data>
+  <data name="MML_HEATINGMCTaktTime" xml:space="preserve">
+    <value>HEATING MC T/T</value>
+  </data>
+  <data name="MML_TWISTTaktTime" xml:space="preserve">
+    <value>TWIST T/T</value>
+  </data>
+  <data name="Btn_POCanculator" xml:space="preserve">
+    <value>PO Plan Calculator</value>
+  </data>
+  <data name="DbTbl_Capa" xml:space="preserve">
+    <value>Capability</value>
+  </data>
+  <data name="WARN_MultipleSelectData" xml:space="preserve">
+    <value>Select too many data rows</value>
+  </data>
+  <data name="Btn_Compare" xml:space="preserve">
+    <value>Compare</value>
+  </data>
+  <data name="MML_SparePartsScanIn" xml:space="preserve">
+    <value>Spare Parts ScanIn</value>
+  </data>
+  <data name="MML_SparePartsScanOut" xml:space="preserve">
+    <value>SpareParts ScanOut</value>
+  </data>
+  <data name="DbTbl_ResponseWithin10Mins" xml:space="preserve">
+    <value>Response With in 10Mins</value>
+  </data>
+  <data name="DbTbl_ResolvedWithin1Hour" xml:space="preserve">
+    <value>Resolved With in 1Hour</value>
+  </data>
+  <data name="DbTbl_SuccessfulResolutions" xml:space="preserve">
+    <value>Successful Resolutions</value>
+  </data>
+  <data name="DbTbl_PendingRequests" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="MML_MaintenanceReport" xml:space="preserve">
+    <value>Maintenance Report</value>
+  </data>
+  <data name="DbTbl_SUB_Worker" xml:space="preserve">
+    <value>SUB_Worker</value>
+  </data>
+  <data name="DbTbl_FA_Worker" xml:space="preserve">
+    <value>FA Worker</value>
+  </data>
+  <data name="DbTbl_RO_Worker" xml:space="preserve">
+    <value>RO_Worker</value>
+  </data>
+  <data name="DbTbl_CLIP_Worker" xml:space="preserve">
+    <value>CLIP_Worker</value>
+  </data>
+  <data name="Btn_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Btn_Complete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="DbTbl_LineName" xml:space="preserve">
+    <value>Line Name</value>
+  </data>
+  <data name="DbTbl_WorkerNumber" xml:space="preserve">
+    <value>Worker Number</value>
+  </data>
+  <data name="Btn_CheckBOM" xml:space="preserve">
+    <value>Check BOM</value>
+  </data>
+  <data name="DbTbl_MainLot" xml:space="preserve">
+    <value>Main Lot</value>
+  </data>
+  <data name="DbTbl_MainLotQty" xml:space="preserve">
+    <value>Main Lot Q'ty</value>
+  </data>
+  <data name="DbTbl_DivideLot" xml:space="preserve">
+    <value>Divide Lot</value>
+  </data>
+  <data name="DbTbl_DivideQty" xml:space="preserve">
+    <value>Divide Q'ty</value>
+  </data>
+  <data name="DbTbl_DivideLot1" xml:space="preserve">
+    <value>Divide Lot 1</value>
+  </data>
+  <data name="DbTbl_DivideQty1" xml:space="preserve">
+    <value>Divide Q'ty 1</value>
+  </data>
+  <data name="DbTbl_DivideLot2" xml:space="preserve">
+    <value>Divide Lot 2</value>
+  </data>
+  <data name="DbTbl_DivideQty2" xml:space="preserve">
+    <value>Divide Qty 2</value>
+  </data>
+  <data name="MML_wmscomparison" xml:space="preserve">
+    <value>LOT Combine</value>
+  </data>
+  <data name="Btn_Combine" xml:space="preserve">
+    <value>Combine</value>
+  </data>
+  <data name="DbTbl_SplitQty" xml:space="preserve">
+    <value>Split Qty</value>
+  </data>
+  <data name="MML_wmsdivide" xml:space="preserve">
+    <value>LOT Divide</value>
+  </data>
+  <data name="Btn_CheckCurrent" xml:space="preserve">
+    <value>Check Current</value>
+  </data>
+  <data name="DbTbl_LineType" xml:space="preserve">
+    <value>Line Type</value>
+  </data>
+  <data name="DbTbl_Channel" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="DbTbl_VisionLeakTest" xml:space="preserve">
+    <value>Vision/Leak Test</value>
+  </data>
+  <data name="MML_HookRack" xml:space="preserve">
+    <value>HookRack</value>
+  </data>
+  <data name="MML_HookRackScanIn" xml:space="preserve">
+    <value>(HRW) Input</value>
+  </data>
+  <data name="MML_HookRackScanOut" xml:space="preserve">
+    <value>(HRW) Output</value>
+  </data>
+  <data name="MML_HookRackStock" xml:space="preserve">
+    <value>(HRW) Stock</value>
+  </data>
+  <data name="MML_HookRackInventory" xml:space="preserve">
+    <value>(HRW) Inventory</value>
+  </data>
+  <data name="MML_CapaManagerment" xml:space="preserve">
+    <value>Capa Managerment</value>
+  </data>
+  <data name="MML_CapaManager" xml:space="preserve">
+    <value>Capa Manager</value>
+  </data>
+  <data name="DbTbl_Performance" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="DbTbl_CT_Worker" xml:space="preserve">
+    <value>CT Worker</value>
+  </data>
+  <data name="DbTbl_LP_Worker" xml:space="preserve">
+    <value>LP Worker</value>
+  </data>
+  <data name="DbTbl_POQty" xml:space="preserve">
+    <value>PO Q'ty</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Sun</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Mon</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Tue</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Wed</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Thur</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Fri</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Sat</value>
+  </data>
+  <data name="DbTbl_InputLot" xml:space="preserve">
+    <value>Input Lot</value>
+  </data>
+  <data name="DbTbl_DayOfWeek" xml:space="preserve">
+    <value>DoW</value>
+  </data>
+  <data name="DbTbl_OrderQty" xml:space="preserve">
+    <value>Order Q'ty</value>
+  </data>
+  <data name="MML_CuttingProccess" xml:space="preserve">
+    <value>Cutting Proccess</value>
+  </data>
+  <data name="MML_Cutting" xml:space="preserve">
+    <value>Cutting</value>
+  </data>
+  <data name="MML_FA" xml:space="preserve">
+    <value>Final Assembly (FA)</value>
+  </data>
+  <data name="MML_LP" xml:space="preserve">
+    <value>Laying, Pre-forming (LP)</value>
+  </data>
+  <data name="MML_Crimping" xml:space="preserve">
+    <value>Crimping</value>
+  </data>
+  <data name="MML_Twisting" xml:space="preserve">
+    <value>Twisting</value>
+  </data>
+  <data name="MML_Welding" xml:space="preserve">
+    <value>Welding</value>
+  </data>
+  <data name="MML_Heating" xml:space="preserve">
+    <value>Heating</value>
+  </data>
+  <data name="DbTbl_Target1" xml:space="preserve">
+    <value>Target 1</value>
+  </data>
+  <data name="DbTbl_Target2" xml:space="preserve">
+    <value>Target 2</value>
+  </data>
+  <data name="DbTbl_Target3" xml:space="preserve">
+    <value>Target 3</value>
+  </data>
+  <data name="DbTbl_Target4" xml:space="preserve">
+    <value>Target 4</value>
+  </data>
+  <data name="DbTbl_Act1" xml:space="preserve">
+    <value>Actual 1</value>
+  </data>
+  <data name="DbTbl_Act2" xml:space="preserve">
+    <value>Actual 2</value>
+  </data>
+  <data name="DbTbl_Act3" xml:space="preserve">
+    <value>Actual 3</value>
+  </data>
+  <data name="DbTbl_Act4" xml:space="preserve">
+    <value>Actual 4</value>
+  </data>
+  <data name="DbTbl_TargetOT" xml:space="preserve">
+    <value>Target OT</value>
+  </data>
+  <data name="DbTbl_ActOT" xml:space="preserve">
+    <value>Actual OT</value>
+  </data>
+  <data name="DbTbl_TargetTotal" xml:space="preserve">
+    <value>Target Total</value>
+  </data>
+  <data name="DbTbl_ActTotal" xml:space="preserve">
+    <value>Actual Total</value>
+  </data>
+  <data name="DbTbl_TotalEmployees" xml:space="preserve">
+    <value>Total Employees</value>
+  </data>
+  <data name="DbTbl_PresentEmployees" xml:space="preserve">
+    <value>Present Employees</value>
+  </data>
+  <data name="DbTbl_AbsentEmployees" xml:space="preserve">
+    <value>Absent Employees</value>
+  </data>
+  <data name="DbTbl_LeaveAuthorized" xml:space="preserve">
+    <value>Leave Authorized</value>
+  </data>
+  <data name="DbTbl_LeaveUnauthorized" xml:space="preserve">
+    <value>Leave Unauthorized</value>
+  </data>
+  <data name="DbTbl_SupportStaff" xml:space="preserve">
+    <value>Support Staff</value>
+  </data>
+  <data name="DbTbl_NewEmployees" xml:space="preserve">
+    <value>New Employees</value>
+  </data>
+  <data name="DbTbl_Resigned" xml:space="preserve">
+    <value>Resigned</value>
+  </data>
+  <data name="DbTbl_UnauthorizedNames" xml:space="preserve">
+    <value>Unauthorized Employees Names</value>
+  </data>
+  <data name="MML_WorkerManager" xml:space="preserve">
+    <value>Worker Manager</value>
+  </data>
+  <data name="DbTbl_G_Weight" xml:space="preserve">
+    <value>G_Weight</value>
+  </data>
+  <data name="DbTbl_N_Weight" xml:space="preserve">
+    <value>N_Weight</value>
+  </data>
+  <data name="DbTbl_PalletNo" xml:space="preserve">
+    <value>Pallet No</value>
+  </data>
+  <data name="DbTbl_ShippedNo" xml:space="preserve">
+    <value>Shipped No</value>
+  </data>
+  <data name="ERROR_DuplicatedPackingItem" xml:space="preserve">
+    <value>Packing item duplicated</value>
+  </data>
+  <data name="MSG_CreatePackingItem" xml:space="preserve">
+    <value>Create new packing item</value>
+  </data>
+  <data name="Btn_Filter" xml:space="preserve">
+    <value>Filter</value>
+    <comment>Filter</comment>
+  </data>
+  <data name="DbTbl_WorkTime" xml:space="preserve">
+    <value>Work Time</value>
+  </data>
+  <data name="DbTbl_Plan_FA" xml:space="preserve">
+    <value>Plan FA</value>
+  </data>
+  <data name="DbTbl_Productivity" xml:space="preserve">
+    <value>Productivity</value>
+  </data>
+  <data name="MML_UPH" xml:space="preserve">
+    <value>UPH</value>
+  </data>
+  <data name="MSG_BuildingThisFunction" xml:space="preserve">
+    <value>This function is under construction.</value>
+  </data>
+  <data name="MML_ScanSUBKIT" xml:space="preserve">
+    <value>Scan Sub+Kit</value>
+  </data>
+  <data name="MML_ScanRoClip" xml:space="preserve">
+    <value>Scan RO+Clip</value>
+  </data>
+  <data name="DbTbl_SNP" xml:space="preserve">
+    <value>SNP</value>
+  </data>
+  <data name="DbTbl_WODate" xml:space="preserve">
+    <value>WO Date</value>
+  </data>
+  <data name="Btn_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="DbTbl_POConfirm" xml:space="preserve">
+    <value>PO Confirm</value>
+  </data>
+  <data name="DbTbl_SPN" xml:space="preserve">
+    <value>SNP</value>
+  </data>
+  <data name="DbTbl_Colume" xml:space="preserve">
+    <value>Colume</value>
+  </data>
+  <data name="DbTbl_ETDDate" xml:space="preserve">
+    <value>ETD Date</value>
+  </data>
+  <data name="DbTbl_InvoiceDate" xml:space="preserve">
+    <value>Invoice Date</value>
+  </data>
+  <data name="MML_POPlanConfirm" xml:space="preserve">
+    <value>PO Plan Confirm</value>
+  </data>
+  <data name="DbTbl_QuantityME" xml:space="preserve">
+    <value>Quantity ME</value>
+  </data>
+  <data name="DbTbl_Count Percent" xml:space="preserve">
+    <value>Count Percent</value>
+  </data>
+  <data name="DbTbl_InvoiceNo" xml:space="preserve">
+    <value>Invoice No</value>
+  </data>
+  <data name="DbTbl_TransportType" xml:space="preserve">
+    <value>Transport Type</value>
+  </data>
+  <data name="DbTbl_UPrice" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="DbTbl_Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="MML_MRPlanning" xml:space="preserve">
+    <value>Material Planning</value>
+  </data>
+  <data name="DbTbl_MergePO" xml:space="preserve">
+    <value>Merge PO</value>
+  </data>
+  <data name="btn_MRPlanningCalc" xml:space="preserve">
+    <value>Load MRPlanning</value>
+  </data>
+  <data name="DbTbl_BOMRaw" xml:space="preserve">
+    <value>BOM Raw</value>
+  </data>
+  <data name="Btn_CuttingPlanCalculator" xml:space="preserve">
+    <value>Cutting Plan Calculator</value>
+  </data>
+  <data name="DbTbl_NamePOPlanning" xml:space="preserve">
+    <value>Please input the name of the PO Plan</value>
+  </data>
+  <data name="MSG_SavePOPlanningIntoDatabase" xml:space="preserve">
+    <value>Save PO Planning Into Database</value>
+  </data>
+  <data name="DbTbl_ChosePOPlanningName" xml:space="preserve">
+    <value>Choose PO Planning:</value>
+  </data>
+  <data name="MSG_SaveMRPlanningIntoDatabase" xml:space="preserve">
+    <value>MSG_SaveMRPlanningIntoDatabase</value>
+  </data>
+  <data name="DbTbl_NameMRPlanning" xml:space="preserve">
+    <value>Please input the name of the MR Plan</value>
+  </data>
+  <data name="Tab_CuttingPlanDetail" xml:space="preserve">
+    <value>Cutting Plan Detail</value>
+  </data>
+  <data name="Tab_CuttingPlanCalculator" xml:space="preserve">
+    <value>Cutting Plan Calculator</value>
+  </data>
+  <data name="Tab_CuttingPlanConfirm" xml:space="preserve">
+    <value>Cutting Plan Confirm</value>
+  </data>
+  <data name="MML_POPlanEditor" xml:space="preserve">
+    <value>PO Plan Editor</value>
+  </data>
+  <data name="DbTbl_ChoseMRPlanningName" xml:space="preserve">
+    <value>Choose MR Plan:</value>
+  </data>
+  <data name="ERROR_Valuegreaterthan" xml:space="preserve">
+    <value>Do not enter a value greater than the planned value.</value>
+  </data>
+  <data name="Tab_CuttingPlanImport" xml:space="preserve">
+    <value>Cutting Plan Import</value>
+  </data>
+  <data name="MML_LPPlan" xml:space="preserve">
+    <value>LP Plan</value>
+  </data>
+  <data name="Btn_LPPlanCalculator" xml:space="preserve">
+    <value>LP Plan Calculator</value>
+  </data>
+  <data name="Tab_LPPlanDetail" xml:space="preserve">
+    <value>LP Plan Detail</value>
+  </data>
+  <data name="Tab_LPPlanCalculator" xml:space="preserve">
+    <value>LP Plan Calculator</value>
+  </data>
+  <data name="Tab_LPPlanImport" xml:space="preserve">
+    <value>LP Plan Import</value>
+  </data>
+  <data name="Tab_LPPlanConfirm" xml:space="preserve">
+    <value>LP Plan Confirm</value>
+  </data>
+  <data name="DbTbl_ImportDate" xml:space="preserve">
+    <value>Import Date</value>
+  </data>
+  <data name="DbTbl_Free" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="DbTbl_User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="DbTbl_ReasonForUse" xml:space="preserve">
+    <value>Reason For Use</value>
+  </data>
+  <data name="DbTbl_Device_Group" xml:space="preserve">
+    <value>Device Group</value>
+  </data>
+  <data name="DbTbl_Device_Code" xml:space="preserve">
+    <value>Device Code</value>
+  </data>
+  <data name="MML_GroupDevice" xml:space="preserve">
+    <value>Group Device</value>
+  </data>
+  <data name="DbTbl_StockWarning" xml:space="preserve">
+    <value>Stock Warning</value>
+  </data>
+  <data name="DbTbl_DeviceQRScan" xml:space="preserve">
+    <value>Device QR Scan</value>
+  </data>
+  <data name="DbTbl_ApplicatorLOT" xml:space="preserve">
+    <value>Applicator LOT</value>
+  </data>
+  <data name="SUCCESS_Added" xml:space="preserve">
+    <value>Added</value>
+  </data>
+  <data name="SUCCESS_Saved" xml:space="preserve">
+    <value>Saved successfully</value>
+  </data>
+  <data name="WARN_NoDataFound" xml:space="preserve">
+    <value>No data found</value>
+  </data>
+  <data name="WARN_LoadSelectorFailed" xml:space="preserve">
+    <value>Failed to load selector</value>
+  </data>
+  <data name="ERROR_DeviceNotFound" xml:space="preserve">
+    <value>Device not found</value>
+  </data>
+  <data name="ERROR_ScanLotCodeFirst" xml:space="preserve">
+    <value>Scan LotCode first</value>
+  </data>
+  <data name="ERROR_NoDataToSave" xml:space="preserve">
+    <value>No data to save</value>
+  </data>
+  <data name="ERROR_ServerConnection" xml:space="preserve">
+    <value>Server connection error</value>
+  </data>
+  <data name="ERROR_SystemSearch" xml:space="preserve">
+    <value>System error during search</value>
+  </data>
+  <data name="ERROR_InvalidQRFormat" xml:space="preserve">
+    <value>Invalid QR code format</value>
+  </data>
+  <data name="ERROR_StatusWorking" xml:space="preserve">
+    <value>Code Status Working</value>
+  </data>
+  <data name="ERROR_StatusAvailable" xml:space="preserve">
+    <value>Status Available</value>
+  </data>
+  <data name="ERROR_ApplicatorAndSeqExist" xml:space="preserve">
+    <value>Applicator code and SEQ already exist</value>
+  </data>
+  <data name="ERROR_CreateFailed" xml:space="preserve">
+    <value>Creation failed</value>
+  </data>
+  <data name="ERROR_NegativeSafetyStock" xml:space="preserve">
+    <value>SafetyStock cannot be negative</value>
+  </data>
+  <data name="ERROR_DuplicatePartName" xml:space="preserve">
+    <value>This PartName already exists</value>
+  </data>
+  <data name="Btn_LongTerm" xml:space="preserve">
+    <value>Long Term</value>
+  </data>
+  <data name="DbTbl_YearCount" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="DbTbl_MonthSTR" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="DbTbl_LeadCount" xml:space="preserve">
+    <value>Lead Count</value>
+  </data>
+  <data name="DbTbl_Over1" xml:space="preserve">
+    <value>Over+1</value>
+  </data>
+  <data name="DbTbl_Over2" xml:space="preserve">
+    <value>Over+2</value>
+  </data>
+  <data name="DbTbl_Over3" xml:space="preserve">
+    <value>Over+3</value>
+  </data>
+  <data name="DbTbl_Over4" xml:space="preserve">
+    <value>Over+4</value>
+  </data>
+  <data name="DbTbl_Over5" xml:space="preserve">
+    <value>Over+5</value>
+  </data>
+  <data name="DbTbl_Over6" xml:space="preserve">
+    <value>Over+6</value>
+  </data>
+  <data name="DbTbl_Over7To9" xml:space="preserve">
+    <value>Over+7~9</value>
+  </data>
+  <data name="DbTbl_Over10" xml:space="preserve">
+    <value>Over+10</value>
+  </data>
+  <data name="DbTbl_SUM" xml:space="preserve">
+    <value>SUM</value>
+  </data>
+  <data name="SUCCESS_AddCodeSuccess" xml:space="preserve">
+    <value>Code added successfully</value>
+  </data>
+  <data name="SUCCESS_AddCodeAndSetStandard" xml:space="preserve">
+    <value>Code added successfully </value>
+  </data>
+  <data name="ERROR_SystemErrorContactIT" xml:space="preserve">
+    <value>System error - Please contact IT</value>
+  </data>
+  <data name="WARN_DetectOtherCode" xml:space="preserve">
+    <value>Detected different code</value>
+  </data>
+  <data name="ERROR_NoDataToExport" xml:space="preserve">
+    <value>No data to export</value>
+  </data>
+  <data name="ERROR_ExportExcelFailed" xml:space="preserve">
+    <value>Export to Excel failed</value>
+  </data>
+  <data name="ERROR_LoadDataFailed" xml:space="preserve">
+    <value>Error loading data</value>
+  </data>
+  <data name="ERROR_FIFOViolation" xml:space="preserve">
+    <value>FIFO Violation</value>
+  </data>
+  <data name="MML_SealTerm" xml:space="preserve">
+    <value>Seal Term</value>
+  </data>
+  <data name="MML_TermCalculator" xml:space="preserve">
+    <value>Term Calculator</value>
+  </data>
+  <data name="DbTbl_TMN" xml:space="preserve">
+    <value>TMN</value>
+  </data>
+  <data name="DbTbl_LightTermWeight" xml:space="preserve">
+    <value>Light Term Weight</value>
+  </data>
+  <data name="DbTbl_CoilCount" xml:space="preserve">
+    <value>Coil Count</value>
+  </data>
+  <data name="DbTbl_LightCoilCount" xml:space="preserve">
+    <value>Light Coil Count</value>
+  </data>
+  <data name="DbTbl_FullTermCoilCount" xml:space="preserve">
+    <value>Full Term Coil Count</value>
+  </data>
+  <data name="DbTbl_EmptyCoilWeight" xml:space="preserve">
+    <value>Empty Coil Weight</value>
+  </data>
+  <data name="DbTbl_SingleTermWeight" xml:space="preserve">
+    <value>Single Term Weight</value>
+  </data>
+  <data name="ERROR_DuplicateTMN" xml:space="preserve">
+    <value>Duplicate TMN</value>
+  </data>
+  <data name="DbTbl_Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="MML_UnitConversionRate" xml:space="preserve">
+    <value>Unit Conversion Rate</value>
+  </data>
+  <data name="DbTbl_ScanQRCode" xml:space="preserve">
+    <value>Scan QRCode</value>
+  </data>
+  <data name="MML_PartManagerment" xml:space="preserve">
+    <value>Part Managerment</value>
+  </data>
+  <data name="Btn_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="DbTbl_BomGroup" xml:space="preserve">
+    <value>BOM Group</value>
+  </data>
+  <data name="DbTbl_LineSpec" xml:space="preserve">
+    <value>Line Spec</value>
+  </data>
+  <data name="Btn_FileManager" xml:space="preserve">
+    <value>File Manager</value>
+  </data>
+  <data name="DbTbl_Ecn_Date" xml:space="preserve">
+    <value>ECN Date</value>
+  </data>
+  <data name="DbTbl_DrawingFile" xml:space="preserve">
+    <value>Drawing File</value>
+  </data>
+  <data name="DbTbl_CycleTime" xml:space="preserve">
+    <value>Cycle Time</value>
+  </data>
+  <data name="DbTbl_Cut_Sum" xml:space="preserve">
+    <value>CUT Sum</value>
+  </data>
+  <data name="DbTbl_FaSum" xml:space="preserve">
+    <value>FA Sum</value>
+  </data>
+  <data name="Tab_PARTNOList" xml:space="preserve">
+    <value>PART NO List</value>
+  </data>
+  <data name="Tab_PARTNOECNList" xml:space="preserve">
+    <value>PART NO ECN List</value>
+  </data>
+  <data name="Tab_CycleTime" xml:space="preserve">
+    <value>Cycle Time</value>
+  </data>
+  <data name="DbTbl_ItemTypeK" xml:space="preserve">
+    <value>Item Type K</value>
+  </data>
+  <data name="DbTbl_ItemTypeE" xml:space="preserve">
+    <value>Item Type E</value>
+  </data>
+  <data name="SUCCESS_Update" xml:space="preserve">
+    <value>Part updated successfully!</value>
+  </data>
+  <data name="SUCCESS_Import" xml:space="preserve">
+    <value>Imported successfully</value>
+  </data>
+  <data name="ERROR_UpdateFailed" xml:space="preserve">
+    <value>Update failed</value>
+  </data>
+  <data name="ERROR_ImportFailed" xml:space="preserve">
+    <value>Import failed</value>
+  </data>
+  <data name="ERROR_LoadComboBoxFailed" xml:space="preserve">
+    <value>Combo box load failed</value>
+  </data>
+  <data name="ERROR_PartNoRequired" xml:space="preserve">
+    <value>Part No required</value>
+  </data>
+  <data name="ERROR_ProductCategoryRequired" xml:space="preserve">
+    <value>Category required</value>
+  </data>
+  <data name="ERROR_LineRequired" xml:space="preserve">
+    <value>Line required</value>
+  </data>
+  <data name="ERROR_FamilyRequired" xml:space="preserve">
+    <value>Family required</value>
+  </data>
+  <data name="WARN_NoDataToExport" xml:space="preserve">
+    <value>No data to export</value>
+  </data>
+  <data name="WARN_NoSelection" xml:space="preserve">
+    <value>Select a record</value>
+  </data>
+  <data name="WARN_SelectOrAdd" xml:space="preserve">
+    <value>Select or add first</value>
+  </data>
+  <data name="WARN_InvalidExcelFile" xml:space="preserve">
+    <value>Invalid Excel file</value>
+  </data>
+  <data name="CONFIRM_Delete" xml:space="preserve">
+    <value>Confirm delete?</value>
+  </data>
+  <data name="MML_DPMS" xml:space="preserve">
+    <value>DPMS</value>
+  </data>
+  <data name="MML_PurchaseRequest" xml:space="preserve">
+    <value>Purchase Request</value>
+  </data>
+  <data name="MML_StandardDPMS" xml:space="preserve">
+    <value>Standard DPMS</value>
+  </data>
+  <data name="Tab_ListManagement" xml:space="preserve">
+    <value>Product List Management</value>
+  </data>
+  <data name="Tab_MachinePartList" xml:space="preserve">
+    <value>Machine Parts List</value>
+  </data>
+  <data name="Tab_Company" xml:space="preserve">
+    <value>Company Information</value>
+  </data>
+  <data name="Tab_CostAndQuotation" xml:space="preserve">
+    <value>Cost and Quotation</value>
+  </data>
+  <data name="DbTbl_SpecVN" xml:space="preserve">
+    <value>Spec VN</value>
+  </data>
+  <data name="DbTbl_SpecKR" xml:space="preserve">
+    <value>Spec KR</value>
+  </data>
+  <data name="DbTbl_UnitVN" xml:space="preserve">
+    <value>Unit VN</value>
+  </data>
+  <data name="DbTbl_UnitKR" xml:space="preserve">
+    <value>Unit KR</value>
+  </data>
+  <data name="DbTbl_ProductNO" xml:space="preserve">
+    <value>Product NO</value>
+  </data>
+  <data name="Btn_UploadOrEditImage" xml:space="preserve">
+    <value>Upload Or Edit Image</value>
+  </data>
+  <data name="Btn_SelectImage" xml:space="preserve">
+    <value>Select Image</value>
+  </data>
+  <data name="SUCCESS_Search" xml:space="preserve">
+    <value>Search completed successfully</value>
+  </data>
+  <data name="WARN_NotFound" xml:space="preserve">
+    <value>No results found</value>
+  </data>
+  <data name="SUCCESS_Updated" xml:space="preserve">
+    <value>Successfully updated</value>
+  </data>
+  <data name="SUCCESS_Deleted" xml:space="preserve">
+    <value>Successfully deleted</value>
+  </data>
+  <data name="SUCCESS_Imported" xml:space="preserve">
+    <value>Successfully imported</value>
+  </data>
+  <data name="WARN_NoFileSelected" xml:space="preserve">
+    <value>No file selected</value>
+  </data>
+  <data name="ERROR_InvalidFile" xml:space="preserve">
+    <value>Invalid file</value>
+  </data>
+  <data name="ERROR_InvalidFileFormat" xml:space="preserve">
+    <value>Invalid file format</value>
+  </data>
+  <data name="SUCCESS_Uploaded" xml:space="preserve">
+    <value>Image uploaded successfully</value>
+  </data>
+  <data name="ERROR_UploadFailed" xml:space="preserve">
+    <value>Failed to upload image</value>
+  </data>
+  <data name="ERROR_NoImageFound" xml:space="preserve">
+    <value>No image found</value>
+  </data>
+  <data name="WARN_RequiredFields" xml:space="preserve">
+    <value>Required fields cannot be empty</value>
+  </data>
+  <data name="WARN_InvalidSheet" xml:space="preserve">
+    <value>Invalid Excel sheet. Please use "Sheet1"</value>
+  </data>
+  <data name="ERROR_FileReadFailed" xml:space="preserve">
+    <value>Failed to read the file</value>
+  </data>
+  <data name="ERROR_NoDPMSFound" xml:space="preserve">
+    <value>No DPMS record found</value>
+  </data>
+  <data name="MML_PackingPKI" xml:space="preserve">
+    <value>Packing (PKI)</value>
+  </data>
+  <data name="MML_PackingDH" xml:space="preserve">
+    <value>Packing DH</value>
+  </data>
+  <data name="MML_PackingZDA" xml:space="preserve">
+    <value>Packing ZDA</value>
+  </data>
+  <data name="MML_PackingHMC" xml:space="preserve">
+    <value>Packing HMC</value>
+  </data>
+  <data name="Btn_CheckMatchSNP" xml:space="preserve">
+    <value>Packing of goods lacking standard quantity</value>
+  </data>
+  <data name="DbTbl_Destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="ERROR_Different" xml:space="preserve">
+    <value>Different item Code or ECN no</value>
+  </data>
+  <data name="WARN_POCodeEmpty" xml:space="preserve">
+    <value>PO code empty</value>
+  </data>
+  <data name="WARN_CustomerEmpty" xml:space="preserve">
+    <value>Customer empty</value>
+  </data>
+  <data name="WARN_PODateEmpty" xml:space="preserve">
+    <value>PO date empty</value>
+  </data>
+  <data name="WARN_NoDetailData" xml:space="preserve">
+    <value>No detail data</value>
+  </data>
+  <data name="WARN_ProductWithNoQuantity" xml:space="preserve">
+    <value>No quantity</value>
+  </data>
+  <data name="WARN_NoValidProductData" xml:space="preserve">
+    <value>Invalid data</value>
+  </data>
+  <data name="WARN_SelectExcelFile" xml:space="preserve">
+    <value>Select file</value>
+  </data>
+  <data name="WARN_InvalidSheetName" xml:space="preserve">
+    <value>Wrong sheet name</value>
+  </data>
+  <data name="WARN_ExcelDataInvalid" xml:space="preserve">
+    <value>Bad format</value>
+  </data>
+  <data name="WARN_ExcelInsufficientColumns" xml:space="preserve">
+    <value>Not enough columns</value>
+  </data>
+  <data name="ERROR_SavePODetailFailed" xml:space="preserve">
+    <value>Error when saving PO details</value>
+  </data>
+  <data name="ERROR_CreatePOBasicFailed" xml:space="preserve">
+    <value>Error when creating basic PO</value>
+  </data>
+  <data name="ERROR_DateConversionFailed" xml:space="preserve">
+    <value>Date conversion error</value>
+  </data>
+  <data name="ERROR_NoDataToDisplay" xml:space="preserve">
+    <value>No data to display</value>
+  </data>
+  <data name="ERROR_CannotReadFile" xml:space="preserve">
+    <value>Cannot read file</value>
+  </data>
+  <data name="SUCCESS_ImportDataSuccess" xml:space="preserve">
+    <value>Data has been successfully</value>
+  </data>
+  <data name="A01" xml:space="preserve">
+    <value>PART Management</value>
+  </data>
+  <data name="A02" xml:space="preserve">
+    <value>BOM</value>
+  </data>
+  <data name="A03" xml:space="preserve">
+    <value>Notice</value>
+  </data>
+  <data name="A04" xml:space="preserve">
+    <value>TOOL management</value>
+  </data>
+  <data name="A05" xml:space="preserve">
+    <value>Company Management</value>
+  </data>
+  <data name="A06" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="A07" xml:space="preserve">
+    <value>Basic CODE</value>
+  </data>
+  <data name="B01" xml:space="preserve">
+    <value>Material import packing list</value>
+  </data>
+  <data name="B02" xml:space="preserve">
+    <value>Registration of Goods Receipt</value>
+  </data>
+  <data name="B03" xml:space="preserve">
+    <value>Import raw materials</value>
+  </data>
+  <data name="B04" xml:space="preserve">
+    <value>Output raw materials</value>
+  </data>
+  <data name="B05" xml:space="preserve">
+    <value>Raw material monitoring</value>
+  </data>
+  <data name="C01" xml:space="preserve">
+    <value>Production Plan(KOMAX)</value>
+  </data>
+  <data name="C02" xml:space="preserve">
+    <value>Production(KOMAX)</value>
+  </data>
+  <data name="C03" xml:space="preserve">
+    <value>Hook Rack</value>
+  </data>
+  <data name="C04" xml:space="preserve">
+    <value>CUT'G Production Monitoring</value>
+  </data>
+  <data name="D01" xml:space="preserve">
+    <value>FG Sales status</value>
+  </data>
+  <data name="D02" xml:space="preserve">
+    <value>Shipping result / FA Actual</value>
+  </data>
+  <data name="D03" xml:space="preserve">
+    <value>Finish goods input check(PKI)</value>
+  </data>
+  <data name="D03_TAP1" xml:space="preserve">
+    <value>warehousing of materials</value>
+  </data>
+  <data name="D03_TAP2" xml:space="preserve">
+    <value>forwarding of materials</value>
+  </data>
+  <data name="D04" xml:space="preserve">
+    <value>Finish goods export check</value>
+  </data>
+  <data name="D05" xml:space="preserve">
+    <value>PO List Finish goods</value>
+  </data>
+  <data name="E01" xml:space="preserve">
+    <value>TOOL Status Inspection</value>
+  </data>
+  <data name="E02" xml:space="preserve">
+    <value>TOOL Status</value>
+  </data>
+  <data name="E03" xml:space="preserve">
+    <value>TOOL Shop</value>
+  </data>
+  <data name="F01" xml:space="preserve">
+    <value>IQC NG Report</value>
+  </data>
+  <data name="F02" xml:space="preserve">
+    <value>NG Product Report</value>
+  </data>
+  <data name="G01" xml:space="preserve">
+    <value>Goods in Stock</value>
+  </data>
+  <data name="G02" xml:space="preserve">
+    <value>Edit Fixed Inventory</value>
+  </data>
+  <data name="MA01" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="MB01" xml:space="preserve">
+    <value>Raw material</value>
+  </data>
+  <data name="MC01" xml:space="preserve">
+    <value>CUT Production</value>
+  </data>
+  <data name="MD01" xml:space="preserve">
+    <value>Finish goods</value>
+  </data>
+  <data name="ME01" xml:space="preserve">
+    <value>Applicator</value>
+  </data>
+  <data name="MF01" xml:space="preserve">
+    <value>Quality</value>
+  </data>
+  <data name="MG01" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="PART01" xml:space="preserve">
+    <value>Part No</value>
+  </data>
+  <data name="PART02" xml:space="preserve">
+    <value>Part Name</value>
+  </data>
+  <data name="PART03" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="PART04" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="PART05" xml:space="preserve">
+    <value>Packing unit</value>
+  </data>
+  <data name="PART06" xml:space="preserve">
+    <value>Product Category</value>
+  </data>
+  <data name="PART07" xml:space="preserve">
+    <value>USE(Y/N)</value>
+  </data>
+  <data name="PART08" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="CODE_E" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="CODE_I" xml:space="preserve">
+    <value>Material shortage</value>
+  </data>
+  <data name="CODE_L" xml:space="preserve">
+    <value>Meal time</value>
+  </data>
+  <data name="CODE_M" xml:space="preserve">
+    <value>Equipment failure</value>
+  </data>
+  <data name="CODE_N" xml:space="preserve">
+    <value>No Worker</value>
+  </data>
+  <data name="CODE_Q" xml:space="preserve">
+    <value>Quality problem</value>
+  </data>
+  <data name="CODE_S" xml:space="preserve">
+    <value>Ready to operate</value>
+  </data>
+  <data name="CODE_T" xml:space="preserve">
+    <value>Meeting</value>
+  </data>
+  <data name="CO2_START01" xml:space="preserve">
+    <value>Standard specification(정사양 자재)</value>
+  </data>
+  <data name="CO2_START02" xml:space="preserve">
+    <value>Current material(현사용 자재)</value>
+  </data>
+  <data name="CO2_START03" xml:space="preserve">
+    <value>Utilization Status</value>
+  </data>
+  <data name="CO2_START04" xml:space="preserve">
+    <value>Uptime Status</value>
+  </data>
+  <data name="CO2_START05" xml:space="preserve">
+    <value>Start time : </value>
+  </data>
+  <data name="CO2_START06" xml:space="preserve">
+    <value>Uptime : </value>
+  </data>
+  <data name="CO2_START07" xml:space="preserve">
+    <value>Downtime : </value>
+  </data>
+  <data name="CO2_START08" xml:space="preserve">
+    <value>Production Qty : </value>
+  </data>
+  <data name="CO2_START09" xml:space="preserve">
+    <value>Utilization : </value>
+  </data>
+  <data name="CO2_START10" xml:space="preserve">
+    <value>Nonoperating content</value>
+  </data>
+  <data name="A08" xml:space="preserve">
+    <value>Employee ID</value>
+  </data>
+  <data name="C09" xml:space="preserve">
+    <value>Production(SP/ST)</value>
+  </data>
+  <data name="D09" xml:space="preserve">
+    <value>ID card print</value>
+  </data>
+  <data name="H02" xml:space="preserve">
+    <value>All MC Down Time #1</value>
+  </data>
+  <data name="C08" xml:space="preserve">
+    <value>Orderprinter</value>
+  </data>
+  <data name="H01" xml:space="preserve">
+    <value>KOMAX_RUN_TIME #1</value>
+  </data>
+  <data name="H03" xml:space="preserve">
+    <value>KOMAX Production Status #1</value>
+  </data>
+  <data name="H04" xml:space="preserve">
+    <value>All MC Down Time #2</value>
+  </data>
+  <data name="C05" xml:space="preserve">
+    <value>Production(LP)</value>
+  </data>
+  <data name="B06" xml:space="preserve">
+    <value>Warehouse barcode</value>
+  </data>
+  <data name="C06" xml:space="preserve">
+    <value>Production Plan(SP/ST)</value>
+  </data>
+  <data name="D06" xml:space="preserve">
+    <value>Finish goods export(EXECL)</value>
+  </data>
+  <data name="MZ01" xml:space="preserve">
+    <value>Common items</value>
+  </data>
+  <data name="G01A0" xml:space="preserve">
+    <value>Part No</value>
+  </data>
+  <data name="G01A1" xml:space="preserve">
+    <value>State </value>
+  </data>
+  <data name="G01A2" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="C10" xml:space="preserve">
+    <value>KOMAX_RUN_TIME</value>
+  </data>
+  <data name="H05" xml:space="preserve">
+    <value>FG Monitoring system</value>
+  </data>
+  <data name="Z01" xml:space="preserve">
+    <value>Notice</value>
+  </data>
+  <data name="Z03" xml:space="preserve">
+    <value>Working hours(CUT)</value>
+  </data>
+  <data name="MH01" xml:space="preserve">
+    <value>Factory 1 Monitoring</value>
+  </data>
+  <data name="PART09" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="B07" xml:space="preserve">
+    <value>TUBE Cut Management</value>
+  </data>
+  <data name="B08" xml:space="preserve">
+    <value>TUBE Cut Production</value>
+  </data>
+  <data name="K01" xml:space="preserve">
+    <value>BT_Production Planning</value>
+  </data>
+  <data name="K02" xml:space="preserve">
+    <value>BT_Production(CUT)</value>
+  </data>
+  <data name="K03" xml:space="preserve">
+    <value>BT_Production(PRESS)</value>
+  </data>
+  <data name="MK01" xml:space="preserve">
+    <value>FA Production</value>
+  </data>
+  <data name="MV01" xml:space="preserve">
+    <value>Purchase</value>
+  </data>
+  <data name="V01" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="V02" xml:space="preserve">
+    <value>Purchase application</value>
+  </data>
+  <data name="V03" xml:space="preserve">
+    <value>Approval of purchase</value>
+  </data>
+  <data name="V04" xml:space="preserve">
+    <value>Purchase shipment</value>
+  </data>
+  <data name="V05" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="V_S01" xml:space="preserve">
+    <value>NAME</value>
+  </data>
+  <data name="V_S02" xml:space="preserve">
+    <value>SPEC</value>
+  </data>
+  <data name="V_S03" xml:space="preserve">
+    <value>UNIT</value>
+  </data>
+  <data name="V_S04" xml:space="preserve">
+    <value>Bundles QTY</value>
+  </data>
+  <data name="V_S05" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="V_S06" xml:space="preserve">
+    <value>Purpose of purchase</value>
+  </data>
+  <data name="V_S07" xml:space="preserve">
+    <value>Search QTY</value>
+  </data>
+  <data name="V_S08" xml:space="preserve">
+    <value>DATE</value>
+  </data>
+  <data name="V_S09" xml:space="preserve">
+    <value>Product NO</value>
+  </data>
+  <data name="V_S10" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="V_S11" xml:space="preserve">
+    <value>PO QTY</value>
+  </data>
+  <data name="V_S12" xml:space="preserve">
+    <value>IN QTY</value>
+  </data>
+  <data name="V_S13" xml:space="preserve">
+    <value>ADD QTY</value>
+  </data>
+  <data name="V_S14" xml:space="preserve">
+    <value>Purchase application</value>
+  </data>
+  <data name="V_S15" xml:space="preserve">
+    <value>Confirmation of purchase</value>
+  </data>
+  <data name="C11" xml:space="preserve">
+    <value>Production(SHIELD_WIRE)</value>
+  </data>
+  <data name="D07" xml:space="preserve">
+    <value>Shipping plan (PO)</value>
+  </data>
+  <data name="ODS02" xml:space="preserve">
+    <value>FA_Production QTY</value>
+  </data>
+  <data name="ODS03" xml:space="preserve">
+    <value>FA_MANPOWER(ADD)</value>
+  </data>
+  <data name="A09" xml:space="preserve">
+    <value>COST</value>
+  </data>
+  <data name="B09" xml:space="preserve">
+    <value>Material Required(CUT, FA → WH)</value>
+  </data>
+  <data name="B10" xml:space="preserve">
+    <value>Material Payment(WH)</value>
+  </data>
+  <data name="K06" xml:space="preserve">
+    <value>Cycle time Storage</value>
+  </data>
+  <data name="V06" xml:space="preserve">
+    <value>Purchase status</value>
+  </data>
+  <data name="H06" xml:space="preserve">
+    <value>KOMAX_RUN_TIME #2</value>
+  </data>
+  <data name="H07" xml:space="preserve">
+    <value>KOMAX Production Status #2</value>
+  </data>
+  <data name="C12" xml:space="preserve">
+    <value>Productivity(KOMAX)</value>
+  </data>
+  <data name="Z04" xml:space="preserve">
+    <value>Year-end inventory</value>
+  </data>
+  <data name="E04" xml:space="preserve">
+    <value>Maintenance History</value>
+  </data>
+  <data name="E05" xml:space="preserve">
+    <value>Application Payment(ME)</value>
+  </data>
+  <data name="ODS" xml:space="preserve">
+    <value>DOOSAN</value>
+  </data>
+  <data name="ODS01" xml:space="preserve">
+    <value>Basic code</value>
+  </data>
+  <data name="ODS04" xml:space="preserve">
+    <value>Production PO</value>
+  </data>
+  <data name="ODS05" xml:space="preserve">
+    <value>Production QTY</value>
+  </data>
+  <data name="ODS06" xml:space="preserve">
+    <value>Production Status</value>
+  </data>
+  <data name="K04" xml:space="preserve">
+    <value>Production QTY(TOTAL)</value>
+  </data>
+  <data name="H08" xml:space="preserve">
+    <value>Andon system</value>
+  </data>
+  <data name="Z05" xml:space="preserve">
+    <value>DJG_Asset_management</value>
+  </data>
+  <data name="C13" xml:space="preserve">
+    <value>LEAD Material Required(FA → CUT/LP)</value>
+  </data>
+  <data name="C14" xml:space="preserve">
+    <value>LEAD Material Payment(CUT/LP)</value>
+  </data>
+  <data name="F03" xml:space="preserve">
+    <value>IQC NG Report </value>
+  </data>
+  <data name="MW01" xml:space="preserve">
+    <value>DJG_PDP</value>
+  </data>
+  <data name="W01" xml:space="preserve">
+    <value>PDP Manager</value>
+  </data>
+  <data name="W02" xml:space="preserve">
+    <value>Customer PO</value>
+  </data>
+  <data name="W03" xml:space="preserve">
+    <value>DJG_Production Plan</value>
+  </data>
+  <data name="W04" xml:space="preserve">
+    <value>ManPower SCAN</value>
+  </data>
+  <data name="Z06" xml:space="preserve">
+    <value>Long-term inventory</value>
+  </data>
+  <data name="V_S16" xml:space="preserve">
+    <value>Machine parts Order</value>
+  </data>
+  <data name="C15" xml:space="preserve">
+    <value>LEAD outsourcing Input</value>
+  </data>
+  <data name="D11" xml:space="preserve">
+    <value>PLT label printing</value>
+  </data>
+  <data name="G03" xml:space="preserve">
+    <value>Check material requirements</value>
+  </data>
+  <data name="G04" xml:space="preserve">
+    <value>Finished Goods Product Quantity</value>
+  </data>
+  <data name="Z02" xml:space="preserve">
+    <value>Request to use MES</value>
+  </data>
+  <data name="AP01" xml:space="preserve">
+    <value>APQP MAIN</value>
+  </data>
+  <data name="MY01" xml:space="preserve">
+    <value>Dispensing materials</value>
+  </data>
+  <data name="MH02" xml:space="preserve">
+    <value>Factory 2 Monitoring</value>
+  </data>
+  <data name="V07" xml:space="preserve">
+    <value>ME ORDER</value>
+  </data>
+  <data name="C16" xml:space="preserve">
+    <value>Cutting Material Required(CUT/LP → FEEDER)</value>
+  </data>
+  <data name="C17" xml:space="preserve">
+    <value>Cutting Material Payment(FEEDER)</value>
+  </data>
+  <data name="B11" xml:space="preserve">
+    <value>MT Barcode Inventory List</value>
+  </data>
+  <data name="D12" xml:space="preserve">
+    <value>Finished Product SCAN Status</value>
+  </data>
+  <data name="D13" xml:space="preserve">
+    <value>Finish goods input check(HMC)</value>
+  </data>
+  <data name="D14" xml:space="preserve">
+    <value>Finish goods input check(ERP)</value>
+  </data>
+  <data name="C18" xml:space="preserve">
+    <value>CUT/LP Scrap Monitoring</value>
+  </data>
+  <data name="C19" xml:space="preserve">
+    <value>LEAD NO Management</value>
+  </data>
+  <data name="C20" xml:space="preserve">
+    <value>SPC(Statistical production control)</value>
+  </data>
+  <data name="HKMC01" xml:space="preserve">
+    <value>HKMC Barcode Prient</value>
+  </data>
+  <data name="Z07" xml:space="preserve">
+    <value>MES Development Request</value>
+  </data>
+  <data name="X01" xml:space="preserve">
+    <value>Finish goods input check(HMC)</value>
+  </data>
+  <data name="X02" xml:space="preserve">
+    <value>FG Inspection Standard</value>
+  </data>
+  <data name="X03" xml:space="preserve">
+    <value>Finish goods output check(HMC)</value>
+  </data>
+  <data name="H09" xml:space="preserve">
+    <value>T/WM W/D RUN_TIME #1</value>
+  </data>
+  <data name="H10" xml:space="preserve">
+    <value>T/WM W/D Production Status #1</value>
+  </data>
+  <data name="H11" xml:space="preserve">
+    <value>Andon system</value>
+  </data>
+  <data name="H12" xml:space="preserve">
+    <value>T/WM W/D Production Status #2</value>
+  </data>
+  <data name="H13" xml:space="preserve">
+    <value>T/WM W/D RUN_TIME #2</value>
+  </data>
+  <data name="X04" xml:space="preserve">
+    <value>Customer PO</value>
+  </data>
+  <data name="B12" xml:space="preserve">
+    <value>Material requirements</value>
+  </data>
+  <data name="KR_G01" xml:space="preserve">
+    <value>VN_Goods in Stock</value>
+  </data>
+  <data name="KR_G02" xml:space="preserve">
+    <value>VN_Edit Fixed Inventory</value>
+  </data>
+  <data name="KR_G03" xml:space="preserve">
+    <value>VN_Check material requirements</value>
+  </data>
+  <data name="KR_G04" xml:space="preserve">
+    <value>VN_Finished Goods Product Quantity</value>
+  </data>
+  <data name="KR_G05" xml:space="preserve">
+    <value>KR_Goods in Stock</value>
+  </data>
+  <data name="D15" xml:space="preserve">
+    <value>Finish goods input check(KGM)</value>
+  </data>
+  <data name="D16" xml:space="preserve">
+    <value>Finish goods input check(DH)</value>
+  </data>
+  <data name="Buttonadd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Buttoncancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Buttonclose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Buttondelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Buttonexport" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Buttonfind" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Buttoninport" xml:space="preserve">
+    <value>Inport</value>
+  </data>
+  <data name="Buttonprint" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="ButtonREST" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Buttonsave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Buttoninport1" xml:space="preserve">
+    <value>Deadline</value>
+  </data>
+  <data name="Buttonhelp" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Tab_G01T1" xml:space="preserve">
+    <value>Goods in Stock</value>
+  </data>
+  <data name="Tab_G01T2" xml:space="preserve">
+    <value>WareHouse</value>
+  </data>
+  <data name="Tab_G01T3" xml:space="preserve">
+    <value>Finished Good</value>
+  </data>
+  <data name="Tab_G01T4" xml:space="preserve">
+    <value>Hook Rack</value>
+  </data>
+  <data name="Btn_ReSet" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="DbTbl_History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Btn_ReprintPackingLot" xml:space="preserve">
+    <value>Reprint Packing Lot</value>
+  </data>
+  <data name="Btn_PackingReprint" xml:space="preserve">
+    <value>Packing Reprint</value>
+  </data>
+  <data name="ERROR_WrongProductCode" xml:space="preserve">
+    <value>Incorrect product code</value>
+  </data>
+  <data name="ERROR_FullBox" xml:space="preserve">
+    <value>Package is full, can not add more</value>
+  </data>
+  <data name="DbTbl_Stage" xml:space="preserve">
+    <value>Stage</value>
+  </data>
+  <data name="D10" xml:space="preserve">
+    <value>Finish goods input check(ZDA)</value>
+  </data>
+  <data name="MSG_AddPackingItem" xml:space="preserve">
+    <value>Add more item to packing box</value>
+  </data>
+  <data name="DbTbl_DeleteTime" xml:space="preserve">
+    <value>Delete Time</value>
+  </data>
+  <data name="DbTbl_DeleteBy" xml:space="preserve">
+    <value>Delete By</value>
+  </data>
+  <data name="DbTbl_Receive" xml:space="preserve">
+    <value>Receive</value>
+  </data>
+  <data name="Btn_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="DbTbl_BoxNumber" xml:space="preserve">
+    <value>Box Number</value>
+  </data>
+  <data name="DbTbl_TorqueBarcode" xml:space="preserve">
+    <value>Torque Code</value>
+  </data>
+  <data name="MML_PackingKGM" xml:space="preserve">
+    <value>Packing KGM</value>
+  </data>
+  <data name="MSG_UnikeyTurnOff" xml:space="preserve">
+    <value>Please turn off Unikey or any Vietnamese input methods before scanning the code to ensure accurate data!</value>
+  </data>
+  <data name="MML_SaleStatus" xml:space="preserve">
+    <value>Sale Status</value>
+  </data>
+  <data name="MML_YearSaleStatus" xml:space="preserve">
+    <value>Yearly Sales Status</value>
+  </data>
+  <data name="DbTbl_Cost" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="DbTbl_SaleCost" xml:space="preserve">
+    <value>Sale Cost</value>
+  </data>
+  <data name="DbTbl_Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="DbTbl_SaleQty" xml:space="preserve">
+    <value>SaleQty</value>
+  </data>
+  <data name="DbTbl_ProducingAbility" xml:space="preserve">
+    <value>Producing Ability</value>
+  </data>
+  <data name="MES_REPORT" xml:space="preserve">
+    <value>MES REPORT</value>
+  </data>
+  <data name="ADMIN_REP" xml:space="preserve">
+    <value>MES Report</value>
+  </data>
+  <data name="DbTbl_SalesStatus" xml:space="preserve">
+    <value>Sales Status</value>
+  </data>
+  <data name="DbTbl_PO_Status" xml:space="preserve">
+    <value>PO Status</value>
+  </data>
+  <data name="DbTbl_Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="DbTbl_Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="DbTbl_NotYetPacking" xml:space="preserve">
+    <value>Not Yet Packing</value>
+  </data>
+  <data name="DbTbl_Week" xml:space="preserve">
+    <value>Week</value>
+  </data>
+  <data name="Admin1" xml:space="preserve">
+    <value>DB managerment</value>
+  </data>
+  <data name="Admin2" xml:space="preserve">
+    <value>Menu Authorization</value>
+  </data>
+  <data name="Admin3" xml:space="preserve">
+    <value>User Authorization</value>
+  </data>
+  <data name="Admin4" xml:space="preserve">
+    <value>Add new menu</value>
+  </data>
+  <data name="ADMIN" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="DbTbl_GroupCode" xml:space="preserve">
+    <value>Group Code</value>
+  </data>
+  <data name="DbTbl_GroupName" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="DbTbl_ItemNo" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="DbTbl_PermissionGroup" xml:space="preserve">
+    <value>Permission Group</value>
+  </data>
+  <data name="ButtonEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="DbTbl_UpdateBy" xml:space="preserve">
+    <value>Update User</value>
+  </data>
+  <data name="MML_UserPermission" xml:space="preserve">
+    <value>User Permissions</value>
+  </data>
+  <data name="Btn_Random" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="ButtonRecovery" xml:space="preserve">
+    <value>Recovery</value>
+  </data>
+  <data name="MSG_RecoveryData" xml:space="preserve">
+    <value>Recovery Data</value>
+  </data>
+  <data name="DbTbl_PackingTime" xml:space="preserve">
+    <value>Packing Time</value>
+  </data>
+  <data name="DbTbl_PackingBy" xml:space="preserve">
+    <value>Packing By</value>
+  </data>
+  <data name="DbTbl_ShippedTime" xml:space="preserve">
+    <value>Shipped Time</value>
+  </data>
+  <data name="DbTbl_ShippedBy" xml:space="preserve">
+    <value>Shipped By</value>
+  </data>
+  <data name="A10" xml:space="preserve">
+    <value>Line Management</value>
+  </data>
+  <data name="A11" xml:space="preserve">
+    <value>General information</value>
+  </data>
+  <data name="DbTbl_MasterCode" xml:space="preserve">
+    <value>Master Code</value>
+  </data>
+  <data name="MP01" xml:space="preserve">
+    <value>Production Control</value>
+  </data>
+  <data name="P01" xml:space="preserve">
+    <value>Vendor/Customer List</value>
+  </data>
+  <data name="P02" xml:space="preserve">
+    <value>BOM Management</value>
+  </data>
+  <data name="P03" xml:space="preserve">
+    <value>Production Order Manager</value>
+  </data>
+  <data name="P04" xml:space="preserve">
+    <value>Taktime Management</value>
+  </data>
+  <data name="P05" xml:space="preserve">
+    <value>ECN Management</value>
+  </data>
+  <data name="P06" xml:space="preserve">
+    <value>PO Plan Confirm</value>
+  </data>
+  <data name="P07" xml:space="preserve">
+    <value>Line Management</value>
+  </data>
+  <data name="P08" xml:space="preserve">
+    <value>Workforce Management</value>
+  </data>
+  <data name="A12" xml:space="preserve">
+    <value>Shift Time</value>
+  </data>
+  <data name="HR1" xml:space="preserve">
+    <value>Employee Management</value>
+  </data>
+  <data name="Line productivity" xml:space="preserve">
+    <value>Line productivity</value>
+  </data>
+  <data name="FA_M2" xml:space="preserve">
+    <value>Line Assignment</value>
+  </data>
+  <data name="FA_M1" xml:space="preserve">
+    <value>Line productivity</value>
+  </data>
+  <data name="FA_M3" xml:space="preserve">
+    <value>FA Production Output</value>
+  </data>
+  <data name="HR2" xml:space="preserve">
+    <value>HR Management</value>
+  </data>
+  <data name="DbTbl_ReTest" xml:space="preserve">
+    <value>Re-Test</value>
+  </data>
+  <data name="DbTbl_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="H15" xml:space="preserve">
+    <value>RO Moniroting</value>
+  </data>
+  <data name="F04" xml:space="preserve">
+    <value>NG List</value>
+  </data>
+  <data name="FA_M4" xml:space="preserve">
+    <value>FA WorkOrder</value>
+  </data>
+  <data name="DbTbl_Action" xml:space="preserve">
+    <value>Action                     </value>
+  </data>
+  <data name="DbTbl_FAWorker" xml:space="preserve">
+    <value>FA Worker </value>
+  </data>
+  <data name="Label_SearchPlaceholder" xml:space="preserve">
+    <value>Search... </value>
+  </data>
+  <data name="DbTbl_LineGroup" xml:space="preserve">
+    <value>Line Group</value>
+  </data>
+  <data name="Label_ModalAddEdit" xml:space="preserve">
+    <value>Add and Edit</value>
+  </data>
+  <data name="Label_ModalImport" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Label_DownloadTemplate" xml:space="preserve">
+    <value>Download Template</value>
+  </data>
+  <data name="Label_SelectFile" xml:space="preserve">
+    <value>Select File</value>
+  </data>
+  <data name="Label_UploadExcelPlaceholder" xml:space="preserve">
+    <value>UploadExcel</value>
+  </data>
+  <data name="Label_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Label_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="DbTbl_LineCapa" xml:space="preserve">
+    <value>Line Capacity</value>
+  </data>
+  <data name="DbTbl_Sample" xml:space="preserve">
+    <value>Sample</value>
+  </data>
+  <data name="HR3" xml:space="preserve">
+    <value>Work Hours</value>
+  </data>
+  <data name="FA_M5" xml:space="preserve">
+    <value>Attendance Record</value>
+  </data>
+  <data name="D17" xml:space="preserve">
+    <value>FG WareHouse</value>
+  </data>
+  <data name="DbTbl_LostMaterial" xml:space="preserve">
+    <value>Scrap Material</value>
+  </data>
+  <data name="DbTbl_WireLength" xml:space="preserve">
+    <value>Wire Length</value>
+  </data>
+  <data name="DbTbl_ScrapValues" xml:space="preserve">
+    <value>Scrap Values</value>
+  </data>
+  <data name="DbTbl_Weight" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="DbTbl_Percentage" xml:space="preserve">
+    <value>Percentage</value>
+  </data>
+  <data name="DbTbl_WireCode" xml:space="preserve">
+    <value>Wire Code</value>
+  </data>
+  <data name="DbTbl_Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="DbTbl_NoPicture" xml:space="preserve">
+    <value>No Picture</value>
+  </data>
+  <data name="C21" xml:space="preserve">
+    <value>Trolley Management</value>
+  </data>
+</root>

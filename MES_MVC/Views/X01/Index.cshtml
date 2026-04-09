@@ -1,0 +1,609 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IX01Service _X01Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "X01";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _X01Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <!-- Header with Buttons -->
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>Spare Parts Management (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="row">
+                <div class="col s12 m6 l4">
+                    <ul class="tabs">
+                        <li class="tab col s4 p-0">
+                            <a id="ATag001" class="active p-0" href="#Tab001">Spare Parts</a>
+                        </li>
+                        <li class="tab col s4 p-0">
+                            <a id="ATag002" class="p-0" href="#Tab002">Scan In</a>
+                        </li>
+                        <li class="tab col s4 p-0">
+                            <a id="ATag003" class="p-0" href="#Tab003">Scan Out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tab 1: Spare Parts Management -->
+            <div id="Tab001" class="col s12">
+                <!-- Search Panel -->
+                <div class="row">
+                    <div class="col s12 m8 l6">
+                        <label for="SearchBox">Tìm kiếm</label>
+                        <input id="SearchBox" type="text" class="form-control" placeholder="Tìm kiếm (Code, Name, Supplier, Machine No...)" />
+                    </div>
+                    <div class="col s12 m2 l2">
+                        <label>Tổng số dòng</label>
+                        <div class="form-control center-align" style="font-weight: bold; background-color: #e3f2fd; color: #1976d2; padding: 8px;">
+                            <i class="material-icons tiny" style="vertical-align: middle;">view_list</i>
+                            <span id="TotalRecords">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spare Parts Table -->
+                <div class="row">
+                    <div class="col s12">
+                        <div class="KhungOverflow70">
+                            <table class="responsive-table highlight" id="DataGridView1Table">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th style="width: 50px;">Action</th>
+                                        <th style="width: 50px;">Image</th>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Unit Price</th>
+                                        <th>Supplier</th>
+                                        <th>Qty Required</th>
+                                        <th>Safety Stock</th>
+                                        <th>Inventory</th>
+                                        <th>Warning</th>
+                                        <th>Total Amount</th>
+                                        <th>Machine No</th>
+                                        <th>Active</th>
+                                        <th>Created Date</th>
+                                        <th>Created By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView1">
+                                    <tr>
+                                        <td colspan="15" class="center-align grey-text">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Scan In History -->
+            <div id="Tab002" class="col s12">
+                <div class="row">
+                    <div class="col s12 m12 l12 card-panel green lighten-4">
+                        <div class="col s12 m12 l3">
+                            <div style="text-align: center; margin-top: 25px;">
+                                <button id="btnScanIn" class="btn waves-effect waves-light cyan darken-1">
+                                    <i class="material-icons left">qr_code_scanner</i>SCAN IN
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <label>From Date</label>
+                            <input id="txt_ScanIn_FromDate" type="date" class="form-control">
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <label>To Date</label>
+                            <input id="txt_ScanIn_ToDate" type="date" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scan In History Table -->
+                <div class="row">
+                    <div class="col s12">
+                        <div class="KhungOverflow60">
+                            <table class="responsive-table highlight" id="DataGridView2Table">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Safety Qty</th>
+                                        <th>Inventory Qty</th>
+                                        <th>Create Date</th>
+                                        <th>Created By</th>
+                                        <th>Note</th>
+                                        <th>Reason For Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView2">
+                                    <tr>
+                                        <td colspan="9" class="center-align grey-text">No data</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Scan Out History -->
+            <div id="Tab003" class="col s12">
+                <div class="row">
+                    <div class="col s12 m12 l12 card-panel green lighten-4">
+                        <div class="col s12 m12 l3">
+                            <div style="text-align: center; margin-top: 25px;">
+                                <button id="btnScanOut" class="btn waves-effect waves-light orange darken-1">
+                                    <i class="material-icons left">qr_code_scanner</i>SCAN OUT
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <label>From Date</label>
+                            <input id="txt_ScanOut_FromDate" type="date" class="form-control">
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <label>To Date</label>
+                            <input id="txt_ScanOut_ToDate" type="date" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scan Out History Table -->
+                <div class="row">
+                    <div class="col s12">
+                        <div class="KhungOverflow60">
+                            <table class="responsive-table highlight" id="DataGridView3Table">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Safety Qty</th>
+                                        <th>Inventory Qty</th>
+                                        <th>Create Date</th>
+                                        <th>Created By</th>
+                                        <th>Note</th>
+                                        <th>Reason For Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView3">
+                                    <tr>
+                                        <td colspan="9" class="center-align grey-text">No data</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Add/Edit Spare Part -->
+<div id="modal-add" class="modal" style="width: 60%; height: auto;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 15px;">
+            <div class="col s12 m6">
+                <h5 id="modal-title" style="margin: 0;">Add / Edit Spare Part</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <button class="modal-close btn grey lighten-1" type="button" style="margin-right: 10px;">
+                    <i class="material-icons left">close</i>Cancel
+                </button>
+                <button id="ModalSaveBtn" class="btn green" type="button">
+                    <i class="material-icons left">save</i>Save
+                </button>
+            </div>
+        </div>
+
+        <form id="SparePartForm">
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col s12 m6">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="PartCode">Code <span class="red-text">*</span></label>
+                            <input id="PartCode" type="text" class="form-control" maxlength="50" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="PartName">Name <span class="red-text">*</span></label>
+                            <input id="PartName" type="text" class="form-control" maxlength="200" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="UnitPrice">Unit Price <span class="red-text">*</span></label>
+                            <input id="UnitPrice" type="number" step="0.01" min="0" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Supplier">Supplier</label>
+                            <input id="Supplier" type="text" class="form-control" maxlength="200">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col s12 m6">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="QuantityRequired">Quantity Required <span class="red-text">*</span></label>
+                            <input id="QuantityRequired" type="number" min="0" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="SafetyStock">Safety Stock <span class="red-text">*</span></label>
+                            <input id="SafetyStock" type="number" min="0" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="MachineNo">Machine No</label>
+                            <input id="MachineNo" type="text" class="form-control" maxlength="100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="PartSpareID" />
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Scan In -->
+<div id="scanInModal" class="modal" style="width: 50%; height: auto;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 15px;">
+            <div class="col s12 m6">
+                <h5 style="margin: 0;">Scan In Parts</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <button class="modal-close btn grey lighten-1" type="button" style="margin-right: 10px;">
+                    <i class="material-icons left">close</i>Cancel
+                </button>
+                <button id="btnScanInSave" class="btn green" type="button">
+                    <i class="material-icons left">save</i>Save
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m6">
+                <label for="modal_Code">Code <span class="red-text">*</span></label>
+                <input id="modal_Code" type="text" class="form-control" required autofocus>
+            </div>
+            <div class="col s12 m6">
+                <label for="modal_Quantity">Quantity Required</label>
+                <input id="modal_Quantity" type="number" class="form-control" readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6">
+                <label for="modal_SafetyStock">Safety Stock</label>
+                <input id="modal_SafetyStock" type="number" class="form-control" readonly>
+            </div>
+            <div class="col s12 m6">
+                <label for="modal_QuantityToAdd">Quantity to Add <span class="red-text">*</span></label>
+                <input id="modal_QuantityToAdd" type="number" class="form-control" required min="1" value="1">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6">
+                <label for="modal_User">User</label>
+                <input id="modal_User" type="text" class="form-control" readonly>
+            </div>
+            <div class="col s12 m6">
+                <label for="modal_ReasonForUse">Reason For Use</label>
+                <input id="modal_ReasonForUse" type="text" class="form-control" maxlength="200">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <label for="modal_Note">Note</label>
+                <textarea id="modal_Note" class="form-control materialize-textarea" rows="2"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Scan Out -->
+<div id="scanOutModal" class="modal" style="width: 50%; height: auto;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 15px;">
+            <div class="col s12 m6">
+                <h5 style="margin: 0;">Scan Out Parts</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <button class="modal-close btn grey lighten-1" type="button" style="margin-right: 10px;">
+                    <i class="material-icons left">close</i>Cancel
+                </button>
+                <button id="btnScanOutSave" class="btn green" type="button">
+                    <i class="material-icons left">save</i>Save
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m6">
+                <label for="modal_Code_Out">Code <span class="red-text">*</span></label>
+                <input id="modal_Code_Out" type="text" class="form-control" required autofocus>
+            </div>
+            <div class="col s12 m6">
+                <label for="modal_Quantity_Out">Quantity Required</label>
+                <input id="modal_Quantity_Out" type="number" class="form-control" readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6">
+                <label for="modal_SafetyStock_Out">Safety Stock</label>
+                <input id="modal_SafetyStock_Out" type="number" class="form-control" readonly>
+            </div>
+            <div class="col s12 m6">
+                <label for="modal_QuantityToRemove">Quantity to Remove <span class="red-text">*</span></label>
+                <input id="modal_QuantityToRemove" type="number" class="form-control" required min="1" value="1">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6">
+                <label for="modal_User_Out">User</label>
+                <input id="modal_User_Out" type="text" class="form-control" readonly>
+            </div>
+            <div class="col s12 m6">
+                <label for="modal_ReasonForUse_Out">Reason For Use</label>
+                <input id="modal_ReasonForUse_Out" type="text" class="form-control" maxlength="200">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <label for="modal_Note_Out">Note</label>
+                <textarea id="modal_Note_Out" class="form-control materialize-textarea" rows="2"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Import Parts -->
+<div id="ModalImportParts" class="modal modal-fixed-footer" style="width: 80%; height: 90%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 0;">
+            <div class="col s12 m6">
+                <h5>Import Spare Parts</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <a href="/Template/SpareParts_Template.xlsx" class="btn blue lighten-1" download style="margin-right: 8px;">
+                    <i class="material-icons left">file_download</i>Download Template
+                </a>
+            </div>
+        </div>
+
+        <div class="file-field input-field" style="margin-bottom: 15px;">
+            <div class="btn cyan">
+                <span>Choose File</span>
+                <input id="FileImportParts" type="file" accept=".xlsx,.xls">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Select Excel file...">
+            </div>
+        </div>
+
+        <div class="progress" id="importProgress" style="display: none;">
+            <div class="indeterminate"></div>
+        </div>
+
+        <div class="KhungOverflow" style="max-height: 350px;">
+            <table class="responsive-table striped highlight">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Supplier</th>
+                        <th>Quantity</th>
+                        <th>Safety Stock</th>
+                        <th>Machine No</th>
+                    </tr>
+                </thead>
+                <tbody id="ImportPreviewTable">
+                    <tr>
+                        <td colspan="7" class="center-align grey-text">Chưa có dữ liệu. Vui lòng chọn file Excel.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="modal-close btn grey lighten-1" type="button">
+            <i class="material-icons left">close</i>Cancel
+        </button>
+        <button id="BtnSaveImport" class="btn green" type="button">
+            <i class="material-icons left">save</i>Save Import
+        </button>
+    </div>
+</div>
+
+<!-- Modal: Part Image -->
+<div id="imageModal" class="modal" style="width: 50%; height: auto;">
+    <div class="modal-content">
+        <h5 id="imageModalTitle">Part Image</h5>
+
+        <div class="row">
+            <div class="col s12">
+                <div id="imageUploadSection" style="display: none;">
+                    <div class="file-field input-field">
+                        <div class="btn cyan">
+                            <span>Browse</span>
+                            <input id="partImageUpload" type="file" accept="image/*">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Select image file...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 center-align">
+                <img id="partImage" src="/Images/no-image.png" style="max-width: 100%; max-height: 400px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button id="btnToggleUpload" class="btn waves-effect waves-light amber">
+            <i class="material-icons left">edit</i><span id="btnToggleText">Change Image</span>
+        </button>
+        <button id="btnSaveImage" class="btn waves-effect waves-light green" style="display: none;">
+            <i class="material-icons left">save</i>Save
+        </button>
+        <button class="btn waves-effect waves-light grey modal-close">
+            <i class="material-icons left">close</i>Close
+        </button>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    .warning-negative {
+        color: white;
+        font-weight: bold;
+        background-color: #ff4444;
+        padding: 4px 8px;
+        border-radius: 3px;
+    }
+
+    .warning-low {
+        color: black;
+        font-weight: bold;
+        background-color: #ffcc00;
+        padding: 4px 8px;
+        border-radius: 3px;
+    }
+
+    .form-control {
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 4px !important;
+        padding: 8px !important;
+        box-sizing: border-box !important;
+    }
+
+        .form-control:focus {
+            border-color: #26a69a !important;
+            box-shadow: 0 0 0 1px #26a69a !important;
+        }
+
+    .modal {
+        max-height: 90%;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    table.highlight tbody tr:hover {
+        background-color: #e3f2fd;
+    }
+
+    table tbody tr.selected {
+        background-color: #b3e5fc !important;
+    }
+</style>
+
+<!-- Scripts -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+<script src="~/Scripts/X01.js?v=@version"></script>

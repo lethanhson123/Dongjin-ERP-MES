@@ -1,0 +1,287 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IG01Service _G01Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "G01";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.FirstOrDefault(o => o.SCRN_PATH == url);
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+
+    try
+    {
+        string Language = CookieHelper.GetCookie(GlobalHelper.Language);
+        BaseResult = await _G01Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l8">
+                    <ul class="tabs">
+                        <li class="tab col s3"><a id="ATag001" class="active" href="#TabPage1">Goods in Stock</a></li>
+                        <li class="tab col s3"><a id="ATag002" href="#TabPage2">Warehouse</a></li>
+                        <li class="tab col s3"><a id="ATag003" href="#TabPage3">Finished Good</a></li>
+                        <li class="tab col s3"><a id="ATag004" href="#TabPage4">Hook Rack</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="TabPage1" class="row">
+                <div class="col s12 card-panel light-blue lighten-4">
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A0</label>
+                        <input id="suchTB1" type="text" class="form-control">
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.PART02</label>
+                        <input id="suchTB2" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView0Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView0Sort()">
+                                <th>PART_CODE</th>
+                                <th>PART_NO</th>
+                                <th>PART_NAME</th>
+                                <th>Raw Material</th>
+                                <th>Finish Goods</th>
+                                <th>WIP</th>
+                                <th>SUM</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView0"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="TabPage2" class="row">
+                <div class="col s12 card-panel yellow lighten-4">
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A0</label>
+                        <input id="SUCHA1" type="text" class="form-control">
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A1</label>
+                        <select id="SUCHA2" class="browser-default form-select">
+                            <option value="ALL">ALL</option>
+                            <option value="Good">Good</option>
+                            <option value="Bad">Bad</option>
+                        </select>
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A2</label>
+                        <input id="SUCHA3" type="text" class="form-control">
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>Good: <span id="GOOD1" style="color: green;">0</span></label>
+                        <br />
+                        <label>Bad: <span id="BAD1" style="color: green;">0</span></label>
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <br />
+                        <button id="Button2" title="재고 Reset (Reset tồn kho)" class="btn waves-effect waves-light pink darken-1">
+                            <i class="material-icons">refresh</i> 재고 Reset (Reset tồn kho)
+                        </button>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>CODE</th>
+                                <th>PART_NO</th>
+                                <th>PART NAME</th>
+                                <th>Basic QTY</th>
+                                <th>Incoming_QTY</th>
+                                <th>OUT_QTY</th>
+                                <th>Difference_QTY</th>
+                                <th>MES STOCK</th>
+                                <th>EXCEL_QTY</th>
+                                <th>Verification</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="TabPage3" class="row">
+                <div class="col s12 card-panel green lighten-4">
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A0</label>
+                        <input id="SUCHB1" type="text" class="form-control">
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A1</label>
+                        <select id="SUCHB2" class="browser-default form-select">
+                            <option value="ALL">ALL</option>
+                            <option value="Good">Good</option>
+                            <option value="Bad">Bad</option>
+                        </select>
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A2</label>
+                        <input id="SUCHB3" type="text" class="form-control">
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>Good: <span id="GOOD2" style="color: green;">0</span></label>
+                        <br />
+                        <label>Bad: <span id="BAD2" style="color: green;">0</span></label>
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <br />
+                        <button id="Button1" title="재고 Reset (Reset tồn kho)" class="btn waves-effect waves-light pink darken-1">
+                            <i class="material-icons">refresh</i> 재고 Reset (Reset tồn kho)
+                        </button>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView2Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView2Sort()">
+                                <th>PART_IDX</th>
+                                <th>PART_NO</th>
+                                <th>PART_NAME</th>
+                                <th>Change_QTY</th>
+                                <th>Incoming_QTY</th>
+                                <th>OUT_QTY</th>
+                                <th>Difference_QTY</th>
+                                <th>MES_STOCK</th>
+                                <th>REWORK_QTY</th>
+                                <th>FG_EXCEL</th>
+                                <th>Verification</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView2"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="TabPage4" class="row">
+                <div class="col s12 card-panel green lighten-4">
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A0</label>
+                        <input id="SUCHC1" type="text" class="form-control">
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A1</label>
+                        <select id="SUCHC2" class="browser-default form-select">
+                            <option value="ALL">ALL</option>
+                            <option value="Good">Good</option>
+                            <option value="Bad">Bad</option>
+                        </select>
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>@MES_MVC.Resources.Resource.G01A2</label>
+                        <input id="SUCHC3" type="text" class="form-control">
+                    </div>
+                    <div class="col s12 m6 l2">
+                        <label>Good: <span id="GOOD3" style="color: green;">0</span></label>
+                        <br />
+                        <label>Bad: <span id="BAD3" style="color: green;">0</span></label>
+                    </div>
+                </div>
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView3Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView3Sort()">
+                                <th>PART_CODE</th>
+                                <th>PART_NO</th>
+                                <th>Change_QTY</th>
+                                <th>Incoming_QTY</th>
+                                <th>OUT_QTY</th>
+                                <th>MES_STOCK</th>
+                                <th>Difference_QTY</th>
+                                <th>STOCK_QTY</th>
+                                <th>Verification</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView3"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/G01.js?v=@version"></script>

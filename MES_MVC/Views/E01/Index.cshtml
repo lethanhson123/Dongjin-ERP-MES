@@ -1,0 +1,625 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IE01Service _E01Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "E01";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _E01Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <!-- Print button - will implement later -->
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s3"><a href="#TabPage1" class="active">Tool Status</a></li>
+                        <li class="tab col s3"><a href="#TabPage2">Tool Detail</a></li>
+                        <li class="tab col s3"><a href="#TabPage3">Scan In</a></li>
+                        <li class="tab col s3"><a href="#TabPage4">Scan Out</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div id="TabPage1" class="col s12">
+                <div class="row">
+                    <div class="col s12 m12 l12 card-panel green lighten-4">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>APP (Applicator):</label>
+                                <input id="STB1" type="text" class="form-control" placeholder="Enter applicator name">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>CUSTOMER:</label>
+                                <select id="STB2" class="browser-default form-select">
+                                    <option value="ALL">ALL</option>
+                                    <option value="DOOSAN">DOOSAN</option>
+                                    <option value="GM">GM</option>
+                                    <option value="HKMC">HKMC</option>
+                                    <option value="KGM(U100)">KGM(U100)</option>
+                                    <option value="M2">M2</option>
+                                    <option value="RSM">RSM</option>
+                                    <option value="ZDA">ZDA</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>TYPE:</label>
+                                <input id="STB3" type="text" class="form-control" placeholder="Enter tool type">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>SEQ:</label>
+                                <select id="ComboBox2" class="browser-default form-select">
+                                    <option value="ALL">ALL</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                    <option value="G">G</option>
+                                    <option value="H">H</option>
+                                    <option value="I">I</option>
+                                    <option value="J">J</option>
+                                    <option value="K">K</option>
+                                    <option value="L">L</option>
+                                    <option value="M">M</option>
+                                    <option value="N">N</option>
+                                    <option value="O">O</option>
+                                    <option value="P">P</option>
+                                    <option value="Q">Q</option>
+                                    <option value="R">R</option>
+                                    <option value="S">S</option>
+                                    <option value="T">T</option>
+                                    <option value="U">U</option>
+                                    <option value="V">V</option>
+                                    <option value="W">W</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool Status Table -->
+                <div class="row">
+                    <div class="col s12">
+                        <div class="KhungOverflow60">
+                            <table class="responsive-table" id="DataGridView1Table">
+                                <thead class="sticky-header">
+                                    <tr onclick="DataGridView1Sort()">
+
+                                        <th style="width: 50px;">Check</th>
+                                        <th style="width: 80px;">Count Change</th>
+                                        <th style="width: 80px;">Status</th><!-- Cột Status đã di chuyển lên trước APPLICATOR -->
+                                        <th style="width: 150px;">APPLICATOR</th>
+                                        <th style="width: 60px;">SEQ</th>
+                                        <th style="width: 80px;">MAX_CNT</th>
+                                        <th style="width: 100px;">Customer</th>
+                                        <th style="width: 100px;">TOTAL Count</th>
+                                        <th style="width: 100px;">Work Count</th>
+                                        <th style="width: 100px;">SPP_NO</th>
+                                        <th style="width: 80px;">TYPE</th>
+                                        <th style="width: 100px;">Left count</th>
+                                        <th style="width: 60px;">Rat</th>
+                                        <th style="display: none;">TOOLMASTER_IDX</th>
+                                        <th style="display: none;">TOOL_IDX</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView1">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- TabPage2 Content - Tool Detail -->
+            <div id="TabPage2" class="col s12">
+                <!-- Top Search Section -->
+                <div class="row">
+                    <div class="col s12 m12 l12 card-panel blue lighten-4">
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <label>APPLICATOR:</label>
+                                <input id="TextBox1" type="text" class="form-control" placeholder="Enter applicator name">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <label>SEQ:</label>
+                                <select id="ComboBox3" class="browser-default form-select">
+                                    <option value="ALL">ALL</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                    <option value="G">G</option>
+                                    <option value="H">H</option>
+                                    <option value="I">I</option>
+                                    <option value="J">J</option>
+                                    <option value="K">K</option>
+                                    <option value="L">L</option>
+                                    <option value="M">M</option>
+                                    <option value="N">N</option>
+                                    <option value="O">O</option>
+                                    <option value="P">P</option>
+                                    <option value="Q">Q</option>
+                                    <option value="R">R</option>
+                                    <option value="S">S</option>
+                                    <option value="T">T</option>
+                                    <option value="U">U</option>
+                                    <option value="V">V</option>
+                                    <option value="W">W</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Row - Tool Info Display -->
+                <div class="row">
+                    <div class="col s12 m12 l12 card-panel grey lighten-5">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>APPLICATOR:</label>
+                                <input id="DGV1_D1" type="text" class="form-control" readonly style="background-color: #f5f5f5;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>SEQ:</label>
+                                <input id="DGV1_D2" type="text" class="form-control" readonly style="background-color: #f5f5f5;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>TOTAL COUNT:</label>
+                                <input id="DGV1_D3" type="text" class="form-control" readonly style="background-color: #f5f5f5;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <label>WORK COUNT:</label>
+                                <input id="DGV1_D4" type="text" class="form-control" readonly style="background-color: #f5f5f5;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="row">
+                    <!-- Left Side - Tool Detail Table (Full Width) -->
+                    <div class="col s12 m12 l12">
+                        <div class="KhungOverflow" style="max-height: 350px;">
+                            <table class="responsive-table" id="DataGridView5Table">
+                                <thead class="sticky-header">
+                                    <tr onclick="DataGridView5Sort()">
+                                        <th>APPLICATOR</th>
+                                        <th>SEQ</th>
+                                        <th>MAX_CNT</th>
+                                        <th>TOT_WK_CNT</th>
+                                        <th>WK_CNT</th>
+                                        <th>SPP_NO</th>
+                                        <th>TYPE</th>
+                                        <th>GAUGE</th>
+                                        <th>COPL_NOR</th>
+                                        <th>COPL_SPE</th>
+                                        <th>INSPL_SEALTYPE</th>
+                                        <th>INSPL_NONSEAL</th>
+                                        <th>INSPL_XTYPE</th>
+                                        <th>INSPL_KTYPE</th>
+                                        <th>INSPL_SPE</th>
+                                        <th>ANVIL_NOR</th>
+                                        <th>ANVIL_SPE</th>
+                                        <th>CMU_NOR</th>
+                                        <th>CMU_SPE</th>
+                                        <th>IMU_NOR</th>
+                                        <th>IMU_NONSEAL</th>
+                                        <th>IMU_SPE</th>
+                                        <th>CUTPL_ONE</th>
+                                        <th>CUTPL_DET</th>
+                                        <th>CUTAN_ONE</th>
+                                        <th>CUTAN_DET</th>
+                                        <th>CUTHO_ONE</th>
+                                        <th>CUTHO_DET</th>
+                                        <th>RRBLK_ONE</th>
+                                        <th>RRBLK_DET</th>
+                                        <th>RRCUTHO_ONE</th>
+                                        <th>RRCUTHO_DET</th>
+                                        <th>FRCUTHO_ONE</th>
+                                        <th>FRCUTHO_DET</th>
+                                        <th>RRCUTAN_ONE</th>
+                                        <th>RRCUTAN_DET</th>
+                                        <th>WRDN_ONE</th>
+                                        <th>WRDN_DET</th>
+                                        <th>DESC</th>
+                                        <th>COMB_CODE</th>
+                                        <th>TOOL_IDX</th>
+                                        <th>TOOLMASTER_IDX</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView5">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Row - Tool History Table + Add Manual Count Section -->
+                <div class="row" style="margin-top: 10px;">
+                    <!-- Left Side - Tool History Table -->
+                    <div class="col s12 m12 l8">
+                        <div class="KhungOverflow" style="max-height: 250px;">
+                            <table class="responsive-table" id="DataGridView6Table">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th>APPLICATOR</th>
+                                        <th>SEQ</th>
+                                        <th>WORK_DATE</th>
+                                        <th>WORK_QTY</th>
+                                        <th>TOTAL QTY</th>
+                                        <th>CONTENT</th>
+                                        <th>CREATE_DATE</th>
+                                        <th>USER</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView6">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Add Manual Count Section -->
+                    <div class="col s12 m12 l4">
+                        <div class="card-panel white" style="border: 1px solid #ddd;">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <button id="Button16" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">Cancel</button>
+                                <button id="Button13" class="btn waves-effect waves-light cyan darken-1">ADD SAVE</button>
+                            </div>
+
+                            <div class="row" style="margin-top: 20px;">
+                                <div class="col s12">
+                                    <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; text-align: center;">
+                                        <div style="font-size: 14px;"><span id="Label115_APP_NM">APP_NM</span> / <span id="Label115_APP">APP</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col s12">
+                                    <div>
+                                        <label>SEQ:</label>
+                                        <select id="ComboBox1" class="browser-default form-select">
+                                            <option value="ALL">ALL</option>
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                            <option value="E">E</option>
+                                            <option value="F">F</option>
+                                            <option value="G">G</option>
+                                            <option value="H">H</option>
+                                            <option value="I">I</option>
+                                            <option value="J">J</option>
+                                            <option value="K">K</option>
+                                            <option value="L">L</option>
+                                            <option value="M">M</option>
+                                            <option value="N">N</option>
+                                            <option value="O">O</option>
+                                            <option value="P">P</option>
+                                            <option value="Q">Q</option>
+                                            <option value="R">R</option>
+                                            <option value="S">S</option>
+                                            <option value="T">T</option>
+                                            <option value="U">U</option>
+                                            <option value="V">V</option>
+                                            <option value="W">W</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col s12">
+                                    <div>
+                                        <label>Add Work Count:</label>
+                                        <input id="TextBox5" type="number" class="form-control" placeholder="Enter count">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hidden fields for internal use -->
+                            <input type="hidden" id="Label114" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="TabPage3" class="col s12">
+                <div class="row">
+                    <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                        <div class="row" style="margin-bottom: 0;">
+                            <div class="col s12 m12 l3">
+                                <div style="text-align: center; margin-top: 10px;">
+                                    <button id="ButtonScanIn" class="btn waves-effect waves-light cyan darken-1">SCAN IN</button>
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <label>From Date:</label>
+                                    <input type="date" id="DT_SCAN_FROM" class="form-control" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <label>To Date:</label>
+                                    <input type="date" id="DT_SCAN_TO" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <label>Applicator/LOT:</label>
+                                    <input id="TXT_SCAN_SEARCH" type="text" class="form-control" placeholder="Enter applicator or lot code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView3Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView3Sort()">
+                                <th>SCAN ID</th>
+                                <th>APPLICATOR</th>
+                                <th>SEQ</th>
+                                <th>APPLICATOR LOT</th>
+                                <th>SCAN DATE</th>
+                                <th>USER</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView3">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="TabPage4" class="col s12">
+                <div class="row">
+                    <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                        <div class="row" style="margin-bottom: 0;">
+                            <div class="col s12 m12 l3">
+                                <div style="text-align: center; margin-top: 10px;">
+                                    <button id="ButtonScanOut" class="btn waves-effect waves-light cyan darken-1">SCAN OUT</button>
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <label>From Date:</label>
+                                    <input type="date" id="DT_SCAN_OUT_FROM" class="form-control" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <label>To Date:</label>
+                                    <input type="date" id="DT_SCAN_OUT_TO" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <label>Applicator/LOT:</label>
+                                    <input id="TXT_SCAN_OUT_SEARCH" type="text" class="form-control" placeholder="Enter applicator or lot code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView4Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView4Sort()">
+                                <th>SCAN ID</th>
+                                <th>APPLICATOR</th>
+                                <th>SEQ</th>
+                                <th>APPLICATOR LOT</th>
+                                <th>LINE</th><!-- Thêm cột Line -->
+                                <th>FAMILY</th><!-- Thêm cột Family -->
+                                <th>SCAN DATE</th>
+                                <th>USER</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView4">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ScanINModal" class="modal modal-fixed-footer" style="width: 50%; height: 30%;">
+    <div class="modal-content">
+        <h5 class="center-align">SCAN IN APPLICATOR</h5>
+
+        <!-- Input Area -->
+        <div class="row">
+            <div class="col s12 m9 l10">
+                <div>
+                    <label>Mã QR</label>
+                    <input id="txtScanINQR" type="text" class="form-control" placeholder="Enter applicator name">
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Scan History Table -->
+
+
+    </div>
+
+
+</div>
+<div id="ScanOUTModal" class="modal modal-fixed-footer" style="width: 50%; height: 30%;">
+    <div class="modal-content">
+        <h5 class="center-align">SCAN OUT APPLICATOR</h5>
+
+        <!-- Input Area -->
+        <div class="row">
+            <!-- Cột 1: Applicator QR -->
+            <div class="col s12 m6 l3">
+                <label>Mã QR Applicator</label>
+                <input id="txtScanOUTQR" type="text" class="form-control" placeholder="Quét mã applicator">
+            </div>
+
+
+            <!-- Cột 3: Device QR -->
+            <div class="col s12 m6 l3">
+                <label>Mã thiết bị</label>
+                <input id="txt_DeviceQRScan" type="text" class="form-control" placeholder="Quét mã thiết bị">
+            </div>
+
+            <!-- Cột 4: Device Group -->
+            <div class="col s12 m6 l3">
+                <label>Line</label>
+                <input id="select_Device_Group" type="text" class="form-control" placeholder="Line" readonly>
+            </div>
+            <div class="col s12 m6 l3">
+                <label>Family</label>
+                <input id="select_Device_Code" type="text" class="form-control" placeholder="Family" readonly>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<script src="~/Scripts/E01.js?v=@version"></script>
+<style>
+    #DataGridView1Table tbody tr.selected {
+        background-color: #e3f2fd !important;
+        border-left: 3px solid #1976d2;
+    }
+</style>

@@ -1,0 +1,355 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IMES_REPORTService _MES_REPORTService
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "MES_REPORT";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _MES_REPORTService.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <!-- Header Section -->
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+               
+            </div>
+
+            <!-- Main Navigation Buttons -->
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <button id="Button1" class="btn mes-nav-btn mes-nav-active" style="margin-right: 5px;">CUT LP</button>
+                    <button id="Button2" class="btn mes-nav-btn" style="margin-right: 5px;">FG</button>
+                </div>
+            </div>
+
+            <!-- CUT LP Section -->
+            <div id="TabPage1" class="mes-tab-content">
+                <!-- Sub Navigation -->
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <ul class="tabs mes-sub-tabs">
+                            <li class="tab col s3 p-0">
+                                <a id="T1_P1_Tab" class="active p-0 mes-tab-sub" href="#T1_P1">TOTAL</a>
+                            </li>
+                            <li class="tab col s3 p-0">
+                                <a id="T1_P2_Tab" class="p-0 mes-tab-sub" href="#T1_P2">KOMAX</a>
+                            </li>
+                            <li class="tab col s3 p-0">
+                                <a id="T1_P3_Tab" class="p-0 mes-tab-sub" href="#T1_P3">LP</a>
+                            </li>
+                            <li class="tab col s3 p-0">
+                                <a id="T1_P4_Tab" class="p-0 mes-tab-sub" href="#T1_P4">SPTP</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- TOTAL Tab -->
+                <div id="T1_P1" class="mes-sub-content">
+                    <div class="KhungOverflow70">
+                        <table class="responsive-table mes-report-table" id="DataGridView0Table">
+                            <thead class="sticky-header mes-table-header">
+                                <tr>
+                                    <th class="mes-th">Factory</th>
+                                    <th class="mes-th">WEEK</th>
+                                    <th class="mes-th">START_DATE</th>
+                                    <th class="mes-th">END_DATE</th>
+                                    <th class="mes-th">LEAD COUNT</th>
+                                    <th class="mes-th">WORKING</th>
+                                    <th class="mes-th">NOT WORK</th>
+                                    <th class="mes-th">LEAD Ratio</th>
+                                    <th class="mes-th">PO SUM</th>
+                                    <th class="mes-th">ACT SUM</th>
+                                    <th class="mes-th">ACT Ratio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView0" class="mes-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- KOMAX Tab -->
+                <div id="T1_P2" class="mes-sub-content" style="display: none;">
+                    <div class="KhungOverflow70">
+                        <table class="responsive-table mes-report-table" id="DataGridView1Table">
+                            <thead class="sticky-header mes-table-header">
+                                <tr>
+                                    <th class="mes-th">Factory</th>
+                                    <th class="mes-th">WEEK</th>
+                                    <th class="mes-th">START_DATE</th>
+                                    <th class="mes-th">END_DATE</th>
+                                    <th class="mes-th">LEAD COUNT</th>
+                                    <th class="mes-th">WORKING</th>
+                                    <th class="mes-th">NOT WORK</th>
+                                    <th class="mes-th">LEAD Ratio</th>
+                                    <th class="mes-th">PO SUM</th>
+                                    <th class="mes-th">ACT SUM</th>
+                                    <th class="mes-th">ACT Ratio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1" class="mes-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- LP Tab -->
+                <div id="T1_P3" class="mes-sub-content" style="display: none;">
+                    <div class="KhungOverflow70">
+                        <table class="responsive-table mes-report-table" id="DataGridView3Table">
+                            <thead class="sticky-header mes-table-header">
+                                <tr>
+                                    <th class="mes-th">Factory</th>
+                                    <th class="mes-th">WEEK</th>
+                                    <th class="mes-th">START_DATE</th>
+                                    <th class="mes-th">END_DATE</th>
+                                    <th class="mes-th">LEAD COUNT</th>
+                                    <th class="mes-th">WORKING</th>
+                                    <th class="mes-th">NOT WORK</th>
+                                    <th class="mes-th">LEAD Ratio</th>
+                                    <th class="mes-th">PO SUM</th>
+                                    <th class="mes-th">ACT SUM</th>
+                                    <th class="mes-th">ACT Ratio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView3" class="mes-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SPTP Tab -->
+                <div id="T1_P4" class="mes-sub-content" style="display: none;">
+                    <div class="KhungOverflow70">
+                        <table class="responsive-table mes-report-table" id="DataGridView2Table">
+                            <thead class="sticky-header mes-table-header">
+                                <tr>
+                                    <th class="mes-th">Factory</th>
+                                    <th class="mes-th">WEEK</th>
+                                    <th class="mes-th">START_DATE</th>
+                                    <th class="mes-th">END_DATE</th>
+                                    <th class="mes-th">LEAD COUNT</th>
+                                    <th class="mes-th">WORKING</th>
+                                    <th class="mes-th">NOT WORK</th>
+                                    <th class="mes-th">LEAD Ratio</th>
+                                    <th class="mes-th">PO SUM</th>
+                                    <th class="mes-th">ACT SUM</th>
+                                    <th class="mes-th">ACT Ratio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView2" class="mes-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FG Section -->
+            <div id="TabPage2" class="mes-tab-content" style="display: none;">
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div class="KhungOverflow70">
+                            <table class="responsive-table mes-report-table" id="FGReportTable">
+                                <thead class="sticky-header mes-table-header">
+                                    <tr>
+                                        <th class="mes-th">Factory</th>
+                                        <th class="mes-th">Product</th>
+                                        <th class="mes-th">Model</th>
+                                        <th class="mes-th">Quantity</th>
+                                        <th class="mes-th">Status</th>
+                                        <th class="mes-th">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="FGReportTableBody" class="mes-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+    /* Main Navigation Buttons */
+    .mes-nav-btn {
+        background-color: #666 !important;
+        color: white !important;
+        font-weight: bold;
+        text-transform: uppercase;
+        min-width: 120px;
+    }
+
+    .mes-nav-active {
+        background-color: #000 !important;
+    }
+
+    /* Sub Navigation Tabs */
+    .mes-sub-tabs {
+        background-color: #f5f5f5;
+        margin-bottom: 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .mes-tab-sub {
+        background-color: #e0e0e0 !important;
+        color: #333 !important;
+        font-weight: 900 !important;
+        text-transform: uppercase;
+        border-right: 1px solid #ccc;
+    }
+
+        .mes-tab-sub.active {
+            background-color: white !important;
+            color: #333 !important;
+            border-bottom: 2px solid #26a69a;
+            font-weight: 900 !important;
+        }
+
+    /* Table Styles */
+    .mes-report-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    .mes-table-header {
+        background-color: #333;
+        color: white;
+    }
+
+    .mes-th {
+        background-color: #333 !important;
+        color: white !important;
+        padding: 12px 8px;
+        text-align: center;
+        font-weight: bold;
+        border: 1px solid #555;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .mes-table-body tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+        .mes-table-body tr:hover {
+            background-color: #f5f5f5;
+        }
+
+    .mes-table-body td {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid #ddd;
+        font-size: 20px;
+    }
+
+    /* Special row styling for ALL rows */
+    .mes-table-body tr.all-row {
+        background-color: #696969 !important;
+        color: white;
+    }
+
+        .mes-table-body tr.all-row:hover {
+            background-color: #555 !important;
+        }
+
+    /* Highlight columns (LEAD Ratio and ACT Ratio) */
+    .mes-table-body td.highlight-yellow {
+        color: #FFD700 !important;
+        font-weight: bold;
+    }
+
+   
+    .mes-tab-content {
+        margin-top: 10px;
+    }
+
+    .mes-sub-content {
+        margin-top: 0;
+    }
+
+    .right-align-md {
+        text-align: right;
+    }
+
+    .p-0 {
+        padding: 0 !important;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .mes-report-table
+
+    {
+        font-size: 10px;
+    }
+
+    .mes-th, .mes-table-body td {
+        padding: 6px 4px;
+    }
+
+  
+    .mes-nav-btn {
+        min-width: 80px;
+        font-size: 12px;
+    }
+
+    }
+</style>
+
+<script src="~/Scripts/MES_REPORT.js?v=@version"></script>

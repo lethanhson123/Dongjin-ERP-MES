@@ -1,0 +1,172 @@
+﻿@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    // string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="~/manifest.json">
+    <title>@ViewData["Title"] - DONGJIN</title>
+    <meta name="description" content="DONGJIN GLOBAL COMPANY LIMITED | Manufacturing Execution System (MES) 2025" />
+    <link rel="icon" type="image/x-icon" href="~/Image/logo.png">
+    <meta property="og:site_name" content="dongjin-global.com" />
+    <meta property="og:rich_attachment" content="true" />
+    <meta property="og:type" content="article" />
+@*     <meta property="article:publisher" content="https://www.facebook.com/dongjinglobal" />
+    <meta property="og:url" itemprop="url" content="https://dongjin-global.com/" /> *@
+    <meta property="og:image" itemprop="thumbnailUrl" content="/Image/logo01.png" />
+
+ @*    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> *@
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/flag-icon/css/flag-icon.min.css">
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/themes/horizontal-menu-template/materialize.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/themes/horizontal-menu-template/style.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/layouts/style-horizontal.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/custom/custom.css">
+    <link rel="stylesheet" type="text/css" href="~/css/custom.css?v=@version">
+    <script src="~/js/jquery-1.12.4.min.js"></script>
+
+</head>
+<body class="horizontal-layout page-header-light horizontal-menu 2-columns  " data-open="click"
+      data-menu="horizontal-menu" data-col="2-columns">
+    <div id="BackGround" style="width:100%; height:100%; z-index:1000; background-color: #eeeeee; opacity: 0.5; position:absolute; top:0px; left:0px; display: none;">
+        <div id="BackGroundDim" style="z-index:2000; position:absolute;">
+            <div class="msgbox">
+                <img src="~/Image/loading.gif" alt="Loading, please wait..." title="Loading, please wait..." width="200"
+                     height="200" />
+            </div>
+        </div>
+    </div>
+    <header class="page-topbar" id="header">
+        <div class="navbar navbar-fixed">
+            <nav class="navbar-main navbar-color nav-collapsible sideNav-lock navbar-dark gradient-45deg-light-blue-cyan">
+                <div class="nav-wrapper">
+                    <ul class="left">
+                        <li>
+                            <h1 class="logo-wrapper">
+                                <a class="brand-logo darken-1" href="#">
+                                    <img src="~/Image/logo01.png" alt="materialize logo"><span class="logo-text hide-on-med-and-down"></span>
+                                </a>
+                            </h1>
+                        </li>
+                    </ul>
+                    <div class="header-search-wrapper hide-on-med-and-down">
+                        <input class="header-search-input z-depth-2" type="text" name="Search"
+                               placeholder="Manufacturing Execution System (MES) | DONGJIN GLOBAL COMPANY LIMITED">
+                    </div>
+                    <ul class="navbar-list right">
+                        <li class="hide-on-med-and-down">
+                            <a class="waves-effect waves-block waves-light toggle-fullscreen"
+                               href="javascript:void(0);"><i class="material-icons">settings_overscan</i></a>
+                        </li>
+                        <li class="hide-on-large-only">
+                            <a class="waves-effect waves-block waves-light search-button"
+                               href="javascript:void(0);"><i class="material-icons">search </i></a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);"
+                               data-target="profile-dropdown">
+                                <span class="avatar-status avatar-online">
+                                    <img src="../Image/logo.png" alt="avatar"><i></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-block waves-light sidenav-trigger" href="#"
+                               data-target="slide-out-right"><i class="material-icons">format_indent_increase</i></a>
+                        </li>
+                    </ul>
+                    <ul class="dropdown-content" id="translation-dropdown">
+                        <li>
+                            <a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-gb"></i> English</a>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-vi"></i> Việt Nam</a>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-kr"></i> Korea</a>
+                        </li>
+                    </ul>
+                    <ul class="dropdown-content" id="notifications-dropdown">
+                        <li>
+                            <h6>NOTIFICATIONS<span class="new badge">5</span></h6>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="grey-text text-darken-2" href="#!">
+                                <span class="material-icons icon-bg-circle cyan small">add_shopping_cart</span> A new order
+                                has been placed!
+                            </a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">2 hours ago</time>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-2" href="#!">
+                                <span class="material-icons icon-bg-circle red small">stars</span> Completed the task
+                            </a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">3 days ago</time>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-2" href="#!">
+                                <span class="material-icons icon-bg-circle teal small">settings</span> Settings updated
+                            </a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">4 days ago</time>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-2" href="#!">
+                                <span class="material-icons icon-bg-circle deep-orange small">today</span> Director meeting
+                                started
+                            </a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">6 days ago</time>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-2" href="#!">
+                                <span class="material-icons icon-bg-circle amber small">trending_up</span> Generate monthly
+                                report
+                            </a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">1 week ago</time>
+                        </li>
+                    </ul>
+                    <ul class="dropdown-content" id="profile-dropdown">
+                    </ul>
+                </div>
+                <nav class="display-none search-sm">
+                    <div class="nav-wrapper">
+                        <div class="input-field">
+                            <input class="search-box-sm" type="search" required="">
+                            <label class="label-icon" for="search">
+                                <i class="material-icons search-sm-icon">search</i>
+                            </label><i class="material-icons search-sm-close">close</i>
+                        </div>
+                    </div>
+                </nav>
+            </nav>
+            <nav class="white hide-on-med-and-down" id="horizontal-nav">
+                <div class="nav-wrapper">
+                    <ul class="left hide-on-med-and-down" id="ul-horizontal-nav" data-menu="menu-navigation">
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div id="main">
+        <div class="row">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/app-assets/js/vendors.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/data-tables/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js"
+            type="text/javascript"></script>
+    <script src="~/app-assets/vendors/data-tables/js/dataTables.select.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/js/plugins.js" type="text/javascript"></script>
+    <script src="~/app-assets/js/custom/custom-script.js" type="text/javascript"></script>
+    <script src="~/app-assets/js/scripts/data-tables.js" type="text/javascript"></script>
+    <script src="~/js/custom.js?v=@version"></script>
+</body>
+</html>

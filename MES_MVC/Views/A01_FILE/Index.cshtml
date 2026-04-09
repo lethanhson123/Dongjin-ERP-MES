@@ -1,0 +1,146 @@
+﻿@inject IMAINService _MAINService  
+@inject MES_MVC.CookieHelper CookieHelper
+
+@{
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string url = "MAIN";
+	try
+	{
+		//truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+		BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+		BaseResult = await _MAINService.Main_Shown(BaseParameter);
+		if (BaseResult.ListtsauthTranfer != null)
+		{
+			BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+			if (BaseResult.tsauthTranfer != null)
+			{
+				IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+				IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+				IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+				IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+				IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+				IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+				IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+				IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "A01_FILE" + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l6">
+					<h6><b>A01_FILE (@url)</b></h6>
+				</div>
+				<div class="col s12 m12 l6 right-align-md">
+					<div class="col s12 m12 l3">
+						<button id="Buttonadd" title="Add" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Add</button>		
+						<input id="FileToUpload" type="file" class="form-control" accept=".pdf" style="display:none;">
+					</div>
+					<div class="col s12 m12 l3">						
+						<button id="Buttonsave" title="Save" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">Save</button>						
+					</div>
+					<div class="col s12 m12 l3">						
+						<button id="Buttonhelp" title="Help" class="btn waves-effect waves-light green darken-1" style="width: 100%;"><i class="material-icons">help</i></button>						
+					</div>
+					<div class="col s12 m12 l3">						
+						<button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+					</div>
+				</div>
+			</div>
+			<div class="row card-panel light-blue lighten-4">
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l4">
+						<div>
+							<label>PART NO : </label>
+							<input id="PNO_TXT" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l4">
+						<div>
+							<label>.</label>
+							<input id="ECN_TXT" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l4">
+						<div>
+							<label>.</label>
+							<input id="ECN_DATE" type="text" class="form-control" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l6">
+						<div>
+							<label>File Name : </label>
+							<input id="F_NAME" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>.</label>
+							<input id="F_EXE" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>.</label>
+							<input id="F_SIZE" type="text" class="form-control" readonly>
+						</div>
+					</div>
+				</div>				
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l4">
+						<div>
+							<label>Result : </label>
+							<input id="RUL_TXT" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l8">
+						<div>
+							<label style="color: red;">파일 최대 용량 100 Mb. File Size : MAX 100 Mb</label>							
+						</div>
+					</div>				
+				</div>
+			</div>
+			<div class="KhungOverflow">
+				<table class="responsive-table" id="DataGridView1Table">
+					<thead class="sticky-header">
+						<tr onclick="DataGridView1Sort()">
+							<th>NO</th>
+							<th>ECN DATE</th>
+							<th>ENC_NO(EO_NO)</th>
+							<th>DWG_NO</th>
+							<th>DWG_FILE</th>
+							<th>DOWN</th>							
+						</tr>
+					</thead>
+					<tbody id="DataGridView1">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/A01_FILE.js"></script>
+

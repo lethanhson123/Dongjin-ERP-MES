@@ -1,0 +1,234 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IZ07Service _Z07Service
+
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "Z07";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+    try
+    {
+        // Truyền biến User ID thay thế cho Cookies để lấy phân quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _Z07Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6 id="LabelNAME"><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <div>
+
+                        <div class="col s12 m12 l12">
+                            <div class="col s12 m12 l6">
+                                <label for="RadioButton1">
+                                    <input id="RadioButton1" name="switch" type="radio" value="request" checked />
+                                    <span>Development request</span>
+                                </label>
+                            </div>
+                            <div class="col s12 m12 l6">
+                                <label for="RadioButton2">
+                                    <input id="RadioButton2" name="switch" type="radio" value="completed" />
+                                    <span>Development</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="MainContent">
+                <!-- Bảng tìm kiếm Development Request/Completed -->
+                <div class="col s12 m12 l12 card-panel green lighten-4" id="GroupBox1">
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="Label4">DATE</label>
+                                <div class="row">
+                                    <div class="col s6">
+                                        <input id="DateTimePicker1" type="date" class="form-control">
+                                    </div>
+                                    <div class="col s6">
+                                        <input id="DateTimePicker2" type="date" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="Label1">Department</label>
+                                <select id="ComboBox4" class="browser-default form-select">
+                                    <option value="ALL">ALL</option>
+                                    <option value="IT">IT</option>
+                                    <option value="CUTTING">CUTTING</option>
+                                    <option value="FA">FA</option>
+                                    <option value="QC">QC</option>
+                                    <option value="PURCHASING">PURCHASING</option>
+                                    <option value="ACCOUNTANT">ACCOUNTANT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="Label5">MES Menu</label>
+                                <select id="ComboBox2" class="browser-default form-select">
+                                    <option value="ALL">ALL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="Label2">User ID</label>
+                                <input id="TextBox2" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="Label6">State</label>
+                                <select id="ComboBox3" class="browser-default form-select">
+                                    <option value="ALL">ALL</option>
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label id="Label3">Result</label>
+                                <select id="ComboBox1" class="browser-default form-select">
+                                    <option value="ALL">ALL</option>
+                                    <option value="Stay">Stay</option>
+                                    <option value="Ing">Ing</option>
+                                    <option value="Done">Done</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- TextBox1 cho MES Ver (chỉ hiển thị khi ở Development completed) -->
+                        <div class="col s12 m12 l4" id="TextBox1Container" style="display:none;">
+                            <div>
+                                <label id="Label7">MES Ver</label>
+                                <input id="TextBox1" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid hiển thị dữ liệu -->
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th>Detail</th>
+                                <th>DATE</th>
+                                <th>Department</th>
+                                <th>MES Menu</th>
+                                <th>TITLE</th>
+                                <th>Detail</th>
+                                <th>File_YN</th>
+                                <th>File Name</th>
+                                <th>Date</th>
+                                <th>USER</th>
+                                <th>State</th>
+                                <th>Progress</th>
+                                <th>Result</th>
+                                <th>Date of completion</th>
+                                <th>MES Ver</th>
+                                <th style="display:none;">index</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/Z07.js?v=@version"></script>

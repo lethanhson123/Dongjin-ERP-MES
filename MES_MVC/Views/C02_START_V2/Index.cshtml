@@ -1,0 +1,652 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C02_START_V2";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "KOMAX_WORK (" + url + ")";
+}
+<input id="CODE_S" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_S">
+<input id="CODE_I" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_I">
+<input id="CODE_Q" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_Q">
+<input id="CODE_M" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_M">
+<input id="CODE_T" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_T">
+<input id="CODE_L" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_L">
+<input id="CODE_E" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_E">
+<input id="Label3" type="text" class="form-control" style="display: none;">
+<input id="T1_IDX" type="text" class="form-control" style="display: none;">
+<input id="T2_IDX" type="text" class="form-control" style="display: none;">
+<input id="S1_IDX" type="text" class="form-control" style="display: none;">
+<input id="S2_IDX" type="text" class="form-control" style="display: none;">
+<input id="WIRE_IDX" type="text" class="form-control" style="display: none;">
+<input id="TOOL1_IDX" type="text" class="form-control" style="display: none;">
+<input id="TOOL2_IDX" type="text" class="form-control" style="display: none;">
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <h6><b>KOMAX_WORK (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l4">
+                </div>
+                <div class="col s12 m12 l4 right-align-md">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l9">
+                    <div class="row" style="border: 1px dashed #000000; padding-top: 5px; padding-right: 10px; margin-bottom: 5px;">
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>LEAD NO : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="Label4" type="text" class="form-control" readonly value="None" style="border-width: 0px !important; background-color: olive !important; color: lime;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>MC : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="L_MCNM" type="text" class="form-control" readonly value="None" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>ORDER NO</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="Label8" type="text" class="form-control" readonly value="None" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="Label70" type="text" class="form-control" readonly value="-----" style="border-width: 0px !important; color: blue; text-align: right;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="border: 1px dashed #000000; padding-top: 5px; padding-right: 10px; margin-bottom: 5px;">
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label style="color: blue;">Barcode :</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l9">
+                            <div>
+                                <input id="BARCODE_TEXT" type="text" class="form-control" style="color: blue; border-width: 0px !important;" value="None">
+                            </div>
+                        </div>                        
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="Label5" type="text" class="form-control" style="color: blue; border-width: 0px !important;" value="None">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="border: 1px dashed #000000; padding-top: 5px; padding-right: 10px; margin-bottom: 5px;">
+                        <div class="col s12 m12 l12" style="text-align: center;">
+                            <div>
+                                <label style="font-size: 24px;">@MES_MVC.Resources.Resource.CO2_START01</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>TERM1 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="Label10" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: yellowgreen !important;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>Wire</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>TERM2 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="Label14" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: yellowgreen !important;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>SEAL1 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="Label12" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: yellowgreen !important;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="Label18" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: yellowgreen !important;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>SEAL2 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="Label16" type="text" class="form-control" readonly style="border-width: 0px !important; background-color: yellowgreen !important;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="border: 1px dashed #000000; padding-top: 5px; padding-right: 10px; margin-bottom: 5px;">
+                        <div class="col s12 m12 l12" style="text-align: center;">
+                            <div>
+                                <label style="color: blue; font-size: 24px;">@MES_MVC.Resources.Resource.CO2_START02</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <button id="BT_APP1" title="APPLICATOR1 Change" class="btn waves-effect waves-light green darken-1" style="width: 100%;">APPLICATOR1 Change</button>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <button id="BT_APP2" title="APPLICATOR2 Change" class="btn waves-effect waves-light green darken-1" style="width: 100%;">APPLICATOR2 Change</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>TERM1 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="VLT1" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;" value="T325698">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>TERM2 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="VLT2" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>APPLICATOR1 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="VLA1" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;" value="8K12345">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="VLA11" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>Wire</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>APPLICATOR2 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="VLA2" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="VLA22" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>SEAL1 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="VLS1" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;" value="S123456">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <input id="VLW" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <label>SEAL2 : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="VLS2" type="text" class="form-control" readonly style="background-color: blue !important; color: yellow; border-width: 0px !important;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="border: 1px dashed #000000; padding-top: 5px; padding-right: 10px; margin-bottom: 5px;">
+                        <div class="row">
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="ST_LB01" type="text" class="form-control" readonly value="STR.1" style="text-align: center; border-width: 0px !important;">
+                                    <br />
+                                    <input id="TOOL_CONT1" type="text" class="form-control" readonly value="0" style="text-align: center; border-width: 0px !important; font-size: 50px; height: 60px !important; background-color: lime !important; color: black;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l10">
+                                <div class="col s12 m12 l2">
+                                    <div>
+                                        <input id="ST_DSTR1" type="text" class="form-control" readonly value="0" style=" text-align: center;border-width: 0px !important;">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l2">
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                        <input id="ST_DWIRE1" type="text" class="form-control" readonly value="0" style="text-align: center; border-width: 0px !important;">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l2">
+                                    <div>                                        
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l2">
+                                    <div>
+                                        <input id="ST_DSTR2" type="text" class="form-control" readonly value="0" style="text-align: center; border-width: 0px !important;">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l12">
+                                    <img id="LEAD_PIC" src="@DomainSite/Image/WIRE.jpg" width="100%" height="112" />
+                                </div>
+                                <div class="col s12 m12 l12">
+                                    <div>
+                                        <input id="Label34" type="text" class="form-control" readonly value="0" style="text-align: center; border-width: 0px !important;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="ST_DSTR2" type="text" class="form-control" readonly value="STR.2" style="text-align: center; border-width: 0px !important;">
+                                    <br/>
+                                    <input id="TOOL_CONT2" type="text" class="form-control" readonly value="0" style="text-align: center; border-width: 0px !important; font-size: 50px; height: 60px !important; background-color: lime !important; color: black;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l1">
+                                <div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l10">
+                                <div class="col s12 m12 l3">
+                                    <div>
+                                        <label>CCH/CCW1 :</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l3">
+                                    <div>
+                                        <input id="ST_DCC1" type="text" class="form-control" readonly value="/" style="border-width: 0px !important;">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l3">
+                                    <div>
+                                        <label>CCH/CCW2 :</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l3">
+                                    <div>
+                                        <input id="ST_DCC2" type="text" class="form-control" readonly value="/" style="border-width: 0px !important;">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l3">
+                                    <div>
+                                        <label>ICH/ICW1 :</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l3">
+                                    <div>
+                                        <input id="ST_DIC1" type="text" class="form-control" readonly value="/" style="border-width: 0px !important;">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l3">
+                                    <div>
+                                        <label>ICH/ICW2 :</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l3">
+                                    <div>
+                                        <input id="ST_DIC2" type="text" class="form-control" readonly value="/" style="border-width: 0px !important;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="border: 1px dashed #000000; padding-top: 5px; padding-right: 10px; margin-bottom: 5px;">
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>COUNT : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="Label48" type="number" class="form-control" readonly style="color: blue; border-width: 0px !important;" value="0">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1" style="text-align: center;">
+                            <div>
+                                <label>/</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="Label59" type="number" class="form-control" readonly value="0" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>LH :</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="COUNT_LH" type="number" class="form-control" readonly value="0" style="border-width: 0px !important;">
+                            </div>
+                        </div>                        
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>BUNDLE_SIZE : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <input id="Label50" type="number" class="form-control" readonly value="0" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="border: 1px dashed #000000; padding-top: 5px; padding-right: 10px; margin-bottom: 5px;">
+                        <div class="col s12 m12 l5">
+                            <div>
+                                <button id="Buttonprint" title="Complete / Print" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Complete / Print</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <button id="Button3" title="RE-Print" class="btn waves-effect waves-light green darken-1" style="width: 100%;">RE-Print</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label style="color: blue;">INSPECTION</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <button id="SPC1" title="First" class="btn waves-effect waves-light green darken-1" style="width: 100%;">First</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <button id="SPC2" title="Middle" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Middle</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <button id="SPC3" title="End" class="btn waves-effect waves-light green darken-1" style="width: 100%;">End</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="border: 1px dashed #000000; padding-top: 5px; padding-right: 10px; margin-bottom: 5px;">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="Label43" type="text" class="form-control" readonly value="CAR" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="Label54" type="text" class="form-control" readonly value="hook" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="barsq" type="text" class="form-control" readonly value="BAR_SEQ" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="Label77" type="text" class="form-control" readonly value="0" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="Label42" type="text" class="form-control" readonly value="SP_ST" style="border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div class="col s12 m12 l12" style="background-color: blue; text-align: center; margin-bottom: 10px; padding-top: 10px; padding-bottom: 10px;">
+                        <div>
+                            <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START03</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; padding-top: 10px; padding-bottom: 10px;">
+                        <div>
+                            <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START04</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START05</label>
+                            <input id="BI_STIME" type="text" class="form-control" readonly value="__:__:__" style="text-align: right; border-width: 0px !important;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START06</label>
+                            <input id="BI_RCK" type="text" class="form-control" readonly value="-" style="text-align: right; border-width: 0px !important;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>.</label>
+                            <input id="BI_RTIME" type="text" class="form-control" readonly value="__:__:__" style="text-align: right; border-width: 0px !important;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START07</label>
+                            <input id="BI_STOPTIME" type="text" class="form-control" readonly value="00:00:00" style="text-align: right; border-width: 0px !important;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">UPH : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_UPH" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START08</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_WQTY" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START09</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_RVA" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START10</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12 card-panel yellow lighten-4">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton1" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton1Text">@MES_MVC.Resources.Resource.CODE_S (@MES_MVC.Resources.Resource.CODE_S)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton2" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton2Text">@MES_MVC.Resources.Resource.CODE_I (@MES_MVC.Resources.Resource.CODE_I)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton3" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton3Text">@MES_MVC.Resources.Resource.CODE_Q (@MES_MVC.Resources.Resource.CODE_Q)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton4" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton4Text">@MES_MVC.Resources.Resource.CODE_M (@MES_MVC.Resources.Resource.CODE_M)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton5" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton5Text">@MES_MVC.Resources.Resource.CODE_T (@MES_MVC.Resources.Resource.CODE_T)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton6" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton6Text">@MES_MVC.Resources.Resource.CODE_L (@MES_MVC.Resources.Resource.CODE_L)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton7" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton7Text">@MES_MVC.Resources.Resource.CODE_E (@MES_MVC.Resources.Resource.CODE_E)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button id="Button2" title="STOP" class="btn waves-effect waves-light red darken-1" style="width: 100%;">STOP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C02_START_V2.js?v=@version"></script>
+

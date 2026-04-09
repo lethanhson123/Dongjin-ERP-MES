@@ -1,0 +1,301 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IHR1Service _HR1Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "HR1";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _HR1Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>Employee FA Management (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 l3">
+                    <label for="SearchBox">Tìm kiếm</label>
+                    <input id="SearchBox" type="text" class="form-control" placeholder="Tìm kiếm (Name, EmpCode...)" />
+                </div>
+                <div class="col s12 m2 l2">
+                    <label for="FilterLine">Line</label>
+                    <select id="FilterLine" class="browser-default">
+                        <option value="">-- Tất cả --</option>
+                    </select>
+                </div>
+                <div class="col s12 m2 l2">
+                    <label for="BulkShiftID">Ca phân</label>
+                    <select id="BulkShiftID" class="browser-default">
+                        <option value="">-- Chọn --</option>
+                    </select>
+                </div>
+                <div class="col s12 m2 l2">
+                    <label style="opacity: 0;">.</label>
+                    <button id="BtnBulkAssignShift" class="btn orange darken-1" style="width: 100%; padding: 0 8px;" disabled>
+                        <i class="material-icons">schedule</i> Phân
+                    </button>
+                </div>
+                <div class="col s12 m3 l3">
+                    <label>Tổng nhân viên</label>
+                    <div class="form-control center-align" style="font-weight: bold; background-color: #e3f2fd; color: #1976d2; padding: 8px;">
+                        <i class="material-icons tiny" style="vertical-align: middle;">view_list</i>
+                        <span id="TotalRecordsHR1">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow70">
+                        <table id="DataGridView1" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" id="SelectAllCheckbox" />
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th>Action</th>
+                                    <th>ID</th>
+                                    <th>Employee Code</th>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>Line</th>
+                                    <th>Process</th>
+                                    <th>Shift</th>
+                                    <th>Hire Date</th>
+                                    <th>Created Date</th>
+                                    <th>Created By</th>
+                                    <th>Updated Date</th>
+                                    <th>Updated By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add/Edit -->
+<div id="modal-add" class="modal" style="width: 60%; height: 55%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 20px; align-items: center;">
+            <div class="col s12 m6">
+                <h5 id="modal-title" style="margin: 0;">Add / Edit Employee</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <button class="modal-close btn grey lighten-1" type="button" style="margin-right: 10px;">Cancel</button>
+                <button id="ModalSaveBtn" class="btn green" type="button">Save</button>
+            </div>
+        </div>
+
+        <form id="EmployeeFAForm">
+            <div class="row">
+                <div class="col s12 m6">
+                    <label for="EmpCode">Employee Code <span class="red-text">*</span></label>
+                    <input id="EmpCode" type="text" class="form-control" maxlength="20" required>
+                </div>
+                <div class="col s12 m6">
+                    <label for="Name">Name <span class="red-text">*</span></label>
+                    <input id="Name" type="text" class="form-control" maxlength="100" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m3">
+                    <label for="Dept">Department <span class="red-text">*</span></label>
+                    <select id="Dept" class="browser-default" required>
+                        <option value="FA">FA</option>
+                        <option value="HR">HR</option>
+                        <option value="CTLP">CTLP</option>
+                        <option value="QC">QC</option>
+                        <option value="PC">PC</option>
+                        <option value="ME">ME</option>
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="QA">QA</option>
+                        <option value="Tổng vụ">Tổng vụ</option>
+                    </select>
+                </div>
+                <div class="col s12 m3">
+                    <label for="Line">Line <span class="red-text">*</span></label>
+                    <select id="Line" class="browser-default" required>
+                    </select>
+                </div>
+                <div class="col s12 m3">
+                    <label for="Process">Process</label>
+                    <select id="Process" class="browser-default">
+                        <option value="">-- Chọn --</option>
+                        <option value="CDC">CDC</option>
+                        <option value="FA">FA</option>
+                        <option value="Xỏ SEAL">Xỏ SEAL</option>
+                        <option value="SUB">SUB</option>
+                        <option value="FM">FM</option>
+                        <option value="CLIP">CLIP</option>
+                        <option value="LD">LD</option>
+                        <option value="KIT">KIT</option>
+                        <option value="RO">RO</option>
+                        <option value="BẮT DÂY">BẮT DÂY</option>
+                    </select>
+                </div>
+                <div class="col s12 m3">
+                    <label for="DefaultShiftID">Shift <span class="red-text">*</span></label>
+                    <select id="DefaultShiftID" class="browser-default" required>
+                        <option value="">-- Chọn ca --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6">
+                    <label for="HireDate">Hire Date (Ngày nhận việc)</label>
+                    <input id="HireDate" type="date" class="form-control">
+                </div>
+            </div>
+
+            <input type="hidden" id="EmployeeID" />
+        </form>
+    </div>
+</div>
+
+<!-- Modal Import (GIỮ NGUYÊN) -->
+<div id="ModalImportHR1" class="modal modal-fixed-footer" style="width: 70%; height: 80%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom:0; align-items: center;">
+            <div class="col s12 m6">
+                <h5 style="margin: 0;">Import Employee FA</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <a href="/Template/EmployeeFA.xlsx" class="btn blue lighten-1" download style="margin-right:8px;">
+                    <i class="material-icons left">file_download</i>Template
+                </a>
+                <button class="modal-close btn grey lighten-1" type="button" style="margin-right:8px;">
+                    <i class="material-icons left">close</i>Đóng
+                </button>
+                <button id="BtnSaveImportHR1" class="btn green" type="button" disabled>
+                    <i class="material-icons left">save</i>Import (<span id="ImportCount">0</span>)
+                </button>
+            </div>
+        </div>
+
+        <div class="file-field input-field" style="margin-bottom:15px;">
+            <div class="btn cyan">
+                <span>Chọn File Excel</span>
+                <input id="FileImportHR1" type="file" accept=".xlsx,.xls">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Chọn file Excel...">
+            </div>
+        </div>
+
+        <div class="progress" id="importProgressHR1" style="display:none;">
+            <div class="indeterminate"></div>
+        </div>
+
+        <div style="max-height:400px; overflow-y:auto;">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Họ & Tên</th>
+                        <th>Bộ phận</th>
+                        <th>Line</th>
+                        <th>Công đoạn</th>
+                        <th>Mã số nhân viên</th>
+                        <th>Ngày nhận việc</th>
+                    </tr>
+                </thead>
+                <tbody id="ImportPreviewTableHR1">
+                    <tr><td colspan="5" class="center-align grey-text">Chưa có dữ liệu</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Thêm thư viện QRCode.js trước script HR1.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+<script src="~/Scripts/HR1.js?v=@version"></script>

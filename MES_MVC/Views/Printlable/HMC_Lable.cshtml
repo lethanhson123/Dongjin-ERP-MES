@@ -1,0 +1,150 @@
+﻿@model MES_MVC.PackingLable
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>In Tem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .label {
+            width: 400px;
+            border: 1px solid black;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+            .label table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .label td {
+                vertical-align: middle;
+                padding: 4px;
+            }
+
+        .mv-title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .part-no {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .big-text {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .vertical-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .barcode, .qrcode {
+            width: 60px;
+            height: 60px;
+        }
+
+        .logo {
+            width: 40px;
+            margin-top: 4px;
+        }
+
+        .dongjin-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body onload="window.print()">
+    <div class="label">
+        <table border="1">
+            <tr>
+                <td colspan="2" class="mv-title">MV</td>
+                <td rowspan="2" align="center">
+                    <div>SERIAL NO</div>
+                    <div id="qrcode_serial" class="qrcode"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>PART NO</div>
+                    <div id="qrcode_partno" class="qrcode"></div>
+                </td>
+                <td class="part-no">@Model.PartNo</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div>MFG./SHIP DATE</div>
+                    <div class="big-text">@Model.MfgDate</div>
+                    <div>DESC.</div>
+                    <div class="big-text">@Model.Description</div>
+                </td>
+                <td rowspan="2" align="center">
+                    <div class="vertical-text">
+                        DONGJIN<br />Made in Vietnam
+                        <div class="dongjin-box">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" class="logo" />
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div>QUANTITY (Q)</div>
+                    <svg id="barcode" class="barcode"></svg>
+                    <div class="big-text">@Model.Quantity</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div>SERIAL NO</div>
+                    <div class="big-text">@Model.SerialNo</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- JS Barcode & QR Code -->
+    <script src="~/js/jsbarcode.all.min.js"></script>
+    <script src="~/js/qrcode.min.js"></script>
+
+    <script>
+        window.onload = function () {
+            // QR Serial
+            new QRCode(document.getElementById("qrcode_serial"), {
+                text: "@Model.SerialNo",
+                width: 60,
+                height: 60
+            });
+
+            // QR Part No
+            new QRCode(document.getElementById("qrcode_partno"), {
+                text: "@Model.PartNo",
+                width: 60,
+                height: 60
+            });
+
+            // Barcode
+            JsBarcode("#barcode", "@Model.Quantity", {
+                format: "CODE128",
+                displayValue: false,
+                width: 2,
+                height: 40
+            });
+        };
+    </script>
+</body>
+</html>

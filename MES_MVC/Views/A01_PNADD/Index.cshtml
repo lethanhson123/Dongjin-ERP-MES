@@ -1,0 +1,152 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IA01_PNADDService _A01_PNADDService
+@{
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+	string url = "A01_PNADD";
+	string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+	try
+	{
+		//truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+		BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+		BaseResult = await _MAINService.Main_Shown(BaseParameter);
+		if (BaseResult.ListtsauthTranfer != null)
+		{
+			BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+			if (BaseResult.tsauthTranfer != null)
+			{
+				IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+				IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+				IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+				IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+				IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+				IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+				IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+				IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+	try
+	{
+		 string Language = CookieHelper.GetCookie(GlobalHelper.Language);
+		BaseResult = await _A01_PNADDService.Load();
+		if (BaseResult.ComboBox1 != null)
+		{
+			for (int i = 0; i < BaseResult.ComboBox1.Count; i++)
+			{
+				BaseResult.ComboBox1[i].CD_SYS_NOTE = BaseResult.ComboBox1[i].CD_NM_EN;
+				if (Language == GlobalHelper.LanguageCodeKR)
+				{
+					BaseResult.ComboBox1[i].CD_SYS_NOTE = BaseResult.ComboBox1[i].CD_NM_HAN;
+				}
+			}
+		}		
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "A01_PNADD" + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l12">
+					<h6><b>A01_PNADD (@url)</b></h6>
+				</div>
+			</div>
+			<div class="row card-panel light-blue lighten-4">
+				<div class="col s6 m6 l2">
+					<div>
+						<label>Item Type : </label>
+						<select id="ComboBox1" class="browser-default form-select">
+							@{
+								foreach (var item in BaseResult.ComboBox1)
+								{
+									<option value="@item.CD_IDX">
+										@item.CD_SYS_NOTE
+									</option>
+								}
+							}
+						</select>
+					</div>
+				</div>
+				<div class="col s3 m3 l1">
+					<div>
+						<br />
+						<button id="Buttoninport" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Import</button>
+					</div>
+				</div>
+				<div class="col s3 m3 l1">
+					<div>
+						<br />
+						<button id="Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">Save</button>
+					</div>
+				</div>
+				<div class="col s3 m3 l1">
+					<div>
+						<br />
+						<button id="Buttonhelp" title="Help" class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+							<i class="material-icons">help</i>
+						</button>
+					</div>
+				</div>
+				<div class="col s3 m3 l1">
+					<div>
+						<br />
+						<button id="Buttonclose" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+					</div>
+				</div>
+				<div class="col s12 m12 l6">
+					<div>
+						<label>Download <a href="@ExcelTemplateURL" title="@ExcelTemplateURL">Excel Template</a> (if you don't have it)</label>
+						<br />
+						<input id="FileToUpload" type="file" class="form-control" accept=".xls,.xlsx" style="display:none;">
+					</div>
+				</div>
+			</div>		
+			<div class="KhungOverflow">
+				<table class="responsive-table">
+					<thead class="sticky-header">
+						<tr onclick="DataGridView1Sort()">
+							<th>NO</th>
+							<th>PART NO</th>
+							<th>PART NAME</th>
+							<th>BOM_GROUP</th>
+							<th>LINE</th>
+							<th>Family</th>
+							<th>Packing Unit</th>
+							<th>Item Type</th>
+							<th>Supplier_PART_NO</th>
+							<th>PART LOC</th>							
+						</tr>
+					</thead>
+					<tbody id="DataGridView1">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/A01_PNADD.js"></script>
+

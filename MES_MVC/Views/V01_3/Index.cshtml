@@ -1,0 +1,93 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IV01_3Service _V01_3Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string url = "V01_3";
+    try
+    {
+        BaseResult = await _V01_3Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "ORDER NO Find (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <h6><b>ORDER NO Find (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l10 right-align-md">
+                    <div>
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12 card-panel light-blue lighten-4">
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>ORDER NO :</label>
+                            <select id="ComboBox1" class="browser-default form-select">
+                                @{
+                                    foreach (var item in BaseResult.ComboBox1)
+                                    {
+                                        <option value="@item.PDP_NO">
+                                            @item.PDP_NO
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <br />
+                            <button id="Button1" title="Apply" class="btn waves-effect waves-light green darken-1">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="KhungOverflow60">
+                <table class="responsive-table" id="DataGridView1Table">
+                    <thead class="sticky-header">
+                        <tr onclick="DataGridView1Sort()">
+                            <th>PDP_CONF</th>
+                            <th>PDP_NO</th>
+                            <th>PDP_DATE1</th>
+                            <th>DEP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView1">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/V01_3.js?v=@version"></script>
+

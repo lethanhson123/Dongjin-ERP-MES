@@ -1,0 +1,120 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string cookie = string.Empty;
+	cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+	string UserID = cookie;
+	string url = "B08_REPRINT";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "REPRINT (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l4">
+					<h6><b>REPRINT (@url)</b></h6>
+				</div>
+				<div class="col s12 m12 l4">
+					<input id="Label4" type="text" class="form-control" readonly style="font-size: 30px;">
+				</div>
+				<div class="col s12 m12 l4 right-align-md">
+					<div class="col s12 m12 l4">
+						<button id="Buttonprint" title="Print" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Print</button>
+					</div>
+					<div class="col s12 m12 l4">
+						<button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+					</div>
+				</div>
+			</div>
+			<div class="row card-panel yellow lighten-4">
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l2">
+						<div>
+							<label>BARCODE </label>
+						</div>
+					</div>
+					<div class="col s12 m12 l10">
+						<div>
+							<input id="PRT_BC" type="text" class="form-control" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l2">
+						<div>
+							<label>PN</label>
+							<input id="PRT_PN" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>DEC</label>
+							<input id="PRT_DEC" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>QTY</label>
+							<input id="PRT_QTY" type="number" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>LOC</label>
+							<input id="PRT_LOC" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l4">
+						<div>
+							<label>PO_DATE</label>
+							<input id="PO_DATE" type="text" class="form-control" readonly>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="KhungOverflow40">
+				<table class="responsive-table" id="DataGridView1Table">
+					<thead class="sticky-header">
+						<tr onclick="DataGridView1Sort()">
+							<th>TORDER_BARCODENM</th>
+							<th>Barcode_SEQ</th>
+							<th>PART NO</th>
+							<th>Description</th>
+							<th>QTY</th>
+							<th>Location</th>
+							<th>PO_DATE</th>
+						</tr>
+					</thead>
+					<tbody id="DataGridView1">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/B08_REPRINT.js?v=@version"></script>
+

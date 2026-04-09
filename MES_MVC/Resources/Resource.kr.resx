@@ -1,0 +1,4218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Btn_Add" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="Btn_AddDrawingFile" xml:space="preserve">
+    <value>설계파일</value>
+  </data>
+  <data name="Btn_Authorization" xml:space="preserve">
+    <value>권한 부여</value>
+  </data>
+  <data name="Btn_Block" xml:space="preserve">
+    <value>블록</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Btn_ChangePassword" xml:space="preserve">
+    <value>비밀번호 변경</value>
+  </data>
+  <data name="Btn_CheckIn" xml:space="preserve">
+    <value>Input Scan</value>
+  </data>
+  <data name="Btn_CheckOut" xml:space="preserve">
+    <value>Output Scan</value>
+  </data>
+  <data name="Btn_Close" xml:space="preserve">
+    <value>닫음</value>
+  </data>
+  <data name="Btn_Create" xml:space="preserve">
+    <value>생성</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Btn_Detail" xml:space="preserve">
+    <value>세부 사항</value>
+  </data>
+  <data name="Btn_Divide" xml:space="preserve">
+    <value>분리</value>
+  </data>
+  <data name="Btn_Document" xml:space="preserve">
+    <value>문서</value>
+  </data>
+  <data name="Btn_DownloadApp" xml:space="preserve">
+    <value>앱 다운로드</value>
+  </data>
+  <data name="Btn_DownloadDemoFile" xml:space="preserve">
+    <value>데모 파일 다운로드</value>
+  </data>
+  <data name="Btn_DownloadFile" xml:space="preserve">
+    <value>폴더 다운로드</value>
+  </data>
+  <data name="Btn_Excel" xml:space="preserve">
+    <value>엑셀</value>
+  </data>
+  <data name="Btn_ExportExcel" xml:space="preserve">
+    <value>Excel로 내보내기</value>
+  </data>
+  <data name="Btn_Finish" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="Btn_Generate" xml:space="preserve">
+    <value>등록</value>
+  </data>
+  <data name="Btn_ImportExcel" xml:space="preserve">
+    <value>Excel 파일 가져오기</value>
+  </data>
+  <data name="Btn_ImportTextFile" xml:space="preserve">
+    <value>텍스트 파일 가져오기</value>
+  </data>
+  <data name="Btn_Login" xml:space="preserve">
+    <value>로그인</value>
+  </data>
+  <data name="Btn_Logout" xml:space="preserve">
+    <value>로그아웃</value>
+  </data>
+  <data name="Btn_LotCodeReprint" xml:space="preserve">
+    <value>로트 코트 재 프린트</value>
+  </data>
+  <data name="Btn_Modify" xml:space="preserve">
+    <value>업데이드</value>
+  </data>
+  <data name="Btn_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Btn_Packing" xml:space="preserve">
+    <value>포장</value>
+  </data>
+  <data name="Btn_Pending" xml:space="preserve">
+    <value>펜딩</value>
+  </data>
+  <data name="Btn_Print" xml:space="preserve">
+    <value>프린트</value>
+  </data>
+  <data name="Btn_Recall" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Btn_Release" xml:space="preserve">
+    <value>출시된</value>
+  </data>
+  <data name="Btn_ReStart" xml:space="preserve">
+    <value>재 시작</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Btn_Scan" xml:space="preserve">
+    <value>스캔</value>
+  </data>
+  <data name="Btn_Search" xml:space="preserve">
+    <value>찾기</value>
+  </data>
+  <data name="Btn_Start" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="Btn_Sub" xml:space="preserve">
+    <value>보조</value>
+  </data>
+  <data name="Btn_Update" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
+  <data name="Btn_Upload" xml:space="preserve">
+    <value>업로드</value>
+  </data>
+  <data name="Btn_Used" xml:space="preserve">
+    <value>사용</value>
+  </data>
+  <data name="Btn_Yes" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="Caption_InventoryList" xml:space="preserve">
+    <value>재고 실사 리스트</value>
+  </data>
+  <data name="Caption_ScanedList" xml:space="preserve">
+    <value>스캔 리스트</value>
+  </data>
+  <data name="Caption_StockList" xml:space="preserve">
+    <value>재고 리스트</value>
+  </data>
+  <data name="DbTbl_ActionInfo" xml:space="preserve">
+    <value>액션 정보</value>
+  </data>
+  <data name="DbTbl_Active" xml:space="preserve">
+    <value>사용 가능</value>
+  </data>
+  <data name="DbTbl_Actual" xml:space="preserve">
+    <value>실제</value>
+  </data>
+  <data name="DbTbl_ActualLocation" xml:space="preserve">
+    <value>실제 위치</value>
+  </data>
+  <data name="DbTbl_Address" xml:space="preserve">
+    <value>주소</value>
+  </data>
+  <data name="DbTbl_AllowAnyCode" xml:space="preserve">
+    <value>올 코드</value>
+  </data>
+  <data name="DbTbl_AnyCode" xml:space="preserve">
+    <value>올 코드</value>
+  </data>
+  <data name="DbTbl_Applies" xml:space="preserve">
+    <value>사용 중</value>
+  </data>
+  <data name="DbTbl_ApplyDate" xml:space="preserve">
+    <value>적용일</value>
+  </data>
+  <data name="DbTbl_Available" xml:space="preserve">
+    <value>사용 가능</value>
+  </data>
+  <data name="DbTbl_BOMMasterCod" xml:space="preserve">
+    <value>BOM 마스터 코드</value>
+  </data>
+  <data name="DbTbl_BundleQuantity" xml:space="preserve">
+    <value>번들수량</value>
+  </data>
+  <data name="DbTbl_CarType" xml:space="preserve">
+    <value>차종</value>
+  </data>
+  <data name="DbTbl_Category" xml:space="preserve">
+    <value>카타고리 </value>
+  </data>
+  <data name="DbTbl_CategoryName" xml:space="preserve">
+    <value>카타고리 이름</value>
+  </data>
+  <data name="DbTbl_CCH1" xml:space="preserve">
+    <value>CCH1</value>
+  </data>
+  <data name="DbTbl_CCH2" xml:space="preserve">
+    <value>CCH2</value>
+  </data>
+  <data name="DbTbl_CCW1" xml:space="preserve">
+    <value>CCW1</value>
+  </data>
+  <data name="DbTbl_CCW2" xml:space="preserve">
+    <value>CCW2</value>
+  </data>
+  <data name="DbTbl_CheckBy" xml:space="preserve">
+    <value>확인자</value>
+  </data>
+  <data name="DbTbl_Checked" xml:space="preserve">
+    <value>확인했음</value>
+  </data>
+  <data name="DbTbl_CheckTime" xml:space="preserve">
+    <value>확인 시간</value>
+  </data>
+  <data name="DbTbl_Code" xml:space="preserve">
+    <value>코드</value>
+  </data>
+  <data name="DbTbl_Color" xml:space="preserve">
+    <value>색상</value>
+  </data>
+  <data name="DbTbl_Combine" xml:space="preserve">
+    <value>결합</value>
+  </data>
+  <data name="DbTbl_CommonMaster" xml:space="preserve">
+    <value>Common Master</value>
+  </data>
+  <data name="DbTbl_Company" xml:space="preserve">
+    <value>회사</value>
+  </data>
+  <data name="DbTbl_ComponentCode" xml:space="preserve">
+    <value>구성 요소 코드</value>
+  </data>
+  <data name="DbTbl_ContactPerson" xml:space="preserve">
+    <value>담당자</value>
+  </data>
+  <data name="DbTbl_ContactPhone" xml:space="preserve">
+    <value>연락처 전화</value>
+  </data>
+  <data name="DbTbl_Content" xml:space="preserve">
+    <value>내용</value>
+  </data>
+  <data name="DbTbl_ControlNo" xml:space="preserve">
+    <value>제어 코드</value>
+  </data>
+  <data name="DbTbl_Countable" xml:space="preserve">
+    <value>Countable</value>
+  </data>
+  <data name="DbTbl_CreateBy" xml:space="preserve">
+    <value>작성자</value>
+  </data>
+  <data name="DbTbl_CreateDate" xml:space="preserve">
+    <value>생성 날짜</value>
+  </data>
+  <data name="DbTbl_CreatedBy" xml:space="preserve">
+    <value>만든 사람</value>
+  </data>
+  <data name="DbTbl_CreatedDate" xml:space="preserve">
+    <value>작성일</value>
+  </data>
+  <data name="DbTbl_Date" xml:space="preserve">
+    <value>날짜</value>
+  </data>
+  <data name="DbTbl_DeliveryBy" xml:space="preserve">
+    <value>발신자</value>
+  </data>
+  <data name="DbTbl_DepartmentGroupName" xml:space="preserve">
+    <value>부서</value>
+  </data>
+  <data name="DbTbl_DepartmentName" xml:space="preserve">
+    <value>부서 이름</value>
+  </data>
+  <data name="DbTbl_Description" xml:space="preserve">
+    <value>설명</value>
+  </data>
+  <data name="DbTbl_Diameter" xml:space="preserve">
+    <value>지름</value>
+  </data>
+  <data name="DbTbl_Division" xml:space="preserve">
+    <value>분리</value>
+  </data>
+  <data name="DbTbl_DivisionCategory" xml:space="preserve">
+    <value>카테고리 분리</value>
+  </data>
+  <data name="DbTbl_Download" xml:space="preserve">
+    <value>다운로드 링크</value>
+  </data>
+  <data name="DbTbl_DrawingName" xml:space="preserve">
+    <value>도면 이름</value>
+  </data>
+  <data name="DbTbl_DrawingNo" xml:space="preserve">
+    <value>도면 번호</value>
+  </data>
+  <data name="DbTbl_DueDate" xml:space="preserve">
+    <value>예정일</value>
+  </data>
+  <data name="DbTbl_ECN_No" xml:space="preserve">
+    <value>ECN 코드</value>
+  </data>
+  <data name="DbTbl_Email" xml:space="preserve">
+    <value>이메일</value>
+  </data>
+  <data name="DbTbl_EmployID" xml:space="preserve">
+    <value>사번</value>
+  </data>
+  <data name="DbTbl_EndDate" xml:space="preserve">
+    <value>종료일</value>
+  </data>
+  <data name="DbTbl_EndTestTime" xml:space="preserve">
+    <value>종료 시점</value>
+  </data>
+  <data name="DbTbl_ErrorConfirm" xml:space="preserve">
+    <value>오류 확정</value>
+  </data>
+  <data name="DbTbl_ErrorInfo" xml:space="preserve">
+    <value>오류 정보</value>
+  </data>
+  <data name="DbTbl_Family" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="DbTbl_FileName" xml:space="preserve">
+    <value>파일 이름</value>
+  </data>
+  <data name="DbTbl_Firmware" xml:space="preserve">
+    <value>펌 웨어</value>
+  </data>
+  <data name="DbTbl_FixedTotal" xml:space="preserve">
+    <value>총 오류 수정</value>
+  </data>
+  <data name="DbTbl_FixtureID" xml:space="preserve">
+    <value>확인 ID</value>
+  </data>
+  <data name="DbTbl_FromDate" xml:space="preserve">
+    <value>날짜부터</value>
+  </data>
+  <data name="DbTbl_FullName" xml:space="preserve">
+    <value>성명</value>
+  </data>
+  <data name="DbTbl_Group" xml:space="preserve">
+    <value>그룹</value>
+  </data>
+  <data name="DbTbl_ICH1" xml:space="preserve">
+    <value>ICH1</value>
+  </data>
+  <data name="DbTbl_ICH2" xml:space="preserve">
+    <value>ICH2</value>
+  </data>
+  <data name="DbTbl_ICW1" xml:space="preserve">
+    <value>ICW1</value>
+  </data>
+  <data name="DbTbl_ICW2" xml:space="preserve">
+    <value>ICW2</value>
+  </data>
+  <data name="DbTbl_ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="DbTbl_IncomeStatusCode" xml:space="preserve">
+    <value>입고현황</value>
+  </data>
+  <data name="DbTbl_Indirect" xml:space="preserve">
+    <value>간접 로컬</value>
+  </data>
+  <data name="DbTbl_InspectionFile" xml:space="preserve">
+    <value>검사 파일</value>
+  </data>
+  <data name="DbTbl_InspectionTotalTime" xml:space="preserve">
+    <value>검사 총시간</value>
+  </data>
+  <data name="DbTbl_InStock" xml:space="preserve">
+    <value>재고</value>
+  </data>
+  <data name="DbTbl_InventoryName" xml:space="preserve">
+    <value>현재 수량</value>
+  </data>
+  <data name="DbTbl_Invisible" xml:space="preserve">
+    <value>우형</value>
+  </data>
+  <data name="DbTbl_Invoice" xml:space="preserve">
+    <value>인보이스 번호</value>
+  </data>
+  <data name="DbTbl_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="DbTbl_IQC" xml:space="preserve">
+    <value>IQC</value>
+  </data>
+  <data name="DbTbl_IsUsing" xml:space="preserve">
+    <value>사용 중</value>
+  </data>
+  <data name="DbTbl_JoinedDateToString" xml:space="preserve">
+    <value>조인 날짜</value>
+  </data>
+  <data name="DbTbl_Language" xml:space="preserve">
+    <value>언어</value>
+  </data>
+  <data name="DbTbl_LastRunningMode" xml:space="preserve">
+    <value>마지막 작동 모드</value>
+  </data>
+  <data name="DbTbl_LeadNO" xml:space="preserve">
+    <value>전선 회로 코드</value>
+  </data>
+  <data name="DbTbl_Length" xml:space="preserve">
+    <value>길이</value>
+  </data>
+  <data name="DbTbl_Level" xml:space="preserve">
+    <value>레벨</value>
+  </data>
+  <data name="DbTbl_Line" xml:space="preserve">
+    <value>생산 라인</value>
+  </data>
+  <data name="DbTbl_Link" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="DbTbl_LOCAL_SET" xml:space="preserve">
+    <value>Local Set</value>
+  </data>
+  <data name="DbTbl_Location" xml:space="preserve">
+    <value>위치</value>
+  </data>
+  <data name="DbTbl_LocationMatch" xml:space="preserve">
+    <value>위치 매칭</value>
+  </data>
+  <data name="DbTbl_LotCode" xml:space="preserve">
+    <value>로트 코드</value>
+  </data>
+  <data name="DbTbl_MachineNo" xml:space="preserve">
+    <value>설비 번호</value>
+  </data>
+  <data name="DbTbl_Mainboard" xml:space="preserve">
+    <value>메인 보드</value>
+  </data>
+  <data name="DbTbl_MasterName" xml:space="preserve">
+    <value>Master Name</value>
+  </data>
+  <data name="DbTbl_MaterialCategory" xml:space="preserve">
+    <value>자재 카테고리</value>
+  </data>
+  <data name="DbTbl_MaterialCode" xml:space="preserve">
+    <value>자재 코드</value>
+  </data>
+  <data name="DbTbl_MaterialLotNo" xml:space="preserve">
+    <value>자재 로트 넘버</value>
+  </data>
+  <data name="DbTbl_MaterialType" xml:space="preserve">
+    <value>자재 종류</value>
+  </data>
+  <data name="DbTbl_MenuFullName" xml:space="preserve">
+    <value>전체 방향</value>
+  </data>
+  <data name="DbTbl_MenuLevel" xml:space="preserve">
+    <value>메뉴 레벨</value>
+  </data>
+  <data name="DbTbl_MESLocation" xml:space="preserve">
+    <value>MES 위치</value>
+  </data>
+  <data name="DbTbl_MESQuantity" xml:space="preserve">
+    <value>MES 수량</value>
+  </data>
+  <data name="DbTbl_Minus" xml:space="preserve">
+    <value>마이너스</value>
+  </data>
+  <data name="DbTbl_Model" xml:space="preserve">
+    <value>모델</value>
+  </data>
+  <data name="DbTbl_ModifiedBy" xml:space="preserve">
+    <value>수정자</value>
+  </data>
+  <data name="DbTbl_ModifiedDate" xml:space="preserve">
+    <value>수정일</value>
+  </data>
+  <data name="DbTbl_MOQ" xml:space="preserve">
+    <value>포장 수량</value>
+  </data>
+  <data name="DbTbl_Musang" xml:space="preserve">
+    <value>가공</value>
+  </data>
+  <data name="DbTbl_Name" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="DbTbl_NGQty" xml:space="preserve">
+    <value>NG</value>
+  </data>
+  <data name="DbTbl_Note" xml:space="preserve">
+    <value>노트</value>
+  </data>
+  <data name="DbTbl_OKQty" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="DbTbl_PackingLotNo" xml:space="preserve">
+    <value>패킹 로트 번호</value>
+  </data>
+  <data name="DbTbl_PackingUnit" xml:space="preserve">
+    <value>포장 단위</value>
+  </data>
+  <data name="DbTbl_ParentCode" xml:space="preserve">
+    <value>부모 코드</value>
+  </data>
+  <data name="DbTbl_PartCode" xml:space="preserve">
+    <value>파트 코드</value>
+  </data>
+  <data name="DbTbl_PartName" xml:space="preserve">
+    <value>파트 네임</value>
+  </data>
+  <data name="DbTbl_Password" xml:space="preserve">
+    <value>비밀번호</value>
+  </data>
+  <data name="DbTbl_Phone" xml:space="preserve">
+    <value>전화번호</value>
+  </data>
+  <data name="DbTbl_PIC" xml:space="preserve">
+    <value>PIC</value>
+  </data>
+  <data name="DbTbl_Picture" xml:space="preserve">
+    <value>사긴</value>
+  </data>
+  <data name="DbTbl_PositionName" xml:space="preserve">
+    <value>직위</value>
+  </data>
+  <data name="DbTbl_PreviousVersion" xml:space="preserve">
+    <value>이전 버전</value>
+  </data>
+  <data name="DbTbl_PrimaryMenu" xml:space="preserve">
+    <value>1급 메뉴</value>
+  </data>
+  <data name="DbTbl_PrimaryMenuOrder" xml:space="preserve">
+    <value>1급 메뉴 순서</value>
+  </data>
+  <data name="DbTbl_Process" xml:space="preserve">
+    <value>프로세스</value>
+  </data>
+  <data name="DbTbl_ProcessCategory" xml:space="preserve">
+    <value>프로세스 카테고리</value>
+  </data>
+  <data name="DbTbl_ProcessCategoryName" xml:space="preserve">
+    <value>프로세스 카테고리 네임</value>
+  </data>
+  <data name="DbTbl_ProcessCount" xml:space="preserve">
+    <value>프로세스 수량</value>
+  </data>
+  <data name="DbTbl_ProcessLevel" xml:space="preserve">
+    <value>프로세스 레벌</value>
+  </data>
+  <data name="DbTbl_Product" xml:space="preserve">
+    <value>제품</value>
+  </data>
+  <data name="DbTbl_ProductCode" xml:space="preserve">
+    <value>제품 코드</value>
+  </data>
+  <data name="DbTbl_ProductFamily" xml:space="preserve">
+    <value>제품군</value>
+  </data>
+  <data name="DbTbl_ProductName" xml:space="preserve">
+    <value>제품 이름</value>
+  </data>
+  <data name="DbTbl_ProductType" xml:space="preserve">
+    <value>제품 타이프</value>
+  </data>
+  <data name="DbTbl_ProgramVersion" xml:space="preserve">
+    <value>Program Version</value>
+  </data>
+  <data name="DbTbl_QCCode" xml:space="preserve">
+    <value>QC코드</value>
+  </data>
+  <data name="DbTbl_QtyMatch" xml:space="preserve">
+    <value>매칭 수량</value>
+  </data>
+  <data name="DbTbl_Quantity" xml:space="preserve">
+    <value>수량</value>
+  </data>
+  <data name="DbTbl_QuantityScanned" xml:space="preserve">
+    <value>스켄 스량</value>
+  </data>
+  <data name="DbTbl_ReasonReceived" xml:space="preserve">
+    <value>받은 이유</value>
+  </data>
+  <data name="DbTbl_ReasonReplace" xml:space="preserve">
+    <value>교체 이유</value>
+  </data>
+  <data name="DbTbl_RecallDate" xml:space="preserve">
+    <value>리콜 날짜</value>
+  </data>
+  <data name="DbTbl_ReceivedBy" xml:space="preserve">
+    <value>수신자</value>
+  </data>
+  <data name="DbTbl_ReceivedDate" xml:space="preserve">
+    <value>받은 날짜</value>
+  </data>
+  <data name="DbTbl_ReceiveStatus" xml:space="preserve">
+    <value>수신 상태</value>
+  </data>
+  <data name="DbTbl_ReleaseDate" xml:space="preserve">
+    <value>출시일</value>
+  </data>
+  <data name="DbTbl_Remain" xml:space="preserve">
+    <value>남기</value>
+  </data>
+  <data name="DbTbl_RemainSlot" xml:space="preserve">
+    <value>남은 슬롯</value>
+  </data>
+  <data name="DbTbl_Remark" xml:space="preserve">
+    <value>비고</value>
+  </data>
+  <data name="DbTbl_RepairedDate" xml:space="preserve">
+    <value>수정일</value>
+  </data>
+  <data name="DbTbl_RepairedUser" xml:space="preserve">
+    <value>수정자</value>
+  </data>
+  <data name="DbTbl_RepairListID" xml:space="preserve">
+    <value>Repair List ID</value>
+  </data>
+  <data name="DbTbl_RepairTime" xml:space="preserve">
+    <value>재작업 시간</value>
+  </data>
+  <data name="DbTbl_ReWork" xml:space="preserve">
+    <value>재작업 </value>
+  </data>
+  <data name="DbTbl_RO_Program" xml:space="preserve">
+    <value>RO 프로그램</value>
+  </data>
+  <data name="DbTbl_RunningMode" xml:space="preserve">
+    <value>실행 모드</value>
+  </data>
+  <data name="DbTbl_ScheduleTimeEnd" xml:space="preserve">
+    <value>종료 예정 시간</value>
+  </data>
+  <data name="DbTbl_ScheduleTimeStart" xml:space="preserve">
+    <value>시작 예정 시간</value>
+  </data>
+  <data name="DbTbl_SecondaryMenu" xml:space="preserve">
+    <value>2급 메뉴</value>
+  </data>
+  <data name="DbTbl_SecondaryMenuOrder" xml:space="preserve">
+    <value>2급 메뉴 오더</value>
+  </data>
+  <data name="DbTbl_Select" xml:space="preserve">
+    <value>선택</value>
+  </data>
+  <data name="DbTbl_Selected" xml:space="preserve">
+    <value>선택되었습니다.</value>
+  </data>
+  <data name="DbTbl_SelectMenu" xml:space="preserve">
+    <value>메뉴 선택</value>
+  </data>
+  <data name="DbTbl_SemiProduct" xml:space="preserve">
+    <value>반제품</value>
+  </data>
+  <data name="DbTbl_SendTo" xml:space="preserve">
+    <value>보내기</value>
+  </data>
+  <data name="DbTbl_ShiftTime" xml:space="preserve">
+    <value>근무시간</value>
+  </data>
+  <data name="DbTbl_ShippedDate" xml:space="preserve">
+    <value>선적일</value>
+  </data>
+  <data name="DbTbl_SS1" xml:space="preserve">
+    <value>SS1</value>
+  </data>
+  <data name="DbTbl_SS2" xml:space="preserve">
+    <value>SS2</value>
+  </data>
+  <data name="DbTbl_StandardDuration" xml:space="preserve">
+    <value>표준 기간</value>
+  </data>
+  <data name="DbTbl_Status" xml:space="preserve">
+    <value>상태</value>
+  </data>
+  <data name="DbTbl_StatusROM" xml:space="preserve">
+    <value>ROM상태</value>
+  </data>
+  <data name="DbTbl_Strip1" xml:space="preserve">
+    <value>Strip1</value>
+  </data>
+  <data name="DbTbl_Strip2" xml:space="preserve">
+    <value>Strip2</value>
+  </data>
+  <data name="DbTbl_Subsidiary" xml:space="preserve">
+    <value>지사 </value>
+  </data>
+  <data name="DbTbl_SupplierCode" xml:space="preserve">
+    <value>공급업체 코드</value>
+  </data>
+  <data name="DbTbl_T1Dir" xml:space="preserve">
+    <value>T1_Dir</value>
+  </data>
+  <data name="DbTbl_T1No" xml:space="preserve">
+    <value>T1_No</value>
+  </data>
+  <data name="DbTbl_T1Auto" xml:space="preserve">
+    <value>T1_Auto</value>
+  </data>
+  <data name="DbTbl_T2Dir" xml:space="preserve">
+    <value>T2_Dir</value>
+  </data>
+  <data name="DbTbl_T2No" xml:space="preserve">
+    <value>T1_No</value>
+  </data>
+  <data name="DbTbl_T2Auto" xml:space="preserve">
+    <value>T2_Auto</value>
+  </data>
+  <data name="DbTbl_TaktTime" xml:space="preserve">
+    <value>택트타임</value>
+  </data>
+  <data name="DbTbl_Tape" xml:space="preserve">
+    <value>Tape</value>
+  </data>
+  <data name="DbTbl_Target" xml:space="preserve">
+    <value>목표</value>
+  </data>
+  <data name="DbTbl_TaxCode" xml:space="preserve">
+    <value>세금 코드</value>
+  </data>
+  <data name="DbTbl_Term1" xml:space="preserve">
+    <value>Term1</value>
+  </data>
+  <data name="DbTbl_Term2" xml:space="preserve">
+    <value>Term2</value>
+  </data>
+  <data name="DbTbl_TertiaryMenu" xml:space="preserve">
+    <value>3급 메뉴</value>
+  </data>
+  <data name="DbTbl_TertiaryMenuOrder" xml:space="preserve">
+    <value>3급 메뉴 오더</value>
+  </data>
+  <data name="DbTbl_TestCount" xml:space="preserve">
+    <value>Test Count</value>
+  </data>
+  <data name="DbTbl_TestFunction" xml:space="preserve">
+    <value>Test Function</value>
+  </data>
+  <data name="DbTbl_TestModeType" xml:space="preserve">
+    <value>테스트 유형</value>
+  </data>
+  <data name="DbTbl_TestResult" xml:space="preserve">
+    <value>Test 결과</value>
+  </data>
+  <data name="DbTbl_TestTime" xml:space="preserve">
+    <value>Test 시간</value>
+  </data>
+  <data name="DbTbl_Time" xml:space="preserve">
+    <value>시간</value>
+  </data>
+  <data name="DbTbl_TimeEnd" xml:space="preserve">
+    <value>종료 실시간 </value>
+  </data>
+  <data name="DbTbl_TimeStart" xml:space="preserve">
+    <value>시작 실시간 </value>
+  </data>
+  <data name="DbTbl_ToDate" xml:space="preserve">
+    <value>날짜까지</value>
+  </data>
+  <data name="DbTbl_TotalQuantity" xml:space="preserve">
+    <value>총 수량</value>
+  </data>
+  <data name="DbTbl_TotalTarget" xml:space="preserve">
+    <value>전체 목표</value>
+  </data>
+  <data name="DbTbl_TotalTestFunc" xml:space="preserve">
+    <value>Total Test</value>
+  </data>
+  <data name="DbTbl_Tube1" xml:space="preserve">
+    <value>Tube1</value>
+  </data>
+  <data name="DbTbl_Tube2" xml:space="preserve">
+    <value>Tube2</value>
+  </data>
+  <data name="DbTbl_Type" xml:space="preserve">
+    <value>타이프</value>
+  </data>
+  <data name="DbTbl_TypeName" xml:space="preserve">
+    <value>타이프 네임</value>
+  </data>
+  <data name="DbTbl_UnChecked" xml:space="preserve">
+    <value>미확인</value>
+  </data>
+  <data name="DbTbl_Unit" xml:space="preserve">
+    <value>단위</value>
+  </data>
+  <data name="dbTbl_UpdateDate" xml:space="preserve">
+    <value>업데이트 날짜</value>
+  </data>
+  <data name="DbTbl_UpdateTime" xml:space="preserve">
+    <value>업데이드 시간</value>
+  </data>
+  <data name="DbTbl_UserName" xml:space="preserve">
+    <value>사용자명</value>
+  </data>
+  <data name="DbTbl_UsingDate" xml:space="preserve">
+    <value>사용 일자</value>
+  </data>
+  <data name="DbTbl_VendorID" xml:space="preserve">
+    <value>Vendor ID</value>
+  </data>
+  <data name="DbTbl_VIP" xml:space="preserve">
+    <value>VIP</value>
+  </data>
+  <data name="DbTbl_VisualCheck" xml:space="preserve">
+    <value>Visual Check</value>
+  </data>
+  <data name="DbTbl_W_Link" xml:space="preserve">
+    <value>W_Link</value>
+  </data>
+  <data name="DbTbl_WaitTime" xml:space="preserve">
+    <value>대기 시간</value>
+  </data>
+  <data name="DbTbl_Wire" xml:space="preserve">
+    <value>철사</value>
+  </data>
+  <data name="DbTbl_WireNo" xml:space="preserve">
+    <value>Wire No</value>
+  </data>
+  <data name="DbTbl_WMSLocation" xml:space="preserve">
+    <value>WMS 위치</value>
+  </data>
+  <data name="DbTbl_WO" xml:space="preserve">
+    <value>작업 순서</value>
+  </data>
+  <data name="DbTbl_WRNo" xml:space="preserve">
+    <value>WR No</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>영어</value>
+  </data>
+  <data name="ERROR_AccountBlocked" xml:space="preserve">
+    <value>사용자 계정이 블록되었습니다.</value>
+  </data>
+  <data name="ERROR_AccountNotRegistered" xml:space="preserve">
+    <value>사용자 계정이 등록되지 않았습니다.</value>
+  </data>
+  <data name="ERROR_AccountUnAuthorized" xml:space="preserve">
+    <value>접근 권한이 없습니다.</value>
+  </data>
+  <data name="ERROR_AlreadyExists" xml:space="preserve">
+    <value>이미 존재함</value>
+  </data>
+  <data name="ERROR_AlreadyReceived" xml:space="preserve">
+    <value>이미 입고했습니다.</value>
+  </data>
+  <data name="ERROR_AlreadyShipped" xml:space="preserve">
+    <value>이미 배송되었습니다</value>
+  </data>
+  <data name="ERROR_CannotCombine" xml:space="preserve">
+    <value>결합 불가</value>
+  </data>
+  <data name="ERROR_CannotCreate" xml:space="preserve">
+    <value>새로 작성 불가</value>
+  </data>
+  <data name="ERROR_CannotDelete" xml:space="preserve">
+    <value>삭제 불가</value>
+  </data>
+  <data name="ERROR_CannotDeleteFile" xml:space="preserve">
+    <value>파일을 삭제할 수 없습니다</value>
+  </data>
+  <data name="ERROR_CannotDivide" xml:space="preserve">
+    <value>분리 불가</value>
+  </data>
+  <data name="ERROR_CannotModify_Target" xml:space="preserve">
+    <value>목표 수정 불가</value>
+  </data>
+  <data name="ERROR_CannotRepair" xml:space="preserve">
+    <value>수리 불가</value>
+  </data>
+  <data name="ERROR_CannotSave" xml:space="preserve">
+    <value>저장 불가</value>
+  </data>
+  <data name="ERROR_CannotUploadFile" xml:space="preserve">
+    <value>파일을 업로드할 수 없습니다</value>
+  </data>
+  <data name="ERROR_CategoryNotBeChosen" xml:space="preserve">
+    <value>항목을 선택바랍니다</value>
+  </data>
+  <data name="ERROR_CodeBlocked" xml:space="preserve">
+    <value>코드 블록되었습니다</value>
+  </data>
+  <data name="ERROR_CodeInvalid" xml:space="preserve">
+    <value>코드 잘못되었습니다</value>
+  </data>
+  <data name="ERROR_DateTimeInvalid" xml:space="preserve">
+    <value>일시 잘못했습니다</value>
+  </data>
+  <data name="ERROR_DuplicatedCode" xml:space="preserve">
+    <value>코드 중복되었습니다</value>
+  </data>
+  <data name="ERROR_DuplicatedName" xml:space="preserve">
+    <value>이름 중복되었습니다</value>
+  </data>
+  <data name="ERROR_DuplicatedUsername" xml:space="preserve">
+    <value>사용자 계정이 등록되었습니다.</value>
+  </data>
+  <data name="ERROR_EnterUsernamePassword" xml:space="preserve">
+    <value>사용자 계정 및 비밀번호를 입력해주세요.</value>
+  </data>
+  <data name="ERROR_Existed" xml:space="preserve">
+    <value>존재했습니다!</value>
+  </data>
+  <data name="ERROR_ExistedStock" xml:space="preserve">
+    <value>재고에 존재합니다</value>
+  </data>
+  <data name="ERROR_FGLocationNotExists" xml:space="preserve">
+    <value>FG 위치가 존재하지 않습니다.</value>
+  </data>
+  <data name="ERROR_FullFillTheForm" xml:space="preserve">
+    <value>계속 진행하려면 모든 정보을  입력해주세요.</value>
+  </data>
+  <data name="ERROR_InvalidInput" xml:space="preserve">
+    <value>잘못된 입력 데이터입니다</value>
+  </data>
+  <data name="ERROR_InvalidInputQuantity" xml:space="preserve">
+    <value>입고 수량 잘못합니다</value>
+  </data>
+  <data name="ERROR_LocationInStock" xml:space="preserve">
+    <value>재고 위치</value>
+  </data>
+  <data name="ERROR_MagazineNotEnoughSpace" xml:space="preserve">
+    <value>포장용기가 공간이 부족합니다!</value>
+  </data>
+  <data name="ERROR_ModifyFail" xml:space="preserve">
+    <value>실패한 변경</value>
+  </data>
+  <data name="ERROR_NameCantNotbeNull" xml:space="preserve">
+    <value>이름은 Null되면 안됩니다</value>
+  </data>
+  <data name="ERROR_NoData" xml:space="preserve">
+    <value>데이터 없습니다</value>
+  </data>
+  <data name="ERROR_NotEnoughMaterial" xml:space="preserve">
+    <value>WIP 장고에서 재재 부족합니다!</value>
+  </data>
+  <data name="ERROR_NotExisted" xml:space="preserve">
+    <value>존재하지 않습니다.</value>
+  </data>
+  <data name="ERROR_NotExistedInSystem" xml:space="preserve">
+    <value>MES에 없음</value>
+  </data>
+  <data name="ERROR_NotExistedListInv" xml:space="preserve">
+    <value>재고 조사 리스트에 존재하지 않습니다.</value>
+  </data>
+  <data name="ERROR_NotFile" xml:space="preserve">
+    <value>엑셀 파일에서 대이타를 출력 불가 또는 등록 파일은 데이타가 없음</value>
+  </data>
+  <data name="ERROR_NotFound" xml:space="preserve">
+    <value>찾지 못했습니다.</value>
+  </data>
+  <data name="ERROR_NotInInventoryList" xml:space="preserve">
+    <value>재고 실사 리스트에 없습니다.</value>
+  </data>
+  <data name="ERROR_NotReceived" xml:space="preserve">
+    <value>아직 받지 않았습니다.</value>
+  </data>
+  <data name="ERROR_NotSupport" xml:space="preserve">
+    <value>지원하지 않습니다.</value>
+  </data>
+  <data name="ERROR_OQCNOTRECEIVED" xml:space="preserve">
+    <value>OQC가 아직 받지 않았습니다.</value>
+  </data>
+  <data name="ERROR_PasswordCantNotbeNull" xml:space="preserve">
+    <value>비밀번호를 비우면 안됩니다</value>
+  </data>
+  <data name="ERROR_PrimaryMenuDuplicated" xml:space="preserve">
+    <value>1급 메뉴가 존재되었습니다.</value>
+  </data>
+  <data name="ERROR_PrimaryMenuNotExist" xml:space="preserve">
+    <value>1급 메뉴가 존재하지 않습니다.</value>
+  </data>
+  <data name="ERROR_SecondMenuDuplicated" xml:space="preserve">
+    <value>2급 메뉴가 존재되었습니다.</value>
+  </data>
+  <data name="ERROR_SecondMenuNotExist" xml:space="preserve">
+    <value>2급 메뉴가 존재하지 않습니다.</value>
+  </data>
+  <data name="ERROR_SystemError" xml:space="preserve">
+    <value>시스템 에러</value>
+  </data>
+  <data name="ERROR_ThirdMenuDuplicated" xml:space="preserve">
+    <value>3급 메뉴가 존재했습니다.</value>
+  </data>
+  <data name="ERROR_Unknown" xml:space="preserve">
+    <value>알려지지 않은</value>
+  </data>
+  <data name="ERROR_UsernameCantNotbeNull" xml:space="preserve">
+    <value>계정이 비우면 안됩니다.</value>
+  </data>
+  <data name="ERROR_WrongPassword" xml:space="preserve">
+    <value>비밀번호가 틀렸습니다.</value>
+  </data>
+  <data name="ERROR_WrongProcess" xml:space="preserve">
+    <value>프로세스 잘못되었습니다</value>
+  </data>
+  <data name="Korean" xml:space="preserve">
+    <value>한국어</value>
+  </data>
+  <data name="Label_ConfirmPassword" xml:space="preserve">
+    <value>새 비밀번호 확인</value>
+  </data>
+  <data name="Label_CurrentPassword" xml:space="preserve">
+    <value>현재 비밀번호</value>
+  </data>
+  <data name="Label_NewPassword" xml:space="preserve">
+    <value>새로운 비밀번호</value>
+  </data>
+  <data name="MML_Admin" xml:space="preserve">
+    <value>(HRM) 관리자</value>
+  </data>
+  <data name="MML_AdminEmp" xml:space="preserve">
+    <value>관리자</value>
+  </data>
+  <data name="MML_AgingReport" xml:space="preserve">
+    <value>저장 기간 보고</value>
+  </data>
+  <data name="MML_BackingReport" xml:space="preserve">
+    <value>베이킹 리포트</value>
+  </data>
+  <data name="MML_BlockCode" xml:space="preserve">
+    <value>블록 코드</value>
+  </data>
+  <data name="MML_BOM" xml:space="preserve">
+    <value>BOM</value>
+  </data>
+  <data name="MML_BOMComparison" xml:space="preserve">
+    <value>BOM 비교</value>
+  </data>
+  <data name="MML_BreakTime" xml:space="preserve">
+    <value>휴식 시간</value>
+  </data>
+  <data name="MML_BreakTimeCheck" xml:space="preserve">
+    <value>휴식 시간 Check</value>
+  </data>
+  <data name="MML_Combine" xml:space="preserve">
+    <value>LOT 결합</value>
+  </data>
+  <data name="MML_Common" xml:space="preserve">
+    <value>공통</value>
+  </data>
+  <data name="MML_COMPARISON" xml:space="preserve">
+    <value>비교</value>
+  </data>
+  <data name="MML_Complement" xml:space="preserve">
+    <value>보완</value>
+  </data>
+  <data name="MML_Configuration" xml:space="preserve">
+    <value>구성</value>
+  </data>
+  <data name="MML_CTLPDoc" xml:space="preserve">
+    <value>CTLP자료</value>
+  </data>
+  <data name="MML_DailyAttendance" xml:space="preserve">
+    <value>일일 출석</value>
+  </data>
+  <data name="MML_Dashboard" xml:space="preserve">
+    <value>대시보드</value>
+  </data>
+  <data name="MML_Department" xml:space="preserve">
+    <value>부서</value>
+  </data>
+  <data name="MML_DeviceList" xml:space="preserve">
+    <value>설비 명단</value>
+  </data>
+  <data name="MML_Display" xml:space="preserve">
+    <value>디스플레이</value>
+  </data>
+  <data name="MML_Divide" xml:space="preserve">
+    <value>분리</value>
+  </data>
+  <data name="MML_Documentation" xml:space="preserve">
+    <value>사용 안내</value>
+  </data>
+  <data name="MML_Documents" xml:space="preserve">
+    <value>서류</value>
+  </data>
+  <data name="MML_DrawingManager" xml:space="preserve">
+    <value>도면 관리</value>
+  </data>
+  <data name="MML_ECNControl" xml:space="preserve">
+    <value>ECN통제</value>
+  </data>
+  <data name="MML_ECNManagement" xml:space="preserve">
+    <value>ECN 관리</value>
+  </data>
+  <data name="MML_ECNReport" xml:space="preserve">
+    <value>ECN 적용</value>
+  </data>
+  <data name="MML_ECNUpdate" xml:space="preserve">
+    <value>ECN Material</value>
+  </data>
+  <data name="MML_EmployeeList" xml:space="preserve">
+    <value>인원 명단</value>
+  </data>
+  <data name="MML_Expat" xml:space="preserve">
+    <value>외국인</value>
+  </data>
+  <data name="MML_FABreakdown" xml:space="preserve">
+    <value>FA Breakdowns</value>
+  </data>
+  <data name="MML_FADoc" xml:space="preserve">
+    <value>FA자료</value>
+  </data>
+  <data name="MML_FAStandard" xml:space="preserve">
+    <value>공통 기준</value>
+  </data>
+  <data name="MML_FG" xml:space="preserve">
+    <value>완제품</value>
+  </data>
+  <data name="MML_FGLocations" xml:space="preserve">
+    <value>FG 위치</value>
+  </data>
+  <data name="MML_FGReceiveReport" xml:space="preserve">
+    <value>보고서 접수(FG)</value>
+  </data>
+  <data name="MML_FGReceiving" xml:space="preserve">
+    <value>FG 입고</value>
+  </data>
+  <data name="MML_FGShipping" xml:space="preserve">
+    <value>FG 출고</value>
+  </data>
+  <data name="MML_FGShippingReport" xml:space="preserve">
+    <value>출고 보고서 (FG)</value>
+  </data>
+  <data name="MML_FGStocking" xml:space="preserve">
+    <value>FG 재고</value>
+  </data>
+  <data name="MML_General" xml:space="preserve">
+    <value>공통 정보</value>
+  </data>
+  <data name="MML_History" xml:space="preserve">
+    <value>이력</value>
+  </data>
+  <data name="MML_IE" xml:space="preserve">
+    <value>IE자료</value>
+  </data>
+  <data name="MML_Information" xml:space="preserve">
+    <value>기존정보</value>
+  </data>
+  <data name="MML_Inventory" xml:space="preserve">
+    <value>재고</value>
+  </data>
+  <data name="MML_InventoryFG" xml:space="preserve">
+    <value>재고 실사 (P)</value>
+  </data>
+  <data name="MML_Issues" xml:space="preserve">
+    <value>이슈</value>
+  </data>
+  <data name="MML_IssuesGallary" xml:space="preserve">
+    <value>이슈 사진</value>
+  </data>
+  <data name="MML_IssuesGraph" xml:space="preserve">
+    <value>이슈 그래프 </value>
+  </data>
+  <data name="MML_IssuesHistory" xml:space="preserve">
+    <value>이슈 내역 </value>
+  </data>
+  <data name="MML_IssuesReport" xml:space="preserve">
+    <value> 이슈 보고서</value>
+  </data>
+  <data name="MML_KaraOKCompare" xml:space="preserve">
+    <value>소프트웨어 비교(KARA)</value>
+  </data>
+  <data name="MML_LeadBOM" xml:space="preserve">
+    <value>Lead BOM</value>
+  </data>
+  <data name="MML_Line" xml:space="preserve">
+    <value>생산 라인</value>
+  </data>
+  <data name="MML_LunchTime" xml:space="preserve">
+    <value>휴식 시간</value>
+  </data>
+  <data name="MML_Machine" xml:space="preserve">
+    <value>기계/설비</value>
+  </data>
+  <data name="MML_Magazine" xml:space="preserve">
+    <value>매거진</value>
+  </data>
+  <data name="MML_MagazineStatus" xml:space="preserve">
+    <value>Magazine 상황</value>
+  </data>
+  <data name="MML_MainProduction" xml:space="preserve">
+    <value>주요 생산</value>
+  </data>
+  <data name="MML_Maker" xml:space="preserve">
+    <value>제조사</value>
+  </data>
+  <data name="MML_Management" xml:space="preserve">
+    <value>관리</value>
+  </data>
+  <data name="MML_ManufacturingDrawings" xml:space="preserve">
+    <value>제조도면</value>
+  </data>
+  <data name="MML_Master" xml:space="preserve">
+    <value>마스터</value>
+  </data>
+  <data name="MML_Material" xml:space="preserve">
+    <value>자재</value>
+  </data>
+  <data name="MML_MaterialList" xml:space="preserve">
+    <value>원자재 리스트</value>
+  </data>
+  <data name="MML_MaterialLot" xml:space="preserve">
+    <value>자재 LOT ID</value>
+  </data>
+  <data name="MML_MaterialRequest" xml:space="preserve">
+    <value>자재 요청</value>
+  </data>
+  <data name="MML_MaterialTracking" xml:space="preserve">
+    <value>자재 트랙킹</value>
+  </data>
+  <data name="MML_Menu" xml:space="preserve">
+    <value>메뉴</value>
+  </data>
+  <data name="MML_MMProduction" xml:space="preserve">
+    <value>메탈 마스크 생산</value>
+  </data>
+  <data name="MML_MMS" xml:space="preserve">
+    <value>(MMS) 생산</value>
+  </data>
+  <data name="MML_Monitor" xml:space="preserve">
+    <value>모니터</value>
+  </data>
+  <data name="MML_Monitoring" xml:space="preserve">
+    <value>모니터링</value>
+  </data>
+  <data name="MML_MWMS" xml:space="preserve">
+    <value>M-WMS</value>
+  </data>
+  <data name="MML_MWMSLocations" xml:space="preserve">
+    <value>M-wms 위치</value>
+  </data>
+  <data name="MML_MWMSReceiveReport" xml:space="preserve">
+    <value>보고서 받음(FG)</value>
+  </data>
+  <data name="MML_MWMSReceiving" xml:space="preserve">
+    <value>M-WMS 받음</value>
+  </data>
+  <data name="MML_MWMSShipping" xml:space="preserve">
+    <value>M-WMS 출고</value>
+  </data>
+  <data name="MML_MWMSShippingReport" xml:space="preserve">
+    <value>출고 보고서 (MWMS)</value>
+  </data>
+  <data name="MML_MWMSStocking" xml:space="preserve">
+    <value>M-WMS 재고</value>
+  </data>
+  <data name="MML_Name" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="MML_Operation" xml:space="preserve">
+    <value>운영팀</value>
+  </data>
+  <data name="MML_OQC" xml:space="preserve">
+    <value>OQC</value>
+  </data>
+  <data name="MML_OQCANDFGMonitor" xml:space="preserve">
+    <value>OQC &amp; FG Monitor</value>
+  </data>
+  <data name="MML_OQCNG" xml:space="preserve">
+    <value>OQC 불량</value>
+  </data>
+  <data name="MML_OQCNGReport" xml:space="preserve">
+    <value>OQC 불량 보고서</value>
+  </data>
+  <data name="MML_OQCReceiving" xml:space="preserve">
+    <value>OQC 받음</value>
+  </data>
+  <data name="MML_OQCReport" xml:space="preserve">
+    <value>OQC 보고서</value>
+  </data>
+  <data name="MML_OQCShip" xml:space="preserve">
+    <value>OQC 납품</value>
+  </data>
+  <data name="MML_OQCStatusReport" xml:space="preserve">
+    <value>OQC 보고서</value>
+  </data>
+  <data name="MML_OUTStocking" xml:space="preserve">
+    <value>OUT Stocking</value>
+  </data>
+  <data name="MML_OUTWMS" xml:space="preserve">
+    <value>OUT-WMS</value>
+  </data>
+  <data name="MML_Packing" xml:space="preserve">
+    <value>포장</value>
+  </data>
+  <data name="MML_PackingLotReport" xml:space="preserve">
+    <value>포장 로트 보고서</value>
+  </data>
+  <data name="MML_PackingMaster" xml:space="preserve">
+    <value>Packing Master</value>
+  </data>
+  <data name="MML_PackingReport" xml:space="preserve">
+    <value>포장 보고서</value>
+  </data>
+  <data name="MML_PalletReport" xml:space="preserve">
+    <value>팔레트 보고서</value>
+  </data>
+  <data name="MML_Permission" xml:space="preserve">
+    <value>권한</value>
+  </data>
+  <data name="MML_Plan" xml:space="preserve">
+    <value>계획</value>
+  </data>
+  <data name="MML_PO" xml:space="preserve">
+    <value>오더</value>
+  </data>
+  <data name="MML_Process" xml:space="preserve">
+    <value>생산 프로세스</value>
+  </data>
+  <data name="MML_ProcessReport" xml:space="preserve">
+    <value>프로세스 보고서</value>
+  </data>
+  <data name="MML_ProCode" xml:space="preserve">
+    <value>제품 코드</value>
+  </data>
+  <data name="MML_Product" xml:space="preserve">
+    <value>제품</value>
+  </data>
+  <data name="MML_Production" xml:space="preserve">
+    <value>생산</value>
+  </data>
+  <data name="MML_ProductionReport" xml:space="preserve">
+    <value>생산 실적</value>
+  </data>
+  <data name="MML_Productivities" xml:space="preserve">
+    <value>생산성</value>
+  </data>
+  <data name="MML_QC" xml:space="preserve">
+    <value>품질 검사</value>
+  </data>
+  <data name="MML_QCList" xml:space="preserve">
+    <value>QC 리스트</value>
+  </data>
+  <data name="MML_QMS" xml:space="preserve">
+    <value>(QMS) 품질 </value>
+  </data>
+  <data name="MML_QRGeneration" xml:space="preserve">
+    <value>로트 코드 작성</value>
+  </data>
+  <data name="MML_QualityAdmin" xml:space="preserve">
+    <value>품질 관리자</value>
+  </data>
+  <data name="MML_ReceiveReport" xml:space="preserve">
+    <value>내역 수신</value>
+  </data>
+  <data name="MML_Receiving" xml:space="preserve">
+    <value>보고서 수신(WIP)</value>
+  </data>
+  <data name="MML_ReceivingSamSung" xml:space="preserve">
+    <value>입고</value>
+  </data>
+  <data name="MML_Repair" xml:space="preserve">
+    <value>재작업</value>
+  </data>
+  <data name="MML_Report" xml:space="preserve">
+    <value>보고서</value>
+  </data>
+  <data name="MML_ReturnsReport" xml:space="preserve">
+    <value>반품 보고</value>
+  </data>
+  <data name="MML_ReturnsUpdate" xml:space="preserve">
+    <value>반품 업데이트</value>
+  </data>
+  <data name="MML_RMS" xml:space="preserve">
+    <value>(RMS) 재작업</value>
+  </data>
+  <data name="MML_RMSDoc" xml:space="preserve">
+    <value>재작업 자료</value>
+  </data>
+  <data name="MML_RMSReceiving" xml:space="preserve">
+    <value>재작업 입고</value>
+  </data>
+  <data name="MML_RMSReport" xml:space="preserve">
+    <value>재작업 보고서</value>
+  </data>
+  <data name="MML_RMSShipping" xml:space="preserve">
+    <value>재작업 출고</value>
+  </data>
+  <data name="MML_RNSOKCompare" xml:space="preserve">
+    <value>소프트웨어 비교(RNS)</value>
+  </data>
+  <data name="MML_ROLabel" xml:space="preserve">
+    <value>회로 검사 라벨 양식</value>
+  </data>
+  <data name="MML_Role" xml:space="preserve">
+    <value>역할</value>
+  </data>
+  <data name="MML_ROProgram" xml:space="preserve">
+    <value>테스트 프로그램</value>
+  </data>
+  <data name="MML_ROStampModel" xml:space="preserve">
+    <value>RO 스탬프 모델</value>
+  </data>
+  <data name="MML_SampleManagemen" xml:space="preserve">
+    <value>샘플 관리</value>
+  </data>
+  <data name="MML_SampleManagement" xml:space="preserve">
+    <value>샘플 관리</value>
+  </data>
+  <data name="MML_Scan" xml:space="preserve">
+    <value>스캔</value>
+  </data>
+  <data name="MML_SemiProcessReport" xml:space="preserve">
+    <value>Twisting</value>
+  </data>
+  <data name="MML_SemiProduct" xml:space="preserve">
+    <value>반제품</value>
+  </data>
+  <data name="MML_SemiProduction" xml:space="preserve">
+    <value>반제품 오더 수립</value>
+  </data>
+  <data name="MML_SemiWOCreate" xml:space="preserve">
+    <value>반제품 오더 수립</value>
+  </data>
+  <data name="MML_SemiWOLotcode" xml:space="preserve">
+    <value>반제품 ID</value>
+  </data>
+  <data name="MML_Shipping" xml:space="preserve">
+    <value>물류 보고서 (WIP)</value>
+  </data>
+  <data name="MML_ShippingReport" xml:space="preserve">
+    <value>물류 이력</value>
+  </data>
+  <data name="MML_ShippingSummary" xml:space="preserve">
+    <value>납품 종합</value>
+  </data>
+  <data name="MML_Software" xml:space="preserve">
+    <value>소프트웨어</value>
+  </data>
+  <data name="MML_Staff" xml:space="preserve">
+    <value>직원</value>
+  </data>
+  <data name="MML_Standard" xml:space="preserve">
+    <value>표준</value>
+  </data>
+  <data name="MML_StandardCompany" xml:space="preserve">
+    <value>회사</value>
+  </data>
+  <data name="MML_StandardECN" xml:space="preserve">
+    <value>ECN표준 </value>
+  </data>
+  <data name="MML_StandardProcess" xml:space="preserve">
+    <value>process</value>
+  </data>
+  <data name="MML_Status" xml:space="preserve">
+    <value>상태</value>
+  </data>
+  <data name="MML_Stocking" xml:space="preserve">
+    <value>재고</value>
+  </data>
+  <data name="MML_SUBDesk" xml:space="preserve">
+    <value>SUB 데스크</value>
+  </data>
+  <data name="MML_SUBDrawing" xml:space="preserve">
+    <value>서브 도면</value>
+  </data>
+  <data name="MML_SUBStandard" xml:space="preserve">
+    <value>서브: 공통 기준</value>
+  </data>
+  <data name="MML_TaskTime" xml:space="preserve">
+    <value>기준시간</value>
+  </data>
+  <data name="MML_TDM" xml:space="preserve">
+    <value>기술도면</value>
+  </data>
+  <data name="MML_Terminated" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="MML_TerminatedStocking" xml:space="preserve">
+    <value>스크랩 재고</value>
+  </data>
+  <data name="MML_UpdateInventory" xml:space="preserve">
+    <value>재고 업데이트</value>
+  </data>
+  <data name="MML_User" xml:space="preserve">
+    <value>사용자 계정</value>
+  </data>
+  <data name="MML_WIPInventory" xml:space="preserve">
+    <value>재고 실사 (WIP)</value>
+  </data>
+  <data name="MML_WIPLocations" xml:space="preserve">
+    <value>WIP 위치</value>
+  </data>
+  <data name="MML_WIPReceiveReport" xml:space="preserve">
+    <value>보고서 받음(WIP)</value>
+  </data>
+  <data name="MML_WIPShippingReport" xml:space="preserve">
+    <value>물류 보고서 (WIP)</value>
+  </data>
+  <data name="MML_WIPSMTMaterial" xml:space="preserve">
+    <value>WIP SMT 자재</value>
+  </data>
+  <data name="MML_WIPStocking" xml:space="preserve">
+    <value>WIP 재고</value>
+  </data>
+  <data name="MML_WIPWMS" xml:space="preserve">
+    <value>WIP-WMS</value>
+  </data>
+  <data name="MML_WMS" xml:space="preserve">
+    <value>(WMS) 창고</value>
+  </data>
+  <data name="MML_WMSInventory" xml:space="preserve">
+    <value>재고 실사 (m-WH)</value>
+  </data>
+  <data name="MML_WO" xml:space="preserve">
+    <value>작업 오더</value>
+  </data>
+  <data name="MML_WOLotCodes" xml:space="preserve">
+    <value>WO 로트 코드</value>
+  </data>
+  <data name="MML_WOPending" xml:space="preserve">
+    <value>WO 펜딩</value>
+  </data>
+  <data name="MML_WorkOrderStatus" xml:space="preserve">
+    <value>WO 상황</value>
+  </data>
+  <data name="MML_WOTracking" xml:space="preserve">
+    <value>WO 체크</value>
+  </data>
+  <data name="MMS_Remark" xml:space="preserve">
+    <value>비고</value>
+  </data>
+  <data name="MSG_BlockCommonDetail" xml:space="preserve">
+    <value>CommonDetail 블록</value>
+  </data>
+  <data name="MSG_CanCreateNew" xml:space="preserve">
+    <value>이 코드를 추가할 수 있습니다</value>
+  </data>
+  <data name="MSG_ConfirmDelete" xml:space="preserve">
+    <value>이 정보를 삭제하시겠습니까?</value>
+  </data>
+  <data name="MSG_ConfirmToLogout" xml:space="preserve">
+    <value>업무를 끝내고 싶으면 "로그아옷"를 선택하세요.</value>
+  </data>
+  <data name="MSG_CreateBOM" xml:space="preserve">
+    <value>새로운 BOM생성</value>
+  </data>
+  <data name="MSG_CreateBreakTime" xml:space="preserve">
+    <value>휴식 시간 생성</value>
+  </data>
+  <data name="MSG_CreateDepartment" xml:space="preserve">
+    <value>부서 생성</value>
+  </data>
+  <data name="MSG_CreateDO" xml:space="preserve">
+    <value>PO 생성</value>
+  </data>
+  <data name="MSG_CreateLine" xml:space="preserve">
+    <value>라인 생성</value>
+  </data>
+  <data name="MSG_CreateMachine" xml:space="preserve">
+    <value>기계 전보 생성</value>
+  </data>
+  <data name="MSG_CreateMagazine" xml:space="preserve">
+    <value>매거진 생성</value>
+  </data>
+  <data name="MSG_CreateMaker" xml:space="preserve">
+    <value>원자재 공급업체 생성</value>
+  </data>
+  <data name="MSG_CreateMenu" xml:space="preserve">
+    <value>메뉴 새로 생성</value>
+  </data>
+  <data name="MSG_CreateNewCommonDetail" xml:space="preserve">
+    <value>CommonDetail 새로 생성</value>
+  </data>
+  <data name="MSG_CreateNewCommonMaster" xml:space="preserve">
+    <value>CommonMaster 새로 생성</value>
+  </data>
+  <data name="MSG_CreateNewCompany" xml:space="preserve">
+    <value>새로운 회사 만들기</value>
+  </data>
+  <data name="MSG_CreateNewMaterial" xml:space="preserve">
+    <value>원자재 새로 생성</value>
+  </data>
+  <data name="MSG_CreatePermission" xml:space="preserve">
+    <value>권한 생성</value>
+  </data>
+  <data name="MSG_CreatePO" xml:space="preserve">
+    <value>PO 새로 생성</value>
+  </data>
+  <data name="MSG_CreateProcess" xml:space="preserve">
+    <value>생산 프로세스 생성</value>
+  </data>
+  <data name="MSG_CreateProduct" xml:space="preserve">
+    <value>제품 정보 생성</value>
+  </data>
+  <data name="MSG_CreateQCDetail" xml:space="preserve">
+    <value>QC 세부 정보 생성</value>
+  </data>
+  <data name="MSG_CreateQCMaster" xml:space="preserve">
+    <value>QC 마스터 새로 생성</value>
+  </data>
+  <data name="MSG_CreateQCSubject" xml:space="preserve">
+    <value>QC 제목 생성</value>
+  </data>
+  <data name="MSG_CreateRole" xml:space="preserve">
+    <value>역할 새로 생성</value>
+  </data>
+  <data name="MSG_CreateStaff" xml:space="preserve">
+    <value>직원 정보 생성</value>
+  </data>
+  <data name="MSG_CreateUser" xml:space="preserve">
+    <value>사용자 계정 생성</value>
+  </data>
+  <data name="MSG_CreateWO" xml:space="preserve">
+    <value>WO 새로 생성</value>
+  </data>
+  <data name="MSG_DeleteCommonDetail" xml:space="preserve">
+    <value>CommonDetail 삭제</value>
+  </data>
+  <data name="MSG_DeleteCommonMaster" xml:space="preserve">
+    <value>CommonMaster 삭제</value>
+  </data>
+  <data name="MSG_DeleteFile" xml:space="preserve">
+    <value>파일 삭제</value>
+  </data>
+  <data name="MSG_DeletePermission" xml:space="preserve">
+    <value>권한 삭제</value>
+  </data>
+  <data name="MSG_DeleteWO" xml:space="preserve">
+    <value>WO 삭제</value>
+  </data>
+  <data name="MSG_DeteleMaterial" xml:space="preserve">
+    <value>자재 삭제</value>
+  </data>
+  <data name="MSG_DivideWO" xml:space="preserve">
+    <value>WO 분리</value>
+  </data>
+  <data name="MSG_DivisionNumber" xml:space="preserve">
+    <value>수량 분리</value>
+  </data>
+  <data name="MSG_Existed" xml:space="preserve">
+    <value>시스템에 존재함</value>
+  </data>
+  <data name="MSG_Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="MSG_ModifyBOM" xml:space="preserve">
+    <value>BOM수정</value>
+  </data>
+  <data name="MSG_ModifyBreakTime" xml:space="preserve">
+    <value>휴식시간 수정</value>
+  </data>
+  <data name="MSG_ModifyCommonDetail" xml:space="preserve">
+    <value>CommonDetail업데이드</value>
+  </data>
+  <data name="MSG_ModifyCommonMaster" xml:space="preserve">
+    <value>CommonMaster수정</value>
+  </data>
+  <data name="MSG_ModifyCompany" xml:space="preserve">
+    <value>회사 수정</value>
+  </data>
+  <data name="MSG_ModifyDepartment" xml:space="preserve">
+    <value>부서 수정</value>
+  </data>
+  <data name="MSG_ModifyLine" xml:space="preserve">
+    <value>라인 수정</value>
+  </data>
+  <data name="MSG_ModifyMachine" xml:space="preserve">
+    <value>머신 수정</value>
+  </data>
+  <data name="MSG_ModifyMagazine" xml:space="preserve">
+    <value>포장 용기 수정</value>
+  </data>
+  <data name="MSG_ModifyMaker" xml:space="preserve">
+    <value>생성자 수정</value>
+  </data>
+  <data name="MSG_ModifyMaterial" xml:space="preserve">
+    <value>재료 수정</value>
+  </data>
+  <data name="MSG_ModifyMenu" xml:space="preserve">
+    <value>메뉴 수정</value>
+  </data>
+  <data name="MSG_ModifyPermission" xml:space="preserve">
+    <value>권한 수정</value>
+  </data>
+  <data name="MSG_ModifyPO" xml:space="preserve">
+    <value>PO수정</value>
+  </data>
+  <data name="MSG_ModifyProcess" xml:space="preserve">
+    <value>프로세스 수정</value>
+  </data>
+  <data name="MSG_ModifyProduct" xml:space="preserve">
+    <value>제품 수정</value>
+  </data>
+  <data name="MSG_ModifyQCCode" xml:space="preserve">
+    <value>코드 수정</value>
+  </data>
+  <data name="MSG_ModifyStaff" xml:space="preserve">
+    <value>직원 수정</value>
+  </data>
+  <data name="MSG_ModifySuccess" xml:space="preserve">
+    <value>성공적인 변화</value>
+  </data>
+  <data name="MSG_ModifyUser" xml:space="preserve">
+    <value>사용자 수정</value>
+  </data>
+  <data name="MSG_ModifyWO" xml:space="preserve">
+    <value>생산 오더 수정</value>
+  </data>
+  <data name="MSG_NeedDrawingFile" xml:space="preserve">
+    <value>이 ECN에는 도면 파일이 필요합니다</value>
+  </data>
+  <data name="MSG_NewPasswordAndConfirmPasswordIsNotCorrect" xml:space="preserve">
+    <value>새 비밀번호와 비밀번호 확인이 올바르지 않습니다</value>
+  </data>
+  <data name="MSG_QRGeneration" xml:space="preserve">
+    <value>QR생성</value>
+  </data>
+  <data name="MSG_ReadyToLeave" xml:space="preserve">
+    <value>떠날 준비가 되셨나요?</value>
+  </data>
+  <data name="PlaceHolder_Password" xml:space="preserve">
+    <value>비밀번호 입력</value>
+  </data>
+  <data name="PlaceHolder_UserName" xml:space="preserve">
+    <value>Username입력</value>
+  </data>
+  <data name="SUCCESS_Authorization" xml:space="preserve">
+    <value>권한 구분 성공</value>
+  </data>
+  <data name="SUCCESS_Block" xml:space="preserve">
+    <value>블록 성공</value>
+  </data>
+  <data name="SUCCESS_Completed" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="SUCCESS_Create" xml:space="preserve">
+    <value>새로 생성 성공</value>
+  </data>
+  <data name="SUCCESS_CreateAndModify" xml:space="preserve">
+    <value>생성 및 수정 성공</value>
+  </data>
+  <data name="SUCCESS_Delete" xml:space="preserve">
+    <value>삭제 성공</value>
+  </data>
+  <data name="SUCCESS_Login" xml:space="preserve">
+    <value>Login성공</value>
+  </data>
+  <data name="SUCCESS_Modify" xml:space="preserve">
+    <value>수정 성공</value>
+  </data>
+  <data name="SUCCESS_Success" xml:space="preserve">
+    <value>성공</value>
+  </data>
+  <data name="Vietnamese" xml:space="preserve">
+    <value>베트남어</value>
+  </data>
+  <data name="WARN_Existed" xml:space="preserve">
+    <value>존재했습니다!</value>
+  </data>
+  <data name="WARN_InputCannotBeBlank" xml:space="preserve">
+    <value>비어있으면 안됩니다</value>
+  </data>
+  <data name="WARN_MagazineIsEmpty" xml:space="preserve">
+    <value>메카진은 비어있다</value>
+  </data>
+  <data name="WARN_NoImportedFile" xml:space="preserve">
+    <value>추가 파일이 없습니다</value>
+  </data>
+  <data name="WARN_NotSelectOnGrid" xml:space="preserve">
+    <value>그리드에 값이 선택되지 않았습니다</value>
+  </data>
+  <data name="WARN_PackIsEmpty" xml:space="preserve">
+    <value>이 팩은 비어있습니다!</value>
+  </data>
+  <data name="WARN_ProductionLineIsWorking" xml:space="preserve">
+    <value>라인 작업하고 있습니다</value>
+  </data>
+  <data name="WARN_ScanExisted" xml:space="preserve">
+    <value>스켄된 코드입니다</value>
+  </data>
+  <data name="WARN_ScanLOTCodeToContinue" xml:space="preserve">
+    <value>계속하려면 Lot Code를 스켄하십시오</value>
+  </data>
+  <data name="WARN_ScanMagazineToContinue" xml:space="preserve">
+    <value>계속하려면 메카진을 스켄하십시오</value>
+  </data>
+  <data name="WARN_UpdateFail" xml:space="preserve">
+    <value>Update Fail</value>
+  </data>
+  <data name="WARN_UploadWrongFile" xml:space="preserve">
+    <value>파일을 잘못 Upload합니다</value>
+  </data>
+  <data name="WARN_WOIsNotTheFirstProcess" xml:space="preserve">
+    <value>이 WO는 초기 공정 아닙니다</value>
+  </data>
+  <data name="WARN_WOIsTheFirstProcess" xml:space="preserve">
+    <value>이 WO는 초기 공정 입니다</value>
+  </data>
+  <data name="MML_CTLPTrainning" xml:space="preserve">
+    <value>CTLP Trainning</value>
+  </data>
+  <data name="MML_Daily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="DbTbl_DocumentName" xml:space="preserve">
+    <value>문서 이름</value>
+  </data>
+  <data name="DbTbl_LinkDownload" xml:space="preserve">
+    <value>Link Download</value>
+  </data>
+  <data name="DbTbl_DocumentType" xml:space="preserve">
+    <value>문서 그룹</value>
+  </data>
+  <data name="MML_WireBalance" xml:space="preserve">
+    <value>Wire Balance</value>
+  </data>
+  <data name="DbTbl_NameVN" xml:space="preserve">
+    <value>Korea</value>
+  </data>
+  <data name="DbTbl_NameKorea" xml:space="preserve">
+    <value>Korea</value>
+  </data>
+  <data name="ERROR_DuplicatedType" xml:space="preserve">
+    <value>중복 유형</value>
+  </data>
+  <data name="ERROR_DataNotFound" xml:space="preserve">
+    <value>DataNotFound</value>
+  </data>
+  <data name="MSG_YouCanAddFile" xml:space="preserve">
+    <value>파일을 추가할 수 있습니다</value>
+  </data>
+  <data name="MML_StandardNumberOfPeople" xml:space="preserve">
+    <value>DJG 표준인원</value>
+  </data>
+  <data name="MML_TaskTimeStandard" xml:space="preserve">
+    <value>T/T 표준</value>
+  </data>
+  <data name="MML_StaskTimeStandard" xml:space="preserve">
+    <value>T/T 표준</value>
+  </data>
+  <data name="DbTbl_ProductionLineName" xml:space="preserve">
+    <value>생산라인 이름</value>
+  </data>
+  <data name="DbTbl_CircuitNumber" xml:space="preserve">
+    <value>회로 번호</value>
+  </data>
+  <data name="DbTbl_TaskTime" xml:space="preserve">
+    <value>작업 시간</value>
+  </data>
+  <data name="DbTbl_People" xml:space="preserve">
+    <value>사람들</value>
+  </data>
+  <data name="MSG_ADDNOP" xml:space="preserve">
+    <value>NOP 추가</value>
+  </data>
+  <data name="MSG_ModifyNOP" xml:space="preserve">
+    <value>NOP 수정</value>
+  </data>
+  <data name="Help_Document" xml:space="preserve">
+    <value>돕다</value>
+  </data>
+  <data name="DbTbl_CustomerTaskTime" xml:space="preserve">
+    <value> T/T 고객</value>
+  </data>
+  <data name="DbTbl_Gap" xml:space="preserve">
+    <value>Gap</value>
+  </data>
+  <data name="MML_ME" xml:space="preserve">
+    <value>ME 매니저</value>
+  </data>
+  <data name="MML_Tools" xml:space="preserve">
+    <value>도구</value>
+  </data>
+  <data name="MML_Toolshop" xml:space="preserve">
+    <value>도구실</value>
+  </data>
+  <data name="DbTbl_Serial" xml:space="preserve">
+    <value>연속물</value>
+  </data>
+  <data name="DbTbl_InvNumber" xml:space="preserve">
+    <value>인보이스 번호</value>
+  </data>
+  <data name="DbTbl_CustomDeclaration" xml:space="preserve">
+    <value>세관 신고서</value>
+  </data>
+  <data name="DbTbl_UnitPrice" xml:space="preserve">
+    <value>가격단위</value>
+  </data>
+  <data name="DbTbl_Currency" xml:space="preserve">
+    <value>돈</value>
+  </data>
+  <data name="DbTbl_Supplier" xml:space="preserve">
+    <value>공급자</value>
+  </data>
+  <data name="DbTbl_Dept" xml:space="preserve">
+    <value>방</value>
+  </data>
+  <data name="DbTbl_ExpiryDate" xml:space="preserve">
+    <value>만료일</value>
+  </data>
+  <data name="ERROR_InvalidAccCode" xml:space="preserve">
+    <value>잘못된 AccCode</value>
+  </data>
+  <data name="ERROR_DeleteFailed" xml:space="preserve">
+    <value>삭제 실패</value>
+  </data>
+  <data name="ERROR_ModifyFailed" xml:space="preserve">
+    <value>수정 실패</value>
+  </data>
+  <data name="MML_WHInput" xml:space="preserve">
+    <value>WH 입력</value>
+  </data>
+  <data name="MML_WHStocking" xml:space="preserve">
+    <value>창고 스타킹</value>
+  </data>
+  <data name="MML_WHOutput" xml:space="preserve">
+    <value>WH 발송됨</value>
+  </data>
+  <data name="WHOutput" xml:space="preserve">
+    <value>산출</value>
+  </data>
+  <data name="Btn_CreateCode" xml:space="preserve">
+    <value>코드 생성</value>
+  </data>
+  <data name="MSG_CreateNewCode" xml:space="preserve">
+    <value>새코드 생성</value>
+  </data>
+  <data name="DbTbl_LabelQuantity" xml:space="preserve">
+    <value>Label Quantity</value>
+  </data>
+  <data name="MSG_InputCode" xml:space="preserve">
+    <value>입력코드</value>
+  </data>
+  <data name="DbTbl_InputFrom" xml:space="preserve">
+    <value>입력에서</value>
+  </data>
+  <data name="DbTbl_InputQty" xml:space="preserve">
+    <value>입력수량</value>
+  </data>
+  <data name="DbTbl_DateIn" xml:space="preserve">
+    <value>날짜 입력</value>
+  </data>
+  <data name="DbTbl_ScanInTime" xml:space="preserve">
+    <value>스캔인타임</value>
+  </data>
+  <data name="DbTbl_OutputTo" xml:space="preserve">
+    <value>출력장난감</value>
+  </data>
+  <data name="DbTbl_OutputQty" xml:space="preserve">
+    <value>생산량</value>
+  </data>
+  <data name="DbTbl_DateOut" xml:space="preserve">
+    <value>수출일</value>
+  </data>
+  <data name="DbTbl_ScanOutTime" xml:space="preserve">
+    <value>스캔아웃 시간</value>
+  </data>
+  <data name="DbTbl_StockQty" xml:space="preserve">
+    <value>재고 수량</value>
+  </data>
+  <data name="Btn_SelectFiles" xml:space="preserve">
+    <value>올릴 파일</value>
+  </data>
+  <data name="DbTbl_Vehicle" xml:space="preserve">
+    <value>차량</value>
+  </data>
+  <data name="DbTbl_PartNo" xml:space="preserve">
+    <value>성분 없음</value>
+  </data>
+  <data name="MSG_ADDTasktime" xml:space="preserve">
+    <value>작업 시간 추가</value>
+  </data>
+  <data name="DbTbl_CT" xml:space="preserve">
+    <value>CT</value>
+  </data>
+  <data name="DbTbl_LP" xml:space="preserve">
+    <value>LP</value>
+  </data>
+  <data name="DbTbl_FA" xml:space="preserve">
+    <value>FA</value>
+  </data>
+  <data name="DbTbl_Total" xml:space="preserve">
+    <value>인조</value>
+  </data>
+  <data name="DbTbl_LoaiXe" xml:space="preserve">
+    <value>자동차 유형</value>
+  </data>
+  <data name="DbTbl_JntNo" xml:space="preserve">
+    <value>JntNo</value>
+  </data>
+  <data name="DbTbl_SQ" xml:space="preserve">
+    <value>SQ</value>
+  </data>
+  <data name="DbTbl_Before" xml:space="preserve">
+    <value>전에</value>
+  </data>
+  <data name="DbTbl_LengAfter" xml:space="preserve">
+    <value>길이 변경</value>
+  </data>
+  <data name="DbTbl_After2" xml:space="preserve">
+    <value>2 이후</value>
+  </data>
+  <data name="ERROR_MaterialNotInMES" xml:space="preserve">
+    <value>MES에 없는 자료</value>
+  </data>
+  <data name="ERROR_NotExistedInStock" xml:space="preserve">
+    <value>인벤토리에 존재하지 않습니다.</value>
+  </data>
+  <data name="DbTbl_NameOther" xml:space="preserve">
+    <value>다른 이름</value>
+  </data>
+  <data name="Btn_ConfirmUpload" xml:space="preserve">
+    <value>업로드 확인</value>
+  </data>
+  <data name="MML_DeviceManagerment" xml:space="preserve">
+    <value>DeviceManagerment</value>
+  </data>
+  <data name="DbTbl_ENTER" xml:space="preserve">
+    <value>ECNNo를 입력하세요.</value>
+  </data>
+  <data name="MML_WHBIN" xml:space="preserve">
+    <value>큰 상자</value>
+  </data>
+  <data name="DbTbl_LocationCode" xml:space="preserve">
+    <value>위치 코드</value>
+  </data>
+  <data name="DbTbl_WarehouseName" xml:space="preserve">
+    <value>창고 이름</value>
+  </data>
+  <data name="MML_POManagerment" xml:space="preserve">
+    <value>PO 관리</value>
+  </data>
+  <data name="MML_BIN" xml:space="preserve">
+    <value>BIN 위치</value>
+  </data>
+  <data name="MML_BOMApplies" xml:space="preserve">
+    <value>BOM 적용</value>
+  </data>
+  <data name="DbTbl_PackingCode" xml:space="preserve">
+    <value>포장 코드</value>
+  </data>
+  <data name="MML_ECNManager" xml:space="preserve">
+    <value>(BOM) 원자재</value>
+  </data>
+  <data name="ERROR_AllowPopupForWEB" xml:space="preserve">
+    <value>이 지도가 작동하려면 팝업을 허용해야 합니다.</value>
+  </data>
+  <data name="ERROR_NotChoiceItem" xml:space="preserve">
+    <value>선택하지 않은 항목</value>
+  </data>
+  <data name="DbTbl_UnitName" xml:space="preserve">
+    <value>단위명</value>
+  </data>
+  <data name="MML_Applicator" xml:space="preserve">
+    <value>금형 관리</value>
+  </data>
+  <data name="DbTbl_APPLICATOR" xml:space="preserve">
+    <value>애플리케이션</value>
+  </data>
+  <data name="DbTbl_SEQ" xml:space="preserve">
+    <value>순번 (순서 번호)</value>
+  </data>
+  <data name="DbTbl_Customer" xml:space="preserve">
+    <value>고객</value>
+  </data>
+  <data name="DbTbl_MAX_Count" xml:space="preserve">
+    <value>MAX_Count</value>
+  </data>
+  <data name="DbTbl_Total_Count" xml:space="preserve">
+    <value>총 개수</value>
+  </data>
+  <data name="DbTbl_WorkCount" xml:space="preserve">
+    <value> 작업 개수</value>
+  </data>
+  <data name="DbTbl_SPP_NO" xml:space="preserve">
+    <value>제품 번호 (SPP)</value>
+  </data>
+  <data name="DbTbl_GAUGE" xml:space="preserve">
+    <value>측정기</value>
+  </data>
+  <data name="MML_ApplicatorScanIN" xml:space="preserve">
+    <value>어플리케이터 입력</value>
+  </data>
+  <data name="DbTbl_SubCode" xml:space="preserve">
+    <value>하위 코드</value>
+  </data>
+  <data name="DbTbl_NameEN" xml:space="preserve">
+    <value>영어 이름</value>
+  </data>
+  <data name="DbTbl_NameKO" xml:space="preserve">
+    <value>한국 이름</value>
+  </data>
+  <data name="DbTbl_Owner" xml:space="preserve">
+    <value>소유자</value>
+  </data>
+  <data name="MML_ApplicatorScanOut" xml:space="preserve">
+    <value>어플리케이터 내보내기</value>
+  </data>
+  <data name="MML_ApplicatorStock" xml:space="preserve">
+    <value>애플리케이터 재고</value>
+  </data>
+  <data name="MML_FATasktime" xml:space="preserve">
+    <value>FA T/T</value>
+  </data>
+  <data name="MSG_ADDFATasktime" xml:space="preserve">
+    <value>FA 작업 시간</value>
+  </data>
+  <data name="DbTbl_CheckNum" xml:space="preserve">
+    <value>번호 확인</value>
+  </data>
+  <data name="DbTbl_DateCheck" xml:space="preserve">
+    <value>날짜 확인</value>
+  </data>
+  <data name="DbTbl_SUB" xml:space="preserve">
+    <value>SUB</value>
+  </data>
+  <data name="DbTbl_RO" xml:space="preserve">
+    <value>RO</value>
+  </data>
+  <data name="DbTbl_CLIP" xml:space="preserve">
+    <value>CLIP</value>
+  </data>
+  <data name="MML_Scrap" xml:space="preserve">
+    <value>권투 시합</value>
+  </data>
+  <data name="MML_ScrapCreateLot" xml:space="preserve">
+    <value>스크랩생성로트코드</value>
+  </data>
+  <data name="MML_FGPalletReport" xml:space="preserve">
+    <value>FGPallet보고서</value>
+  </data>
+  <data name="DbTbl_Mass" xml:space="preserve">
+    <value>대량의</value>
+  </data>
+  <data name="DbTbl_ScrapName" xml:space="preserve">
+    <value>스크랩 이름</value>
+  </data>
+  <data name="MML_ScrapList" xml:space="preserve">
+    <value>스크랩 목록</value>
+  </data>
+  <data name="MSG_ADDScrapList" xml:space="preserve">
+    <value>스크랩 목록 추가</value>
+  </data>
+  <data name="DbTbl_ScrapCode" xml:space="preserve">
+    <value>스크랩코드</value>
+  </data>
+  <data name="MML_ScrapStock" xml:space="preserve">
+    <value>스크랩 재고</value>
+  </data>
+  <data name="MML_ScrapScanIn" xml:space="preserve">
+    <value>스크랩 스캔인</value>
+  </data>
+  <data name="MML_ScrapScanOut" xml:space="preserve">
+    <value>스크랩스캔아웃</value>
+  </data>
+  <data name="DbTbl_OutputFrom" xml:space="preserve">
+    <value>출력 대상</value>
+  </data>
+  <data name="DbTbl_MCount" xml:space="preserve">
+    <value>MCount</value>
+  </data>
+  <data name="MML_BOMCompare" xml:space="preserve">
+    <value>BOM 비교</value>
+  </data>
+  <data name="MSG_FuntionUnderConstruction" xml:space="preserve">
+    <value>건설중인 기능</value>
+  </data>
+  <data name="MML_CuttingPlan" xml:space="preserve">
+    <value>절단 계획</value>
+  </data>
+  <data name="DbTbl_PLANDATE" xml:space="preserve">
+    <value>계획 날짜</value>
+  </data>
+  <data name="DbTbl_AcctualDate" xml:space="preserve">
+    <value>실제 날짜</value>
+  </data>
+  <data name="DbTbl_MC_PLAN" xml:space="preserve">
+    <value>MC Plan</value>
+  </data>
+  <data name="DbTbl_MC_ACTUAL" xml:space="preserve">
+    <value>MC 실제</value>
+  </data>
+  <data name="DbTbl_QTYPLAN" xml:space="preserve">
+    <value>수량 계획</value>
+  </data>
+  <data name="DbTbl_QtyActual" xml:space="preserve">
+    <value>실제 수량</value>
+  </data>
+  <data name="MML_LPProcess" xml:space="preserve">
+    <value>LP 프로세스</value>
+  </data>
+  <data name="MML_ProductionPlan" xml:space="preserve">
+    <value>생산 계획</value>
+  </data>
+  <data name="DbTbl_After" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="DbTbl_After1" xml:space="preserve">
+    <value>After 1</value>
+  </data>
+  <data name="DbTbl_Twist" xml:space="preserve">
+    <value>Twist Leng</value>
+  </data>
+  <data name="MML_TwistDoc" xml:space="preserve">
+    <value>Twist Doc</value>
+  </data>
+  <data name="MML_TubeBOM" xml:space="preserve">
+    <value>Tube BOM</value>
+  </data>
+  <data name="DbTbl_Size" xml:space="preserve">
+    <value>크기</value>
+  </data>
+  <data name="MML_CuttingBlade" xml:space="preserve">
+    <value>절단 칼</value>
+  </data>
+  <data name="MML_BladeList" xml:space="preserve">
+    <value>블레이드 목록</value>
+  </data>
+  <data name="MML_BladeScanIn" xml:space="preserve">
+    <value>스캔인 블레이드</value>
+  </data>
+  <data name="MML_BladeScanout" xml:space="preserve">
+    <value>ScanOut 블레이드</value>
+  </data>
+  <data name="MML_BladeStock" xml:space="preserve">
+    <value>블레이드 창고</value>
+  </data>
+  <data name="DbTbl_Spec" xml:space="preserve">
+    <value>사양</value>
+  </data>
+  <data name="DbTbl_CurrentStock" xml:space="preserve">
+    <value>현재 재고</value>
+  </data>
+  <data name="DbTbl_SafetyStock" xml:space="preserve">
+    <value>안전한 재고</value>
+  </data>
+  <data name="Btn_CheckAll" xml:space="preserve">
+    <value>모두 확인</value>
+  </data>
+  <data name="DbTbl_PONo" xml:space="preserve">
+    <value>PO No</value>
+  </data>
+  <data name="DbTbl_CustomerCode" xml:space="preserve">
+    <value>Customer Code</value>
+  </data>
+  <data name="DbTbl_CustomerName" xml:space="preserve">
+    <value>Customer Name</value>
+  </data>
+  <data name="DbTbl_ETADate" xml:space="preserve">
+    <value>ETA Date</value>
+  </data>
+  <data name="DbTbl_ShippingType" xml:space="preserve">
+    <value>Shipping Type</value>
+  </data>
+  <data name="DbTbl_ShippingAddress" xml:space="preserve">
+    <value>Shipping Address</value>
+  </data>
+  <data name="MML_PackingListImport" xml:space="preserve">
+    <value>Packing List import</value>
+  </data>
+  <data name="DbTbl_InventoryWarning" xml:space="preserve">
+    <value>재고 경고</value>
+  </data>
+  <data name="DbTbl_Image" xml:space="preserve">
+    <value>영상</value>
+  </data>
+  <data name="MML_SpareParts" xml:space="preserve">
+    <value>예비 부품</value>
+  </data>
+  <data name="MML_SparePartsManager" xml:space="preserve">
+    <value>예비 부품 관리자</value>
+  </data>
+  <data name="DbTbl_Cutting" xml:space="preserve">
+    <value>자르다</value>
+  </data>
+  <data name="DbTbl_Crimping" xml:space="preserve">
+    <value>압착</value>
+  </data>
+  <data name="DbTbl_Heating" xml:space="preserve">
+    <value>가열 </value>
+  </data>
+  <data name="DbTbl_Welding" xml:space="preserve">
+    <value>용접 </value>
+  </data>
+  <data name="DbTbl_Hookrack" xml:space="preserve">
+    <value>후크랙</value>
+  </data>
+  <data name="DbTbl_OQC" xml:space="preserve">
+    <value>OQC</value>
+  </data>
+  <data name="DbTbl_FG" xml:space="preserve">
+    <value>FG</value>
+  </data>
+  <data name="DbTbl_Shipping" xml:space="preserve">
+    <value>배송 </value>
+  </data>
+  <data name="MML_MaterialStockDetail" xml:space="preserve">
+    <value>상세한 재고</value>
+  </data>
+  <data name="DbTbl_WH" xml:space="preserve">
+    <value>WH</value>
+  </data>
+  <data name="DbTbl_POCode" xml:space="preserve">
+    <value>PO 코드</value>
+  </data>
+  <data name="DbTbl_POName" xml:space="preserve">
+    <value>PO 이름</value>
+  </data>
+  <data name="DbTbl_PODate" xml:space="preserve">
+    <value>PO 날짜</value>
+  </data>
+  <data name="DbTbl_StartDate" xml:space="preserve">
+    <value>시작 날짜</value>
+  </data>
+  <data name="DbTbl_RequestTime" xml:space="preserve">
+    <value>요청 시간</value>
+  </data>
+  <data name="DbTbl_HandlingConfirmation" xml:space="preserve">
+    <value>처리 확인</value>
+  </data>
+  <data name="DbTbl_CompletionTime" xml:space="preserve">
+    <value>완료 시간</value>
+  </data>
+  <data name="DbTbl_IssuePoints" xml:space="preserve">
+    <value>문제점</value>
+  </data>
+  <data name="DbTbl_HandlingMethod" xml:space="preserve">
+    <value>처리 방법</value>
+  </data>
+  <data name="DbTbl_OnSiteResolution" xml:space="preserve">
+    <value>현장 해결</value>
+  </data>
+  <data name="DbTbl_Transfer" xml:space="preserve">
+    <value>상태</value>
+  </data>
+  <data name="DbTbl_CustomerSatisfaction" xml:space="preserve">
+    <value>고객 만족</value>
+  </data>
+  <data name="DbTbl_ResponseTimeMinutes" xml:space="preserve">
+    <value>응답 시간(분)</value>
+  </data>
+  <data name="DbTbl_HandlingTimeMinutes" xml:space="preserve">
+    <value>처리 시간(분)</value>
+  </data>
+  <data name="DbTbl_LengthMin" xml:space="preserve">
+    <value>최소 길이</value>
+  </data>
+  <data name="DbTbl_LengthMax" xml:space="preserve">
+    <value> 최대 길이</value>
+  </data>
+  <data name="DbTbl_Seal" xml:space="preserve">
+    <value>Seal</value>
+  </data>
+  <data name="DbTbl_SqMin" xml:space="preserve">
+    <value> 최소 수량</value>
+  </data>
+  <data name="DbTbl_SqMax" xml:space="preserve">
+    <value> 최대 수량</value>
+  </data>
+  <data name="MML_CTLPTasktime" xml:space="preserve">
+    <value>CT  T/T</value>
+  </data>
+  <data name="MML_Maintenance" xml:space="preserve">
+    <value>유지</value>
+  </data>
+  <data name="MML_MaintenanceRequest" xml:space="preserve">
+    <value>유지 보수 요청</value>
+  </data>
+  <data name="MML_POPlan" xml:space="preserve">
+    <value>PO 계획</value>
+  </data>
+  <data name="DbTbl_BranchMin" xml:space="preserve">
+    <value>Branch Min</value>
+  </data>
+  <data name="DbTbl_BranchMax" xml:space="preserve">
+    <value>Branch Max</value>
+  </data>
+  <data name="MML_BRANSONTaktTime" xml:space="preserve">
+    <value>BRANSON T/T</value>
+  </data>
+  <data name="MML_WELDINGTaktTime" xml:space="preserve">
+    <value>WELDING T/T</value>
+  </data>
+  <data name="MML_HEATINGMCTaktTime" xml:space="preserve">
+    <value>HEATING MC T/T</value>
+  </data>
+  <data name="MML_TWISTTaktTime" xml:space="preserve">
+    <value>TWIST T/T</value>
+  </data>
+  <data name="Btn_POCanculator" xml:space="preserve">
+    <value>PO 계획 계산기</value>
+  </data>
+  <data name="DbTbl_Capa" xml:space="preserve">
+    <value>능력</value>
+  </data>
+  <data name="WARN_MultipleSelectData" xml:space="preserve">
+    <value>데이터 행을 너무 많이 선택했습니다</value>
+  </data>
+  <data name="Btn_Compare" xml:space="preserve">
+    <value>비교하다</value>
+  </data>
+  <data name="MML_SparePartsScanIn" xml:space="preserve">
+    <value>예비 부품 수신</value>
+  </data>
+  <data name="MML_SparePartsScanOut" xml:space="preserve">
+    <value>예비 부품 배달</value>
+  </data>
+  <data name="DbTbl_ResponseWithin10Mins" xml:space="preserve">
+    <value>10분 동안의 응답 요청 수</value>
+  </data>
+  <data name="DbTbl_ResolvedWithin1Hour" xml:space="preserve">
+    <value>1시간 동안 해결된 요청 수</value>
+  </data>
+  <data name="DbTbl_SuccessfulResolutions" xml:space="preserve">
+    <value>총 청구가 성공적으로 해결되었습니다</value>
+  </data>
+  <data name="DbTbl_PendingRequests" xml:space="preserve">
+    <value>요청 보류 중</value>
+  </data>
+  <data name="MML_MaintenanceReport" xml:space="preserve">
+    <value>유지 보수 보고서</value>
+  </data>
+  <data name="DbTbl_SUB_Worker" xml:space="preserve">
+    <value>SUB 근로자</value>
+  </data>
+  <data name="DbTbl_FA_Worker" xml:space="preserve">
+    <value>FA 근로자</value>
+  </data>
+  <data name="DbTbl_RO_Worker" xml:space="preserve">
+    <value>RO 근로자</value>
+  </data>
+  <data name="DbTbl_CLIP_Worker" xml:space="preserve">
+    <value>CLIP 근로자</value>
+  </data>
+  <data name="Btn_Confirm" xml:space="preserve">
+    <value>취업확인</value>
+  </data>
+  <data name="Btn_Complete" xml:space="preserve">
+    <value>완전한</value>
+  </data>
+  <data name="DbTbl_LineName" xml:space="preserve">
+    <value>LINE 이름</value>
+  </data>
+  <data name="DbTbl_WorkerNumber" xml:space="preserve">
+    <value>직원 수</value>
+  </data>
+  <data name="Btn_CheckBOM" xml:space="preserve">
+    <value>BOM 확인</value>
+  </data>
+  <data name="DbTbl_MainLot" xml:space="preserve">
+    <value>메인 랏</value>
+  </data>
+  <data name="DbTbl_MainLotQty" xml:space="preserve">
+    <value>주요 Lot 수량</value>
+  </data>
+  <data name="DbTbl_DivideLot" xml:space="preserve">
+    <value>로트를 나누다</value>
+  </data>
+  <data name="DbTbl_DivideQty" xml:space="preserve">
+    <value>분할 수량</value>
+  </data>
+  <data name="DbTbl_DivideLot1" xml:space="preserve">
+    <value>분할 랏 코드 1</value>
+  </data>
+  <data name="DbTbl_DivideQty1" xml:space="preserve">
+    <value>1 분할 수량</value>
+  </data>
+  <data name="DbTbl_DivideLot2" xml:space="preserve">
+    <value>분할 랏 코드 2</value>
+  </data>
+  <data name="DbTbl_DivideQty2" xml:space="preserve">
+    <value>2 분할 수량</value>
+  </data>
+  <data name="MML_wmscomparison" xml:space="preserve">
+    <value>LOT를 합치다</value>
+  </data>
+  <data name="Btn_Combine" xml:space="preserve">
+    <value>결합</value>
+  </data>
+  <data name="DbTbl_SplitQty" xml:space="preserve">
+    <value>분할 수</value>
+  </data>
+  <data name="MML_wmsdivide" xml:space="preserve">
+    <value>LOT 분할</value>
+  </data>
+  <data name="Btn_CheckCurrent" xml:space="preserve">
+    <value>현재 확인</value>
+  </data>
+  <data name="DbTbl_LineType" xml:space="preserve">
+    <value>LINE 타입</value>
+  </data>
+  <data name="DbTbl_Channel" xml:space="preserve">
+    <value>채널</value>
+  </data>
+  <data name="DbTbl_VisionLeakTest" xml:space="preserve">
+    <value>Vision/Leak Test</value>
+  </data>
+  <data name="MML_HookRack" xml:space="preserve">
+    <value>WH 후크 랙</value>
+  </data>
+  <data name="MML_HookRackScanIn" xml:space="preserve">
+    <value>HRW 입력</value>
+  </data>
+  <data name="MML_HookRackScanOut" xml:space="preserve">
+    <value>(HRW) 출력</value>
+  </data>
+  <data name="MML_HookRackStock" xml:space="preserve">
+    <value>(HRW) 재고</value>
+  </data>
+  <data name="MML_HookRackInventory" xml:space="preserve">
+    <value>(HRW) 재고 확인</value>
+  </data>
+  <data name="MML_CapaManagerment" xml:space="preserve">
+    <value>Capa 관리</value>
+  </data>
+  <data name="MML_CapaManager" xml:space="preserve">
+    <value>Capa 관리</value>
+  </data>
+  <data name="DbTbl_Performance" xml:space="preserve">
+    <value>성능</value>
+  </data>
+  <data name="DbTbl_CT_Worker" xml:space="preserve">
+    <value>CT 근로자</value>
+  </data>
+  <data name="DbTbl_LP_Worker" xml:space="preserve">
+    <value>LP 근로자</value>
+  </data>
+  <data name="DbTbl_POQty" xml:space="preserve">
+    <value>PO 수량</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Sun</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Mon</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Tue</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Wed</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Thur</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Fri</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Sat</value>
+  </data>
+  <data name="DbTbl_InputLot" xml:space="preserve">
+    <value>입력 로트</value>
+  </data>
+  <data name="DbTbl_DayOfWeek" xml:space="preserve">
+    <value>DoW</value>
+  </data>
+  <data name="DbTbl_OrderQty" xml:space="preserve">
+    <value>Order Q'ty</value>
+  </data>
+  <data name="MML_CuttingProccess" xml:space="preserve">
+    <value>절단 과정</value>
+  </data>
+  <data name="MML_Cutting" xml:space="preserve">
+    <value>와이어 절단 공정</value>
+  </data>
+  <data name="MML_FA" xml:space="preserve">
+    <value>(FA) 최종 조립</value>
+  </data>
+  <data name="MML_LP" xml:space="preserve">
+    <value>깔기 및 사전 성형 (LP)</value>
+  </data>
+  <data name="MML_Crimping" xml:space="preserve">
+    <value>Crimping</value>
+  </data>
+  <data name="MML_Twisting" xml:space="preserve">
+    <value>Twisting</value>
+  </data>
+  <data name="MML_Welding" xml:space="preserve">
+    <value>Welding</value>
+  </data>
+  <data name="MML_Heating" xml:space="preserve">
+    <value>Heating</value>
+  </data>
+  <data name="DbTbl_Target1" xml:space="preserve">
+    <value>1 목표</value>
+  </data>
+  <data name="DbTbl_Target2" xml:space="preserve">
+    <value>2 목표</value>
+  </data>
+  <data name="DbTbl_Target3" xml:space="preserve">
+    <value>3 목표</value>
+  </data>
+  <data name="DbTbl_Target4" xml:space="preserve">
+    <value>4 목표</value>
+  </data>
+  <data name="DbTbl_Act1" xml:space="preserve">
+    <value>1 실제</value>
+  </data>
+  <data name="DbTbl_Act2" xml:space="preserve">
+    <value>2 실제</value>
+  </data>
+  <data name="DbTbl_Act3" xml:space="preserve">
+    <value>3 실제</value>
+  </data>
+  <data name="DbTbl_Act4" xml:space="preserve">
+    <value>4 실제</value>
+  </data>
+  <data name="DbTbl_TargetOT" xml:space="preserve">
+    <value>Target OT</value>
+  </data>
+  <data name="DbTbl_ActOT" xml:space="preserve">
+    <value>Actual OT</value>
+  </data>
+  <data name="DbTbl_TargetTotal" xml:space="preserve">
+    <value>목표 총계</value>
+  </data>
+  <data name="DbTbl_ActTotal" xml:space="preserve">
+    <value>실제 총계</value>
+  </data>
+  <data name="DbTbl_TotalEmployees" xml:space="preserve">
+    <value>총 직원 수</value>
+  </data>
+  <data name="DbTbl_PresentEmployees" xml:space="preserve">
+    <value>현재 직원</value>
+  </data>
+  <data name="DbTbl_AbsentEmployees" xml:space="preserve">
+    <value>결근 직원</value>
+  </data>
+  <data name="DbTbl_LeaveAuthorized" xml:space="preserve">
+    <value>휴가 허가됨</value>
+  </data>
+  <data name="DbTbl_LeaveUnauthorized" xml:space="preserve">
+    <value>허가없이 떠나다</value>
+  </data>
+  <data name="DbTbl_SupportStaff" xml:space="preserve">
+    <value>지원 직원</value>
+  </data>
+  <data name="DbTbl_NewEmployees" xml:space="preserve">
+    <value>신입사원</value>
+  </data>
+  <data name="DbTbl_Resigned" xml:space="preserve">
+    <value>사임했다</value>
+  </data>
+  <data name="DbTbl_UnauthorizedNames" xml:space="preserve">
+    <value>허가 없이 결근한 직원 이름</value>
+  </data>
+  <data name="MML_WorkerManager" xml:space="preserve">
+    <value>근로자 관리자</value>
+  </data>
+  <data name="DbTbl_G_Weight" xml:space="preserve">
+    <value>G_Weight</value>
+  </data>
+  <data name="DbTbl_N_Weight" xml:space="preserve">
+    <value>N_Weight</value>
+  </data>
+  <data name="DbTbl_PalletNo" xml:space="preserve">
+    <value>팔레트 번호</value>
+  </data>
+  <data name="DbTbl_ShippedNo" xml:space="preserve">
+    <value>출하 번호</value>
+  </data>
+  <data name="ERROR_DuplicatedPackingItem" xml:space="preserve">
+    <value>Packing item duplicated</value>
+  </data>
+  <data name="MSG_CreatePackingItem" xml:space="preserve">
+    <value>Create new packing item</value>
+  </data>
+  <data name="Btn_Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="DbTbl_WorkTime" xml:space="preserve">
+    <value>교대</value>
+  </data>
+  <data name="DbTbl_Plan_FA" xml:space="preserve">
+    <value>FA플랜</value>
+  </data>
+  <data name="DbTbl_Productivity" xml:space="preserve">
+    <value>생산성</value>
+  </data>
+  <data name="MML_UPH" xml:space="preserve">
+    <value>UPH</value>
+  </data>
+  <data name="MSG_BuildingThisFunction" xml:space="preserve">
+    <value>이 기능은 현재 개발 중입니다.</value>
+  </data>
+  <data name="MML_ScanSUBKIT" xml:space="preserve">
+    <value>SUB+KIT 스캔</value>
+  </data>
+  <data name="MML_ScanRoClip" xml:space="preserve">
+    <value>RO+Clip 스캔</value>
+  </data>
+  <data name="DbTbl_SNP" xml:space="preserve">
+    <value>포장 수량</value>
+  </data>
+  <data name="DbTbl_WODate" xml:space="preserve">
+    <value>작업 지시일</value>
+  </data>
+  <data name="Btn_Active" xml:space="preserve">
+    <value>선택된</value>
+  </data>
+  <data name="DbTbl_POConfirm" xml:space="preserve">
+    <value>PO 확인</value>
+  </data>
+  <data name="DbTbl_SPN" xml:space="preserve">
+    <value>포장번호</value>
+  </data>
+  <data name="DbTbl_Colume" xml:space="preserve">
+    <value>PO 열</value>
+  </data>
+  <data name="DbTbl_ETDDate" xml:space="preserve">
+    <value>출발일</value>
+  </data>
+  <data name="DbTbl_InvoiceDate" xml:space="preserve">
+    <value>Invoice Date</value>
+  </data>
+  <data name="MML_POPlanConfirm" xml:space="preserve">
+    <value>PO 계획 확인</value>
+  </data>
+  <data name="DbTbl_QuantityME" xml:space="preserve">
+    <value>사용 수량</value>
+  </data>
+  <data name="DbTbl_Count Percent" xml:space="preserve">
+    <value> 개수 비율 (%)</value>
+  </data>
+  <data name="DbTbl_InvoiceNo" xml:space="preserve">
+    <value>Invoice No</value>
+  </data>
+  <data name="DbTbl_TransportType" xml:space="preserve">
+    <value>Transport Type</value>
+  </data>
+  <data name="DbTbl_UPrice" xml:space="preserve">
+    <value>UPrice</value>
+  </data>
+  <data name="DbTbl_Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="MML_MRPlanning" xml:space="preserve">
+    <value>자재 계획</value>
+  </data>
+  <data name="DbTbl_MergePO" xml:space="preserve">
+    <value>PO를 병합하다</value>
+  </data>
+  <data name="btn_MRPlanningCalc" xml:space="preserve">
+    <value>MRPlanning 로드</value>
+  </data>
+  <data name="DbTbl_BOMRaw" xml:space="preserve">
+    <value>BOM Raw</value>
+  </data>
+  <data name="Btn_CuttingPlanCalculator" xml:space="preserve">
+    <value>절단 계획 계산기</value>
+  </data>
+  <data name="DbTbl_NamePOPlanning" xml:space="preserve">
+    <value>PO Plan의 이름을 입력해주세요</value>
+  </data>
+  <data name="MSG_SavePOPlanningIntoDatabase" xml:space="preserve">
+    <value>PO 계획을 데이터베이스에 저장</value>
+  </data>
+  <data name="DbTbl_ChosePOPlanningName" xml:space="preserve">
+    <value>PO 계획을 선택하세요:</value>
+  </data>
+  <data name="MSG_SaveMRPlanningIntoDatabase" xml:space="preserve">
+    <value>MR 계획을 데이터베이스에 저장</value>
+  </data>
+  <data name="DbTbl_NameMRPlanning" xml:space="preserve">
+    <value>MR Plan의 이름을 입력해주세요</value>
+  </data>
+  <data name="Tab_CuttingPlanDetail" xml:space="preserve">
+    <value>Cutting 계획 상세</value>
+  </data>
+  <data name="Tab_CuttingPlanCalculator" xml:space="preserve">
+    <value>Cutting 계획 계산기</value>
+  </data>
+  <data name="Tab_CuttingPlanConfirm" xml:space="preserve">
+    <value>Cutting 계획 확인</value>
+  </data>
+  <data name="MML_POPlanEditor" xml:space="preserve">
+    <value>PO 계획 편집자</value>
+  </data>
+  <data name="DbTbl_ChoseMRPlanningName" xml:space="preserve">
+    <value>MR 계획을 선택하세요:</value>
+  </data>
+  <data name="ERROR_Valuegreaterthan" xml:space="preserve">
+    <value>계획된 값보다 큰 값을 입력할 수 없습니다.</value>
+  </data>
+  <data name="Tab_CuttingPlanImport" xml:space="preserve">
+    <value>Cutting 계획 가져오기</value>
+  </data>
+  <data name="MML_LPPlan" xml:space="preserve">
+    <value>LP Plan</value>
+  </data>
+  <data name="Btn_LPPlanCalculator" xml:space="preserve">
+    <value>절단 계획 계산기</value>
+  </data>
+  <data name="Tab_LPPlanDetail" xml:space="preserve">
+    <value>LP 계획 상세</value>
+  </data>
+  <data name="Tab_LPPlanCalculator" xml:space="preserve">
+    <value>LP 계획 계산기</value>
+  </data>
+  <data name="Tab_LPPlanImport" xml:space="preserve">
+    <value>LP 계획 가져오기</value>
+  </data>
+  <data name="Tab_LPPlanConfirm" xml:space="preserve">
+    <value>LP 계획 확인</value>
+  </data>
+  <data name="DbTbl_ImportDate" xml:space="preserve">
+    <value>입국일</value>
+  </data>
+  <data name="DbTbl_Free" xml:space="preserve">
+    <value>무료</value>
+  </data>
+  <data name="DbTbl_User" xml:space="preserve">
+    <value>사용자</value>
+  </data>
+  <data name="DbTbl_ReasonForUse" xml:space="preserve">
+    <value>사용 이유</value>
+  </data>
+  <data name="DbTbl_Device_Group" xml:space="preserve">
+    <value>장치 그룹</value>
+  </data>
+  <data name="DbTbl_Device_Code" xml:space="preserve">
+    <value>장치 코드</value>
+  </data>
+  <data name="MML_GroupDevice" xml:space="preserve">
+    <value>장치 그룹</value>
+  </data>
+  <data name="DbTbl_StockWarning" xml:space="preserve">
+    <value>재고 존재 경고</value>
+  </data>
+  <data name="DbTbl_DeviceQRScan" xml:space="preserve">
+    <value>장치 QR 스캔</value>
+  </data>
+  <data name="DbTbl_ApplicatorLOT" xml:space="preserve">
+    <value>많은 금형</value>
+  </data>
+  <data name="SUCCESS_Added" xml:space="preserve">
+    <value>추가됨</value>
+  </data>
+  <data name="SUCCESS_Saved" xml:space="preserve">
+    <value>저장 성공</value>
+  </data>
+  <data name="WARN_NoDataFound" xml:space="preserve">
+    <value>데이터가 없음</value>
+  </data>
+  <data name="WARN_LoadSelectorFailed" xml:space="preserve">
+    <value>셀렉터 로드 실패</value>
+  </data>
+  <data name="ERROR_DeviceNotFound" xml:space="preserve">
+    <value>장치 없음</value>
+  </data>
+  <data name="ERROR_ScanLotCodeFirst" xml:space="preserve">
+    <value>먼저 LotCode를 스캔하세요</value>
+  </data>
+  <data name="ERROR_NoDataToSave" xml:space="preserve">
+    <value>저장할 데이터 없음</value>
+  </data>
+  <data name="ERROR_ServerConnection" xml:space="preserve">
+    <value>서버 연결 오류</value>
+  </data>
+  <data name="ERROR_SystemSearch" xml:space="preserve">
+    <value>검색 중 시스템 오류</value>
+  </data>
+  <data name="ERROR_InvalidQRFormat" xml:space="preserve">
+    <value>잘못된 QR 코드 형식입니다</value>
+  </data>
+  <data name="ERROR_StatusWorking" xml:space="preserve">
+    <value>코드 상태가 활성 상태입니다</value>
+  </data>
+  <data name="ERROR_StatusAvailable" xml:space="preserve">
+    <value>유효성</value>
+  </data>
+  <data name="ERROR_ApplicatorAndSeqExist" xml:space="preserve">
+    <value>Applicator 코드와 SEQ가 이미 존재합니다</value>
+  </data>
+  <data name="ERROR_CreateFailed" xml:space="preserve">
+    <value>생성에 실패했습니다</value>
+  </data>
+  <data name="ERROR_NegativeSafetyStock" xml:space="preserve">
+    <value>SafetyStock은 음수일 수 없습니다</value>
+  </data>
+  <data name="ERROR_DuplicatePartName" xml:space="preserve">
+    <value>이 PartName은 이미 존재합니다</value>
+  </data>
+  <data name="Btn_LongTerm" xml:space="preserve">
+    <value>장기</value>
+  </data>
+  <data name="DbTbl_YearCount" xml:space="preserve">
+    <value>년도</value>
+  </data>
+  <data name="DbTbl_MonthSTR" xml:space="preserve">
+    <value>월</value>
+  </data>
+  <data name="DbTbl_LeadCount" xml:space="preserve">
+    <value>전기 회로 수량</value>
+  </data>
+  <data name="DbTbl_Over1" xml:space="preserve">
+    <value>Over+1</value>
+  </data>
+  <data name="DbTbl_Over2" xml:space="preserve">
+    <value>Over+2</value>
+  </data>
+  <data name="DbTbl_Over3" xml:space="preserve">
+    <value>Over+3</value>
+  </data>
+  <data name="DbTbl_Over4" xml:space="preserve">
+    <value>Over+4</value>
+  </data>
+  <data name="DbTbl_Over5" xml:space="preserve">
+    <value>Over+5</value>
+  </data>
+  <data name="DbTbl_Over6" xml:space="preserve">
+    <value>Over+6</value>
+  </data>
+  <data name="DbTbl_Over7To9" xml:space="preserve">
+    <value>Over+7~9</value>
+  </data>
+  <data name="DbTbl_Over10" xml:space="preserve">
+    <value>Over+10</value>
+  </data>
+  <data name="DbTbl_SUM" xml:space="preserve">
+    <value>SUM</value>
+  </data>
+  <data name="SUCCESS_AddCodeSuccess" xml:space="preserve">
+    <value>코드가 성공적으로 추가되었습니다</value>
+  </data>
+  <data name="SUCCESS_AddCodeAndSetStandard" xml:space="preserve">
+    <value>코드가 성공적으로 추가되고</value>
+  </data>
+  <data name="ERROR_SystemErrorContactIT" xml:space="preserve">
+    <value>시스템 오류 - IT에 문의하십시오</value>
+  </data>
+  <data name="WARN_DetectOtherCode" xml:space="preserve">
+    <value>다른 코드가 감지되었습니다</value>
+  </data>
+  <data name="ERROR_NoDataToExport" xml:space="preserve">
+    <value>내보낼 데이터가 없습니다</value>
+  </data>
+  <data name="ERROR_ExportExcelFailed" xml:space="preserve">
+    <value>엑셀 내보내기 실패</value>
+  </data>
+  <data name="ERROR_LoadDataFailed" xml:space="preserve">
+    <value>데이터 로드 오류</value>
+  </data>
+  <data name="ERROR_FIFOViolation" xml:space="preserve">
+    <value>FIFO 규칙 위반. 먼저 이전 배치를 내보내세요.</value>
+  </data>
+  <data name="MML_SealTerm" xml:space="preserve">
+    <value>봉인기간</value>
+  </data>
+  <data name="MML_TermCalculator" xml:space="preserve">
+    <value>기간 계산식</value>
+  </data>
+  <data name="DbTbl_TMN" xml:space="preserve">
+    <value>TMN</value>
+  </data>
+  <data name="DbTbl_LightTermWeight" xml:space="preserve">
+    <value>경량 텀 무게</value>
+  </data>
+  <data name="DbTbl_CoilCount" xml:space="preserve">
+    <value>코일 수량</value>
+  </data>
+  <data name="DbTbl_LightCoilCount" xml:space="preserve">
+    <value>경량 코일 수량</value>
+  </data>
+  <data name="DbTbl_FullTermCoilCount" xml:space="preserve">
+    <value>완전 텀 코일 수량</value>
+  </data>
+  <data name="DbTbl_EmptyCoilWeight" xml:space="preserve">
+    <value>빈 코일 무게</value>
+  </data>
+  <data name="DbTbl_SingleTermWeight" xml:space="preserve">
+    <value>단일 텀 무게</value>
+  </data>
+  <data name="ERROR_DuplicateTMN" xml:space="preserve">
+    <value>중복된 TMN</value>
+  </data>
+  <data name="DbTbl_Result" xml:space="preserve">
+    <value>결과(EA)</value>
+  </data>
+  <data name="MML_UnitConversionRate" xml:space="preserve">
+    <value>단위환율</value>
+  </data>
+  <data name="DbTbl_ScanQRCode" xml:space="preserve">
+    <value>QR 코드 스캔</value>
+  </data>
+  <data name="MML_PartManagerment" xml:space="preserve">
+    <value>부서 관리</value>
+  </data>
+  <data name="Btn_Help" xml:space="preserve">
+    <value>돕다</value>
+  </data>
+  <data name="DbTbl_BomGroup" xml:space="preserve">
+    <value>폭탄 그룹</value>
+  </data>
+  <data name="DbTbl_LineSpec" xml:space="preserve">
+    <value>라인 특성</value>
+  </data>
+  <data name="Btn_FileManager" xml:space="preserve">
+    <value>파일 관리자</value>
+  </data>
+  <data name="DbTbl_Ecn_Date" xml:space="preserve">
+    <value>ECN 날짜</value>
+  </data>
+  <data name="DbTbl_DrawingFile" xml:space="preserve">
+    <value>도면 파일</value>
+  </data>
+  <data name="DbTbl_CycleTime" xml:space="preserve">
+    <value>사이클 시간</value>
+  </data>
+  <data name="DbTbl_Cut_Sum" xml:space="preserve">
+    <value>총컷</value>
+  </data>
+  <data name="DbTbl_FaSum" xml:space="preserve">
+    <value>총 FA</value>
+  </data>
+  <data name="Tab_PARTNOList" xml:space="preserve">
+    <value>부품번호 목록</value>
+  </data>
+  <data name="Tab_PARTNOECNList" xml:space="preserve">
+    <value>ECN 목록 파트 번호</value>
+  </data>
+  <data name="Tab_CycleTime" xml:space="preserve">
+    <value>사이클 시간</value>
+  </data>
+  <data name="DbTbl_ItemTypeK" xml:space="preserve">
+    <value>제품 유형 K</value>
+  </data>
+  <data name="DbTbl_ItemTypeE" xml:space="preserve">
+    <value>제품 유형 E</value>
+  </data>
+  <data name="SUCCESS_Update" xml:space="preserve">
+    <value>업데이트 성공</value>
+  </data>
+  <data name="SUCCESS_Import" xml:space="preserve">
+    <value>가져오기 성공</value>
+  </data>
+  <data name="ERROR_UpdateFailed" xml:space="preserve">
+    <value>업데이트 실패</value>
+  </data>
+  <data name="ERROR_ImportFailed" xml:space="preserve">
+    <value>가져오기 실패</value>
+  </data>
+  <data name="ERROR_LoadComboBoxFailed" xml:space="preserve">
+    <value>콤보 박스 로드 실패</value>
+  </data>
+  <data name="ERROR_PartNoRequired" xml:space="preserve">
+    <value>부품 번호 필수</value>
+  </data>
+  <data name="ERROR_ProductCategoryRequired" xml:space="preserve">
+    <value>카테고리 필수</value>
+  </data>
+  <data name="ERROR_LineRequired" xml:space="preserve">
+    <value>라인 필수</value>
+  </data>
+  <data name="ERROR_FamilyRequired" xml:space="preserve">
+    <value>제품군 필수</value>
+  </data>
+  <data name="WARN_NoDataToExport" xml:space="preserve">
+    <value>내보낼 데이터 없음</value>
+  </data>
+  <data name="WARN_NoSelection" xml:space="preserve">
+    <value>레코드 선택</value>
+  </data>
+  <data name="WARN_SelectOrAdd" xml:space="preserve">
+    <value>선택 또는 추가</value>
+  </data>
+  <data name="WARN_InvalidExcelFile" xml:space="preserve">
+    <value>잘못된 Excel 파일</value>
+  </data>
+  <data name="CONFIRM_Delete" xml:space="preserve">
+    <value>삭제 확인?</value>
+  </data>
+  <data name="MML_DPMS" xml:space="preserve">
+    <value>구매관리</value>
+  </data>
+  <data name="MML_PurchaseRequest" xml:space="preserve">
+    <value>구매 요청</value>
+  </data>
+  <data name="MML_StandardDPMS" xml:space="preserve">
+    <value>재료 목록</value>
+  </data>
+  <data name="Tab_ListManagement" xml:space="preserve">
+    <value>제품 목록 관리</value>
+  </data>
+  <data name="Tab_MachinePartList" xml:space="preserve">
+    <value>기계 부품 목록</value>
+  </data>
+  <data name="Tab_Company" xml:space="preserve">
+    <value>회사 정보</value>
+  </data>
+  <data name="Tab_CostAndQuotation" xml:space="preserve">
+    <value>비용 및 견적</value>
+  </data>
+  <data name="DbTbl_SpecVN" xml:space="preserve">
+    <value>사양 VN</value>
+  </data>
+  <data name="DbTbl_SpecKR" xml:space="preserve">
+    <value>사양 KR</value>
+  </data>
+  <data name="DbTbl_UnitVN" xml:space="preserve">
+    <value>단위 VN</value>
+  </data>
+  <data name="DbTbl_UnitKR" xml:space="preserve">
+    <value>단위 KR</value>
+  </data>
+  <data name="DbTbl_ProductNO" xml:space="preserve">
+    <value>제품번호</value>
+  </data>
+  <data name="Btn_UploadOrEditImage" xml:space="preserve">
+    <value>Upload Or Edit Image</value>
+  </data>
+  <data name="Btn_SelectImage" xml:space="preserve">
+    <value>Select Image</value>
+  </data>
+  <data name="SUCCESS_Search" xml:space="preserve">
+    <value>검색이 성공적으로 완료되었습니다</value>
+  </data>
+  <data name="WARN_NotFound" xml:space="preserve">
+    <value>결과를 찾을 수 없습니다</value>
+  </data>
+  <data name="SUCCESS_Updated" xml:space="preserve">
+    <value>성공적으로 업데이트되었습니다</value>
+  </data>
+  <data name="SUCCESS_Deleted" xml:space="preserve">
+    <value>성공적으로 삭제되었습니다</value>
+  </data>
+  <data name="SUCCESS_Imported" xml:space="preserve">
+    <value>성공적으로 가져왔습니다</value>
+  </data>
+  <data name="WARN_NoFileSelected" xml:space="preserve">
+    <value>파일이 선택되지 않았습니다</value>
+  </data>
+  <data name="ERROR_InvalidFile" xml:space="preserve">
+    <value>유효하지 않은 파일입니다</value>
+  </data>
+  <data name="ERROR_InvalidFileFormat" xml:space="preserve">
+    <value>파일 형식이 유효하지 않습니다</value>
+  </data>
+  <data name="SUCCESS_Uploaded" xml:space="preserve">
+    <value>이미지가 성공적으로 업로드되었습니다</value>
+  </data>
+  <data name="ERROR_UploadFailed" xml:space="preserve">
+    <value>이미지 업로드에 실패했습니다</value>
+  </data>
+  <data name="ERROR_NoImageFound" xml:space="preserve">
+    <value>이미지를 찾을 수 없습니다</value>
+  </data>
+  <data name="WARN_RequiredFields" xml:space="preserve">
+    <value>필수 필드는 비워둘 수 없습니다</value>
+  </data>
+  <data name="WARN_InvalidSheet" xml:space="preserve">
+    <value>유효하지 않은 엑셀 시트입니다. "Sheet1"을 사용해 주세요</value>
+  </data>
+  <data name="ERROR_FileReadFailed" xml:space="preserve">
+    <value>파일 읽기에 실패했습니다</value>
+  </data>
+  <data name="ERROR_NoDPMSFound" xml:space="preserve">
+    <value>DPMS 기록을 찾을 수 없습니다</value>
+  </data>
+  <data name="MML_PackingPKI" xml:space="preserve">
+    <value>(PKI) 패키징</value>
+  </data>
+  <data name="MML_PackingDH" xml:space="preserve">
+    <value>DH 패키징</value>
+  </data>
+  <data name="MML_PackingZDA" xml:space="preserve">
+    <value>ZDA 패키징</value>
+  </data>
+  <data name="MML_PackingHMC" xml:space="preserve">
+    <value>HMC 패키징</value>
+  </data>
+  <data name="Btn_CheckMatchSNP" xml:space="preserve">
+    <value>표준 수량이 부족한 상품의 포장</value>
+  </data>
+  <data name="DbTbl_Destination" xml:space="preserve">
+    <value>목적지</value>
+  </data>
+  <data name="ERROR_Different" xml:space="preserve">
+    <value>품목 코드 또는 ECN 번호가 다릅니다.</value>
+  </data>
+  <data name="WARN_POCodeEmpty" xml:space="preserve">
+    <value>PO 코드 누락</value>
+  </data>
+  <data name="WARN_CustomerEmpty" xml:space="preserve">
+    <value>고객 누락</value>
+  </data>
+  <data name="WARN_PODateEmpty" xml:space="preserve">
+    <value>PO 날짜 누락</value>
+  </data>
+  <data name="WARN_NoDetailData" xml:space="preserve">
+    <value>세부 정보 없음</value>
+  </data>
+  <data name="WARN_ProductWithNoQuantity" xml:space="preserve">
+    <value>수량 없음</value>
+  </data>
+  <data name="WARN_NoValidProductData" xml:space="preserve">
+    <value>유효하지 않은 데이터</value>
+  </data>
+  <data name="WARN_SelectExcelFile" xml:space="preserve">
+    <value>파일 선택</value>
+  </data>
+  <data name="WARN_InvalidSheetName" xml:space="preserve">
+    <value>잘못된 시트 이름</value>
+  </data>
+  <data name="WARN_ExcelDataInvalid" xml:space="preserve">
+    <value>잘못된 형식</value>
+  </data>
+  <data name="WARN_ExcelInsufficientColumns" xml:space="preserve">
+    <value>열 부족</value>
+  </data>
+  <data name="ERROR_SavePODetailFailed" xml:space="preserve">
+    <value>PO 세부 정보 저장 중 오류 발생</value>
+  </data>
+  <data name="ERROR_CreatePOBasicFailed" xml:space="preserve">
+    <value>기본 PO 생성 중 오류 발생</value>
+  </data>
+  <data name="ERROR_DateConversionFailed" xml:space="preserve">
+    <value>날짜 변환 오류</value>
+  </data>
+  <data name="ERROR_NoDataToDisplay" xml:space="preserve">
+    <value>표시할 데이터가 없습니다</value>
+  </data>
+  <data name="ERROR_CannotReadFile" xml:space="preserve">
+    <value>파일을 읽을 수 없습니다</value>
+  </data>
+  <data name="SUCCESS_ImportDataSuccess" xml:space="preserve">
+    <value>데이터가 테이블에 성</value>
+  </data>
+  <data name="A01" xml:space="preserve">
+    <value>품목현황</value>
+  </data>
+  <data name="A02" xml:space="preserve">
+    <value>BOM</value>
+  </data>
+  <data name="A03" xml:space="preserve">
+    <value>공지사항</value>
+  </data>
+  <data name="A04" xml:space="preserve">
+    <value>TOOL 관리</value>
+  </data>
+  <data name="A05" xml:space="preserve">
+    <value>업체현황</value>
+  </data>
+  <data name="A06" xml:space="preserve">
+    <value>사용자현황</value>
+  </data>
+  <data name="A07" xml:space="preserve">
+    <value>기초코드</value>
+  </data>
+  <data name="B01" xml:space="preserve">
+    <value>입고리스트</value>
+  </data>
+  <data name="B02" xml:space="preserve">
+    <value>입고처리</value>
+  </data>
+  <data name="B03" xml:space="preserve">
+    <value>바코드출력</value>
+  </data>
+  <data name="B04" xml:space="preserve">
+    <value>불출처리</value>
+  </data>
+  <data name="B05" xml:space="preserve">
+    <value>입고현황</value>
+  </data>
+  <data name="C01" xml:space="preserve">
+    <value>생산계획(KOMAX)</value>
+  </data>
+  <data name="C02" xml:space="preserve">
+    <value>생산계획(KOMAX)</value>
+  </data>
+  <data name="C03" xml:space="preserve">
+    <value>후크렉관리</value>
+  </data>
+  <data name="C04" xml:space="preserve">
+    <value>생산현황(CUT'G)</value>
+  </data>
+  <data name="D01" xml:space="preserve">
+    <value>완제품 매출현황</value>
+  </data>
+  <data name="D02" xml:space="preserve">
+    <value>출하현황 및 FA계획/실적</value>
+  </data>
+  <data name="D03" xml:space="preserve">
+    <value>완제품입고(PKI)</value>
+  </data>
+  <data name="D03_TAP1" xml:space="preserve">
+    <value>완제품 입고</value>
+  </data>
+  <data name="D03_TAP2" xml:space="preserve">
+    <value>완제품 출하</value>
+  </data>
+  <data name="D04" xml:space="preserve">
+    <value>완제품출하</value>
+  </data>
+  <data name="D05" xml:space="preserve">
+    <value>완제품 생산계획</value>
+  </data>
+  <data name="E01" xml:space="preserve">
+    <value>TOOL현황</value>
+  </data>
+  <data name="E02" xml:space="preserve">
+    <value>TOOL등록</value>
+  </data>
+  <data name="E03" xml:space="preserve">
+    <value>소모품관리</value>
+  </data>
+  <data name="F01" xml:space="preserve">
+    <value>IQC NG 보고서</value>
+  </data>
+  <data name="F02" xml:space="preserve">
+    <value>NG 생산 보고서</value>
+  </data>
+  <data name="G01" xml:space="preserve">
+    <value>재고현황</value>
+  </data>
+  <data name="G02" xml:space="preserve">
+    <value>재고조정</value>
+  </data>
+  <data name="MA01" xml:space="preserve">
+    <value>표준관리</value>
+  </data>
+  <data name="MB01" xml:space="preserve">
+    <value>자재입고관리</value>
+  </data>
+  <data name="MC01" xml:space="preserve">
+    <value>생산관리(Cutting)</value>
+  </data>
+  <data name="MD01" xml:space="preserve">
+    <value>출하관리</value>
+  </data>
+  <data name="ME01" xml:space="preserve">
+    <value>설비관리</value>
+  </data>
+  <data name="MF01" xml:space="preserve">
+    <value>품질관리</value>
+  </data>
+  <data name="MG01" xml:space="preserve">
+    <value>재고관리</value>
+  </data>
+  <data name="PART01" xml:space="preserve">
+    <value>품번</value>
+  </data>
+  <data name="PART02" xml:space="preserve">
+    <value>품명</value>
+  </data>
+  <data name="PART03" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="PART04" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="PART05" xml:space="preserve">
+    <value>SNP</value>
+  </data>
+  <data name="PART06" xml:space="preserve">
+    <value>제품구분</value>
+  </data>
+  <data name="PART07" xml:space="preserve">
+    <value>사용(유/무)</value>
+  </data>
+  <data name="PART08" xml:space="preserve">
+    <value>입고위치</value>
+  </data>
+  <data name="CODE_E" xml:space="preserve">
+    <value>기타</value>
+  </data>
+  <data name="CODE_I" xml:space="preserve">
+    <value>자재결품</value>
+  </data>
+  <data name="CODE_L" xml:space="preserve">
+    <value>식사시간</value>
+  </data>
+  <data name="CODE_M" xml:space="preserve">
+    <value>설비고장</value>
+  </data>
+  <data name="CODE_N" xml:space="preserve">
+    <value>근로자 없음</value>
+  </data>
+  <data name="CODE_Q" xml:space="preserve">
+    <value>품질문제</value>
+  </data>
+  <data name="CODE_S" xml:space="preserve">
+    <value>설비준비</value>
+  </data>
+  <data name="CODE_T" xml:space="preserve">
+    <value>교육/회의</value>
+  </data>
+  <data name="CO2_START01" xml:space="preserve">
+    <value>Standard specification(정사양 자재)</value>
+  </data>
+  <data name="CO2_START02" xml:space="preserve">
+    <value>Current material(현사용 자재)</value>
+  </data>
+  <data name="CO2_START03" xml:space="preserve">
+    <value>가동률 현황</value>
+  </data>
+  <data name="CO2_START04" xml:space="preserve">
+    <value>가동시간 현황</value>
+  </data>
+  <data name="CO2_START05" xml:space="preserve">
+    <value>시작 시간 : </value>
+  </data>
+  <data name="CO2_START06" xml:space="preserve">
+    <value>가동 시간 : </value>
+  </data>
+  <data name="CO2_START07" xml:space="preserve">
+    <value>비가동 시간 : </value>
+  </data>
+  <data name="CO2_START08" xml:space="preserve">
+    <value>생산실적 : </value>
+  </data>
+  <data name="CO2_START09" xml:space="preserve">
+    <value>가동률 : </value>
+  </data>
+  <data name="CO2_START10" xml:space="preserve">
+    <value>비가동 내용</value>
+  </data>
+  <data name="A08" xml:space="preserve">
+    <value>사원증 등록</value>
+  </data>
+  <data name="C09" xml:space="preserve">
+    <value>생산계획(SP/ST)</value>
+  </data>
+  <data name="D09" xml:space="preserve">
+    <value>ID 라벨출력</value>
+  </data>
+  <data name="H02" xml:space="preserve">
+    <value>설비 비가동리스트#1</value>
+  </data>
+  <data name="C08" xml:space="preserve">
+    <value>오더프린터</value>
+  </data>
+  <data name="H01" xml:space="preserve">
+    <value>KOMAX 가동 현황 #1</value>
+  </data>
+  <data name="H03" xml:space="preserve">
+    <value>KOMAX 생산현황 #1</value>
+  </data>
+  <data name="H04" xml:space="preserve">
+    <value>설비 비가동리스트#2</value>
+  </data>
+  <data name="C05" xml:space="preserve">
+    <value>생산계획(LP)</value>
+  </data>
+  <data name="B06" xml:space="preserve">
+    <value>창고용 라벨발행</value>
+  </data>
+  <data name="C06" xml:space="preserve">
+    <value>생산계획(SP/ST)</value>
+  </data>
+  <data name="D06" xml:space="preserve">
+    <value>완제품출하(엑셀)</value>
+  </data>
+  <data name="MZ01" xml:space="preserve">
+    <value>공통항목</value>
+  </data>
+  <data name="G01A0" xml:space="preserve">
+    <value>품번</value>
+  </data>
+  <data name="G01A1" xml:space="preserve">
+    <value>구분</value>
+  </data>
+  <data name="G01A2" xml:space="preserve">
+    <value>위치</value>
+  </data>
+  <data name="C10" xml:space="preserve">
+    <value>KOMAX_RUN_TIME</value>
+  </data>
+  <data name="H05" xml:space="preserve">
+    <value>완제품검사현황</value>
+  </data>
+  <data name="Z01" xml:space="preserve">
+    <value>공지사항</value>
+  </data>
+  <data name="Z03" xml:space="preserve">
+    <value>근무시간관리(CUT)</value>
+  </data>
+  <data name="MH01" xml:space="preserve">
+    <value>1공장 모니터링</value>
+  </data>
+  <data name="PART09" xml:space="preserve">
+    <value>단 위</value>
+  </data>
+  <data name="B07" xml:space="preserve">
+    <value>TUBE Cut 생산관리</value>
+  </data>
+  <data name="B08" xml:space="preserve">
+    <value>TUBE Cut 생산</value>
+  </data>
+  <data name="K01" xml:space="preserve">
+    <value>BT 생산계획</value>
+  </data>
+  <data name="K02" xml:space="preserve">
+    <value>BT 생산실적(CUT)</value>
+  </data>
+  <data name="K03" xml:space="preserve">
+    <value>BT 생산실적(PRESS)</value>
+  </data>
+  <data name="MK01" xml:space="preserve">
+    <value>생산관리(FA)</value>
+  </data>
+  <data name="MV01" xml:space="preserve">
+    <value>구매 </value>
+  </data>
+  <data name="V01" xml:space="preserve">
+    <value>표준관리</value>
+  </data>
+  <data name="V02" xml:space="preserve">
+    <value>구매신청</value>
+  </data>
+  <data name="V03" xml:space="preserve">
+    <value>구매승인</value>
+  </data>
+  <data name="V04" xml:space="preserve">
+    <value>구매불출</value>
+  </data>
+  <data name="V05" xml:space="preserve">
+    <value>재고관리</value>
+  </data>
+  <data name="V_S01" xml:space="preserve">
+    <value>제품이름</value>
+  </data>
+  <data name="V_S02" xml:space="preserve">
+    <value>제품규격</value>
+  </data>
+  <data name="V_S03" xml:space="preserve">
+    <value>포장단위</value>
+  </data>
+  <data name="V_S04" xml:space="preserve">
+    <value>포장수량</value>
+  </data>
+  <data name="V_S05" xml:space="preserve">
+    <value>부서명</value>
+  </data>
+  <data name="V_S06" xml:space="preserve">
+    <value>구매 목적</value>
+  </data>
+  <data name="V_S07" xml:space="preserve">
+    <value>검삭 항목 수량</value>
+  </data>
+  <data name="V_S08" xml:space="preserve">
+    <value>일자</value>
+  </data>
+  <data name="V_S09" xml:space="preserve">
+    <value>상품번호</value>
+  </data>
+  <data name="V_S10" xml:space="preserve">
+    <value>업체이름</value>
+  </data>
+  <data name="V_S11" xml:space="preserve">
+    <value>주문수량</value>
+  </data>
+  <data name="V_S12" xml:space="preserve">
+    <value>입고수량</value>
+  </data>
+  <data name="V_S13" xml:space="preserve">
+    <value>등록수량</value>
+  </data>
+  <data name="V_S14" xml:space="preserve">
+    <value>구매 신청</value>
+  </data>
+  <data name="V_S15" xml:space="preserve">
+    <value>구매 확정</value>
+  </data>
+  <data name="C11" xml:space="preserve">
+    <value>생산계획(SHIELD_WIRE)</value>
+  </data>
+  <data name="D07" xml:space="preserve">
+    <value>PO 및 생산계획</value>
+  </data>
+  <data name="ODS02" xml:space="preserve">
+    <value>생산실적</value>
+  </data>
+  <data name="ODS03" xml:space="preserve">
+    <value>인원관리(등록)</value>
+  </data>
+  <data name="A09" xml:space="preserve">
+    <value>단가관리</value>
+  </data>
+  <data name="B09" xml:space="preserve">
+    <value>자재불출요청(CUT, FA → WH)</value>
+  </data>
+  <data name="B10" xml:space="preserve">
+    <value>자재불출확인(WH)</value>
+  </data>
+  <data name="K06" xml:space="preserve">
+    <value>Cycle time 관리</value>
+  </data>
+  <data name="V06" xml:space="preserve">
+    <value>구매현황</value>
+  </data>
+  <data name="H06" xml:space="preserve">
+    <value>KOMAX 가동 현황 #2</value>
+  </data>
+  <data name="H07" xml:space="preserve">
+    <value>KOMAX 생산현황 #2</value>
+  </data>
+  <data name="C12" xml:space="preserve">
+    <value>KOMAX생산성</value>
+  </data>
+  <data name="Z04" xml:space="preserve">
+    <value>연말 재고조사</value>
+  </data>
+  <data name="E04" xml:space="preserve">
+    <value>유지보수 이력</value>
+  </data>
+  <data name="E05" xml:space="preserve">
+    <value>금형불출확인(ME)</value>
+  </data>
+  <data name="ODS" xml:space="preserve">
+    <value>DOOSAN</value>
+  </data>
+  <data name="ODS01" xml:space="preserve">
+    <value>기초코드</value>
+  </data>
+  <data name="ODS04" xml:space="preserve">
+    <value>생산 계획</value>
+  </data>
+  <data name="ODS05" xml:space="preserve">
+    <value>생산 실적</value>
+  </data>
+  <data name="ODS06" xml:space="preserve">
+    <value>생산 현황 종합</value>
+  </data>
+  <data name="K04" xml:space="preserve">
+    <value>생산실적(종합)</value>
+  </data>
+  <data name="H08" xml:space="preserve">
+    <value>안돈 시스템</value>
+  </data>
+  <data name="Z05" xml:space="preserve">
+    <value>DJG자산관리</value>
+  </data>
+  <data name="C13" xml:space="preserve">
+    <value>LEAD 불출요청(FA → CUT/LP)</value>
+  </data>
+  <data name="C14" xml:space="preserve">
+    <value>LEAD 불출승인(CUT/LP)</value>
+  </data>
+  <data name="F03" xml:space="preserve">
+    <value>IQC NG Report</value>
+  </data>
+  <data name="MW01" xml:space="preserve">
+    <value>DJG_생산계획</value>
+  </data>
+  <data name="W01" xml:space="preserve">
+    <value>PDP 표준자료</value>
+  </data>
+  <data name="W02" xml:space="preserve">
+    <value>고객사PO등록</value>
+  </data>
+  <data name="W03" xml:space="preserve">
+    <value>DJG_전체생산계획</value>
+  </data>
+  <data name="W04" xml:space="preserve">
+    <value>인원관리(바코드)</value>
+  </data>
+  <data name="Z06" xml:space="preserve">
+    <value>장기재고</value>
+  </data>
+  <data name="V_S16" xml:space="preserve">
+    <value>설비부품구매</value>
+  </data>
+  <data name="C15" xml:space="preserve">
+    <value>LEAD 외주입고품</value>
+  </data>
+  <data name="D11" xml:space="preserve">
+    <value>PLT 라벨출력</value>
+  </data>
+  <data name="G03" xml:space="preserve">
+    <value>부족자재확인</value>
+  </data>
+  <data name="G04" xml:space="preserve">
+    <value>완제품 실적관리</value>
+  </data>
+  <data name="Z02" xml:space="preserve">
+    <value>MES 사용승인 요청</value>
+  </data>
+  <data name="AP01" xml:space="preserve">
+    <value>APQP MAIN</value>
+  </data>
+  <data name="MY01" xml:space="preserve">
+    <value>불출관리</value>
+  </data>
+  <data name="MH02" xml:space="preserve">
+    <value>2공장 모니터링</value>
+  </data>
+  <data name="V07" xml:space="preserve">
+    <value>설비부분구매</value>
+  </data>
+  <data name="C16" xml:space="preserve">
+    <value>Cutting 불출요청(CUT/LP → FEEDER)</value>
+  </data>
+  <data name="C17" xml:space="preserve">
+    <value>Cutting 불출승인(FEEDER)</value>
+  </data>
+  <data name="B11" xml:space="preserve">
+    <value>재고리스트(바코드)</value>
+  </data>
+  <data name="D12" xml:space="preserve">
+    <value>완제품 SCAN 현황</value>
+  </data>
+  <data name="D13" xml:space="preserve">
+    <value>완제품입고(HMC)</value>
+  </data>
+  <data name="D14" xml:space="preserve">
+    <value>완제품입고(ERP)</value>
+  </data>
+  <data name="C18" xml:space="preserve">
+    <value>CUT/LP 스크랩 모니터링</value>
+  </data>
+  <data name="C19" xml:space="preserve">
+    <value>LEAD NO 관리</value>
+  </data>
+  <data name="C20" xml:space="preserve">
+    <value>SPC(통계적 생산 관리)</value>
+  </data>
+  <data name="HKMC01" xml:space="preserve">
+    <value>HKMC Barcode Prient</value>
+  </data>
+  <data name="Z07" xml:space="preserve">
+    <value>MES 개발 요청</value>
+  </data>
+  <data name="X01" xml:space="preserve">
+    <value>완제품입고(HMC)</value>
+  </data>
+  <data name="X02" xml:space="preserve">
+    <value>완제품검사기준</value>
+  </data>
+  <data name="X03" xml:space="preserve">
+    <value>완제품 출고(HMC)</value>
+  </data>
+  <data name="H09" xml:space="preserve">
+    <value>T/W W/D 가동 현황 #1</value>
+  </data>
+  <data name="H10" xml:space="preserve">
+    <value>T/W W/D 생산현황 #1</value>
+  </data>
+  <data name="H11" xml:space="preserve">
+    <value>안돈 시스템</value>
+  </data>
+  <data name="H12" xml:space="preserve">
+    <value>T/W W/D 생산현황 #2</value>
+  </data>
+  <data name="H13" xml:space="preserve">
+    <value>T/W W/D 가동 현황 #2</value>
+  </data>
+  <data name="X04" xml:space="preserve">
+    <value>고객발주</value>
+  </data>
+  <data name="B12" xml:space="preserve">
+    <value>자재소요량확인</value>
+  </data>
+  <data name="KR_G01" xml:space="preserve">
+    <value>베트남_재고현황</value>
+  </data>
+  <data name="KR_G02" xml:space="preserve">
+    <value>베트남_재고조정</value>
+  </data>
+  <data name="KR_G03" xml:space="preserve">
+    <value>베트남_부족자재확인</value>
+  </data>
+  <data name="KR_G04" xml:space="preserve">
+    <value>베트남_완제품 실적관리</value>
+  </data>
+  <data name="KR_G05" xml:space="preserve">
+    <value>한국창고재고</value>
+  </data>
+  <data name="D15" xml:space="preserve">
+    <value>완제품입고(KGM)</value>
+  </data>
+  <data name="D16" xml:space="preserve">
+    <value>완제품입고(DH)</value>
+  </data>
+  <data name="Buttonadd" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="Buttoncancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Buttonclose" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Buttondelete" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Buttonexport" xml:space="preserve">
+    <value>엑셀출력</value>
+  </data>
+  <data name="Buttonfind" xml:space="preserve">
+    <value>찾기</value>
+  </data>
+  <data name="Buttoninport" xml:space="preserve">
+    <value>엑셀등록</value>
+  </data>
+  <data name="Buttonprint" xml:space="preserve">
+    <value>인쇄</value>
+  </data>
+  <data name="ButtonREST" xml:space="preserve">
+    <value>새로고침</value>
+  </data>
+  <data name="Buttonsave" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Buttoninport1" xml:space="preserve">
+    <value>실적마감</value>
+  </data>
+  <data name="Buttonhelp" xml:space="preserve">
+    <value>지원하다</value>
+  </data>
+  <data name="Tab_G01T1" xml:space="preserve">
+    <value>거래중인 재고</value>
+  </data>
+  <data name="Tab_G01T2" xml:space="preserve">
+    <value>창고</value>
+  </data>
+  <data name="Tab_G01T3" xml:space="preserve">
+    <value>완전한</value>
+  </data>
+  <data name="Tab_G01T4" xml:space="preserve">
+    <value>후크랙</value>
+  </data>
+  <data name="Btn_ReSet" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="DbTbl_History" xml:space="preserve">
+    <value>이력</value>
+  </data>
+  <data name="Btn_ReprintPackingLot" xml:space="preserve">
+    <value>라벨 다시 인쇄</value>
+  </data>
+  <data name="Btn_PackingReprint" xml:space="preserve">
+    <value>라벨 다시 인쇄</value>
+  </data>
+  <data name="ERROR_WrongProductCode" xml:space="preserve">
+    <value>잘못된 제품 코드</value>
+  </data>
+  <data name="ERROR_FullBox" xml:space="preserve">
+    <value>패키지가 가득 찼습니다. 더 이상 추가할 수 없습니다.</value>
+  </data>
+  <data name="DbTbl_Stage" xml:space="preserve">
+    <value>Stage</value>
+  </data>
+  <data name="D10" xml:space="preserve">
+    <value>완제품입고(ZDA)</value>
+  </data>
+  <data name="MSG_AddPackingItem" xml:space="preserve">
+    <value>추가로 물건을 포장하시겠습니까?</value>
+  </data>
+  <data name="DbTbl_DeleteTime" xml:space="preserve">
+    <value>삭제 시간</value>
+  </data>
+  <data name="DbTbl_DeleteBy" xml:space="preserve">
+    <value>삭제자</value>
+  </data>
+  <data name="DbTbl_Receive" xml:space="preserve">
+    <value>수신</value>
+  </data>
+  <data name="Btn_All" xml:space="preserve">
+    <value>모두</value>
+  </data>
+  <data name="DbTbl_BoxNumber" xml:space="preserve">
+    <value>박스 번호</value>
+  </data>
+  <data name="DbTbl_TorqueBarcode" xml:space="preserve">
+    <value>Torque Barcode</value>
+  </data>
+  <data name="MML_PackingKGM" xml:space="preserve">
+    <value>KGM 패키징</value>
+  </data>
+  <data name="MSG_UnikeyTurnOff" xml:space="preserve">
+    <value>정확한 데이터를 위해 코드 스캔 전에 Unikey 또는 베트남어 입력기를 꺼주세요!</value>
+  </data>
+  <data name="MML_SaleStatus" xml:space="preserve">
+    <value>판매 현황</value>
+  </data>
+  <data name="MML_YearSaleStatus" xml:space="preserve">
+    <value>연도별 판매 </value>
+  </data>
+  <data name="DbTbl_Cost" xml:space="preserve">
+    <value>가격</value>
+  </data>
+  <data name="DbTbl_SaleCost" xml:space="preserve">
+    <value>판매 가격</value>
+  </data>
+  <data name="DbTbl_Year" xml:space="preserve">
+    <value>년</value>
+  </data>
+  <data name="DbTbl_SaleQty" xml:space="preserve">
+    <value>SaleQty</value>
+  </data>
+  <data name="DbTbl_ProducingAbility" xml:space="preserve">
+    <value>생산 능력</value>
+  </data>
+  <data name="MES_REPORT" xml:space="preserve">
+    <value>MES REPORT</value>
+  </data>
+  <data name="ADMIN_REP" xml:space="preserve">
+    <value>MES Report</value>
+  </data>
+  <data name="DbTbl_SalesStatus" xml:space="preserve">
+    <value>판매 현황</value>
+  </data>
+  <data name="DbTbl_PO_Status" xml:space="preserve">
+    <value>발주 상태</value>
+  </data>
+  <data name="DbTbl_Month" xml:space="preserve">
+    <value>월</value>
+  </data>
+  <data name="DbTbl_Day" xml:space="preserve">
+    <value>일</value>
+  </data>
+  <data name="DbTbl_NotYetPacking" xml:space="preserve">
+    <value>미포장</value>
+  </data>
+  <data name="DbTbl_Week" xml:space="preserve">
+    <value>주 번호</value>
+  </data>
+  <data name="Admin1" xml:space="preserve">
+    <value>데이터 관리</value>
+  </data>
+  <data name="Admin2" xml:space="preserve">
+    <value>메뉴권한</value>
+  </data>
+  <data name="Admin3" xml:space="preserve">
+    <value>사용자권한</value>
+  </data>
+  <data name="Admin4" xml:space="preserve">
+    <value>신규메뉴등록</value>
+  </data>
+  <data name="ADMIN" xml:space="preserve">
+    <value>시스템 관리자</value>
+  </data>
+  <data name="DbTbl_GroupCode" xml:space="preserve">
+    <value>그룹 코드</value>
+  </data>
+  <data name="DbTbl_GroupName" xml:space="preserve">
+    <value>그룹명</value>
+  </data>
+  <data name="DbTbl_ItemNo" xml:space="preserve">
+    <value>번호</value>
+  </data>
+  <data name="DbTbl_PermissionGroup" xml:space="preserve">
+    <value>사용자 권한 그룹</value>
+  </data>
+  <data name="ButtonEdit" xml:space="preserve">
+    <value>수정</value>
+  </data>
+  <data name="DbTbl_UpdateBy" xml:space="preserve">
+    <value>수정자</value>
+  </data>
+  <data name="MML_UserPermission" xml:space="preserve">
+    <value>사용자 권한</value>
+  </data>
+  <data name="Btn_Random" xml:space="preserve">
+    <value>무작위의</value>
+  </data>
+  <data name="ButtonRecovery" xml:space="preserve">
+    <value>복구</value>
+  </data>
+  <data name="MSG_RecoveryData" xml:space="preserve">
+    <value>데이터를 복구하시겠습니까</value>
+  </data>
+  <data name="DbTbl_PackingTime" xml:space="preserve">
+    <value>포장 시간</value>
+  </data>
+  <data name="DbTbl_PackingBy" xml:space="preserve">
+    <value>포장 담당자</value>
+  </data>
+  <data name="DbTbl_ShippedTime" xml:space="preserve">
+    <value>출하 시간</value>
+  </data>
+  <data name="DbTbl_ShippedBy" xml:space="preserve">
+    <value>출하 담당자</value>
+  </data>
+  <data name="A10" xml:space="preserve">
+    <value>Line 관리</value>
+  </data>
+  <data name="A11" xml:space="preserve">
+    <value>일반 정보</value>
+  </data>
+  <data name="DbTbl_MasterCode" xml:space="preserve">
+    <value>마스터 코드</value>
+  </data>
+  <data name="MP01" xml:space="preserve">
+    <value>생산 관리</value>
+  </data>
+  <data name="P01" xml:space="preserve">
+    <value>공급업체/고객 목록</value>
+  </data>
+  <data name="P02" xml:space="preserve">
+    <value>BOM 관리</value>
+  </data>
+  <data name="P03" xml:space="preserve">
+    <value>생산 주문 관리자</value>
+  </data>
+  <data name="P04" xml:space="preserve">
+    <value>TakTime 관리</value>
+  </data>
+  <data name="P05" xml:space="preserve">
+    <value>ECN 관리</value>
+  </data>
+  <data name="P06" xml:space="preserve">
+    <value>생산 계획</value>
+  </data>
+  <data name="P07" xml:space="preserve">
+    <value>생산 라인 관리</value>
+  </data>
+  <data name="P08" xml:space="preserve">
+    <value>인력 관리</value>
+  </data>
+  <data name="A12" xml:space="preserve">
+    <value>Ca Làm Việc </value>
+  </data>
+  <data name="HR1" xml:space="preserve">
+    <value>직원 관리</value>
+  </data>
+  <data name="Line productivity" xml:space="preserve">
+    <value>라인별 생산</value>
+  </data>
+  <data name="FA_M2" xml:space="preserve">
+    <value>라인별 배정</value>
+  </data>
+  <data name="FA_M1" xml:space="preserve">
+    <value>라인별 생산성</value>
+  </data>
+  <data name="FA_M3" xml:space="preserve">
+    <value>FA 생산량</value>
+  </data>
+  <data name="HR2" xml:space="preserve">
+    <value>직원 관리</value>
+  </data>
+  <data name="DbTbl_ReTest" xml:space="preserve">
+    <value>Re-Test</value>
+  </data>
+  <data name="DbTbl_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="H15" xml:space="preserve">
+    <value>RO Moniroting</value>
+  </data>
+  <data name="F04" xml:space="preserve">
+    <value>오류 코드 목록</value>
+  </data>
+  <data name="FA_M4" xml:space="preserve">
+    <value>FA 작업 지시서</value>
+  </data>
+  <data name="DbTbl_Action" xml:space="preserve">
+    <value>작업</value>
+  </data>
+  <data name="DbTbl_FAWorker" xml:space="preserve">
+    <value>FA 작업자</value>
+  </data>
+  <data name="Label_SearchPlaceholder" xml:space="preserve">
+    <value>검색...</value>
+  </data>
+  <data name="DbTbl_LineGroup" xml:space="preserve">
+    <value>라인 그룹</value>
+  </data>
+  <data name="Label_ModalAddEdit" xml:space="preserve">
+    <value>추가 및 수정</value>
+  </data>
+  <data name="Label_ModalImport" xml:space="preserve">
+    <value>엑셀 입력</value>
+  </data>
+  <data name="Label_DownloadTemplate" xml:space="preserve">
+    <value>템플릿다운로드</value>
+  </data>
+  <data name="Label_SelectFile" xml:space="preserve">
+    <value>파일 선택</value>
+  </data>
+  <data name="Label_UploadExcelPlaceholder" xml:space="preserve">
+    <value>엑셀 업로드</value>
+  </data>
+  <data name="Label_Error" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="Label_Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="DbTbl_LineCapa" xml:space="preserve">
+    <value> 라인 용량</value>
+  </data>
+  <data name="DbTbl_Sample" xml:space="preserve">
+    <value>견본</value>
+  </data>
+  <data name="HR3" xml:space="preserve">
+    <value>근무 시간</value>
+  </data>
+  <data name="FA_M5" xml:space="preserve">
+    <value>근태 기록</value>
+  </data>
+  <data name="D17" xml:space="preserve">
+    <value>완제품 창고</value>
+  </data>
+  <data name="DbTbl_LostMaterial" xml:space="preserve">
+    <value>스크랩 신고</value>
+  </data>
+  <data name="DbTbl_WireLength" xml:space="preserve">
+    <value>와이어 길이</value>
+  </data>
+  <data name="DbTbl_ScrapValues" xml:space="preserve">
+    <value>스크랩 가치</value>
+  </data>
+  <data name="DbTbl_Weight" xml:space="preserve">
+    <value>무게</value>
+  </data>
+  <data name="DbTbl_Percentage" xml:space="preserve">
+    <value>백분율</value>
+  </data>
+  <data name="DbTbl_WireCode" xml:space="preserve">
+    <value>배선 코드</value>
+  </data>
+  <data name="DbTbl_Project" xml:space="preserve">
+    <value>프로젝트</value>
+  </data>
+  <data name="DbTbl_NoPicture" xml:space="preserve">
+    <value>사진 없음</value>
+  </data>
+  <data name="C21" xml:space="preserve">
+    <value>트롤리 관리</value>
+  </data>
+</root>

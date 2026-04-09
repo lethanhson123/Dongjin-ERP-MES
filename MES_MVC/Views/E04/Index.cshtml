@@ -1,0 +1,287 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IE04Service _E04Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "E04";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = "Maintenance History Management (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>Maintenance History (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="Search" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> Search
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="Add New" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> Add
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="Delete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> Delete
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="Export" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> Export
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="Print" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> Print
+                    </button>
+
+                    <button id="Buttonhelp" title="Help" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> Close
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m6 l2">
+                    <label for="FilterFromDate">Từ ngày</label>
+                    <input id="FilterFromDate" type="date" class="form-control" />
+                </div>
+                <div class="col s12 m6 l2">
+                    <label for="FilterToDate">Đến ngày</label>
+                    <input id="FilterToDate" type="date" class="form-control" />
+                </div>
+                <div class="col s12 m6 l3">
+                    <label for="FilterMachine">Máy</label>
+                    <select id="FilterMachine" class="form-control browser-default">
+                        <option value="">-- Tất cả --</option>
+                    </select>
+                </div>
+                <div class="col s12 m6 l3">
+                    <label for="SearchBox">Tìm kiếm</label>
+                    <input id="SearchBox" type="text" class="form-control" placeholder="Tìm kiếm (Máy, Người sửa, Nội dung lỗi, Giải pháp...)" />
+                </div>
+                <div class="col s12 m6 l2">
+                    <label>Tổng số dòng</label>
+                    <div class="form-control center-align" style="font-weight: bold; background-color: #e3f2fd; color: #1976d2; padding: 8px;">
+                        <i class="material-icons tiny" style="vertical-align: middle;">view_list</i>
+                        <span id="TotalRecords">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow70">
+                        <table id="DataGridView1" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Action</th>
+                                    <th>ID</th>
+                                    <th>Tool/Machine</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Solution</th>
+                                    <th>Spare Parts</th>
+                                    <th>Maintained By</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Duration (min)</th>
+                                    <th>Notes</th>
+                                    <th>Update Date</th>
+                                    <th>Update User</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal dùng chung cho Add và Edit -->
+<div id="EditModal" class="modal" style="width: 70%; max-height: 90vh;">
+    <div class="modal-content">
+        <h5>Chỉnh sửa chi tiết bảo trì</h5>
+        <form id="EditForm">
+            <input type="hidden" id="EditID">
+
+            <!-- Thay thế phần trong modal của bạn -->
+
+            <div class="row">
+                <div class="col s12 m6 l4">
+                    <label>Máy <span class="red-text">*</span></label>
+                    <input type="text" id="EditMachine" class="form-control" placeholder="Nhập mã máy">
+                </div>
+                <div class="col s12 m6 l4">
+                    <label>Thời gian bắt đầu <span class="red-text">*</span></label>
+                    <input type="datetime-local" id="EditStartDate" class="form-control">
+                </div>
+                <div class="col s12 m6 l4">
+                    <label>Thời gian kết thúc <span class="red-text">*</span></label>
+                    <input type="datetime-local" id="EditEndDate" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="EditCurrentStatus">Nội dung lỗi <span class="red-text">*</span></label>
+                    <select id="EditCurrentStatus" class="browser-default" required>
+                        <option value="">Chọn Nội dung lỗi</option>
+                        <option value="Cập nhật chương trình mới (신규 프로그램 업데이트)">Cập nhật chương trình mới (신규 프로그램 업데이트)</option>
+                        <option value="Kiểm tra tổng quát (종합 점검)">Kiểm tra tổng quát (종합 점검)</option>
+                        <option value="Lỗi G terminal (단자 벨마우스 불량)">Lỗi G terminal (단자 벨마우스 불량)</option>
+                        <option value="Lỗi SPA (SPA 불량)">Lỗi SPA (SPA 불량)</option>
+                        <option value="Lỗi bàn đạp dập (폐달 불량)">Lỗi bàn đạp dập (폐달 불량)</option>
+                        <option value="Lỗi bavớ (버 생김 불량)">Lỗi bavớ (버 생김 불량)</option>
+                        <option value="Lỗi biến dạng terminal (단자 변형 불량)">Lỗi biến dạng terminal (단자 변형 불량)</option>
+                        <option value="Lỗi biến tần (인버터 불량)">Lỗi biến tần (인버터 불량)</option>
+                        <option value="Lỗi board / CPU / main / ổn áp (보드/ CPU/ 메인/ 안정기 부량)">Lỗi board / CPU / main / ổn áp (보드/ CPU/ 메인/ 안정기 부량)</option>
+                        <option value="Lỗi băng tải (벨트 불량)">Lỗi băng tải (벨트 불량)</option>
+                        <option value="Lỗi cúp/ngữa đầu terminal (단자 밴드업/다운 불량)">Lỗi cúp/ngữa đầu terminal (단자 밴드업/다운 불량)</option>
+                        <option value="Lỗi cúp đầu terminal (단자 끝단 눌림 불량)">Lỗi cúp đầu terminal (단자 끝단 눌림 불량)</option>
+                        <option value="Lỗi dao (칼 불량)">Lỗi dao (칼 불량)</option>
+                        <option value="Lỗi dính đồng (심선 노출 불량)">Lỗi dính đồng (심선 노출 불량)</option>
+                        <option value="Lỗi dính đồng/lệch terminal (심선 노출/ 단자 위치 불량)">Lỗi dính đồng/lệch terminal (심선 노출/ 단자 위치 불량)</option>
+                        <option value="Lỗi dính đồng/tưa đồng (심선 동착/ 노출 불량)">Lỗi dính đồng/tưa đồng (심선 동착/ 노출 불량)</option>
+                        <option value="Lỗi hơi khí nén (공압 불량)">Lỗi hơi khí nén (공압 불량)</option>
+                        <option value="Lỗi kẹt tool (툴 걸림 불량)">Lỗi kẹt tool (툴 걸림 불량)</option>
+                        <option value="Lỗi khác (기타)">Lỗi khác (기타)</option>
+                        <option value="Lỗi không lên seal (씰 공급 불량)">Lỗi không lên seal (씰 공급 불량)</option>
+                        <option value="Lỗi không đủ lực kéo (인장력 미달 불량)">Lỗi không đủ lực kéo (인장력 미달 불량)</option>
+                        <option value="Lỗi motor (모터 불량)">Lỗi motor (모터 불량)</option>
+                        <option value="Lỗi máng dây (전선 가이드 불량)">Lỗi máng dây (전선 가이드 불량)</option>
+                        <option value="Lỗi ngàm không kẹp (Jaw 불량)">Lỗi ngàm không kẹp (Jaw 불량)</option>
+                        <option value="Lỗi nuốt dây (USW 전선 설비에 동착 불량)">Lỗi nuốt dây (USW 전선 설비에 동착 불량)</option>
+                        <option value="Lỗi nắp 216 (전진 슬라이더 불량)">Lỗi nắp 216 (전진 슬라이더 불량)</option>
+                        <option value="Lỗi phần cứng/nguồn điện (하드웨어/전원 불량)">Lỗi phần cứng/nguồn điện (하드웨어/전원 불량)</option>
+                        <option value="Lỗi phần mềm/chương trình (소프트웨어 / 프로그램 불량)">Lỗi phần mềm/chương trình (소프트웨어 / 프로그램 불량)</option>
+                        <option value="Lỗi sealkit (씰킷 불량)">Lỗi sealkit (씰킷 불량)</option>
+                        <option value="Lỗi sensor (센서 불량)">Lỗi sensor (센서 불량)</option>
+                        <option value="Lỗi thông số không đạt (압착 값이 불합격)">Lỗi thông số không đạt (압착 값이 불합격)</option>
+                        <option value="Lỗi tool mòn/xoay tool (툴 마모/ 회전 불량)">Lỗi tool mòn/xoay tool (툴 마모/ 회전 불량)</option>
+                        <option value="Lỗi van khí nén (공압 밸브 불량)">Lỗi van khí nén (공압 밸브 불량)</option>
+                        <option value="Lỗi về phần mềm (소프트웨어 불량)">Lỗi về phần mềm (소프트웨어 불량)</option>
+                        <option value="Lỗi xy-lanh khí nén (공압 실린더 불량)">Lỗi xy-lanh khí nén (공압 실린더 불량)</option>
+                        <option value="Lỗi đâm seal / ngã seal (씰 공급 불량)">Lỗi đâm seal / ngã seal (씰 공급 불량)</option>
+                        <option value="Lỗi đầu dập (압착 부분 불량)">Lỗi đầu dập (압착 부분 불량)</option>
+                        <option value="Lỗi ống hơi (에어 호스 불량)">Lỗi ống hơi (에어 호스 불량)</option>
+                        <option value="Test CFA, dao (CFA 테스트, 칼날 불량)">Test CFA, dao (CFA 테스트, 칼날 불량)</option>
+                        <option value="Test kiểm tra mối hàn (용착 부분 검사)">Test kiểm tra mối hàn (용착 부분 검사)</option>
+                        <option value="Thay nhám (사포 교체)">Thay nhám (사포 교체)</option>
+                        <option value="Thay tool mới (신규 툴 교체)">Thay tool mới (신규 툴 교체)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="EditSolution">Biện pháp <span class="red-text">*</span></label>
+                    <select id="EditSolution" class="browser-default" required>
+                        <option value="">Chọn biện pháp</option>
+                        <option value="Kiểm tra, canh chỉnh (확인 및 조정)">Kiểm tra, canh chỉnh (확인 및 조정)</option>
+                        <option value="Kiểm tra, canh chỉnh (thay dao) (확인 및 조정 - 칼날 교체)">Kiểm tra, canh chỉnh (thay dao) (확인 및 조정 - 칼날 교체)</option>
+                        <option value="Kiểm tra, canh chỉnh (thay thế) (확인, 조정 및 교체)">Kiểm tra, canh chỉnh (thay thế) (확인, 조정 및 교체)</option>
+                        <option value="Kiểm tra, canh chỉnh (확인, 조정)">Kiểm tra, canh chỉnh (확인, 조정)</option>
+                        <option value="Kiểm tra, canh chỉnh thay dao (확인, 조정 및 칼날 교체)">Kiểm tra, canh chỉnh thay dao (확인, 조정 및 칼날 교체)</option>
+                        <option value="Kiểm tra, canh chỉnh thay thế (확인, 조정 및 교체)">Kiểm tra, canh chỉnh thay thế (확인, 조정 및 교체)</option>
+                        <option value="Kiểm tra, canh chỉnh, thay thế (확인, 조정 및 교체)">Kiểm tra, canh chỉnh, thay thế (확인, 조정 및 교체)</option>
+                        <option value="Kiểm tra, canh chỉnh, vệ sinh (확인, 조정 및 청소)">Kiểm tra, canh chỉnh, vệ sinh (확인, 조정 및 청소)</option>
+                        <option value="Kiểm tra, thay nhám (확인 및 사포 교체)">Kiểm tra, thay nhám (확인 및 사포 교체)</option>
+                        <option value="Reset, cài lại (재 세팅)">Reset, cài lại (재 세팅)</option>
+                        <option value="Reset, cài lại (재세팅)">Reset, cài lại (재세팅)</option>
+                        <option value="Xử lý theo thực tế (실제 상황에 맞게 조치)">Xử lý theo thực tế (실제 상황에 맞게 조치)</option>
+                        <option value="Xử lý theo thực tế (실제 현상황에 맞게 조치)">Xử lý theo thực tế (실제 현상황에 맞게 조치)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="EditSparePartsUsed">Phụ tùng sử dụng</label>
+                    <textarea id="EditSparePartsUsed" class="materialize-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="EditMaintenedBy">Người sửa <span class="red-text">*</span></label>
+                    <select id="EditMaintenedBy" class="browser-default" required>
+                        <option value="">Chọn người sửa</option>
+                        <option value="Đức (LD)">Đức (LD)</option>
+                        <option value="Hải">Hải</option>
+                        <option value="Kiệt">Kiệt</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Phúc (Staff)">Phúc (Staff)</option>
+                        <option value="Quốc L (FM)">Quốc L (FM)</option>
+                        <option value="Quốc N">Quốc N</option>
+                        <option value="Thảo">Thảo</option>
+                        <option value="Võ Thanh Tuần (F2)">Võ Thanh Tuần (F2)</option>
+                        <option value="Vũ (FM)">Vũ (FM)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="EditNotes">Ghi chú</label>
+                    <textarea id="EditNotes" class="materialize-textarea"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button id="SaveEditBtn" class="btn green">
+            <i class="material-icons left">save</i>Lưu
+        </button>
+        <button class="btn grey modal-close">
+            <i class="material-icons left">close</i>Đóng
+        </button>
+    </div>
+</div>
+
+<script src="~/Scripts/E04.js?v=@version"></script>

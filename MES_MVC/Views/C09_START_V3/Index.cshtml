@@ -1,0 +1,385 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C09_START_V3";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "C09_START_V3 (" + url + ")";
+}
+<input id="CODE_S" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_S">
+<input id="CODE_I" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_I">
+<input id="CODE_Q" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_Q">
+<input id="CODE_M" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_M">
+<input id="CODE_T" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_T">
+<input id="CODE_L" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_L">
+<input id="CODE_E" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_E">
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <h6><b>C09_START_V3 (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l4">
+                </div>
+                <div class="col s12 m12 l4 right-align-md">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l9">
+                    <div class="row">
+                        <div class="col s12 m12 l3">
+                            <h6><b>SP / ST (C09_START_V3)</b></h6>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>MC : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="MCbox" type="text" class="form-control" readonly value="---" style="font-size: 24px;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <label>LEAD NO : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="partbox" type="text" class="form-control" readonly value="---">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <input id="ORDER_NO_TEXT" type="text" class="form-control" readonly value="---">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l1">
+                            <div>
+                                <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row card-panel yellow lighten-4" style="padding-top: 10px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>
+                                    <input id="R_BUTT_LH" name="C09_START_V3" type="radio" />
+                                    <span>LH</span>
+                                </label>
+                                <label>
+                                    <input id="R_BUTT_RH" name="C09_START_V3" type="radio" />
+                                    <span>RH</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <label>LEAD BARCODE : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <input id="Barcodebox" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <br />
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <img src="@DomainSite/Image/SPST.png" width="810" height="234" />
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div class="col s12 m12 l4">
+                                <div>
+                                    <label>Start Time : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l8">
+                                <div>
+                                    <input id="Label70" type="text" class="form-control" readonly value="S_TIME" style="font-weight: bold;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l4">
+                                <div>
+                                    <label>Bundle size : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l8">
+                                <div>
+                                    <input id="Label7" type="number" class="form-control" readonly value="0">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l5">
+                                <div>
+                                    <label>COUNT : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="Label48" type="number" class="form-control" readonly value="0" style="color: blue;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align: center;">
+                                <div>
+                                    /
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="Label59" type="number" class="form-control" readonly value="0">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l12">
+                                <div>
+                                    <input id="MRUS" type="number" class="form-control" readonly value="0000" style="color: black;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l6">
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="LH_QTY" type="number" class="form-control" readonly value="0" style="color: blue;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    INSPECTION
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <button id="SPC1" title="First" class="btn waves-effect waves-light grey darken-1" style="width: 100%;">First</button>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <button id="SPC2" title="Middle" class="btn waves-effect waves-light grey darken-1" style="width: 100%;">Middle</button>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2">
+                                <div>
+                                    <button id="SPC3" title="End" class="btn waves-effect waves-light grey darken-1" style="width: 100%;">End</button>
+                                </div>
+                            </div>
+                            <div class="KhungOverflow">
+                                <table class="responsive-table" id="DataGridView1Table">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>LEAD_NO</th>
+                                            <th>BUNDLE</th>
+                                            <th>E_CHK</th>
+                                            <th>QTY</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView1">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l6">
+                            <div class="col s12 m12 l9">
+                                <div>
+                                    <button id="Buttonprint" title="Complete / Print" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Complete / Print</button>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="RH_QTY" type="number" class="form-control" readonly value="0" style="color: blue;">
+                                </div>
+                            </div>
+                            <div class="KhungOverflow">
+                                <table class="responsive-table" id="DataGridView2Table">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>LEAD_NO</th>
+                                            <th>BUNDLE</th>
+                                            <th>E_CHK</th>
+                                            <th>QTY</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView2">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div class="col s12 m12 l12" style="background-color: blue; text-align: center; margin-bottom: 10px; padding-top: 10px; padding-bottom: 10px;">
+                        <div>
+                            <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START03</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; padding-top: 10px; padding-bottom: 10px;">
+                        <div>
+                            <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START04</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START05</label>
+                            <input id="BI_STIME" type="text" class="form-control" readonly value="__:__:__" style="text-align: right;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START06</label>
+                            <input id="BI_RTIME" type="text" class="form-control" readonly value="-" style="text-align: right;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div>
+                            <label>.</label>
+                            <input id="BI_RCK" type="text" class="form-control" readonly value="__:__:__" style="text-align: right;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START07</label>
+                            <input id="BI_STOPTIME" type="text" class="form-control" readonly value="00:00:00" style="text-align: right;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">UPH : </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_UPH" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START08</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_WQTY" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l8">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START09</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <input id="BI_RVA" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12" style="background-color: black; margin-bottom: 10px; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START10</label>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="col s12 m12 l12 card-panel yellow lighten-4">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton1" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton1Text">@MES_MVC.Resources.Resource.CODE_S (@MES_MVC.Resources.Resource.CODE_S)</span>
+                                </label>                               
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton2" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton2Text">@MES_MVC.Resources.Resource.CODE_I (@MES_MVC.Resources.Resource.CODE_I)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton3" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton3Text">@MES_MVC.Resources.Resource.CODE_Q (@MES_MVC.Resources.Resource.CODE_Q)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton4" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton4Text">@MES_MVC.Resources.Resource.CODE_M (@MES_MVC.Resources.Resource.CODE_M)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton5" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton5Text">@MES_MVC.Resources.Resource.CODE_T (@MES_MVC.Resources.Resource.CODE_T)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton6" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton6Text">@MES_MVC.Resources.Resource.CODE_L (@MES_MVC.Resources.Resource.CODE_L)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>
+                                    <input id="BI_RadioButton7" name="BI_RadioButton" type="radio" />
+                                    <span id="BI_RadioButton7Text">@MES_MVC.Resources.Resource.CODE_E (@MES_MVC.Resources.Resource.CODE_E)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button id="BI_10" title="STOP" class="btn waves-effect waves-light red darken-1" style="width: 100%;">STOP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C09_START_V3.js?v=@version"></script>
+

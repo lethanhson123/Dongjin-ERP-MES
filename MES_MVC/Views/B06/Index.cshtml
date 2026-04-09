@@ -1,0 +1,271 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IB06Service _B06Service
+@{
+    //string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "B06";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _B06Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<style>
+    .b06-toolbar {
+        margin-bottom: 16px;
+        padding: 10px 0;
+        background: #f8f9fa;
+        border-radius: 6px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .b06-main-content {
+        display: flex;
+        gap: 32px;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .b06-form {
+        width: 340px;
+        background: #fff;
+        border-radius: 6px;
+        padding: 24px 20px 16px 20px;
+        box-shadow: 0 2px 6px rgba(30,40,90,0.05);
+    }
+
+        .b06-form label {
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .b06-form input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .b06-form .form-row {
+            margin-bottom: 10px;
+        }
+
+    .b06-table-area {
+        width: 500px; /* GẤP ĐÔI form bên trái */
+        height: 900px; /* GẤP ĐÔI chiều cao so với form */
+        background: #f3f4f5;
+        border-radius: 6px;
+        padding: 18px 16px 10px 16px;
+        border: 1px solid #e0e1e4;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+        .b06-table-area .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+    .b06-table-placeholder {
+        flex: 1;
+        background: #c6c8ca;
+        border-radius: 4px;
+        border: 1px dashed #aaa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #777;
+        font-size: 1.08em;
+        min-height: 540px;
+    }
+    @@media (max-width: 1200px) {
+        .b06-main-content
+
+    {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .b06-form, .b06-table-area {
+        width: 95vw !important;
+        min-width: unset !important;
+        max-width: unset !important;
+    }
+
+    .b06-table-area {
+        height: 66vw !important;
+        min-height: 300px !important;
+    }
+
+    }
+</style>
+
+<div>
+    <!-- Toolbar with all action buttons on top -->
+    <div class="row">
+        <div class="col s12 m12 l3">
+            <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+        </div>
+        <div class="col s12 m12 l9 right-align-md">
+            <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+            </button>
+
+            <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+            </button>
+
+            <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+            </button>
+
+            <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+            </button>
+
+            <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+            </button>
+
+            <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+            </button>
+
+            <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+            </button>
+
+            <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+            </button>
+
+            <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                    style="margin-right: 10px;">
+                <i class="material-icons">help</i>
+            </button>
+
+            <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="b06-main-content">
+            <form class="b06-form" autocomplete="off">
+                <div class="form-row b06-radio-row">
+                    <label>
+                        <input type="radio" name="MESConnect" id="RadioButton1" checked />
+                        <span>MES connection</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="MESConnect" id="RadioButton2" />
+                        <span>MES not</span>
+                    </label>
+                </div>
+
+                <input type="hidden" id="PARTIDX" />
+
+                <div class="form-row">
+                    <label>PART NO <span style="color:#c00;">*</span></label>
+                    <div style="display: flex; gap:6px;">
+                        <input type="text" id="TextBox1" />
+                        <button type="button" class="btn waves-effect waves-light blue" id="Button1" style="padding:0 10px;">Find</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Customer</label>
+                    <input type="text" id="TextBox2" />
+                </div>
+                <div class="form-row">
+                    <label>MOQ</label>
+                    <input type="text" id="TextBox3" />
+                </div>
+                <div class="form-row">
+                    <label>Family</label>
+                    <input type="text" id="TextBox4" />
+                </div>
+                <div class="form-row">
+                    <label>Location <span style="color:#c00;">*</span></label>
+                    <input type="text" id="TextBox5" placeholder="_-_-___" />
+                </div>
+                <div class="form-row" style="text-align:center;">
+                    <button type="button" class="btn grey lighten-4 black-text" id="ButtonPrinter">
+                        <i class="material-icons left">print</i>Printer
+                    </button>
+                </div>
+            </form>
+            <!-- Right table area -->
+            <div class="b06-table-area">
+                <div class="search-bar">
+                    <input type="text" id="TextBox6" placeholder="Tìm kiếm Part No..." style="max-width:250px;" />
+                    <button type="button" class="btn waves-effect waves-light blue" id="Button2" style="padding:0 10px;">Find PART NO</button>
+                </div>
+                <div class="b06-table-placeholder">
+                    (Kết quả tìm kiếm sẽ hiển thị ở đây)
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+ 
+   
+</div>
+
+<script src="~/Scripts/B06.js?v=@GlobalHelper.GetVersionScrip("B06.js")"></script>

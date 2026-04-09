@@ -1,0 +1,132 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C05_ER_R";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "ERROR (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <h6><b>ERROR (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="Label1" type="text" class="form-control" readonly style="border-width: 0px !important;">
+                </div>
+                <div class="col s12 m12 l6">
+                    <button id="Button2" title="Complete" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">Complete</button>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                </div>             
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <div>
+                        <select id="ComboBox1" class="browser-default form-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="col s12 m12 l8">
+                    <div>
+                        <input id="TextBox1" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <button id="Button1" title="Search" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">                
+                <div class="col s12 m12 l10">
+                    <div>
+                        <img id="PictureBox1" src="@DomainSite/Image/LEAD_L.png" height="79" width="1073" />
+
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <input id="LBR4" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div style="padding-top: 10px;">
+                        <input id="LBR2" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LBR22" type="text" class="form-control" readonly value="RES" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel yellow lighten-4">               
+                <div class="col s12 m12 l10">
+                    <div>
+                        <table class="responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Check</th>
+                                    <th>Standard</th>
+                                    <th>Input value</th>
+                                    <th>Result</th>                                 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input id="CHBT2" class='form-check-input' type='checkbox'><span></span></td>
+                                    <td><input id="LBT2S" type="text" class="form-control" readonly value="T2_ST" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="LBT2V" type="text" class="form-control" readonly value="T2_VL" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="LBT2R" type="text" class="form-control" readonly value="T2_RES" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2"><input id="CHBA2" class='form-check-input' type='checkbox'><span></span></td>
+                                    <td><input id="LBA2S" type="text" class="form-control" readonly value="APP2_ST" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="LBA2V" type="text" class="form-control" readonly value="APP2_VL" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td rowspan="2"><input id="LBA2R" type="text" class="form-control" readonly value="APP2_RES" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input id="LBA2SEQ" type="text" class="form-control" readonly value="APP2_SEQ" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="LBA2IDX" type="text" class="form-control" readonly value="APP2_IDX" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C05_ER_R.js?v=@version"></script>
+

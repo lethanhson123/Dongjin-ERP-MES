@@ -1,0 +1,63 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "G01_Button2";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "Please enter Enter security code (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <h6><b>Please enter Enter security code (@url)</b></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <div>
+                        <label>Please enter Enter security code : </label>
+                        <input id="TextBox1" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <br />
+                        <button id="Button1" class="btn waves-effect waves-light green darken-1" style="width: 100%;">OK</button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <br />
+                        <button id="Button2" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/G01_Button2.js?v=@version"></script>
+

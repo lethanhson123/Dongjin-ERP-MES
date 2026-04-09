@@ -1,0 +1,220 @@
+﻿<style>
+    a {
+        text-decoration: none;
+    }
+
+    .border, .border td, .border th {
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        padding: 2px;
+        font-size: 16px;
+    }
+
+    .border {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .header-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .company-name {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .title {
+        font-size: 40px;
+        font-weight: bold;
+        text-align: center;
+        flex: 1;
+        margin: 0;
+    }
+
+    .header-table {
+        margin-bottom: 20px;
+    }
+
+    .signature-table {
+        height: 135px;
+    }
+
+        .signature-table tr:first-child td {
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+            padding-top: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .signature-table tr:last-child td {
+            height: 95px;
+            text-align: center;
+            vertical-align: bottom;
+            padding-bottom: 5px;
+            font-weight: bold;
+        }
+
+    .footer {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .total-section {
+        width: 350px;
+        margin-left: auto;
+        margin-right: 0;
+        margin-top: 20px;
+        float: right;
+    }
+
+    .total-row td {
+        text-align: right;
+        padding-right: 10px;
+        font-size: 20px;
+        height: 35px;
+        vertical-align: middle;
+    }
+
+        .total-row td:last-child {
+            font-weight: bold;
+        }
+
+    /* Thêm style cho bảng thông tin bên trái */
+    .info-table td {
+        height: 45px;
+        vertical-align: middle;
+        font-size: 20px;
+        padding: 5px;
+    }
+
+    /* Style cho bảng chính */
+    .main-table th {
+        font-size: 18px;
+        padding: 8px;
+        height: 40px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .main-table td {
+        font-size: 18px;
+        padding: 6px;
+        height: 35px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+        /* Căn lề phải cho các cột chứa số liệu (đã điều chỉnh sau khi bỏ STOCK) */
+        .main-table td:nth-child(6), /* QTY */
+        .main-table td:nth-child(7), /* Đơn giá trước */
+        .main-table td:nth-child(8), /* COST */
+        .main-table td:nth-child(9), /* VAT */
+        .main-table td:nth-child(10), /* ECT COST */
+        .main-table td:nth-child(11) /* Total COST */ {
+            text-align: right;
+            padding-left: 10px;
+        }
+</style>
+<div style="width: 1500px; height: 1000px; margin: auto; border: 0px solid red; font-family: Arial; font-size: 16px; padding: 10px; position: absolute;">
+    <div class="header-title">
+        <div class="company-name">DJM Solution</div>
+        <div class="title">소모품 구입 품의서 - Phiếu đề nghị mua hàng</div>
+    </div>
+
+    <div style="position: relative; margin-bottom: 20px;">
+        <!-- Bảng thông tin bên trái -->
+        <table width="100%">
+            <tr>
+                <td width="50%" style="position: relative;">
+                    <table class="border info-table" style="width: 400px;">
+                        <tr>
+                            <td style="width: 180px;"><strong>신청 일자<br>/Ngày yêu cầu</strong></td>
+                            <td style="width: 220px;">[DGV_DATE]</td>
+                        </tr>
+                        <tr>
+                            <td><strong>작성자<br>/Người lập</strong></td>
+                            <td>Nguyễn Thị Kiều Dung</td>
+                        </tr>
+                        <tr>
+                            <td><strong>작성 일자<br>/Ngày lập</strong></td>
+                            <td>[DGV_PRINT_DATE]</td>
+                        </tr>
+                    </table>
+                    <!-- Đặt số đơn hàng với kích thước lớn hơn -->
+                    <div style="position: absolute; top: 15px; left: 410px; font-size: 35px; font-weight: bold;">
+                        [DGV_NO]
+                    </div>
+                </td>
+                <td width="50%" style="text-align: right;">
+                    <table class="border signature-table" style="width: 660px; margin-left: auto;">
+                        <tr>
+                            <td style="width: 110px;">Incharger</td>
+                            <td style="width: 110px;">Manager</td>
+                            <td style="width: 110px;">Check 1</td>
+                            <td style="width: 110px;">Check 2</td>
+                            <td style="width: 110px;">Check 3</td>
+                            <td style="width: 110px;">Director</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="border main-table" width="100%" style="margin-top: 50px;">
+        <tr>
+            <th style="width: 6%;">구작부<br>/Bộ phận</th>
+            <th style="width: 15%;">Part Name</th>
+            <th style="width: 15%;">SPEC</th>
+            <th style="width: 6%;">Util</th>
+            <th style="width: 8%;">구매목적<br>/Mục đích mua</th>
+            <th style="width: 6%;">QTY</th>
+            <th style="width: 6%;">전물구가<br>/Đơn giá trước</th>
+            <th style="width: 6%;">COST</th>
+            <th style="width: 6%;">VAT</th>
+            <th style="width: 6%;">ECT COST<br>/Chi phí khác</th>
+            <th style="width: 6%;">Total COST</th>
+            <th style="width: 6%;">구입처<br>/Nơi mua</th>
+        </tr>
+        <!-- Dữ liệu động (bỏ cột STOCK tương ứng) -->
+        [DGV_CONTENT]
+    </table>
+
+    <div class="total-section">
+        <table class="border" style="width: 300px;">
+            <tr class="total-row">
+                <td style="width: 150px;">COST :</td>
+                <td style="width: 150px;">[DGV_SUM_COST]</td>
+            </tr>
+            <tr class="total-row">
+                <td>VAT :</td>
+                <td>[DGV_VAT]</td>
+            </tr>
+            <tr class="total-row">
+                <td>ECT COST :</td>
+                <td>[DGV_ECT_COST]</td>
+            </tr>
+            <tr class="total-row">
+                <td>Total COST :</td>
+                <td>[DGV_TOT_COST]</td>
+            </tr>
+        </table>
+    </div>
+</div>

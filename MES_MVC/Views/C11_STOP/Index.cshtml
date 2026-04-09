@@ -1,0 +1,94 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string url = "C11_STOP";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "Alert notification (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l12 card-panel red darken-4 center-align white-text">
+                    <h4 class="white-text"><b>Alert notification (@url)</b></h4>
+                </div>
+                <div class="col s12 m12 l12 center-align">
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="Label5" type="text" value="-" class="form-control" style="border-width: 0px !important;" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="Label6" type="text" value="-" class="form-control" style="border-width: 0px !important;" readonly>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4 right-align">
+                        <div>
+                            <input id="STOP_MC" type="text" value="-" class="form-control" style="border-width: 0px !important;" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div>
+                        <input id="Label2" type="text" value="--" class="form-control" style="font-size: 60px; color: red; text-align: center; height: 80px !important; border-width: 0px !important;" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12 center-align">
+                    <div>
+                        <label id="Label3" style="font-size: 60px;">Non-operational</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div>
+                        <input id="Label4" type="text" value="00 : 00 : 00" class="form-control" style="font-size: 60px; color: blue; text-align: center; height: 80px !important; border-width: 0px !important;" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l3">
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <button id="Button2" class="btn btn-large waves-effect waves-light green darken-1" style="width: 100%;">점검 /	Đang kiểm tra</button>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <div>
+                            <button id="Button1" class="btn btn-large waves-effect waves-light green darken-1" style="width: 100%;">재 시 작 / Khởi động lại</button>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C11_STOP.js?v=@version"></script>
+

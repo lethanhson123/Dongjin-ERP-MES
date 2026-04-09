@@ -1,0 +1,504 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IB08Service _B08Service
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string url = "B08";
+	try
+	{
+		//truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+		BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+		BaseResult = await _MAINService.Main_Shown(BaseParameter);
+		if (BaseResult.ListtsauthTranfer != null)
+		{
+			BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+			if (BaseResult.tsauthTranfer != null)
+			{
+				IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+				IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+				IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+				IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+				IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+				IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+				IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+				IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+	try
+	{
+		BaseResult = await _B08Service.Load();
+
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l3">
+					<h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+				</div>
+				<div class="col s12 m12 l9 right-align-md">
+					<button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+					</button>
+
+					<button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+					</button>
+
+					<button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+					</button>
+
+					<button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+					</button>
+
+					<button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+					</button>
+
+					<button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+					</button>
+
+					<button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+					</button>
+
+					<button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+					</button>
+
+					<button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">help</i>
+					</button>
+
+					<button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m6 l12">
+					<ul class="tabs">
+						<li class="tab col s2 p-0">
+							<a id="ATag001" class="active p-0" href="#Tag001">ORDER_LIST</a>
+						</li>
+						<li class="tab col s2 p-0">
+							<a id="ATag002" class="p-0" href="#Tag002">INPUT</a>
+						</li>
+						<li class="tab col s2 p-0">
+							<a id="ATag003" class="p-0" href="#Tag003">OUTPUT</a>
+						</li>
+						<li class="tab col s2 p-0">
+							<a id="ATag004" class="p-0" href="#Tag004">P_Management</a>
+						</li>
+						<li class="tab col s2 p-0">
+							<a id="ATag005" class="p-0" href="#Tag005">IN_LIST</a>
+						</li>
+						<li class="tab col s2 p-0">
+							<a id="ATag006" class="p-0" href="#Tag006">OUT_LIST</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row" id="Tag001">
+				<div class="col s12 m12 l12 card-panel light-blue lighten-4">
+					<div class="col s12 m12 l2">
+						<div>
+							<label>Date (start) : </label>
+							<input id="DateTimePicker3" type="date" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>Date (end) : </label>
+							<input id="DateTimePicker1" type="date" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>Machine : </label>
+							<select id="ComboBox1" class="browser-default form-select">
+								<option value="ALL">
+									ALL
+								</option>
+								@{
+									if (BaseResult != null)
+									{
+										if (BaseResult.Listttc_part != null)
+										{
+											foreach (var item in BaseResult.Listttc_part)
+											{
+												<option value="@item.TC_MC">
+													@item.TC_MC
+												</option>
+											}
+										}
+									}
+								}
+							</select>
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>Tube cutting PART NO : </label>
+							<input id="TextBox1" type="text" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>State : </label>
+							<select id="ComboBox2" class="browser-default form-select">
+								<option value="ALL">
+									ALL
+								</option>
+								<option value="Stay">
+									Stay
+								</option>
+								<option value="Complete">
+									Complete
+								</option>
+								<option value="Working">
+									Working
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l12">
+						<div>
+							<label>
+								<input id="rbchk1" name="DataGridView1" type="radio" />
+								<span>Select All</span>
+							</label>
+							<label>
+								<input id="rbchk2" name="DataGridView1" type="radio" />
+								<span>Inversion of choice</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow60">
+					<table class="responsive-table" id="DataGridView1Table">
+						<thead class="sticky-header">
+							<tr onclick="DataGridView1Sort()">
+								<th></th>
+								<th>State</th>
+								<th></th>
+								<th>Order_Date</th>
+								<th>Tube PART NO</th>
+								<th>Description</th>
+								<th>CUT_ORDER</th>
+								<th>Work_QTY</th>
+								<th>Raw Material PN</th>
+								<th>Size(mm)</th>
+								<th>Machine</th>
+								<th>Packing Unit</th>
+								<th>Location</th>
+							</tr>
+						</thead>
+						<tbody id="DataGridView1">
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row" id="Tag002">
+				<div class="col s12 m12 l12 card-panel green lighten-4">
+					<div class="col s12 m12 l2">
+						<div>
+							<label style="font-size: 20px;">Barcode : </label>
+						</div>
+					</div>
+					<div class="col s12 m12 l6">
+						<div>
+							<input id="TextBox2" type="text" class="form-control" style="font-size: 30px; height: 40px !important;">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label style="font-size: 20px;">Người nhập kho : </label>
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<input id="TextBox4" type="text" class="form-control" style="font-size: 30px; height: 40px !important;">
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow60">
+					<table class="responsive-table" id="DataGridView2Table">
+						<thead class="sticky-header">
+							<tr onclick="DataGridView2Sort()">
+								<th>STAY</th>
+								<th>TC_PART_NO</th>
+								<th>BARCODE</th>
+								<th>IN_DATE</th>
+								<th>USER_NAME</th>
+							</tr>
+						</thead>
+						<tbody id="DataGridView2">
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row" id="Tag003">
+				<div class="col s12 m12 l12 card-panel yellow lighten-4">
+					<div class="col s12 m12 l3">
+						<div>
+							<label style="font-size: 30px;">Barcode : </label>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<input id="TextBox3" type="text" class="form-control" style="font-size: 30px; height: 40px !important;">
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label style="font-size: 30px;">Người xuất kho : </label>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<input id="TextBox5" type="text" class="form-control" style="font-size: 30px; height: 40px !important;">
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow60">
+					<table class="responsive-table" id="DataGridView3Table">
+						<thead class="sticky-header">
+							<tr onclick="DataGridView3Sort()">
+								<th>STAY</th>
+								<th>TC_PART_NO</th>
+								<th>BARCODE</th>
+								<th>IN_DATE</th>
+								<th>IN_USER</th>
+								<th>OUT_DATE</th>
+								<th>OUT_USER</th>
+							</tr>
+						</thead>
+						<tbody id="DataGridView3">
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row" id="Tag004">
+				<div class="col s12 m12 l12 card-panel orange lighten-4">
+					<div class="col s12 m12 l4">
+						<div>
+							<label>DATE : </label>
+							<input id="TBTEXT03" type="date" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l4">
+						<div>
+							<label>PART NO : </label>
+							<input id="TBTEXT01" type="text" class="form-control">
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m12 l12 card-panel green lighten-4">
+					<div class="col s12 m12 l4">
+						<div>
+							<label>PART NO : </label>
+							<input id="TLB_05" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l4">
+						<div>
+							<label>PART NAME : </label>
+							<input id="TLB_07" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l4">
+						<div>
+							<label>Stock_QTY : </label>
+							<input id="TLB_09" type="text" class="form-control" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow25">
+					<table class="responsive-table" id="T_DGV_01Table">
+						<thead class="sticky-header">
+							<tr onclick="T_DGV_01Sort()">
+								<th>NO</th>
+								<th>CREATE_DTM</th>
+								<th>PART_NO</th>
+								<th>PART_NAME</th>
+								<th>IN_STOCK</th>
+								<th>OUT_STOCK</th>
+								<th>STOCK</th>
+							</tr>
+						</thead>
+						<tbody id="T_DGV_01">
+						</tbody>
+					</table>
+				</div>
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l12">
+						<div>
+							<label>
+								<input id="TLB_CHK1" name="T_DGV_02" type="radio" />
+								<span>Select All</span>
+							</label>
+							<label>
+								<input id="TLB_CHK2" name="T_DGV_02" type="radio" />
+								<span>Inversion of choice</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow25">
+					<table class="responsive-table" id="T_DGV_02Table">
+						<thead class="sticky-header">
+							<tr onclick="T_DGV_02Sort()">
+								<th></th>
+								<th>RACKCODE</th>
+								<th>BARCODE_NM</th>
+								<th>QTY</th>
+								<th>RACKDTM</th>
+								<th>IN_UESR</th>
+								<th>RACKOUT_DTM</th>
+								<th>OUT_USER</th>
+							</tr>
+						</thead>
+						<tbody id="T_DGV_02">
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row" id="Tag005">
+				<div class="col s12 m12 l12 card-panel light-blue lighten-4">
+					<div class="col s12 m12 l2">
+						<div>
+							<label>IN Date (start) : </label>
+							<input id="IN_LISTDATE1" type="date" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>IN Date (end) : </label>
+							<input id="IN_LISTDATE2" type="date" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>USER NAME : </label>
+							<input id="TextBox6" type="text" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>Working Time : </label>
+							<input id="TextBox7" type="number" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>Total Meter : </label>
+							<input id="Label11" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>Productivity : </label>
+							<input id="Label12" type="text" class="form-control" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow60">
+					<table class="responsive-table" id="IN_LIST_DGVTable">
+						<thead class="sticky-header">
+							<tr onclick="IN_LIST_DGVSort()">
+								<th>IN_USER</th>
+								<th>DATE</th>
+								<th>Time(h)</th>
+								<th>PART_NO</th>
+								<th>PART_NAME</th>
+								<th>QTY</th>
+								<th>SIZE</th>
+								<th>Meter</th>
+								<th>Work_Time</th>
+								<th>Load_Time</th>
+								<th>Minute</th>
+							</tr>
+						</thead>
+						<tbody id="IN_LIST_DGV">
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+			<div class="row" id="Tag006">
+				<div class="col s12 m12 l12 card-panel light-blue lighten-4">
+					<div class="col s12 m12 l2">
+						<div>
+							<label>OUT Date (start) : </label>
+							<input id="OUT_LISTDATE1" type="date" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l2">
+						<div>
+							<label>OUT Date (end) : </label>
+							<input id="OUT_LISTDATE2" type="date" class="form-control">
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow60">
+					<table class="responsive-table" id="OUT_LIST_DGVTable">
+						<thead class="sticky-header">
+							<tr onclick="OUT_LIST_DGVSort()">
+								<th>IN_USER</th>
+								<th>DATE</th>
+								<th>Time(h)</th>
+								<th>PART_NO</th>
+								<th>PART_NAME</th>
+								<th>QTY</th>
+							</tr>
+						</thead>
+						<tbody id="OUT_LIST_DGV">
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/B08.js?v=@version"></script>
+

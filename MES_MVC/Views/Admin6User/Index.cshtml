@@ -1,0 +1,193 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IAdmin6UserService Admin6UserService
+@{
+    //string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "Admin6User";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "HOOK RACK Inventory Management";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <h4 class="card-title">HOOK RACK Inventory Management</h4>
+
+           
+            <!-- Order Barcode Input Section -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="input-field">
+                        <label for="BC" class="active">Order Barcode (IN_ONLY):</label>
+                        <input id="BC" type="text" class="validate">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Form Section -->
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="input-field">
+                        <label for="TextBox1" class="active">LEAD NO:</label>
+                        <input id="TextBox1" type="text" class="validate">
+                    </div>
+                </div>
+                <div class="col s12 m2">
+                    <button id="Button1" class="btn waves-effect waves-light cyan" style="margin-top: 20px;">FIND</button>
+                </div>
+                <div class="col s12 m2">
+                    <div class="card-panel red darken-2 white-text center-align" style="padding: 10px; margin-top: 15px;">
+                        <span id="Button3">STOCK_QTY = 0</span>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <button id="Button2" class="btn waves-effect waves-light orange" style="margin-top: 20px;">RESET</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="input-field">
+                        <label for="DateTimePicker1" class="active">DATE_TIME:</label>
+                        <input id="DateTimePicker1" type="text" class="validate" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <div class="input-field">
+                        <label for="TextBox2" class="active">QTY:</label>
+                        <input id="TextBox2" type="number" class="validate" value="0" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <button id="Button4" class="btn waves-effect waves-light blue" style="margin-top: 20px;">STOCK_Search</button>
+                </div>
+            </div>
+
+            <!-- Grid Section - Stock Information -->
+            <div class="KhungOverflow">
+                <table class="responsive-table" id="DataGridView1Table">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th>HOOK_RACK</th>
+                            <th>LEAD_NM</th>
+                            <th>STOCK_QTY</th>
+                            <th>IN_QTY</th>
+                            <th>OUT_QTY</th>
+                            <th>Stock_status</th>
+                            <th>CHK_QTY</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView1">
+                        <!-- Data will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Grid Section - Transaction History -->
+            <div class="KhungOverflow">
+                <table class="responsive-table" id="DataGridView2Table">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th>TABLE_NM</th>
+                            <th>RACKCODE</th>
+                            <th>QTY</th>
+                            <th>RACKDTM</th>
+                            <th>RACKOUT_DTM</th>
+                            <th>BARCODE_NM</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView2">
+                        <!-- Data will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="admin6USER1Modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Wire Check</h4>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <!-- Search area -->
+            <div class="row">
+                <div class="col s12 m8">
+                    <div class="input-field">
+                        <label for="ModalTextBox1" class="active">LEAD PN:</label>
+                        <input id="ModalTextBox1" type="text" class=" form-control">
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <button id="ModalButton1" class="btn waves-effect waves-light cyan" style="margin-top: 20px;">Search</button>
+                </div>
+            </div>
+
+            <!-- Selected information -->
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col s12 m4">
+                    <div class="card-panel grey lighten-4" style="padding: 10px;">
+                      
+                        <div id="Label2" class="bold-text">-</div>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <div class="card-panel grey lighten-4" style="padding: 10px;">
+                       
+                        <div id="Label3" class="bold-text">-</div>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <div class="card-panel grey lighten-4" style="padding: 10px;">
+                      
+                        <div id="Label4" class="bold-text">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data grid -->
+            <div class="KhungOverflow" style="max-height: 400px; overflow-y: auto;">
+                <table class="responsive-table highlight" id="ModalDataGridView1Table">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th>LEAD PN</th>
+                            <th>BUNDLE SIZE</th>
+                            <th>HOOK RACK</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ModalDataGridView1">
+                        <!-- Data will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="SelectButton" class="btn waves-effect waves-light green">Select</button>
+            <button id="CloseModalButton" class="btn waves-effect waves-light red">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Admin6User.js?v=@GlobalHelper.GetVersionScrip("Admin6User.js")"></script>

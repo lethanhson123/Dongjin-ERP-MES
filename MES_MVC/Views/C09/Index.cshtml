@@ -1,0 +1,1180 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC09Service _C09Service
+@{
+    //string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C09";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _C09Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<style>
+
+    .modal {
+        max-height: 100%;
+    }
+
+        .modal .modal-content {
+            padding: 5px;
+        }
+</style>
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <input id="CODE_S" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_S">
+            <input id="CODE_I" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_I">
+            <input id="CODE_Q" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_Q">
+            <input id="CODE_M" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_M">
+            <input id="CODE_T" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_T">
+            <input id="CODE_L" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_L">
+            <input id="CODE_E" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_E">
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="MCbox" type="text" class="form-control" readonly style="font-size: 20px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <label>@MES_MVC.Resources.Resource.CO2_START10</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <select id="ComboBox3" class="browser-default form-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <button id="Button2" title="STOP" class="btn waves-effect waves-light red darken-1" style="width: 100%;">STOP</button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <button id="Button1" title="Export" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Export</button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <button id="Button3" title="Status" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Status</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel green lighten-4">
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Factory : </label>
+                        <select id="ComboBox4" class="browser-default form-select">
+                            <option value="Factory 1">
+                                Factory 1
+                            </option>
+                            <option value="Factory 2">
+                                Factory 2
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Date : </label>
+                        <input id="DateTimePicker1" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Order Group : </label>
+                        <select id="ComboBox1" class="browser-default form-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Order : </label>
+                        <select id="ComboBox2" class="browser-default form-select">
+                            <option value="ALL">
+                                ALL
+                            </option>
+                            <option value="Stay">
+                                Stay
+                            </option>
+                            <option value="Complete">
+                                Complete
+                            </option>
+                            <option value="Working">
+                                Working
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Lead NO : </label>
+                        <input id="TextBox1" type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l9">
+                    <div>
+                        <label>
+                            <input id="rbchk1" name="C09" type="radio" />
+                            <span>Select All</span>
+                        </label>
+                        <label>
+                            <input id="rbchk2" name="C09" type="radio" />
+                            <span>Inversion of choice</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <input id="Label2" type="text" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l9">
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DataGridView1Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Week</th>
+                                    <th>Order</th>
+                                    <th>Creation date</th>
+                                    <th>LEAD_NO</th>
+                                    <th>EXCEL_PO</th>
+                                    <th>HR_STOCK</th>
+                                    <th>Safety stock</th>
+                                    <th>TOTAL QTY</th>
+                                    <th>Remaining(F2)</th>
+                                    <th>QTY of Work</th>
+                                    <th>Order Group</th>
+                                    <th>Order_Date</th>
+                                    <th>BUNDLE_SIZE</th>
+                                    <th>HOOK_RACK</th>
+                                    <th>LEAD COUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DataGridView2Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>LEAD_NO</th>
+                                    <th>LH/RH</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView2">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C09_STOP" class="modal modal-fixed-footer" style="width: 80vw !important; height: 80vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l12 card-panel red darken-4 center-align white-text">
+                <h4 class="white-text"><b>Alert notification (@url)</b></h4>
+            </div>
+            <div class="col s12 m12 l12 center-align">
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C09_STOP_Label5" type="text" value="-" class="form-control" style="" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                        <input id="C09_STOP_Label6" type="text" value="-" class="form-control" style="" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l4 right-align">
+                    <div>
+                        <input id="C09_STOP_STOP_MC" type="text" value="-" class="form-control" style="" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l12">
+                <div>
+                    <input id="C09_STOP_Label2" type="text" value="--" class="form-control" style="font-size: 60px; color: red; text-align: center; height: 80px !important; " readonly>
+                </div>
+            </div>
+            <div class="col s12 m12 l12 center-align">
+                <div>
+                    <label id="C09_STOP_Label3" style="font-size: 60px;">Non-operational</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l12">
+                <div>
+                    <input id="C09_STOP_Label4" type="text" value="00 : 00 : 00" class="form-control" style="font-size: 60px; color: blue; text-align: center; height: 80px !important; " readonly>
+                </div>
+            </div>
+            <div class="col s12 m12 l12">
+                <div class="col s12 m12 l2">
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <button id="C09_STOP_Button2" class="btn btn-large waves-effect waves-light yellow darken-2" style="width: 100%;">
+                            <i class="material-icons left">build</i>
+                            점검 중 / Đang kiểm tra
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <button id="C09_STOP_Button3" class="btn btn-large waves-effect waves-light blue darken-1" style="width: 100%;" disabled>
+                            <i class="material-icons left">assignment_turned_in</i>
+                            완료 / Hoàn thành sửa chữa
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div>
+                        <button id="C09_STOP_Button1" class="btn btn-large waves-effect waves-light green darken-1" style="width: 100%;">
+                            <i class="material-icons left">play_arrow</i>
+                            재 시 작 / Khởi động lại
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal nhập chi tiết bảo trì C09 -->
+<div id="C09_STOP_MaintenanceModal" class="modal" style="width: 90%; max-height: 90vh;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 15px;">
+            <div class="col s12">
+                <h5>Chi tiết bảo trì máy</h5>
+            </div>
+        </div>
+
+        <form id="C09_STOP_MaintenanceForm">
+            <div class="row">
+                <div class="col s12">
+                    <label for="C09_STOP_CurrentStatus">Nội dung lỗi <span class="red-text">*</span></label>
+                    <select id="C09_STOP_CurrentStatus" class="browser-default" required>
+                        <option value="" disabled selected>Chọn Nội dung lỗi</option>
+                        <option value="Lỗi dính đồng/tưa đồng (심선 동착/ 노출 불량)">Lỗi dính đồng/tưa đồng (심선 동착/ 노출 불량)</option>
+                        <option value="Lỗi phần cứng/nguồn điện (하드웨어/전원 불량)">Lỗi phần cứng/nguồn điện (하드웨어/전원 불량)</option>
+                        <option value="Lỗi phần mềm/chương trình (소프트웨어 / 프로그램 불량)">Lỗi phần mềm/chương trình (소프트웨어 / 프로그램 불량)</option>
+                        <option value="Lỗi nắp 216 (전진 슬라이더 불량)">Lỗi nắp 216 (전진 슬라이더 불량)</option>
+                        <option value="Lỗi tool mòn/xoay tool (툴 마모/ 회전 불량)">Lỗi tool mòn/xoay tool (툴 마모/ 회전 불량)</option>
+                        <option value="Lỗi kẹt tool (툴 걸림 불량)">Lỗi kẹt tool (툴 걸림 불량)</option>
+                        <option value="Lỗi nuốt dây (USW 전선 설비에 동착 불량)">Lỗi nuốt dây (USW 전선 설비에 동착 불량)</option>
+                        <option value="Lỗi không đủ lực kéo (인장력 미달 불량)">Lỗi không đủ lực kéo (인장력 미달 불량)</option>
+                        <option value="Thay tool mới (신규 툴 교체)">Thay tool mới (신규 툴 교체)</option>
+                        <option value="Cập nhật chương trình mới (신규 프로그램 업데이트)">Cập nhật chương trình mới (신규 프로그램 업데이트)</option>
+                        <option value="Test kiểm tra mối hàn (용착 부분 검사)">Test kiểm tra mối hàn (용착 부분 검사)</option>
+                        <option value="Thay nhám (사포 교체)">Thay nhám (사포 교체)</option>
+                        <option value="Lỗi motor (모터 불량)">Lỗi motor (모터 불량)</option>
+                        <option value="Lỗi hơi khí nén (공압 불량)">Lỗi hơi khí nén (공압 불량)</option>
+                        <option value="Lỗi ngàm không kẹp (Jaw 불량)">Lỗi ngàm không kẹp (Jaw 불량)</option>
+                        <option value="Lỗi khác (기타)">Lỗi khác (기타)</option>
+                        <option value="Lỗi xy-lanh khí nén (공압 실린더 불량)">Lỗi xy-lanh khí nén (공압 실린더 불량)</option>
+                        <option value="Lỗi van khí nén (공압 밸브 불량)">Lỗi van khí nén (공압 밸브 불량)</option>
+
+                    </select>
+                </div>
+            </divD
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="C09_STOP_Solution">Biện pháp <span class="red-text">*</span></label>
+                    <select id="C09_STOP_Solution" class="browser-default" required>
+                        <option value="" disabled selected>Chọn biện pháp</option>
+                        <option value="Kiểm tra, canh chỉnh (확인, 조정)">Kiểm tra, canh chỉnh (확인, 조정)</option>
+                        <option value="Kiểm tra, canh chỉnh, vệ sinh (확인, 조정 및 청소)">Kiểm tra, canh chỉnh, vệ sinh (확인, 조정 및 청소)</option>
+                        <option value="Kiểm tra, canh chỉnh, thay thế (확인, 조정 및 교체)">Kiểm tra, canh chỉnh, thay thế (확인, 조정 및 교체)</option>
+                        <option value="Reset, cài lại (재세팅)">Reset, cài lại (재세팅)</option>
+                        <option value="Xử lý theo thực tế (실제 현상황에 맞게 조치)">Xử lý theo thực tế (실제 현상황에 맞게 조치)</option>
+                        <option value="Kiểm tra, thay nhám (확인 및 사포 교체)">Kiểm tra, thay nhám (확인 및 사포 교체)</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col s12">
+                        <label for="C09_STOP_SparePartsUsed">Phụ tùng sử dụng <span class="red-text">*</span></label>
+                    <textarea id="C09_STOP_SparePartsUsed" class="materialize-textarea" placeholder="VD: Bạc đạn loại A - 2 cái"></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="C09_STOP_MaintenedBy">Người sửa <span class="red-text">*</span></label>
+                    <select id="C09_STOP_MaintenedBy" class="browser-default" required>
+                        <option value="" disabled selected>Chọn người sửa</option>
+                        <option value="Đức (LD)">Đức (LD)</option>
+                        <option value="Quốc L (FM)">Quốc L (FM)</option>
+                        <option value="Vũ (FM)">Vũ (FM)</option>
+                        <option value="Quốc N">Quốc N</option>
+                        <option value="Hải">Hải</option>
+                        <option value="Kiệt">Kiệt</option>
+                        <option value="Thảo">Thảo</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Phúc (Staff)">Phúc (Staff)</option>
+                        <option value="Võ Thanh Tuần (F2)">Võ Thanh Tuần (F2)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label for="C09_STOP_Notes">Ghi chú</label>
+                    <textarea id="C09_STOP_Notes" class="materialize-textarea" placeholder="Ghi chú bổ sung..."></textarea>
+                </div>
+            </div>
+
+            <input type="hidden" id="C09_STOP_TSNON_OPER_IDX" value="">
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button id="C09_STOP_MaintenanceSaveBtn" class="btn green" type="button">
+            <i class="material-icons left">save</i>Lưu
+        </button>
+    </div>
+</div>
+<div id="C09_COUNT" class="modal modal-fixed-footer" style="width: 80vw !important; height: 80vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l6">
+                <h6><b>ORDER_COUNT (C09_COUNT)</b></h6>
+            </div>
+            <div class="col s12 m12 l6 right-align-md">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l3">
+                <div>
+                    <label>
+                        <input id="C09_COUNT_RadioButton1" name="C09_COUNT" type="radio" />
+                        <span>Order Date</span>
+                    </label>
+                    <label>
+                        <input id="C09_COUNT_RadioButton2" name="C09_COUNT" type="radio" />
+                        <span>Machine</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="KhungOverflow45">
+            <table class="responsive-table" id="C09_COUNT_DataGridView1Table">
+                <thead class="sticky-header">
+                    <tr>
+                        <th>MC</th>
+                        <th>Date</th>
+                        <th>SUM</th>
+                        <th>Stay</th>
+                        <th>Working</th>
+                        <th>Complete</th>
+                        <th>Close</th>
+                    </tr>
+                </thead>
+                <tbody id="C09_COUNT_DataGridView1">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="C09_LIST" class="modal modal-fixed-footer" style="width: 100vw !important; height: 90vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <input id="C09_LIST_CODE_S" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_S">
+        <input id="C09_LIST_CODE_I" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_I">
+        <input id="C09_LIST_CODE_Q" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_Q">
+        <input id="C09_LIST_CODE_M" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_M">
+        <input id="C09_LIST_CODE_T" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_T">
+        <input id="C09_LIST_CODE_L" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_L">
+        <input id="C09_LIST_CODE_E" type="text" class="form-control" style="display: none;" value="@MES_MVC.Resources.Resource.CODE_E">
+        <div class="row">
+            <div class="col s12 m12 l3">
+                <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (C09_LIST)</b></h6>
+            </div>
+            <div class="col s12 m12 l9 right-align-md">
+                <button @(IsButtonfind ? "" : "Disabled") id="C09_LIST_Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                </button>
+
+                <button @(IsButtonadd ? "" : "Disabled") id="C09_LIST_Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                </button>
+
+                <button @(IsButtonsave ? "" : "Disabled") id="C09_LIST_Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                </button>
+
+                <button @(IsButtondelete ? "" : "Disabled") id="C09_LIST_Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                </button>
+
+                <button @(IsButtoncancel ? "" : "Disabled") id="C09_LIST_Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                </button>
+
+                <button @(IsButtoninport ? "" : "Disabled") id="C09_LIST_Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                </button>
+
+                <button @(IsButtonexport ? "" : "Disabled") id="C09_LIST_Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                </button>
+
+                <button @(IsButtonprint ? "" : "Disabled") id="C09_LIST_Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                </button>
+
+                <button id="C09_LIST_Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                        style="margin-right: 10px;">
+                    <i class="material-icons">help</i>
+                </button>
+
+                <button id="C09_LIST_Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_LIST_MCbox" type="text" class="form-control" readonly value="---" style="font-size: 20px;">
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div>
+                    <label>@MES_MVC.Resources.Resource.CO2_START10</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div>
+                    <select id="C09_LIST_ComboBox3" class="browser-default form-select">
+                    </select>
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <button id="C09_LIST_Button2" title="STOP" class="btn waves-effect waves-light red darken-1" style="width: 100%;">STOP</button>
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <button id="C09_LIST_Button1" title="Export" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Export</button>
+                </div>
+            </div>
+            <div class="col s12 m12 l1">
+                <div>
+                    <button id="C09_LIST_Button3" title="Status" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Status</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l9">
+                <div>
+                    <label>
+                        <input id="C09_LIST_rbchk1" name="C09" type="radio" />
+                        <span>Select All</span>
+                    </label>
+                    <label>
+                        <input id="C09_LIST_rbchk2" name="C09" type="radio" />
+                        <span>Inversion of choice</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div>
+                    <input id="C09_LIST_Label2" type="text" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="col s12 m12 l9">
+                <div class="KhungOverflow">
+                    <table class="responsive-table" id="C09_LIST_DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th>Week</th>
+                                <th>Order</th>
+                                <th>ASSY NO</th>
+                                <th>LEAD_NO</th>
+                                <th>HR_STOCK</th>
+                                <th>TOTAL QTY</th>
+                                <th>QTY of Work</th>
+                                <th>Order Group</th>
+                                <th>Safety stock</th>
+                                <th>Order_Date</th>
+                                <th>Work_Date</th>
+                                <th>BUNDLE_SIZE</th>
+                                <th>HOOK_RACK</th>
+                                <th>LEAD COUNT</th>
+                                <th>ORDER NO</th>
+                                <th>DSCN_YN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C09_LIST_DataGridView1">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col s12 m12 l8">
+                    <div>
+                        <label>
+                            SP LAED 전용 바코드 | SP LEAD ONLY | Barcode sử dụng riêng cho dây SP
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <img id="C09_LIST_PictureBox1" width="100" height="100" />
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div class="KhungOverflow">
+                    <table class="responsive-table" id="C09_LIST_DataGridView2Table">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>LEAD_NO</th>
+                                <th>LH/RH</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C09_LIST_DataGridView2">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C09_REPRINT" class="modal modal-fixed-footer" style="width: 100vw !important; height: 90vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l4">
+                <h6><b>C02_REPRINT (C09_REPRINT)</b></h6>
+            </div>
+            <div class="col s12 m12 l2">
+                <input id="C09_REPRINT_ORDER_NO" type="text" class="form-control" readonly>
+            </div>
+            <div class="col s12 m12 l6 right-align-md">
+                <div class="col s12 m12 l4">
+                    <button id="C09_REPRINT_Buttonprint" title="Print" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Print</button>
+                </div>
+                <div class="col s12 m12 l4">
+                    <button id="C09_REPRINT_Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                </div>
+            </div>
+        </div>
+        <div class="row card-panel yellow lighten-4">
+            <div class="col s12 m12 l6">
+                <div>
+                    <input id="C09_REPRINT_PRT_1" type="text" class="form-control" readonly value="BARCODE">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_REPRINT_PRT_2" type="text" class="form-control" readonly value="SEQ">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_REPRINT_PRT_3" type="text" class="form-control" readonly value="LEADNO">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_REPRINT_PRT_4" type="text" class="form-control" readonly value="DT">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_REPRINT_PRT_5" type="text" class="form-control" readonly value="MC">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_REPRINT_PRT_6" type="text" class="form-control" readonly value="HOOK">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_REPRINT_PRT_7" type="text" class="form-control" readonly value="TOT_QTY">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_REPRINT_PRT_8" type="text" class="form-control" readonly value="BANDSIZE">
+                </div>
+            </div>
+            <div class="col s12 m12 l2">
+                <div>
+                    <input id="C09_REPRINT_PRT_9" type="text" class="form-control" readonly value="SF Stock">
+                </div>
+            </div>
+        </div>
+        <div class="KhungOverflow60">
+            <table class="responsive-table" id="C09_REPRINT_DataGridView1Table">
+                <thead class="sticky-header">
+                    <tr>
+                        <th>TORDER_BARCODENM</th>
+                        <th>Barcode_SEQ</th>
+                        <th>WORK_END</th>
+                        <th>LEAD_NO</th>
+                        <th>ORDER_DATE</th>
+                        <th>MC</th>
+                        <th>HOOK_RACK</th>
+                        <th>PO_QTY</th>
+                        <th>BUNDLE_SIZE</th>
+                        <th>SAFTY_QTY</th>
+                    </tr>
+                </thead>
+                <tbody id="C09_REPRINT_DataGridView1">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="C09_START_V3" class="modal modal-fixed-footer" style="width: 100vw !important; height: 90vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l9">
+                <div class="row">
+                    <div class="col s12 m12 l11">
+                        <h6><b>SP / ST (C09_START_V3)</b></h6>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <button id="C09_START_V3_Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">@MES_MVC.Resources.Resource.Buttonclose</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l1">
+                        <div>
+                            <label>MC : </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <input id="C09_START_V3_MCbox" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>LEAD NO</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l5">
+                        <div>
+                            <input id="C09_START_V3_partbox" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <input id="C09_START_V3_ORDER_NO_TEXT" type="text" class="form-control" readonly value="---" style="border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>                   
+                </div>
+                <div class="row card-panel yellow lighten-4" style="padding-top: 10px; padding-bottom: 5px;">
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>
+                                <input id="C09_START_V3_R_BUTT_LH" name="C09_START_V3" type="radio" />
+                                <span>LH</span>
+                            </label>
+                            <label>
+                                <input id="C09_START_V3_R_BUTT_RH" name="C09_START_V3" type="radio" />
+                                <span>RH</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <div>
+                            <label>LEAD BARCODE : </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l8">
+                        <div>
+                            <input id="C09_START_V3_Barcodebox" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <br />
+                    <div class="col s12 m12 l7">
+                        <div>
+                            <img id="C09_START_V3_PictureBox1" src="@DomainSite/Image/SPST.png" width="670" height="200" />
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l5">
+                        <div class="row">
+                            <div class="col s12 m12 l4">
+                                <div>
+                                    <label>Start Time : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l8">
+                                <div>
+                                    <input id="C09_START_V3_Label70" type="text" class="form-control" readonly value="S_TIME" style="font-weight: bold; border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l4">
+                                <div>
+                                    <label>Bundle size : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l8">
+                                <div>
+                                    <input id="C09_START_V3_Label7" type="number" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l4">
+                                <div>
+                                    <label>COUNT : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="C09_START_V3_Label48" type="number" class="form-control" readonly value="0" style="color: blue; border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l2" style="text-align: center;">
+                                <div>
+                                    /
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l3">
+                                <div>
+                                    <input id="C09_START_V3_Label59" type="number" class="form-control" readonly value="0" style="border-width: 0px !important; text-align: center; font-size: 24px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <input id="C09_START_V3_MRUS" type="text" class="form-control" readonly value="-" style="font-size: 24px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l6">
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <input id="C09_START_V3_LH_QTY" type="text" class="form-control" readonly value="0" style="color: blue; font-size: 24px; text-align: center;">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                INSPECTION
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <button id="C09_START_V3_SPC1" title="First" class="btn waves-effect waves-light green darken-1" style="width: 100%;">First</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <button id="C09_START_V3_SPC2" title="Middle" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Middle</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <button id="C09_START_V3_SPC3" title="End" class="btn waves-effect waves-light green darken-1" style="width: 100%;">End</button>
+                            </div>
+                        </div>
+                        <div class="KhungOverflow25">
+                            <table class="responsive-table" id="C09_START_V3_DataGridView1Table">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>LEAD_NO</th>
+                                        <th>BUNDLE</th>
+                                        <th>E_CHK</th>
+                                        <th>QTY</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="C09_START_V3_DataGridView1">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <div class="col s12 m12 l9">
+                            <div>
+                                <button id="C09_START_V3_Buttonprint" title="Complete / Print" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">Complete / Print</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <div>
+                                <input id="C09_START_V3_RH_QTY" type="text" class="form-control" readonly value="0" style="color: blue; font-size: 24px; text-align: center;">
+                            </div>
+                        </div>
+                        <div class="KhungOverflow25">
+                            <table class="responsive-table" id="C09_START_V3_DataGridView2Table">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>LEAD_NO</th>
+                                        <th>BUNDLE</th>
+                                        <th>E_CHK</th>
+                                        <th>QTY</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="C09_START_V3_DataGridView2">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div class="row" style="background-color: blue; text-align: center; margin-bottom: 2px; padding-top: 0px; padding-bottom: 0px;">
+                    <div>
+                        <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START03</label>
+                    </div>
+                </div>
+                <div class="row" style="background-color: black; padding-top: 0px; padding-bottom: 0px;">
+                    <div>
+                        <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START04</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START05</label>
+                            <input id="C09_START_V3_BI_STIME" type="text" class="form-control" readonly value="__:__:__" style="text-align: right; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l7">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START06</label>
+                            <input id="C09_START_V3_BI_RCK" type="text" class="form-control" readonly value="-" style="text-align: right;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l5">
+                        <div>
+                            <label>.</label>
+                            <input id="C09_START_V3_BI_RTIME" type="text" class="form-control" readonly value="__:__:__" style="text-align: right; font-size: 24px;">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>@MES_MVC.Resources.Resource.CO2_START07</label>
+                            <input id="C09_START_V3_BI_STOPTIME" type="text" class="form-control" readonly value="00:00:00" style="text-align: right; font-size: 24px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="background-color: black; margin-bottom: 2px; padding-top: 0px; padding-bottom: 0px;">
+                    <div class="col s12 m12 l8">
+                        <div>
+                            <label style="color: white;">UPH : </label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="C09_START_V3_BI_UPH" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="background-color: black; margin-bottom: 2px; padding-top: 0px; padding-bottom: 0px;">
+                    <div class="col s12 m12 l8">
+                        <div>
+                            <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START08</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="C09_START_V3_BI_WQTY" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="background-color: black; margin-bottom: 2px; padding-top: 0px; padding-bottom: 0px;">
+                    <div class="col s12 m12 l8">
+                        <div>
+                            <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START09</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div>
+                            <input id="C09_START_V3_BI_RVA" type="text" class="form-control" readonly value="--" style="text-align: right; border-width: 0px !important; font-size: 24px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="background-color: black; margin-bottom: 2px; padding-top: 0px; padding-bottom: 0px;">
+                    <div>
+                        <label style="color: white;">@MES_MVC.Resources.Resource.CO2_START10</label>
+                    </div>
+                </div>
+                <div class="row card-panel yellow lighten-4">
+                    <button id="C09_START_V3_BI_10" title="STOP" class="btn waves-effect waves-light red darken-1" style="width: 100%;">STOP</button>
+                    <div class="row">
+                        <div>
+                            <label>
+                                <input id="C09_START_V3_BI_RadioButton1" name="BI_RadioButton" type="radio" />
+                                <span id="C09_START_V3_BI_RadioButton1Text">Chuẩn bị thiết bị ((설비준비))</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <label>
+                                <input id="C09_START_V3_BI_RadioButton2" name="BI_RadioButton" type="radio" />
+                                <span id="C09_START_V3_BI_RadioButton2Text">Thiếu nguyên vật liệu (자재결품)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <label>
+                                <input id="C09_START_V3_BI_RadioButton3" name="BI_RadioButton" type="radio" />
+                                <span id="C09_START_V3_BI_RadioButton3Text">Vấn đề chất lượng (품질문제)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <label>
+                                <input id="C09_START_V3_BI_RadioButton4" name="BI_RadioButton" type="radio" />
+                                <span id="C09_START_V3_BI_RadioButton4Text">Máy hư (설비고장)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <label>
+                                <input id="C09_START_V3_BI_RadioButton5" name="BI_RadioButton" type="radio" />
+                                <span id="C09_START_V3_BI_RadioButton5Text">Đào tạo/ họp (교육/회의)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <label>
+                                <input id="C09_START_V3_BI_RadioButton6" name="BI_RadioButton" type="radio" />
+                                <span id="C09_START_V3_BI_RadioButton6Text">Giờ ăn (식사시간)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <label>
+                                <input id="C09_START_V3_BI_RadioButton7" name="BI_RadioButton" type="radio" />
+                                <span id="C09_START_V3_BI_RadioButton7Text">Khác (기타)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C09_SPC" class="modal modal-fixed-footer" style="width: 80vw !important; height: 60vh !important; background-color: #e0e0e0 !important;">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l4">
+                <h6><b>SP/ST SPC (C09_SPC)</b></h6>
+            </div>
+            <div class="col s12 m12 l6">
+                <input id="C09_SPC_INSP_TEXT" type="text" class="form-control" readonly style="font-size: 24px;">
+            </div>
+            <div class="col s12 m12 l2 right-align-md">
+                <button id="C09_SPC_Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l6">
+                <div class="KhungOverflow40">
+                    <table class="responsive-table" id="C09_SPC_DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>LEAD_NO</th>
+                                <th>W_Diameter</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C09_SPC_DataGridView1">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+                <div class="col s12 m12 l12">
+                    <div>
+                        <label>Minimun Horizontal Force : </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="C09_SPC_RUS_TEXT_01" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important; font-size: 24px;" value="ST">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="C09_SPC_Label2" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important; font-size: 24px;" value="Kgf">
+                    </div>
+                </div>
+                <div class="col s12 m12 l8">
+                    <div>
+                        <input id="C09_SPC_RUS_01" type="number" class="form-control" style="font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div>
+                        <label>Minimun  Vertical Force : </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="C09_SPC_RUS_TEXT_02" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important; font-size: 24px;" value="ST">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="C09_SPC_Label3" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important; font-size: 24px;" value="Kgf">
+                    </div>
+                </div>
+                <div class="col s12 m12 l8">
+                    <div>
+                        <input id="C09_SPC_RUS_02" type="number" class="form-control" style="font-size: 24px;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <div>
+                        <input id="C09_SPC_MRUS" type="text" class="form-control" readonly style="font-size: 24px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l3">
+            </div>
+            <div class="col s12 m12 l6">
+                <button id="C09_SPC_Button1" title="SAVE" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">SAVE</button>
+            </div>
+            <div class="col s12 m12 l3">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C09.js?v=@GlobalHelper.GetVersionScrip("C09.js")"></script>
+

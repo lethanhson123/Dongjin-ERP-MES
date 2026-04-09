@@ -1,0 +1,141 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\Download\B03Service\**" />
+    <Compile Remove="wwwroot\Download\C09_START_V3Service\**" />
+    <Compile Remove="wwwroot\Download\C15Service\**" />
+    <Compile Remove="wwwroot\Download\D11Service\**" />
+    <Compile Remove="wwwroot\PartImages\**" />
+    <Compile Remove="wwwroot\QRCode\**" />
+    <Content Remove="wwwroot\Download\B03Service\**" />
+    <Content Remove="wwwroot\Download\C09_START_V3Service\**" />
+    <Content Remove="wwwroot\Download\C15Service\**" />
+    <Content Remove="wwwroot\Download\D11Service\**" />
+    <Content Remove="wwwroot\PartImages\**" />
+    <Content Remove="wwwroot\QRCode\**" />
+    <EmbeddedResource Remove="wwwroot\Download\B03Service\**" />
+    <EmbeddedResource Remove="wwwroot\Download\C09_START_V3Service\**" />
+    <EmbeddedResource Remove="wwwroot\Download\C15Service\**" />
+    <EmbeddedResource Remove="wwwroot\Download\D11Service\**" />
+    <EmbeddedResource Remove="wwwroot\PartImages\**" />
+    <EmbeddedResource Remove="wwwroot\QRCode\**" />
+    <None Remove="wwwroot\Download\B03Service\**" />
+    <None Remove="wwwroot\Download\C09_START_V3Service\**" />
+    <None Remove="wwwroot\Download\C15Service\**" />
+    <None Remove="wwwroot\Download\D11Service\**" />
+    <None Remove="wwwroot\PartImages\**" />
+    <None Remove="wwwroot\QRCode\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Scripts\SelfRegister.js" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Compile Remove="wwwroot\QRCode\B03Service\**" />
+    <Content Remove="wwwroot\QRCode\B03Service\**" />
+    <EmbeddedResource Remove="wwwroot\QRCode\B03Service\**" />
+    <None Remove="wwwroot\QRCode\B03Service\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Scripts\A01_FILE.js" />
+    <Content Remove="wwwroot\Scripts\A01_PNADD.js" />
+    <Content Remove="wwwroot\Scripts\H02.js" />
+    <Content Remove="wwwroot\Scripts\SETUP_FORM.js" />
+  </ItemGroup>-->
+
+  <ItemGroup>
+    <None Include="wwwroot\Scripts\SelfRegister.js" />
+    <None Include="wwwroot\Scripts\SETUP_FORM.js" />
+    <None Include="wwwroot\Scripts\A01_PNADD.js" />
+    <None Include="wwwroot\Scripts\H02.js" />
+    <None Include="wwwroot\Scripts\A01_FILE.js" />
+    <None Include="wwwroot\Scripts\MAIN_Login.js" />
+    <None Include="wwwroot\Scripts\A01.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MESService\MESService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logs\" />
+    <Folder Include="wwwroot\Download\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\HTML\C08.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\A.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\B.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\C.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\D.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\E.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\F.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\G.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\V.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\Y.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\icons\Z.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Image\djlogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Scripts\MES_REPORT.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Scripts\V03_1.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Scripts\H03.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Scripts\X01.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

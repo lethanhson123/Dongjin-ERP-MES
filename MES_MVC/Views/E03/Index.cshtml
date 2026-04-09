@@ -1,0 +1,453 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IE03Service _E03Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "E03";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _E03Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = "Tool Shop Management (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>Tool Shop Management (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search & Filter Section -->
+            <div class="row">
+                <div class="col s12 m4 l3">
+                    <label for="SearchBox">Tìm kiếm</label>
+                    <input id="SearchBox" type="text" class="form-control" placeholder="Code, Serial, Name..." />
+                </div>
+                <div class="col s12 m3 l2">
+                    <label for="FilterDept">Lọc theo Dept</label>
+                    <select id="FilterDept" class="browser-default">
+                        <option value="">-- Tất cả --</option>
+                    </select>
+                </div>
+                <div class="col s12 m3 l2">
+                    <label for="FilterLine">Lọc theo Line</label>
+                    <select id="FilterLine" class="browser-default">
+                        <option value="">-- Tất cả --</option>
+                    </select>
+                </div>
+                <div class="col s12 m2 l2">
+                    <label for="FilterStatus">Trạng thái</label>
+                    <select id="FilterStatus" class="browser-default">
+                        <option value="">-- Tất cả --</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Broken">Broken</option>
+                    </select>
+                </div>
+                <div class="col s12 m2 l2">
+                    <label>Tổng số dòng</label>
+                    <div class="form-control center-align" style="font-weight: bold; background-color: #e3f2fd; color: #1976d2; padding: 8px;">
+                        <i class="material-icons tiny" style="vertical-align: middle;">view_list</i>
+                        <span id="TotalRecords">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DataGrid -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow70">
+                        <table id="DataGridView1" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Image</th>
+                                    <th>ID</th>
+                                    <th>Code</th>
+                                    <th>Sub Code</th>
+                                    <th>Name VN</th>
+                                    <th>Name EN</th>
+                                    <th>Serial</th>
+                                    <th>Quantity</th>
+                                    <th>Unit</th>
+                                    <th>Unit Price</th>
+                                    <th>Currency</th>
+                                    <th>Type</th>
+                                    <th>Dept</th>
+                                    <th>Line</th>
+                                    <th>Status</th>
+                                    <th>Using Date</th>
+                                    <th>Expiry Date</th>
+
+                                    <th>Created Date</th>
+                                    <th>Created By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add/Edit -->
+<div id="modal-add" class="modal" style="width: 80%; height: 85%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 15px;">
+            <div class="col s12 m6">
+                <h5 id="modal-title" style="margin: 0;">Add / Edit Tool Shop</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <button class="modal-close btn grey lighten-1" type="button" style="margin-right: 10px;">
+                    <i class="material-icons left">close</i>Cancel
+                </button>
+                <button id="ModalSaveBtn" class="btn green" type="button">
+                    <i class="material-icons left">save</i>Save
+                </button>
+            </div>
+        </div>
+
+        <form id="ToolShopForm">
+            <div class="row">
+                <!-- Column 1 -->
+                <div class="col s12 m4">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Code">Code <span class="red-text">*</span></label>
+                            <input id="Code" type="text" class="form-control" maxlength="100" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Sub_Code">Sub Code</label>
+                            <input id="Sub_Code" type="text" class="form-control" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="NameVN">Name VN</label>
+                            <input id="NameVN" type="text" class="form-control" maxlength="500">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="NameEN">Name EN</label>
+                            <input id="NameEN" type="text" class="form-control" maxlength="500">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="NameKO">Name KO</label>
+                            <input id="NameKO" type="text" class="form-control" maxlength="500">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Serial">Serial</label>
+                            <input id="Serial" type="text" class="form-control" maxlength="200">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="col s12 m4">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s6">
+                            <label for="Quantity">Quantity</label>
+                            <input id="Quantity" type="number" step="0.01" min="0" class="form-control">
+                        </div>
+                        <div class="col s6">
+                            <label for="Unit">Unit</label>
+                            <input id="Unit" type="text" class="form-control" maxlength="50">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s6">
+                            <label for="UnitPrice">Unit Price</label>
+                            <input id="UnitPrice" type="number" step="0.01" min="0" class="form-control">
+                        </div>
+                        <div class="col s6">
+                            <label for="Currency">Currency</label>
+                            <select id="Currency" class="browser-default">
+                                <option value="">-- Select --</option>
+                                <option value="VND">VND</option>
+                                <option value="USD">USD</option>
+                                <option value="KRW">KRW</option>
+                                <option value="EUR">EUR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Type">Type</label>
+                            <input id="Type" type="text" class="form-control" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Owner">Owner</label>
+                            <input id="Owner" type="text" class="form-control" maxlength="200">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Supplier">Supplier</label>
+                            <input id="Supplier" type="text" class="form-control" maxlength="200">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="col s12 m4">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Dept">Department</label>
+                            <input id="Dept" type="text" class="form-control" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="ProductionLine">Production Line</label>
+                            <input id="ProductionLine" type="text" class="form-control" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="Status">Status</label>
+                            <select id="Status" class="browser-default">
+                                <option value="">-- Select --</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Broken">Broken</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s6">
+                            <label for="UsingDate">Using Date</label>
+                            <input id="UsingDate" type="date" class="form-control">
+                        </div>
+                        <div class="col s6">
+                            <label for="ExpiryDate">Expiry Date</label>
+                            <input id="ExpiryDate" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="InvNumber">Inv Number</label>
+                            <input id="InvNumber" type="text" class="form-control" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="CustomDeclaration">Custom Declaration</label>
+                            <input id="CustomDeclaration" type="text" class="form-control" maxlength="200">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Note Section (Full Width) -->
+            <div class="row">
+                <div class="col s12">
+                    <label for="Note">Note</label>
+                    <textarea id="Note" class="materialize-textarea" maxlength="1000" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row" style="border-top:1px solid #ddd;padding-top:15px;margin-top:10px;">
+                <div class="col s12">
+                    <h6><i class="material-icons tiny">image</i> Hình ảnh Tool Shop</h6>
+                </div>
+                <div class="col s12 m6">
+                    <div class="file-field input-field">
+                        <div class="btn cyan">
+                            <span><i class="material-icons left">cloud_upload</i>Chọn ảnh</span>
+                            <input id="ImageFile" type="file" accept="image/*">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Chọn file ảnh (jpg, png, gif, bmp) - Max 5MB">
+                        </div>
+                    </div>
+                    <p class="grey-text" style="font-size:12px;margin-top:-10px;">
+                        <i class="material-icons tiny">info</i> Kích thước tối đa: 5MB. Định dạng: jpg, png, gif, bmp
+                    </p>
+                </div>
+                <div class="col s12 m6">
+                    <div id="ImagePreview" class="center-align" style="min-height:100px;padding:10px;border:1px dashed #ddd;border-radius:4px;">
+                        <p class="grey-text">Chưa có ảnh</p>
+                    </div>
+                    <button id="BtnRemoveImage" class="btn red lighten-1 btn-small" type="button" style="margin-top:10px;display:none;">
+                        <i class="material-icons left">delete</i>Xóa ảnh
+                    </button>
+                </div>
+            </div>
+
+            <input type="hidden" id="ToolShopID" />
+        </form>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- NEW: Modal Image View -->
+<!-- ============================================ -->
+<div id="ModalImageView" class="modal">
+    <div class="modal-content center-align">
+        <img id="ImageView" src="" style="max-width:100%;max-height:80vh;" alt="Tool Shop Image">
+    </div>
+    <div class="modal-footer">
+        <button class="modal-close btn grey">
+            <i class="material-icons left">close</i>Đóng
+        </button>
+    </div>
+</div>
+
+<!-- Modal Import -->
+<div id="ModalImport" class="modal modal-fixed-footer" style="width: 90%; height: 90%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom:0;">
+            <div class="col s12 m6">
+                <h5>Import Tool Shop</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <a href="/Template/ToolShop.xlsx" class="btn blue lighten-1" download style="margin-right:8px;">
+                    <i class="material-icons left">file_download</i>File mẫu
+                </a>
+            </div>
+        </div>
+
+        <div class="file-field input-field" style="margin-bottom:15px;">
+            <div class="btn cyan">
+                <span>Chọn File</span>
+                <input id="FileImport" type="file" accept=".xlsx,.xls">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Chọn file Excel...">
+            </div>
+        </div>
+
+        <div class="progress" id="importProgress" style="display:none;">
+            <div class="indeterminate"></div>
+        </div>
+
+        <div class="KhungOverflow" style="max-height:400px;">
+            <table class="responsive-table striped highlight">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Sub Code</th>
+                        <th>Name VN</th>
+                        <th>Name EN</th>
+                        <th>Serial</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Unit Price</th>
+                        <th>Currency</th>
+                        <th>Type</th>
+                        <th>Dept</th>
+                        <th>Line</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ImportPreviewTable">
+                    <tr>
+                        <td colspan="13" class="center-align grey-text">Chưa có dữ liệu. Vui lòng chọn file Excel.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="modal-close btn grey lighten-1" type="button">
+            <i class="material-icons left">close</i>Cancel
+        </button>
+        <button id="BtnSaveImport" class="btn green" type="button" disabled>
+            <i class="material-icons left">save</i>Save (<span id="ImportCount">0</span>)
+        </button>
+    </div>
+</div>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+<script src="~/Scripts/E03.js?v=@version"></script>

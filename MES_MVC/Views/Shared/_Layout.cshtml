@@ -1,0 +1,411 @@
+﻿@inject IMAINService _MAINService
+@inject IB04Service _B04Service
+@inject CookieHelper CookieHelper
+
+@{
+    string version = "20250901000501";
+    BaseResult BaseResult = new BaseResult();
+    BaseResult.ListtsmenuTranfer = new List<tsmenuTranfer>();
+    BaseParameter BaseParameter = new BaseParameter();
+
+    // // Kiểm tra ngôn ngữ, nếu chưa có thì đặt mặc định
+    // string cookie = CookieHelper.GetCookie(GlobalHelper.Language) ?? GlobalHelper.LanguageCodeEN.ToString();
+    // Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cookie);
+    // Thread.CurrentThread.CurrentUICulture = new CultureInfo(cookie);
+
+    var cookie = Context.Request.Cookies["Language"];
+    try
+    {
+        if (!string.IsNullOrWhiteSpace(cookie))
+        {
+            var culture = System.Globalization.CultureInfo.CreateSpecificCulture(cookie);
+            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+        }
+    }
+    catch (System.Globalization.CultureNotFoundException)
+    {
+        // Nếu không hợp lệ thì dùng culture mặc định
+        var fallbackCulture = new System.Globalization.CultureInfo("en-US");
+        System.Threading.Thread.CurrentThread.CurrentCulture = fallbackCulture;
+        System.Threading.Thread.CurrentThread.CurrentUICulture = fallbackCulture;
+    }
+
+    string URLFlag = "/Image/" + cookie + ".png";
+
+    // Kiểm tra thông tin đăng nhập trong session
+    string USER_NM = CookieHelper.GetCookie(GlobalHelper.USER_NM) ?? "Khách";
+    string UserID = CookieHelper.GetCookie(GlobalHelper.UserID) ?? string.Empty;
+    BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+
+    // Nếu không có USER_IDX, chuyển hướng về trang đăng nhập
+    if (string.IsNullOrEmpty(BaseParameter.USER_IDX))
+    {
+        Context.Response.Redirect("/MAIN_Login/Index");
+    }
+    else
+    {
+        try
+        {
+            BaseParameter.ParentID = int.Parse(CookieHelper.GetCookie(GlobalHelper.MenuParent));
+
+            BaseResult = await _MAINService.Main_Shown(BaseParameter);
+
+            // Kiểm tra quyền truy cập vào URL hiện tại
+            if (BaseResult.ListtsauthTranfer != null)
+            {
+                string url = Context.Request.Path.Value?.Replace("/", "") ?? GlobalHelper.URLCodeDefault;
+
+                if (url != GlobalHelper.URLCodeDefault)
+                {
+                    bool IsAuth = true;
+                    var tsauthTranfer = BaseResult.ListtsauthTranfer
+                        .FirstOrDefault(o => o.SCRN_PATH == url && bool.Parse(o.MENU_AUTH_YN));
+
+                    if (tsauthTranfer == null)
+                    {
+                        IsAuth = false;
+                    }
+                    switch (url)
+                    {
+                        case "Z04_ADMIN":
+                            IsAuth = true;
+                            break;
+                        case "C09_LIST":
+                            IsAuth = true;
+                            break;
+                    }
+                    if (IsAuth == false)
+                    {
+                        Context.Response.Redirect("/" + GlobalHelper.URLCodeDefault);
+                    }
+                }
+            }
+
+            // Dịch tên menu dựa trên resource
+            if (BaseResult.ListtsmenuTranfer != null)
+            {
+                foreach (var menu in BaseResult.ListtsmenuTranfer)
+                {
+                    try
+                    {
+                        menu.MENU_NM_HAN = MES_MVC.Resources.Resource.GetObject(menu.Code)?.ToString() ?? menu.Code;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Lỗi dịch tên menu: {ex.Message}");
+                        menu.MENU_NM_HAN = menu.Code;
+                    }
+                    switch (menu.Code)
+                    {
+                        case "H01":
+                            menu.MENU_NM_HAN = "Mo -" + menu.MENU_NM_HAN;
+                            break;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Lỗi xử lý layout: {ex.Message}");
+        }
+    }
+
+    BaseResult BaseResultB04 = new BaseResult();
+    BaseParameter BaseParameterB04 = new BaseParameter();
+    BaseResultB04 = await _B04Service.GetFIFOReasonToListAsync(BaseParameterB04);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="~/manifest.json">
+    <title>@ViewData["Title"] - DONGJIN</title>
+    <meta name="description" content="DONGJIN GLOBAL COMPANY LIMITED | Manufacturing Execution System (MES) 2025" />
+    <link rel="icon" type="image/x-icon" href="~/Image/logo.png">
+    <meta property="og:site_name" content="dongjin-global.com" />
+    <meta property="og:rich_attachment" content="true" />
+    <meta property="og:type" content="article" />
+
+    <meta property="og:image" itemprop="thumbnailUrl" content="/Image/logo01.png" />
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/vendors.min.css?v=@version">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/flag-icon/css/flag-icon.min.css?v=@version">
+    <link href="~/lib/fontawesome/font-awesome.min.css?v=@version" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/themes/horizontal-menu-template/materialize.css?v=@version">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/themes/horizontal-menu-template/style.css?v=@version">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/layouts/style-horizontal.css?v=@version">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/custom/custom.css">
+    <link rel="stylesheet" type="text/css" href="~/css/custom.css?v=@version">
+    <link href="~/css/jquery.datatables.min.css?v=@version" rel="stylesheet" />
+    <link href="~/css/fixedheader.datatables.min.css?v=@version" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="~/css/fixedColumns.dataTables.min.css" />
+    <link href="~/css/select2.min.css" rel="stylesheet" />
+    <script src="~/app-assets/js/vendors.min.js" type="text/javascript"></script>
+    <script src="~/js/jquery.datatables.min.js?v=@version"></script>
+    <script src="~/js/datatables.fixedheader.min.js?v=@version"></script>
+    <script src="~/js/xlsx.full.min.js?v=@version"></script>
+</head>
+<body class="horizontal-layout page-header-light horizontal-menu 2-columns  " data-open="click"
+      data-menu="horizontal-menu" data-col="2-columns">
+    <div id="BackGround" style="width:100%; height:100%; z-index:9999; background-color: #eeeeee; opacity: 0.5; position:absolute; top:0px; left:0px; display: none; text-align: center;">
+        <div id="BackGroundDim" style="z-index:2000; position:absolute;">
+            <div class="msgbox">
+                <img src="~/Image/loading.gif" alt="Loading, please wait..." title="Loading, please wait..." width="200"
+                     height="200" />
+            </div>
+            <h5>Loading, please wait...</h5>
+        </div>
+    </div>
+    <header class="page-topbar" id="header">
+        <div class="navbar navbar-fixed">
+            <nav class="navbar-main navbar-color nav-collapsible sideNav-lock navbar-dark gradient-45deg-light-blue-cyan">
+                <div class="nav-wrapper">
+                    <ul class="left">
+                        <li>
+                            <h6 class="logo-wrapper">
+                                <a class="brand-logo darken-1" href="#">
+                                    <img src="~/Image/logo.png" alt="materialize logo"><span class="logo-text hide-on-med-and-down">@UserID</span>
+                                </a>
+                            </h6>
+                        </li>
+                    </ul>
+                    <div class="header-search-wrapper hide-on-med-and-down">
+                        <input class="header-search-input z-depth-2" type="text" name="Search"
+                               placeholder="Manufacturing Execution System (MES) | DONGJIN GLOBAL COMPANY LIMITED">
+                    </div>
+                    <ul class="navbar-list right">
+                        <li class="hide-on-med-and-down">
+                            <a class="waves-effect waves-block waves-light translation-button" href="javascript:void(0);" data-target="translation-dropdown">
+                                <img src="@URLFlag" style="border: 1px solid #000000; margin-top: 22px;" width="30" height="20" />
+                            </a>
+                        </li>
+                        <li class="hide-on-med-and-down">
+                            <a class="waves-effect waves-block waves-light toggle-fullscreen"
+                               href="javascript:void(0);"><i class="material-icons">settings_overscan</i></a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-block waves-light notification-button" href="javascript:void(0);" data-target="notifications-dropdown"><i class="material-icons">notifications_none<small id="NotificationsCount" class="notification-badge orange accent-3">@BaseResultB04.DataGridView6.Count</small></i></a>
+                        </li>
+                        <li class="hide-on-large-only">
+                            <a class="waves-effect waves-block waves-light search-button"
+                               href="javascript:void(0);"><i class="material-icons">search </i></a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);"
+                               data-target="profile-dropdown">
+                                <span class="avatar-status avatar-online">
+                                    <img src="~/Image/logo.png" alt="avatar"><i></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-block waves-light sidenav-trigger" href="#"
+                               data-target="slide-out-right"><i class="material-icons">format_indent_increase</i></a>
+                        </li>
+                    </ul>
+                    <ul class="dropdown-content" id="translation-dropdown">
+                        <li>
+                            <a class="grey-text text-darken-1" asp-controller="MAIN" asp-action="ChangeLanguage" asp-route-language="@GlobalHelper.LanguageCodeVI"></a>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-1" asp-controller="MAIN" asp-action="ChangeLanguage" asp-route-language="@GlobalHelper.LanguageCodeVI"><img src="~/Image/vi.png" style="border: 1px solid #000000;" width="70" height="50" /></a>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-1" asp-controller="MAIN" asp-action="ChangeLanguage" asp-route-language="@GlobalHelper.LanguageCodeKR"><img src="~/Image/kr.png" style="border: 1px solid #000000;" width="70" height="50" /></a>
+                        </li>
+                        <li>
+                            <a class="grey-text text-darken-1" asp-controller="MAIN" asp-action="ChangeLanguage" asp-route-language="@GlobalHelper.LanguageCodeEN"><img src="~/Image/en.png" style="border: 1px solid #000000;" width="70" height="50" /></a>
+                        </li>
+                    </ul>
+                    <ul class="dropdown-content" id="notifications-dropdown">
+                        <li>
+                            <h6>NOTIFICATIONS<span class="new badge">@BaseResultB04.DataGridView6.Count</span></h6>
+                        </li>
+                        @{
+                            foreach (var item in BaseResultB04.DataGridView6)
+                            {
+                                if (item.TMMTIN_DMM_IDX == 0)
+                                {
+                                    <a href="/B04">
+                                    <li>
+                                        <a class="grey-text text-darken-2" href="/B04"><span class="material-icons icon-bg-circle orange small">all_inclusive</span> <b>@item.BARCD_ID : No Order</b></a>
+                                        <time class="media-meta" datetime="@item.OUT_DTM">@item.OUT_DTM</time>
+                                    </li>
+                                    </a>
+                                }
+                                if (item.ReasonID > 0)
+                                {
+                                    <a href="/B04">
+                                    <li>
+                                        <a class="grey-text text-darken-2" href="/B04"><span class="material-icons icon-bg-circle amber small">block</span> <b>@item.BARCD_ID : FIFO</b></a>
+                                        <time class="media-meta" datetime="@item.OUT_DTM">@item.OUT_DTM</time>
+                                    </li>
+                                    </a>
+                                }
+                            }
+                        }
+
+                    </ul>
+                    <ul class="dropdown-content" id="profile-dropdown">
+                        <li><a class="grey-text text-darken-1" href="#"></a></li>
+                        <li><a class="grey-text text-darken-1" href="#"></a></li>
+                        <li><a class="grey-text text-darken-1" asp-controller="MAIN" asp-action="ChangeMenuParent" asp-route-ParentID="-1"><b>Vietnam Factory</b></a></li>
+                        <li><a class="grey-text text-darken-1" asp-controller="MAIN" asp-action="ChangeMenuParent" asp-route-ParentID="-2"><b>Monitoring</b></a></li>
+                        <li><a class="grey-text text-darken-1" asp-controller="MAIN" asp-action="ChangeMenuParent" asp-route-ParentID="-3"><b>SETUP</b></a></li>
+                        <li class="divider"></li>
+                        <li><a class="grey-text text-darken-1" href="#"><b>@UserID</b></a></li>
+                        <li><a class="grey-text text-darken-1" href="#"><b>@USER_NM</b></a></li>
+                        <li><a class="grey-text text-darken-1" asp-controller="MAIN" asp-action="Logout"><i class="material-icons">keyboard_tab</i> @MES_MVC.Resources.Resource.Btn_Logout</a></li>
+                    </ul>
+                </div>
+                <nav class="display-none search-sm">
+                    <div class="nav-wrapper">
+                        <div class="input-field">
+                            <input class="search-box-sm" type="search" required="">
+                            <label class="label-icon" for="search">
+                                <i class="material-icons search-sm-icon">search</i>
+                            </label><i class="material-icons search-sm-close">close</i>
+                        </div>
+                    </div>
+                </nav>
+            </nav>
+            <nav class="white hide-on-med-and-down" id="horizontal-nav">
+                <div class="nav-wrapper">
+                    <ul class="left hide-on-med-and-down" id="ul-horizontal-nav" data-menu="menu-navigation">
+                        @{
+                            List<tsmenuTranfer> ListtsmenuTranfer1 = BaseResult.ListtsmenuTranfer.Where(o => o.MENU_LVL == 1).ToList();
+                            foreach (tsmenuTranfer tsmenuTranfer1 in ListtsmenuTranfer1)
+                            {
+                                if (tsmenuTranfer1.Visible == true)
+                                {
+                                    List<tsmenuTranfer> ListtsmenuTranfer2 = BaseResult.ListtsmenuTranfer.Where(o => o.MENU_LVL == 2 && o.ParentID == tsmenuTranfer1.MENU_IDX).ToList();
+                                    <li>
+                                        @{
+                                            var scrnPath = (tsmenuTranfer1.MENU_NM_EN?.Trim() ?? "default"); // nếu giá trị null thì trả về hình mạc định
+                                            var iconPath = $"/icons/{scrnPath}.png";
+                                            if (string.IsNullOrEmpty(tsmenuTranfer1.SCRN_PATH.Trim()))
+                                            {
+                                                <a class="dropdown-menu" href="#" data-target="@tsmenuTranfer1.MENU_IDX">
+                                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 1px;">
+                                                        <img src="@iconPath" onerror="this.src='/icons/default.png';" width="25" height="25" alt="Icon" />
+                                                        <span style="margin-top: -35px;">@tsmenuTranfer1.MENU_NM_HAN</span>
+                                                    </div>
+                                                </a>
+
+                                                if (ListtsmenuTranfer2.Any())
+                                                {
+                                                    <ul class="dropdown-content dropdown-horizontal-list" id="@tsmenuTranfer1.MENU_IDX">
+                                                        @{
+                                                            foreach (tsmenuTranfer tsmenuTranfer2 in ListtsmenuTranfer2)
+                                                            {
+                                                                bool IsUseNot = false;
+                                                                switch (tsmenuTranfer2.MENU_NM_EN)
+                                                                {
+                                                                    case "B05":
+                                                                    case "B06":
+                                                                    case "B12":
+                                                                    case "G03":
+                                                                    case "G04":
+                                                                    case "C13":
+                                                                    case "C14":
+                                                                    // case "E04":
+                                                                    case "E05":
+                                                                    case "C16":
+                                                                    case "C17":
+                                                                    case "V04":
+                                                                    case "V05":
+                                                                    case "V07":
+                                                                    case "A03":
+                                                                    case "A05":
+                                                                    case "A07":
+                                                                    case "A09":
+                                                                    case "Z01":
+                                                                    case "Z02":
+                                                                    case "Z05":
+                                                                    case "Z07":
+                                                                    case "Z03":
+                                                                    case "Z06":
+                                                                    case "C07":
+                                                                    case "C10":
+                                                                    case "C18":
+                                                                    case "D02":
+                                                                    case "D01":
+                                                                    case "D12":
+                                                                    case "D05":
+                                                                    case "D09":
+                                                                    // case "E03":
+                                                                    // case "F01":
+                                                                    // case "F03":
+                                                                        IsUseNot = true;
+                                                                        break;
+                                                                }
+                                                                string color = "black";
+                                                                if (IsUseNot == true)
+                                                                {
+                                                                    color = "red";
+                                                                }
+                                                                if (tsmenuTranfer2.Visible == true)
+                                                                {
+                                                                    <li data-menu="">
+                                                                        <a asp-controller="@tsmenuTranfer2.SCRN_PATH" asp-action="Index" title="@tsmenuTranfer2.MENU_NM_HAN" style="color: @color;"><i class="border_all"></i>@tsmenuTranfer2.MENU_NM_HAN [@tsmenuTranfer2.MENU_NM_EN]</a>
+                                                                    </li>
+                                                                }
+
+                                                            }
+                                                        }
+                                                    </ul>
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                                <a class="dropdown-menu" href="#" data-target="@tsmenuTranfer1.MENU_IDX">
+                                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                                        <img src="@iconPath" onerror="this.src='/icons/default.png';" width="25" height="25" alt="Icon" />
+                                                        <span style="margin-top: -35px;">@tsmenuTranfer1.MENU_NM_HAN</span>
+                                                    </div>
+                                                </a>
+                                                <ul class="dropdown-content dropdown-horizontal-list" id="@tsmenuTranfer1.MENU_IDX">
+                                                    <li data-menu="">
+                                                        <a asp-controller="@tsmenuTranfer1.SCRN_PATH" asp-action="Index" title="@tsmenuTranfer1.MENU_NM_HAN" style="color: red;"><i class="border_all"></i>@tsmenuTranfer1.MENU_NM_HAN</a>
+                                                    </li>
+                                                </ul>
+                                            }
+                                        }
+                                    </li>
+                                }
+                            }
+
+                        }
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div id="main">
+        <div class="row">
+            @RenderBody()
+        </div>
+    </div>
+
+    <div id="custom-alert" style="display: none;">
+        <strong>⚠️ Cảnh báo:</strong>
+        <span id="custom-alert-message">Thông báo</span>
+    </div>
+
+    <script src="~/app-assets/vendors/data-tables/js/jquery.dataTables.min.js?v=@version" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js?v=@version"
+            type="text/javascript"></script>
+    <script src="~/app-assets/vendors/data-tables/js/dataTables.select.min.js?v=@version" type="text/javascript"></script>
+    <script src="~/app-assets/js/plugins.js?v=@version" type="text/javascript"></script>
+    <script src="~/app-assets/js/custom/custom-script.js?v=@version" type="text/javascript"></script>
+    <script src="~/app-assets/js/scripts/data-tables.js?v=@version" type="text/javascript"></script>
+    <script src="~/js/dataTables.fixedColumns.min.js"></script>
+    <script src="~/js/select2.min.js"></script>
+    <script src="~/js/custom.js?v=@version"></script>
+</body>
+</html>

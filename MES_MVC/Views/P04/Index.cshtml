@@ -1,0 +1,292 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IP04Service _P04Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "P04";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _P04Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>Task Time FA Management (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m8 l6">
+                    <label for="SearchBox">Tìm kiếm</label>
+                    <input id="SearchBox" type="text" class="form-control" placeholder="Tìm kiếm (Part No, ECN...)" />
+                </div>
+                <div class="col s12 m4 l3">
+                    <label for="FilterLineID">Lọc theo Line</label>
+                    <select id="FilterLineID" class="browser-default">
+                        <option value="">-- Tất cả Line --</option>
+                    </select>
+                </div>
+                <div class="col s12 m2 l2">
+                    <label>Tổng số dòng</label>
+                    <div class="form-control center-align" style="font-weight: bold; background-color: #e3f2fd; color: #1976d2; padding: 8px;">
+                        <i class="material-icons tiny" style="vertical-align: middle;">view_list</i>
+                        <span id="TotalRecords">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow70">
+                        <table id="DataGridView1" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Action</th>
+                                    <th>ID</th>
+                                    <th>Line</th>
+                                    <th>Part No</th>
+                                    <th>ECN</th>
+                                    <th>Task Time Cus</th>
+                                    <th>Task Time IE</th>
+                                    <th>Task Time IE2</th>
+                                    <th>Task Time IE3</th>
+                                    <th>Task Time IE4</th>
+                                    <th>Gap</th> 
+                                    <th>Created Date</th>
+                                    <th>Created By</th>
+                                    <th>Updated Date</th>
+                                    <th>Updated By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ MODAL EDIT/ADD - Đã update -->
+<div id="modal-add" class="modal" style="width: 50%; height: 40%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 15px;">
+            <div class="col s12 m6">
+                <h5 id="modal-title" style="margin: 0;">Add / Edit Task Time</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <button class="modal-close btn grey lighten-1" type="button" style="margin-right: 10px;">
+                    <i class="material-icons left">close</i>Cancel
+                </button>
+                <button id="ModalSaveBtn" class="btn green" type="button">
+                    <i class="material-icons left">save</i>Save
+                </button>
+            </div>
+        </div>
+
+        <form id="TaskTimeFAForm">
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col s12 m6">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="LineID">Line <span class="red-text">*</span></label>
+                            <select id="LineID" class="browser-default" required>
+                                <option value="">-- Select Line --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="PartNo">Part No <span class="red-text">*</span></label>
+                            <input id="PartNo" type="text" class="form-control" maxlength="100" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="ECN">ECN</label>
+                            <input id="ECN" type="text" class="form-control" maxlength="20">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col s12 m6">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s6">
+                            <label for="TaskTimeIE">Task Time IE</label>
+                            <input id="TaskTimeIE" type="number" step="0.01" min="0" class="form-control">
+                        </div>
+                        <div class="col s6">
+                            <label for="TaskTimeIE2">Task Time IE2</label>
+                            <input id="TaskTimeIE2" type="number" step="0.01" min="0" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s6">
+                            <label for="TaskTimeIE3">Task Time IE3</label>
+                            <input id="TaskTimeIE3" type="number" step="0.01" min="0" class="form-control">
+                        </div>
+                        <div class="col s6">
+                            <label for="TaskTimeIE4">Task Time IE4</label>
+                            <input id="TaskTimeIE4" type="number" step="0.01" min="0" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col s12">
+                            <label for="TaskTimeCus">Task Time Customer</label>
+                            <input id="TaskTimeCus" type="number" step="0.01" min="0" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="TaskTimeID" />
+        </form>
+    </div>
+</div>
+
+<!-- ✅ MODAL IMPORT - Đã update -->
+<div id="ModalImportP04" class="modal modal-fixed-footer" style="width: 80%; height: 90%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom:0;">
+            <div class="col s12 m6">
+                <h5>Import Task Time FA</h5>
+            </div>
+            <div class="col s12 m6 right-align">
+                <a href="/Template/TaskTimeFA.xlsx" class="btn blue lighten-1" download style="margin-right:8px;">
+                    <i class="material-icons left">file_download</i>File mẫu
+                </a>
+            </div>
+        </div>
+
+        <div class="file-field input-field" style="margin-bottom:15px;">
+            <div class="btn cyan">
+                <span>Chọn File</span>
+                <input id="FileImportP04" type="file" accept=".xlsx,.xls">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Chọn file Excel...">
+            </div>
+        </div>
+
+        <div class="progress" id="importProgressP04" style="display:none;">
+            <div class="indeterminate"></div>
+        </div>
+
+        <div class="KhungOverflow" style="max-height:350px;">
+            <table class="responsive-table striped highlight">
+                <thead>
+                    <tr>
+                        <th>Line</th>
+                        <th>Part No</th>
+                        <th>ECN</th>
+                        <th>Task Time Cus</th> 
+                        <th>Task Time IE</th>
+                        <th>Task Time IE2</th>
+                        <th>Task Time IE3</th>
+                        <th>Task Time IE4</th>
+                    </tr>
+                </thead>
+                <tbody id="ImportPreviewTableP04">
+                    <tr>
+                        <td colspan="8" class="center-align grey-text">Chưa có dữ liệu. Vui lòng chọn file Excel.</td> 
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="modal-close btn grey lighten-1" type="button">
+            <i class="material-icons left">close</i>Cancel
+        </button>
+        <button id="BtnSaveImportP04" class="btn green" type="button" disabled>
+            <i class="material-icons left">save</i>Save (<span id="ImportCount">0</span>)
+        </button>
+    </div>
+</div>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+
+<script src="~/Scripts/P04.js?v=@version"></script>

@@ -1,0 +1,79 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	//string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string cookie = string.Empty;
+	cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+	string UserID = cookie;
+	string url = "B04_1";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "ERROR CODE (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l12">
+					<h6><b>ERROR CODE (@url)</b></h6>
+				</div>
+			</div>		
+			<div class="KhungOverflow">
+				<table class="responsive-table">
+					<thead class="sticky-header">
+						<tr>
+							<th>CODE</th>
+							<th>ERROR(EN)</th>
+							<th>ERROR(KR)</th>														
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>U</td>
+							<td>Barcode used</td>
+							<td>이미 사용된 바코드</td>
+						</tr>
+						<tr>
+							<td>D</td>
+							<td>No Data...</td>
+							<td>처리가능한 데이터 없음</td>
+						</tr>
+						<tr>
+							<td>C</td>
+							<td>Quantity problem</td>
+							<td>불출 수량이 많습니다</td>
+						</tr>
+						<tr>
+							<td>FIFO</td>
+							<td>First In, First Out</td>
+							<td>선입선출 오류</td>
+						</tr>
+					</tbody>					
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/B04_1.js?v=@GlobalHelper.GetVersionScrip("B04_1.js")"></script>
+

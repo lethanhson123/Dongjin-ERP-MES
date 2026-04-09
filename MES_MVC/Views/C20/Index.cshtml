@@ -1,0 +1,980 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC20Service _C20Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C20";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _C20Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <ul class="tabs">
+                        <li class="tab col s2 p-0">
+                            <a id="ATag001" class="active p-0" href="#Tag001">SPC</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag002" class="p-0" href="#Tag002">Result List</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag003" class="p-0" href="#Tag003">Report Cutting</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag004" class="p-0" href="#Tag004">Report Crimping</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag005" class="p-0" href="#Tag005">Report USW</a>
+                        </li>
+                        <li class="tab col s2 p-0">
+                            <a id="ATag006" class="p-0" href="#Tag006">Report Twist</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" id="Tag001">
+                <div class="col s12 m12 l9">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>Standard</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <button id="Button3" title="SPC Program" class="btn waves-effect waves-light green darken-1" style="width: 100%;">SPC Program</button>
+                            <img id="PictureBox1" src="@DomainSite/Image/LEAD_CCH.jpg" height="150" width="300" />
+                        </div>
+                        <div class="col s12 m12 l9">
+                            <button id="Button2" title="Result" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Result</button>
+                            <div class="row">
+                                <div class="col s12 m12 l2" style="text-align:right;">
+                                    <div>
+                                        <label style="font-weight: bold;">LEAD : </label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                        <input id="Label4" type="text" class="form-control" readonly value="-" style="border-width: 0px !important;">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l2" style="text-align:right;">
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m12 l2" style="text-align:right;">
+                                    <div>
+                                        <label>WIRE : </label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                        <input id="Label3" type="text" class="form-control" readonly value="-" style="border-width: 0px !important;">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l2" style="text-align:right;">
+                                    <div>
+                                        <label>Terminal : </label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                        <input id="Label5" type="text" class="form-control" readonly value="-" style="border-width: 0px !important;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table class="responsive-table">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th>Location</th>
+                                            <th>Standard</th>
+                                            <th>Standard</th>
+                                            <th>MIN</th>
+                                            <th>MAX</th>
+                                            <th>Tool</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label>CCH</label>
+                                            </td>
+                                            <td>
+                                                <input id="Label17" type="text" class="form-control" readonly value="-" style="border-width: 0px !important;">
+                                            </td>
+                                            <td>
+                                                <input id="TextBox16" type="text" class="form-control" style="width: 150px;">
+                                            </td>
+                                            <td>
+                                                <input id="TextBox17" type="text" class="form-control" style="width: 150px;">
+                                            </td>
+                                            <td>
+                                                <input id="TextBox18" type="text" class="form-control" style="width: 150px;">
+                                            </td>
+                                            <td>
+                                                <label>Micrometer</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <hr />
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>Result</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l6">
+                                <div>
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align:center;">
+                                <div>
+                                    <label>AVERAGE</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align:center;">
+                                <div>
+                                    <label>Deviation</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align:center;">
+                                <div>
+                                    <label>Pp</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align:center;">
+                                <div>
+                                    <label>Ppk</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <label></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l6" style="text-align: right;">
+                                <div>
+                                    <label>Result : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label36" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label35" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label62" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label60" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label45" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <button id="Button1" title="HELP" class="btn waves-effect waves-light green darken-1"><i class="material-icons">help</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>Measures</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <label>Date of Inspection</label>
+                            <input id="DateTimePicker1" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div>
+                            <input id="Label7" type="text" class="form-control" value="QTY :   MIN 10EA  /  ST. 50EA  /  MAX 100EA" style="border-width: 0px !important;">
+                        </div>
+                    </div>
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DataGridView2Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>NO</th>
+                                    <th>X=n</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView2">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="Tag002">
+                <div class="col s12 m12 l3">
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DataGridView1Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>NO</th>
+                                    <th>X=n</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l9">
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <div>
+                                <label>Inspection NO (số kiểm tra) :</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l6">
+                            <div>
+                                <input id="TextBox11" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l2">
+                            <div>
+                                <button id="Button5" title="NO" class="btn waves-effect waves-light green darken-1" style="width: 100%;">NO</button>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <hr />
+                            <div>
+                                <label>Standard</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <img id="PictureBox1" src="@DomainSite/Image/LEAD_CCH.jpg" height="150" width="300" />
+                        </div>
+                        <div class="col s12 m12 l9">
+                            <div class="row">
+                                <div class="col s12 m12 l2" style="text-align:right;">
+                                    <div>
+                                        <label style="font-weight: bold;">LEAD : </label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                        <input id="TextBox6" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l2" style="text-align:right;">
+                                    <div>
+                                        <label>Date : </label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                        <input id="TextBox5" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m12 l2" style="text-align:right;">
+                                    <div>
+                                        <label>WIRE : </label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                        <input id="TextBox7" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l2" style="text-align:right;">
+                                    <div>
+                                        <label style="font-weight: bold;">Terminal : </label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div>
+                                        <input id="TextBox8" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table class="responsive-table">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th>Location</th>
+                                            <th>Standard</th>
+                                            <th>Standard</th>
+                                            <th>MIN</th>
+                                            <th>MAX</th>
+                                            <th>Tool</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label>CCH</label>
+                                            </td>
+                                            <td>
+                                                <input id="Label17" type="text" class="form-control" style="width: 150px;">
+                                            </td>
+                                            <td>
+                                                <input id="TextBox16" type="text" class="form-control" style="width: 150px;">
+                                            </td>
+                                            <td>
+                                                <input id="TextBox17" type="text" class="form-control" style="width: 150px;">
+                                            </td>
+                                            <td>
+                                                <input id="TextBox18" type="text" class="form-control" style="width: 150px;">
+                                            </td>
+                                            <td>
+                                                <label>Micrometer</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <hr />
+                        <div class="col s12 m12 l12">
+                            <div>
+                                <label>Result</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l6">
+                                <div>
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align:center;">
+                                <div>
+                                    <label>AVERAGE</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align:center;">
+                                <div>
+                                    <label>Deviation</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align:center;">
+                                <div>
+                                    <label>Pp</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1" style="text-align:center;">
+                                <div>
+                                    <label>Ppk</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <label></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12 l6" style="text-align: right;">
+                                <div>
+                                    <label>Result : </label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label36" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label35" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label62" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label60" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <input id="Label45" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l1">
+                                <div>
+                                    <button id="Button1" title="HELP" class="btn waves-effect waves-light green darken-1"><i class="material-icons">help</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="Tag003">
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>From Date:</label>
+                        <input id="txt_FromDate" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>To:</label>
+                        <input id="txt_toDate" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <br />
+                        <label>
+                            <input id="rb_Fac1" name="C20" type="radio" />
+                            <span>Factory 1</span>
+                        </label>
+                        <label>
+                            <input id="rb_Fac2" name="C20" type="radio" />
+                            <span>Factory 2</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>MC:</label>
+                        <input id="txt_MC" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Employee ID:</label>
+                        <input id="txt_EmployeeID" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Search:</label>
+                        <input id="txt_Search" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 m12 l12">
+                        <div class="card-panel">
+                            <table class="responsive-table" id="spcListDetailTable">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th>Part No</th>
+                                        <th>Process Test</th>
+                                        <th>Week</th>
+                                        <th>Order Index</th>
+                                        <th>Project</th>
+                                        <th>TestPos</th>
+                                        <th>Lead No</th>
+                                        <th>Bundle</th>
+                                        <th>Stage</th>
+                                        <th>Q'ty Plan</th>
+                                        <th>Q'ty Actual</th>
+                                        <th>Hook Rack</th>
+                                        <th>Wire Description</th>
+                                        <th>WIRE_Name</th>
+                                        <th>W_Diameter</th>
+                                        <th>W_Color</th>
+                                        <th>W_Length</th>
+                                        <th>Term 1</th>
+                                        <th>Strip 1</th>
+                                        <th>Seal 1</th>
+                                        <th>CCH_W1</th>
+                                        <th>ICH_W1</th>
+                                        <th>Term 2</th>
+                                        <th>Strip 2</th>
+                                        <th>Seal 2</th>
+                                        <th>CCH_W2</th>
+                                        <th>ICH_W2</th>
+                                        <th>Job Status</th>
+                                        <th>Factory</th>
+                                        <th>Plan Date</th>
+                                        <th>CCH1 Test</th>
+                                        <th>CCW1 Test</th>
+                                        <th>CCH2 Test</th>
+                                        <th>CCW2 Test</th>
+                                        <th>ICH1 Test</th>
+                                        <th>ICW1 Test</th>
+                                        <th>ICH2 Test</th>
+                                        <th>ICW2 Test</th>
+                                        <th>W_FORCE Test</th>
+                                        <th>W_LEN Actual</th>
+                                        <th>Test Result</th>
+                                        <th>Test Time</th>
+                                        <th>DATE</th>
+                                        <th>MC Plan</th>
+                                        <th>MC2 Actual</th>
+                                        <th>FIRST_TIME</th>
+                                        <th>END_TIME</th>
+                                        <th>Test By</th>
+                                        <th>Full Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                
+                </div>
+            </div>
+            <div class="row" id="Tag004">
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>From Date:</label>
+                        <input id="txt_FromDate_Crim" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>To:</label>
+                        <input id="txt_toDate_Crim" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <br />
+                        <label>
+                            <input id="rb_Fac1_Crim" name="C20_Crim" type="radio" />
+                            <span>Factory 1</span>
+                        </label>
+                        <label>
+                            <input id="rb_Fac2_Crim" name="C20_Crim" type="radio" />
+                            <span>Factory 2</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>MC:</label>
+                        <input id="txt_MC_Crim" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Employee ID:</label>
+                        <input id="txt_EmployeeID_Crim" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Search:</label>
+                        <input id="txt_Search_Crim" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="responsive-table" id="spcListDetailTable_Crim">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>Part No</th>
+                                <th>Process Test</th>
+                                <th>Week</th>
+                                <th>Order Index</th>
+                                <th>Project</th>
+                                <th>TestPos</th>
+                                <th>Lead No</th>
+                                <th>Bundle</th>
+                                <th>Stage</th>
+                                <th>Q'ty Plan</th>
+                                <th>Q'ty Actual</th>
+                                <th>Hook Rack</th>
+                                <th>Wire Description</th>
+                                <th>WIRE_Name</th>
+                                <th>W_Diameter</th>
+                                <th>W_Color</th>
+                                <th>W_Length</th>
+                                <th>Term 1</th>
+                                <th>Strip 1</th>
+                                <th>Seal 1</th>
+                                <th>CCH_W1</th>
+                                <th>ICH_W1</th>
+                                <th>Term 2</th>
+                                <th>Strip 2</th>
+                                <th>Seal 2</th>
+                                <th>CCH_W2</th>
+                                <th>ICH_W2</th>
+                                <th>Job Status</th>
+                                <th>Factory</th>
+                                <th>Plan Date</th>
+                                <th>CCH1 Test</th>
+                                <th>CCW1 Test</th>
+                                <th>CCH2 Test</th>
+                                <th>CCW2 Test</th>
+                                <th>ICH1 Test</th>
+                                <th>ICW1 Test</th>
+                                <th>ICH2 Test</th>
+                                <th>ICW2 Test</th>                            
+                                <th>W_FORCE Test</th>
+                                <th>W_LEN Actual</th>
+                                <th>Test Result</th>
+                                <th>Test Time</th>
+                                <th>DATE</th>
+                                <th>MC Plan</th>
+                                <th>MC2 Actual</th>
+                                <th>FIRST_TIME</th>
+                                <th>END_TIME</th>
+                                <th>Test By</th>
+                                <th>Full Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spcListDetail_Crim">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag005">
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>From Date:</label>
+                        <input id="txt_FromDate_USW" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>To:</label>
+                        <input id="txt_toDate_USW" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <br />
+                        <label>
+                            <input id="rb_Fac1_USW" name="C20_USW" type="radio" />
+                            <span>Factory 1</span>
+                        </label>
+                        <label>
+                            <input id="rb_Fac2_USW" name="C20_USW" type="radio" />
+                            <span>Factory 2</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>MC:</label>
+                        <input id="txt_MC_USW" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Employee ID:</label>
+                        <input id="txt_EmployeeID_USW" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Search:</label>
+                        <input id="txt_Search_USW" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="responsive-table" id="spcListDetailTable_USW">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>Part No</th>
+                                <th>Process Test</th>
+                                <th>Week</th>
+                                <th>Order Index</th>
+                                <th>Project</th>
+                                <th>TestPos</th>
+                                <th>Lead No</th>
+                                <th>Bundle</th>
+                                <th>Stage</th>
+                                <th>Q'ty Plan</th>
+                                <th>Q'ty Actual</th>
+                                <th>Hook Rack</th>
+                                <th>Wire Description</th>
+                                <th>WIRE_Name</th>
+                                <th>W_Diameter</th>
+                                <th>W_Color</th>
+                                <th>W_Length</th>
+                                <th>Term 1</th>
+                                <th>Strip 1</th>
+                                <th>Seal 1</th>
+                                <th>CCH_W1</th>
+                                <th>ICH_W1</th>
+                                <th>Term 2</th>
+                                <th>Strip 2</th>
+                                <th>Seal 2</th>
+                                <th>CCH_W2</th>
+                                <th>ICH_W2</th>
+                                <th>Job Status</th>
+                                <th>Factory</th>
+                                <th>Plan Date</th>
+                                <th>CCH1 Test</th>
+                                <th>CCW1 Test</th>
+                                <th>CCH2 Test</th>
+                                <th>CCW2 Test</th>
+                                <th>ICH1 Test</th>
+                                <th>ICW1 Test</th>
+                                <th>ICH2 Test</th>
+                                <th>ICW2 Test</th>
+                                <th>W_FORCE Test</th>
+                                <th>W_LEN Actual</th>
+                                <th>Test Result</th>
+                                <th>Test Time</th>
+                                <th>DATE</th>
+                                <th>MC Plan</th>
+                                <th>MC2 Actual</th>
+                                <th>FIRST_TIME</th>
+                                <th>END_TIME</th>
+                                <th>Test By</th>
+                                <th>Full Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spcListDetail_USW">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="Tag006">
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>From Date:</label>
+                        <input id="txt_FromDate_Twist" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>To:</label>
+                        <input id="txt_toDate_Twist" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <br />
+                        <label>
+                            <input id="rb_Fac1_Twist" name="C20_Twist" type="radio" />
+                            <span>Factory 1</span>
+                        </label>
+                        <label>
+                            <input id="rb_Fac2_Twist" name="C20_Twist" type="radio" />
+                            <span>Factory 2</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>MC:</label>
+                        <input id="txt_MC_Twist" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Employee ID:</label>
+                        <input id="txt_EmployeeID_Twist" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>Search:</label>
+                        <input id="txt_Search_Twist" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <table class="responsive-table" id="spcListDetailTable_Twist">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>Part No</th>
+                                <th>Process Test</th>
+                                <th>Week</th>
+                                <th>Order Index</th>
+                                <th>Project</th>
+                                <th>TestPos</th>
+                                <th>Lead No</th>
+                                <th>Bundle</th>
+                                <th>Stage</th>
+                                <th>Q'ty Plan</th>
+                                <th>Q'ty Actual</th>
+                                <th>Hook Rack</th>
+                                <th>Wire Description</th>
+                                <th>WIRE_Name</th>
+                                <th>W_Diameter</th>
+                                <th>W_Color</th>
+                                <th>W_Length</th>
+                                <th>Term 1</th>
+                                <th>Strip 1</th>
+                                <th>Seal 1</th>
+                                <th>CCH_W1</th>
+                                <th>ICH_W1</th>
+                                <th>Term 2</th>
+                                <th>Strip 2</th>
+                                <th>Seal 2</th>
+                                <th>CCH_W2</th>
+                                <th>ICH_W2</th>
+                                <th>Job Status</th>
+                                <th>Factory</th>
+                                <th>Plan Date</th>
+                                <th>CCH1 Test</th>
+                                <th>CCW1 Test</th>
+                                <th>CCH2 Test</th>
+                                <th>CCW2 Test</th>
+                                <th>ICH1 Test</th>
+                                <th>ICW1 Test</th>
+                                <th>ICH2 Test</th>
+                                <th>ICW2 Test</th>
+                                <th>W_FORCE Test</th>
+                                <th>W_LEN Actual</th>
+                                <th>Test Result</th>
+                                <th>Test Time</th>
+                                <th>DATE</th>
+                                <th>MC Plan</th>
+                                <th>MC2 Actual</th>
+                                <th>FIRST_TIME</th>
+                                <th>END_TIME</th>
+                                <th>Test By</th>
+                                <th>Full Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spcListDetail_Twist">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C20.js?v=@version"></script>
+

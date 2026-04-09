@@ -1,0 +1,252 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH11Service _H11Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H11";
+    try
+    {
+        // Lấy phân quyền action cho từng button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _H11Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Khu vực hiển thị báo lỗi -->
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12">
+                    <h5>Hệ thống Andon (H11)</h5>
+                    <div class="error-display-container">
+                        <div class="row">
+                            <div class="col s3"><div class="error-box" id="ERR_LEB01"><div class="error-indicator"></div></div></div>
+                            <div class="col s3"><div class="error-box" id="ERR_LEB02"><div class="error-indicator"></div></div></div>
+                            <div class="col s3"><div class="error-box" id="ERR_LEB03"><div class="error-indicator"></div></div></div>
+                            <div class="col s3"><div class="error-box" id="ERR_LEB04"><div class="error-indicator"></div></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="col s3"><div class="error-box" id="ERR_LEB05"><div class="error-indicator"></div></div></div>
+                            <div class="col s3"><div class="error-box" id="ERR_LEB06"><div class="error-indicator"></div></div></div>
+                            <div class="col s3"><div class="error-box" id="ERR_LEB07"><div class="error-indicator"></div></div></div>
+                            <div class="col s3"><div class="error-box" id="ERR_LEB08"><div class="error-indicator"></div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khu vực hiển thị máy Auto Cutting -->
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12">
+                    <h5 class="machine-title">Auto Cutting</h5>
+                    <div class="machine-container">
+                        <div class="machine-row">
+                            <div class="machine-box" id="Panel1"><span>ZA801</span></div>
+                            <div class="machine-box" id="Panel2"><span>ZA802</span></div>
+                            <div class="machine-box" id="Panel3"><span>ZA803</span></div>
+                            <div class="machine-box" id="Panel4"><span>ZA804</span></div>
+                            <div class="machine-box" id="Panel5"><span>ZA805</span></div>
+                            <div class="machine-box" id="Panel6"><span>ZA806</span></div>
+                            <div class="machine-box" id="Panel7"><span>ZA807</span></div>
+                            <div class="machine-box" id="Panel8"><span>ZA808</span></div>
+                            <div class="machine-box" id="Panel9"><span>ZA809</span></div>
+                            <div class="machine-box" id="Panel10"><span>ZA810</span></div>
+                            <div class="machine-box" id="Panel11"><span>ZA811</span></div>
+                            <div class="machine-box" id="Panel12"><span>ZA812</span></div>
+                            <div class="machine-box" id="Panel13"><span>ZA813</span></div>
+                            <div class="machine-box" id="Panel14"><span>ZA814</span></div>
+                        </div>
+                        <div class="machine-row">
+                            <div class="machine-box" id="Panel15"><span>ZA815</span></div>
+                            <div class="machine-box" id="Panel16"><span>ZA816</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khu vực hiển thị máy Twist MC -->
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12">
+                    <h5 class="machine-title">Twist MC</h5>
+                    <div class="machine-container">
+                        <div class="machine-row">
+                            <div class="machine-box" id="Panel29"><span>ZZ101</span></div>
+                            <div class="machine-box" id="Panel30"><span>ZZ102</span></div>
+                            <div class="machine-box" id="Panel31"><span>ZZ103</span></div>
+                            <div class="machine-box" id="Panel32"><span>ZZ104</span></div>
+                            <div class="machine-box" id="Panel33"><span>ZZ105</span></div>
+                            <div class="machine-box" id="Panel34"><span>ZZ106</span></div>
+                            <div class="machine-box" id="Panel35"><span>ZZ107</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khu vực hiển thị máy Welding MC -->
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12">
+                    <h5 class="machine-title">Welding MC</h5>
+                    <div class="machine-container">
+                        <div class="machine-row">
+                            <div class="machine-box" id="Panel43"><span>ZS101</span></div>
+                            <div class="machine-box" id="Panel44"><span>ZS102</span></div>
+                            <div class="machine-box" id="Panel45"><span>ZS103</span></div>
+                            <div class="machine-box" id="Panel46"><span>ZS104</span></div>
+                            <div class="machine-box" id="Panel47"><span>ZS105</span></div>
+                            <div class="machine-box" id="Panel48"><span>ZS106</span></div>
+                            <div class="machine-box" id="Panel49"><span>ZS107</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-display-container {
+        margin-bottom: 20px;
+    }
+
+    .error-box {
+        border: 1px solid #ccc;
+        height: 180px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+    }
+
+    .error-indicator {
+        width: 20px;
+        height: 4px;
+        background-color: blue;
+    }
+
+    .machine-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .machine-container {
+        margin-bottom: 20px;
+    }
+
+    .machine-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 5px;
+    }
+
+    .machine-box {
+        border: 1px solid #ccc;
+        background-color: silver;
+        width: calc(100% / 14 - 4px);
+        height: 40px;
+        margin: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+    }
+
+        .machine-box.running {
+            background-color: lime;
+        }
+
+        .machine-box.error {
+            background-color: red;
+        }
+
+        .machine-box.warning {
+            background-color: gold;
+        }
+
+        .machine-box.empty {
+            background-color: #ccc;
+        }
+</style>
+
+<script src="~/Scripts/H11.js?v=@version"></script>

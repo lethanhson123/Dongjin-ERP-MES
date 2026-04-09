@@ -1,0 +1,159 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "SETUP_FORM";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "SETUP_FORM" + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <h6><b>SETUP_FORM (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l4">
+                    <h6><b>Machine Setup</b></h6>
+                </div>
+                <div class="col s12 m12 l4 right-align-md">
+                    <div class="col s12 m12 l6">
+                        <button id="Button1" title="Save" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">Save</button>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <label>Before change</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>Machine : </label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="MC_Label" type="text" class="form-control" readonly value="???">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <label>Office</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>
+                        <input id="A_RD_01" name="Office" type="radio" />
+                        <span>---</span>
+                    </label>                  
+                </div>
+                <div class="col s12 m12 l2">                   
+                    <label>
+                        <input id="A_RD_02" name="Office" type="radio" />
+                        <span>Staff</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12 m12 l2">
+                    <label>F1</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>
+                        <input id="B_RD_01" name="Office" type="radio" />
+                        <span>KOMAX</span>
+                    </label>                   
+                </div>
+                <div class="col s12 m12 l2">                   
+                    <label>
+                        <input id="B_RD_02" name="Office" type="radio" />
+                        <span>LP</span>
+                    </label>                  
+                </div>
+                <div class="col s12 m12 l2">                  
+                    <label>
+                        <input id="B_RD_03" name="Office" type="radio" />
+                        <span>FG_Inspection</span>
+                    </label>                   
+                </div>
+                <div class="col s12 m12 l2">                   
+                    <label>
+                        <input id="B_RD_04" name="Office" type="radio" />
+                        <span>Twist</span>
+                    </label>                   
+                </div>
+                <div class="col s12 m12 l2">                   
+                    <label>
+                        <input id="B_RD_05" name="Office" type="radio" />
+                        <span>Welding</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12 m12 l2">
+                    <label>F2</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>
+                        <input id="C_RD_01" name="Office" type="radio" />
+                        <span>ZDA_KOMAX</span>
+                    </label>                                
+                </div>
+                <div class="col s12 m12 l2">                  
+                    <label>
+                        <input id="C_RD_02" name="Office" type="radio" />
+                        <span>ZDA_LP</span>
+                    </label>                    
+                </div>
+                <div class="col s12 m12 l2">                   
+                    <label>
+                        <input id="C_RD_03" name="Office" type="radio" />
+                        <span>Twist</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>
+                        <input id="C_RD_04" name="Office" type="radio" />
+                        <span>Welding</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12 m12 l2">
+                    <label>After change</label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>Machine : </label>
+                </div>
+                <div class="col s12 m12 l8">
+                    <select id="ComboBox3" class="browser-default form-select">
+                        <option value="---">---</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/SETUP_FORM.js?v=@version"></script>
+

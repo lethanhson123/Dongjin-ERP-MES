@@ -1,0 +1,181 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+
+@{
+	//string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();	
+	string url = "B03_1";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "Re Print (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l12">
+					<h6><b>Re Print (@url)</b></h6>
+				</div>
+			</div>
+			<div class="row card-panel light-blue lighten-4">
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l3">
+						<div>
+							<label>Narcode : </label>
+							<input id="TextBox1" type="text" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>PART NO : </label>
+							<input id="TextBox2" type="text" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>PART NAME : </label>
+							<input id="TextBox3" type="text" class="form-control">
+						</div>
+					</div>
+					<div class="col s12 m12 l1">
+						<div>
+							<br />
+							<button id="Button1" class="btn waves-effect waves-light green darken-1">Search</button>
+						</div>
+					</div>
+					<div class="col s12 m12 l1">
+						<div>
+							<br />
+							<button id="Buttonprint" class="btn waves-effect waves-light green darken-1">Print</button>
+						</div>
+					</div>
+					<div class="col s12 m12 l1">
+						<div>
+							<br />
+							<button id="Buttonclose" class="btn waves-effect waves-light purple darken-1">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row card-panel green lighten-4">
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l3">
+						<div>
+							<label>Barcode : </label>
+							<input id="Label2" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>Packing unit : </label>
+							<input id="Label3" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>Quantity(SNP) : </label>
+							<input id="Label5" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>.</label>
+							<input id="Label22" type="text" class="form-control" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l3">
+						<div>
+							<label>Quantity : </label>
+							<input id="Label7" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>PART NO : </label>
+							<input id="Label9" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>PART NAME : </label>
+							<input id="Label11" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div class="col s12 m12 l3">
+						<div>
+							<label>Shipped No. : </label>
+							<input id="Label15" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>Unit : </label>
+							<input id="Label13" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+						<div>
+							<label>Location :</label>
+							<input id="Label20" type="text" class="form-control" readonly>
+						</div>
+					</div>
+					<div class="col s12 m12 l3">
+					</div>
+				</div>
+			</div>
+			<div class="KhungOverflow">
+				<table class="responsive-table">
+					<thead class="sticky-header">
+						<tr onclick="RETMBRCDDataGridViewSort()">
+							<th>BARCD_ID</th>
+							<th>MTIN_DTM</th>
+							<th>PART_NO</th>
+							<th>PART_NM</th>
+							<th>Packing Unit</th>
+							<th>PKG_QTY</th>
+							<th>Unit</th>
+							<th>QTY</th>
+							<th>NET_WT</th>
+							<th>GRS_WT</th>
+							<th>PLET_NO</th>
+							<th>Shipped No.</th>
+							<th>DSCN_YN</th>
+							<th>Location</th>
+							<th>MTIN_RMK</th>
+						</tr>
+					</thead>
+					<tbody id="RETMBRCDDataGridView">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/B03_1.js?v=@GlobalHelper.GetVersionScrip("B03_1.js")"></script>
+

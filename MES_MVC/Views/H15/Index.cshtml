@@ -1,0 +1,83 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH15Service _H15Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H15";
+
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _H15Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+
+    ViewData["Title"] = "RO Test Log Monitoring (" + url + ")";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <link rel="stylesheet" href="~/css/H15.css?v=@version" />
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="brand">
+            <div class="brand-icon">📊</div>
+            <div class="brand-text">
+                <h1>Production Dashboard</h1>
+                <p class="brand-subtitle">Real-time RO Test Monitoring</p>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <div class="date-filter">
+                <div class="custom-date-picker">
+                    <div class="date-picker-wrapper">
+                        <span class="date-icon">📅</span>
+                        <input type="date" id="selectedDate" class="date-input" />
+                        <span class="date-label" id="dateLabel">Today</span>
+                    </div>
+                </div>
+
+                <div class="view-by-selector-container">
+                    <select id="viewBySelector" class="browser-default view-by-selector" onchange="onViewByChange()">
+                        <option value="hour" selected>Hourly</option>
+                        <option value="day">Daily</option>
+                        <option value="week">Weekly</option>
+                        <option value="month">Monthly</option>
+                        <option value="year">Yearly</option>
+                    </select>
+                </div>
+
+                <button class="live-btn active" onclick="toggleLiveMode()" id="liveModeBtn">
+                    <span class="live-indicator">●</span> Live
+                </button>
+            </div>
+            <span id="currentTime" class="current-time">--:--:--</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div id="linesGrid" class="lines-grid">
+            <!-- JavaScript will render line cards here -->
+        </div>
+    </div>
+     <!-- Modal Overlay -->
+    <div id="fullscreenBackdrop" class="fullscreen-backdrop"></div>
+    <button id="closeFullscreen" class="close-fullscreen">✕</button>
+    <script src="~/Scripts/H15.js?v=@version"></script>
+</body>
+</html>

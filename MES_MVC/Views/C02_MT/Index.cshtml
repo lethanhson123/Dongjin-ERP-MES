@@ -1,0 +1,126 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C02_MT";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "Material Application (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <h6><b>Material Application (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l1">
+                    <input id="OR_IDX" type="text" class="form-control" readonly value="INDEX" style="border-width: 0px !important;">
+                </div>
+                <div class="col s12 m12 l3">
+                    <input id="Label18" type="text" class="form-control" readonly value="LD NAME" style="border-width: 0px !important;">
+                </div>
+                <div class="col s12 m12 l2">
+                    <input id="Label19" type="text" class="form-control" readonly value="QTY" style="border-width: 0px !important;">
+                </div>
+                <div class="col s12 m12 l3">
+                    <button id="Buttonsave" title="MT Request(Yêu Cầu vật NVL)" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">MT Request(Yêu Cầu vật NVL)</button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+                </div>
+            </div>                      
+            <div class="row card-panel yellow lighten-4">            
+                <div class="col s12 m12 l12">
+                    <hr />
+                    <div>
+                        <table class="responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>TYPE</th>
+                                    <th></th>
+                                    <th style="width: 50%;">NAME</th>
+                                    <th>QTY</th>
+                                    <th>Order</th>
+                                    <th>Complete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input id="LBT1S" type="text" class="form-control" readonly value="TERM 1" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><label><input id="TM_CB1" class='form-check-input' type='checkbox'><span></span></label></td>
+                                    <td><input id="Label9" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="Label17" type="number" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="T1_OR" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="T1_CP" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input id="Label1" type="text" class="form-control" readonly value="TERM 2" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><label><input id="TM_CB2" class='form-check-input' type='checkbox'><span></span></label></td>
+                                    <td><input id="Label8" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="Label16" type="number" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="T2_OR" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="T2_CP" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input id="Label2" type="text" class="form-control" readonly value="SEAL 1" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><label><input id="SL_CB1" class='form-check-input' type='checkbox'><span></span></label></td>
+                                    <td><input id="Label7" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="Label15" type="number" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="S1_OR" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="S1_CP" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input id="Label3" type="text" class="form-control" readonly value="SEAL 2" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><label><input id="SL_CB2" class='form-check-input' type='checkbox'><span></span></label></td>
+                                    <td><input id="Label6" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="Label14" type="number" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="S2_OR" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td><input id="S2_CP" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2"><input id="Label4" type="text" class="form-control" readonly value="WIRE" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td rowspan="2"><label><input id="WR_CB" class='form-check-input' type='checkbox'><span></span></label></td>
+                                    <td><input id="Label5" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td rowspan="2"><input id="Label13" type="number" class="form-control" readonly value="0" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td rowspan="2"><input id="WR_OR" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                    <td rowspan="2"><input id="WR_CP" type="text" class="form-control" readonly value="N" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input id="Label20" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align:center;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C02_MT.js?v=@version"></script>
+

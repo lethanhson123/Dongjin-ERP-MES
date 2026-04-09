@@ -1,0 +1,1301 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC03Service _C03Service
+@{
+    // string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "C03";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _C03Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<script src="~/lib/xlsx.full.min.js"></script>
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <ul class="tabs" id="TabControl1">
+                        <li class="tab col s2"><a class="active" href="#TabPage6">HR IN/OUT</a></li>
+                        <li class="tab col s2"><a href="#TabPage1">INPUT LIST</a></li>
+                        <li class="tab col s2"><a href="#TabPage2">OUTPUT LIST</a></li>
+                        <li class="tab col s2"><a href="#TabPage3">Inventory List</a></li>
+                        <li class="tab col s2"><a href="#TabPage4">In/Out List</a></li>
+                        <li class="tab col s2"><a href="#TabPage7">Long-Term </a></li>
+                        <li class="tab col s2"><a href="#TabPage5">Management</a></li>
+
+
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TabPage1: Goods In Stock -->
+            <div id="TabPage1" class="col s12 m12 l12">
+                <hr />
+                <div class="KhungOverflow" style="height:80vh !important;">
+                    <table class="responsive-table highlight" id="DataGridView2Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView2Sort()">
+                                <th class="center-header-text">TABLE_NM</th>
+                                <th class="center-header-text">HOOK_RACK_LOC</th>
+                                <th class="center-header-text">LEAD_NO</th>
+                                <th class="center-header-text">Stock_QTY</th>
+                                <th class="center-header-text">BARCODE</th>
+                                <th class="center-header-text">IN_DATE</th>
+                                <th class="center-header-text">QTY</th>
+                                <th class="center-header-text">CREATE_DATE</th>
+                                <th class="center-header-text">CREATE_USER</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView2">
+                            <tr>
+                                <td colspan="9" class="center-align">Vui lòng nhấn nút tìm kiếm để hiển thị dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- TabPage2: Goods Out Stock -->
+            <div id="TabPage2" class="col s12 m12 l12">
+                <hr />
+                <div class="KhungOverflow" style="height:80vh !important;">
+                    <table class="responsive-table highlight" id="DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr onclick="DataGridView1Sort()">
+                                <th class="center-header-text">TABLE_NM</th>
+                                <th class="center-header-text">HOOK_RACK_LOC</th>
+                                <th class="center-header-text">LEAD_NO</th>
+                                <th class="center-header-text">Stock_QTY</th>
+                                <th class="center-header-text">BARCODE</th>
+                                <th class="center-header-text">OUT_DATE</th>
+                                <th class="center-header-text">QTY</th>
+                                <th class="center-header-text">CREATE_DATE</th>
+                                <th class="center-header-text">CREATE_USER</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1">
+                            <tr>
+                                <td colspan="9" class="center-align">Vui lòng nhấn nút tìm kiếm để hiển thị dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="TabPage3" class="col s12 m12 l12">
+                <hr />
+                <div class="row">
+                    <div class="col s12 m4 l3">
+                        <div class="input-field">
+                            <input id="TextBox2" type="text">
+                            <label for="TextBox2">LeadNo</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l3 offset-l6 right-align">
+                        <p>
+                            <span class="stock-counter bad-counter">Bad: <b id="LabelBAD">0</b></span> |
+                            <span class="stock-counter good-counter">Good: <b id="LabelGOOD">0</b></span>
+                        </p>
+                    </div>
+                </div>
+                <hr />
+
+                <!-- Hai bảng nằm ngang nhau -->
+                <div class="row">
+                    <!-- Bảng tổng quan tồn kho (DataGridView3) - Bên trái -->
+                    <div class="col s12 m6 l6">
+                        <div class="row">
+                            <div class="KhungOverflow40">
+                                <table class="responsive-table highlight" id="DataGridView3Table">
+                                    <thead class="sticky-header">
+                                        <tr onclick="DataGridView3Sort()">
+                                            <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_Location</th>
+                                            <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_LeadNO</th>
+                                            <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_StockQty</th>
+                                            <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_InputQty</th>
+                                            <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_OutputQty</th>
+                                            <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_Status</th>
+                                            <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_QtyMatch</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataGridView3">
+                                        <tr>
+                                            <td colspan="7" class="center-align">Vui lòng nhấn nút tìm kiếm để hiển thị dữ liệu</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <table class="responsive-table highlight" id="Table_Stock_HR">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_PartNo</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_ECN_No</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_LeadCount</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_OrderQty</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_Status</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_StockQty</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_InputQty</th>
+                                        <th class="center-header-text">FA Qty</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="Table_Stock_HR">
+                                    <tr>
+                                        <td colspan="7" class="center-align">Vui lòng nhấn nút tìm kiếm để hiển thị dữ liệu</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Bảng chi tiết nhập/xuất kho (DataGridView4) - Bên phải -->
+                    <div class="col s12 m6 l6">
+                        <div class="KhungOverflow70">
+                            <table class="responsive-table highlight" id="DataGridView4Table">
+                                <thead class="sticky-header">
+                                    <tr onclick="DataGridView4Sort()">
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_POCode</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_ProductCode</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_ECN_No</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_Location</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_LeadNO</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_LotCode</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_MachineNo</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_SEQ</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_Quantity</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_Status</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_DateIn</th>
+                                        <th class="center-header-text">@MES_MVC.Resources.Resource.DbTbl_DateOut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataGridView4">
+                                    <tr>
+                                        <td colspan="8" class="center-align">Chọn một mục trong bảng trên để xem chi tiết</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- TabPage4: In/Out Transactions -->
+            <!-- TabPage4: In/Out List -->
+            <div id="TabPage4" class="col s12 m12 l12">
+                <hr />
+                <div class="row">
+                    <!-- Input fields -->
+                    <div class="col s12 m4 l3">
+                        <div class="input-field">
+                            <input id="TextBox3" type="text" class="validate">
+                            <label for="TextBox3">LeadNo</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l3">
+                        <div class="input-field">
+                            <input id="DateTimePicker1" type="date">
+                            <label for="DateTimePicker1">StartDate</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l3">
+                        <div class="input-field">
+                            <input id="DateTimePicker2" type="date">
+                            <label for="DateTimePicker2">EndDate</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <!-- Radio buttons for transaction type -->
+                        <p>
+                            <label style="margin-left: 15px;">
+                                <input type="radio" name="transactionType" id="RadioButton3" value="LEAD" checked />
+                                <span>LEAD</span>
+                            </label>
+                            <label style="margin-left: 15px;">
+                                <input type="radio" name="transactionType" id="RadioButton8" value="INOUT" />
+                                <span>Barcode</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="transactionType" id="RadioButton1" value="IN" />
+                                <span>In</span>
+                            </label>
+                            <label style="margin-left: 15px;">
+                                <input type="radio" name="transactionType" id="RadioButton2" value="OUT" />
+                                <span>Out</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m6 l6">
+                        <!-- Summary information -->
+                        <span id="Label1" class="chip green white-text">IN: 0 EA</span>
+                        <span id="Label2" class="chip red white-text">OUT: 0 EA</span>
+                        <span id="Label3" class="chip blue white-text">MAX: 30,000 EA</span>
+                    </div>
+                </div>
+                <hr />
+
+                <!-- Container for LIST view (RadioButton1 and RadioButton2) -->
+                <div id="listContainer" class="KhungOverflow60" style="display:none;">
+                    <table class="responsive-table highlight">
+                        <thead>
+                            <tr>
+                                <th class="center-header-text">HOOK_RACK</th>
+                                <th class="center-header-text">LEAD_NO</th>
+                                <th class="center-header-text">BARCODE_NAME</th>
+                                <th class="center-header-text">SEQ</th>
+                                <th class="center-header-text">QTY</th>
+                                <th class="center-header-text">Status</th>
+                                <th class="center-header-text">IN_DATE</th>
+                                <th class="center-header-text">OUT_DATE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView5List">
+                            <tr>
+                                <td colspan="8" class="center-align">Vui lòng nhấn nút tìm kiếm để hiển thị dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Container for LEAD view (RadioButton3) -->
+                <div id="leadContainer" class="KhungOverflow60" style="display:block;">
+                    <table class="responsive-table highlight">
+                        <thead>
+                            <tr>
+                                <th class="center-header-text">LEAD_NO</th>
+                                <th class="center-header-text">Status</th>
+                                <th class="center-header-text">IN_DATE</th>
+                                <th class="center-header-text">IN_QTY</th>
+                                <th class="center-header-text">OUT_DATE</th>
+                                <th class="center-header-text">OUT_QTY</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView5Lead">
+                            <tr>
+                                <td colspan="6" class="center-align">Vui lòng nhấn nút tìm kiếm để hiển thị dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Container for INOUT view (RadioButton8) -->
+                <div id="inoutContainer" class="KhungOverflow60" style="display:none;">
+                    <table class="responsive-table highlight">
+                        <thead>
+                            <tr>
+                                <th class="center-header-text">HOOK_RACK</th>
+                                <th class="center-header-text">LEAD_NO</th>
+                                <th class="center-header-text">Status</th>
+                                <th class="center-header-text">BARCODE_NAME</th>
+                                <th class="center-header-text">QTY</th>
+                                <th class="center-header-text">IN_DATE</th>
+                                <th class="center-header-text">IN_QTY</th>
+                                <th class="center-header-text">OUT_DATE</th>
+                                <th class="center-header-text">OUT_QTY</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView5InOut">
+                            <tr>
+                                <td colspan="9" class="center-align">Vui lòng nhấn nút tìm kiếm để hiển thị dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- TabPage5: Lead Management -->
+
+            <div id="TabPage5" class="col s12 m12 l12">
+                <hr />
+                <!-- Filter Area -->
+                <div class="row">
+                    <div class="col s12 m5 l4">
+                        <div class="input-field">
+                            <input id="Tab5_LeadNoFilter" type="text" class="validate">
+                            <label for="Tab5_LeadNoFilter">Lọc Lead PN</label>
+                        </div>
+                    </div>
+
+
+                </div>
+                <hr />
+
+                <!-- 3-Grid Layout -->
+                <div class="row p-0 m-0">
+
+                    <!-- Left Grid - Danh sách Lead PN -->
+                    <div class="col s12 m3 l3 p-0 border">
+                        <div style="background-color: #e6f2ff; color: #003366; padding: 10px; height: 70vh; display: flex; flex-direction: column;">
+
+                            <div class="KhungOverflow60 flex-grow-1" style="background-color: #f0f8ff;">
+                                <table id="Tab5_LeadListGrid" class="responsive-table highlight bordered">
+                                    <thead style="background-color: #4682b4; color: white;">
+                                        <tr>
+                                            <th data-sort="LEAD_PN" class="center-header-text sortable">LEAD PN</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="Tab5_LeadListBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center Grid - Chi tiết Lead PN -->
+                    <div class="col s12 m6 l6 p-0 border">
+                        <div id="Tab5_DetailPanel" style="background-color: #e6f5e6; color: #004d00; padding: 10px; height: 70vh; overflow-y: auto;">
+
+                            <div class="row mb-2">
+                                <div class="col s6">
+                                    <label>
+                                        <input name="Tab5_leadType" type="radio" id="Tab5_leadRadio" checked />
+                                        <span>LEAD</span>
+                                    </label>
+                                </div>
+                                <div class="col s6">
+                                    <label>
+                                        <input name="Tab5_leadType" type="radio" id="Tab5_spstRadio" />
+                                        <span>SPST</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col s3 valign-wrapper"><label for="Tab5_leadNo">LEAD NO:</label></div>
+                                <div class="col s9 input-field inline" style="margin:0;">
+                                    <input type="text" id="Tab5_leadNo" class="validate" readonly>
+                                </div>
+                            </div>
+                            <div class="row mb-2 align-items-center">
+                                <div class="col s2"><label>DS_YN:</label></div>
+                                <div class="col s2"><label><input name="Tab5_ds_yn" type="radio" id="Tab5_dsYRadio" checked /><span>Y</span></label></div>
+                                <div class="col s2"><label><input name="Tab5_ds_yn" type="radio" id="Tab5_dsNRadio" /><span>N</span></label></div>
+                                <div class="col s2"><label for="Tab5_index">INDEX:</label></div>
+                                <div class="col s4 input-field inline" style="margin:0;"><input type="text" id="Tab5_index" readonly class="grey lighten-3"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_hookRack"><label for="Tab5_hookRack">Hook rack:</label></div>
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_safetyStock"><label for="Tab5_safetyStock">Safety stock:</label></div>
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_bundleQty"><label for="Tab5_bundleQty">Bundle QTY:</label></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col s12 input-field" style="margin-top:0;"><input type="text" id="Tab5_wirePNo"><label for="Tab5_wirePNo">WIRE P.NO:</label></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_wireName"><label for="Tab5_wireName">Wire:</label></div>
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_diameter"><label for="Tab5_diameter">Diameter:</label></div>
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_wLink"><label for="Tab5_wLink">W/Link:</label></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_color"><label for="Tab5_color">Color:</label></div>
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_wrNo"><label for="Tab5_wrNo">W.R/No:</label></div>
+                                <div class="col s4 input-field" style="margin-top:0;"><input type="text" id="Tab5_length"><label for="Tab5_length">Length(mm):</label></div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col s3 input-field" style="margin-top:0;"><input type="text" id="Tab5_term1"><label for="Tab5_term1">TERM1:</label></div>
+                                <div class="col s3 input-field" style="margin-top:0;"><input type="text" id="Tab5_seal1"><label for="Tab5_seal1">SEAL1:</label></div>
+                                <div class="col s3 input-field" style="margin-top:0;"><input type="text" id="Tab5_strip1"><label for="Tab5_strip1">STRIP1:</label></div>
+                                <div class="col s3 input-field" style="margin-top:0;"><input type="text" id="Tab5_t1No"><label for="Tab5_t1No">T1.No:</label></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col s6 input-field" style="margin-top:0;"><input type="text" id="Tab5_cchW1"><label for="Tab5_cchW1">CCH_W1:</label></div>
+                                <div class="col s6 input-field" style="margin-top:0;"><input type="text" id="Tab5_ichW1"><label for="Tab5_ichW1">ICH_W1:</label></div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col s3 input-field" style="margin-top:0;"><input type="text" id="Tab5_term2"><label for="Tab5_term2">TERM2:</label></div>
+                                <div class="col s3 input-field" style="margin-top:0;"><input type="text" id="Tab5_seal2"><label for="Tab5_seal2">SEAL2:</label></div>
+                                <div class="col s3 input-field" style="margin-top:0;"><input type="text" id="Tab5_strip2"><label for="Tab5_strip2">STRIP2:</label></div>
+                                <div class="col s3 input-field" style="margin-top:0;"><input type="text" id="Tab5_t2No"><label for="Tab5_t2No">T2.No:</label></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col s6 input-field" style="margin-top:0;"><input type="text" id="Tab5_cchW2"><label for="Tab5_cchW2">CCH_W2:</label></div>
+                                <div class="col s6 input-field" style="margin-top:0;"><input type="text" id="Tab5_ichW2"><label for="Tab5_ichW2">ICH_W2:</label></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Grid - Danh sách Sub-part -->
+                    <div id="Tab5_SubPartPanel" class="col s12 m3 l3 p-0 border">
+                        <div style="background-color: #f0e6ff; color: #330066; padding: 10px; height: 70vh; display: flex; flex-direction: column;">
+
+                            <div class="KhungOverflow60 flex-grow-1" style="background-color: #f8f0ff;">
+                                <table id="Tab5_SubPartGrid" class="responsive-table highlight bordered">
+                                    <thead style="background-color: #8a2be2; color: white;">
+                                        <tr>
+                                            <th class="center-header-text">NO</th>
+                                            <th class="center-header-text">LEAD NO</th>
+                                            <th class="center-header-text">LH / RH</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="Tab5_SubPartBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- 3-Grid Layout End -->
+            </div>
+            <!-- TabPage6: HR IN/OUT -->
+            <div id="TabPage6" class="col s12 m12 l12">
+                <hr />
+                <div class="row" style="display: flex; align-items: center; justify-content: center;">
+                    <div class="col s3 center-align">
+                        <a id="ButtonInputTrolley" class="waves-effect">
+                            <img src="~/image/right.jpg" alt="TROLLEY - Xe đẩy" title="TROLLEY - Xe đẩy" style="width: 80px; height: auto;" />
+                            <p class="center-align" style="margin-top: 5px; font-weight: bold;">TROLLEY - Xe đẩy</p>
+                        </a>
+                        <br />
+                        <br />
+                        <br />
+                        <a id="ButtonRightLeft" class="waves-effect">
+                            <img src="~/image/right.jpg" alt="INPUT" title="INPUT" style="width: 80px; height: auto;" />
+                            <p class="center-align" style="margin-top: 5px; font-weight: bold;">INPUT</p>
+                        </a>
+                    </div>
+                    <div class="col s6 center-align">
+                        <a id="ButtonMiddle" class="waves-effect">
+                            <img src="~/image/middle.jpg" alt="Middle Button" style="width: 80px; height: auto;" />
+                            <p class="center-align" style="margin-top: 5px; font-weight: bold; color: orange;">RE_INPUT</p>
+                        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a id="ButtonRight2" class="waves-effect">
+                            <img src="~/image/right.jpg" alt="Right Button 3" style="width: 80px; height: auto;" />
+                            <p class="center-align" style="margin-top: 5px; font-weight: bold; color: black;">SET_OUTPUT</p>
+                        </a>
+                        <br />
+                        <img src="~/image/hookrack.jpg" alt="Hook Rack" style="max-width: 40%; height: auto;" />
+                    </div>
+                    <div class="col s3 center-align">
+                        <a id="ButtonRight1" class="waves-effect">
+                            <img src="~/image/right.jpg" alt="OUTPUT" title="OUTPUT" style="width: 80px; height: auto; display: block; margin-bottom: 10px;" />
+                            <p class="center-align" style="margin-top: 5px; font-weight: bold; color: red;">OUTPUT</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="TabPage7" class="col s12 m12 l12">
+                <hr />
+                <div class="row">
+                    <div class="col s12 m4 l3">
+                        <button id="Button1" class="btn waves-effect waves-light blue darken-1">
+                            <i class="material-icons left">list</i>Xem chi tiết
+                        </button>
+                    </div>
+                </div>
+                <hr />
+                <div class="KhungOverflow60">
+                    <table class="responsive-table highlight">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th data-sort="YEAR" class="center-header-text sortable">YEAR</th>
+                                <th data-sort="MONTH" class="center-header-text sortable">MONTH</th>
+                                <th data-sort="LEAD_COUNT" class="center-header-text sortable">LEAD_COUNT</th>
+                                <th data-sort="ADD_1" class="center-header-text sortable">OVER+1</th>
+                                <th data-sort="ADD_2" class="center-header-text sortable">OVER+2</th>
+                                <th data-sort="ADD_3" class="center-header-text sortable">OVER+3</th>
+                                <th data-sort="ADD_4" class="center-header-text sortable">OVER+4</th>
+                                <th data-sort="ADD_5" class="center-header-text sortable">OVER+5</th>
+                                <th data-sort="ADD_6" class="center-header-text sortable">OVER+6</th>
+                                <th data-sort="OVER_9" class="center-header-text sortable">OVER+9</th>
+                                <th data-sort="OVER_10" class="center-header-text sortable">OVER+10</th>
+                                <th data-sort="SUM_QTY" class="center-header-text sortable">SUM</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView8">
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+            <div id="C03_LT_Modal" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <h4>Chi tiết hàng tồn kho dài hạn</h4>
+                    <div class="row">
+                        <div class="input-field col s12 m4 l3">
+                            <select id="ComboBox1">
+                                <option value="ALL" selected>ALL</option>
+                                <option value="OVER +1">OVER +1</option>
+                                <option value="OVER +2">OVER +2</option>
+                                <option value="OVER +3">OVER +3</option>
+                                <option value="OVER +4">OVER +4</option>
+                                <option value="OVER +5">OVER +5</option>
+                                <option value="OVER +6">OVER +6</option>
+                                <option value="OVER +7">OVER +7</option>
+                            </select>
+                            <label>Lọc theo thời gian</label>
+                        </div>
+                        <div class="input-field col s12 m4 l3">
+                            <input id="TextBox1" type="text" class="validate">
+                            <label for="TextBox1">LeadNo</label>
+                        </div>
+                        <div class="input-field col s12 m4 l3">
+                            <input id="TextBox2" type="text" class="validate">
+                            <label for="TextBox2">Barcode</label>
+                        </div>
+                        <div class="col s12 m12 l3">
+                            <button id="ModalButtonFind" class="btn waves-effect waves-light green darken-1">
+                                <i class="material-icons left">search</i> Tìm kiếm
+                            </button>
+                            <button id="ButtonexportDetail" class="btn waves-effect waves-light green darken-1">
+                                <i class="material-icons left">file_download</i> Xuất Excel
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="KhungOverflow" style="height:50vh;">
+                                <table id="LongtimeTable" class="responsive-table highlight">
+                                    <thead class="sticky-header">
+                                        <tr>
+                                            <th data-sort="LEAD_NO" class="center-header-text sortable">LEAD_NM</th>
+                                            <th data-sort="TABLE_NM" class="center-header-text sortable">TABLE_NM</th>
+                                            <th data-sort="LOCATION" class="center-header-text sortable">LOCATION</th>
+                                            <th data-sort="BARCODE" class="center-header-text sortable">BARCODE_NM</th>
+                                            <th data-sort="QTY" class="center-header-text sortable">QTY</th>
+                                            <th data-sort="LAST_INSPECT" class="center-header-text sortable">LAST_INSPECT</th>
+                                            <th data-sort="YEAR" class="center-header-text sortable">YEAR</th>
+                                            <th data-sort="MONTH" class="center-header-text sortable">MONTH</th>
+                                            <th data-sort="MONTHS_AGO" class="center-header-text sortable">MONTHA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ModalLongTermDetailBody">
+                                        <tr>
+                                            <td colspan="9" class="center-align">Vui lòng chọn điều kiện lọc và nhấn tìm kiếm</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="Buttonclose" class="modal-close waves-effect waves-light btn">
+                        <i class="material-icons left">close</i>Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal cho C03_IN (ButtonRightLeft) -->
+<!-- Modal cho C03_IN (ButtonRightLeft) -->
+<div id="C03_IN_Modal" class="modal">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 0;">
+            <div class="col s3">
+                <h4>C03_IN</h4>
+            </div>
+            <div class="col s9 right-align">
+                <label>
+                    <input type="checkbox" id="ChkNoGroupF2_IN" />
+                    <span><b>F2 — Không bắt nhóm &nbsp;&nbsp;&nbsp;</b></span>
+                </label>
+                <button id="ButtonReset_IN" class="btn waves-effect waves-light">Reset(Phím Space)</button>
+                <button id="C03_IN_Buttonclose" class="btn waves-effect waves-light modal-close purple darken-1">Đóng</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s3">
+                <br />
+                <select id="CategoryDepartmentINPUT" class="browser-default form-select" style="color: red;">
+                    <option value="0" selected style="color: red;">
+                        Chọn bộ phận / Select department
+                    </option>
+                </select>
+            </div>
+            <div class="input-field col s9">
+                <input id="C03_IN_TextBox1" type="text" class="validate" />
+                <label for="C03_IN_TextBox1">Barcode</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <label>LEAD_NO:</label>
+                <span id="C03_IN_Label4"></span>
+            </div>
+            <div class="col s3">
+                <label>HOOK_RACK:</label>
+                <span id="C03_IN_Label5"></span>
+            </div>
+            <div class="col s3">
+                <label>Count:</label>
+                <span id="C03_IN_Label12"></span>
+            </div>
+            <div class="col s3">
+                <label>Total In:</label>
+                <span id="C03_IN_Label37">0</span>
+            </div>
+        </div>
+        <!-- Thêm dòng hiển thị thông tin hàng đợi ở đây -->
+        <div class="row">
+            <div class="col s6">
+                <label>Hàng đợi:</label>
+                <span id="queueCount">0</span>
+            </div>
+            <div class="col s6">
+                <span id="processingStatus"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="KhungOverflow60">
+                    <table id="C03_IN_Table" class="responsive-table highlight">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th class="center-header-text">Lead No</th>
+                                <th class="center-header-text">Barcode</th>
+                                <th class="center-header-text">Hook Rack</th>
+                                <th class="center-header-text">Số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C03_IN_TempTableBody">
+                            <tr>
+                                <td colspan="4" class="center-align">Chưa có dữ liệu quét</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Input Trolley -->
+<div id="C03_IN_TrolleyModal" class="modal" style="width: 900px; max-width: 95%;">
+    <div class="modal-footer">
+        <button id="C03_IN_TrolleyCancel" class="btn grey modal-close">Hủy</button>
+        <button id="C03_IN_TrolleyConfirm" class="btn green" disabled>Nhập kho tất cả</button>
+    </div>
+    <div class="modal-content">
+        <h5><i class="material-icons" style="vertical-align: middle;">shopping_cart</i> Input Trolley</h5>
+
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col s12">
+                <input id="C03_IN_TrolleyInput" type="text" placeholder="Scan Trolley Code..."
+                       style="font-size: 24px; text-align: center;" autocomplete="off">
+                <p id="C03_IN_TrolleyMsg" style="min-height: 20px; margin: 5px 0;"></p>
+            </div>
+        </div>
+
+        <div id="C03_IN_TrolleySummary" style="display: none;">
+            <!-- Tổng hợp -->
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col s4 center-align">
+                    <span class="chip blue white-text">Barcode: <b id="C03_IN_TotalBarcode">0</b></span>
+                </div>
+                <div class="col s4 center-align">
+                    <span class="chip green white-text">LEAD: <b id="C03_IN_TotalLead">0</b></span>
+                </div>
+                <div class="col s4 center-align">
+                    <span class="chip orange white-text">SL: <b id="C03_IN_TotalQty">0</b> EA</span>
+                </div>
+            </div>
+
+            <!-- Bảng chi tiết -->
+            <div class="KhungOverflow" style="max-height: 350px;">
+                <table class="striped highlight">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th style="width: 45%;">Barcode</th>
+                            <th>LEAD_NO</th>
+                            <th class="center-align">HookRack</th>
+                            <th class="center-align" style="width: 60px;">SL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="C03_IN_TrolleyBody"></tbody>
+                </table>
+            </div>
+            <div style="margin-top: 15px; padding: 10px; background-color: #f5f5f5; border-radius: 4px;">
+                <b>Chi tiết theo LEAD:</b>
+                <div id="C03_IN_LeadDetail" style="margin-top: 8px;"></div>
+            </div>
+        </div>
+
+        <div id="C03_IN_TrolleyProgress" style="display: none; margin-top: 15px;">
+            <div class="progress"><div id="C03_IN_ProgressBar" class="determinate" style="width: 0%"></div></div>
+            <p id="C03_IN_ProgressText" class="center-align" style="margin: 5px 0;">Đang xử lý...</p>
+        </div>
+    </div>
+</div>
+<!-- Modal cho C03_OUT (ButtonRight1) -->
+<div id="C03_OUT_Modal" class="modal">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 0;">
+            <div class="col s3">
+                <h4>C03_OUT</h4>
+            </div>
+            <div class="col s9 right-align">
+                <label>
+                    <input type="checkbox" id="ChkNoGroupF2_OUT" />
+                    <span><b>F2 — Không bắt nhóm &nbsp;&nbsp;&nbsp;</b></span>
+                </label>
+                <button id="ButtonReset_OUT" class="btn waves-effect waves-light ">Reset(Phím Space)</button>
+                <button id="Buttonclose" class="btn waves-effect waves-light modal-close purple darken-1">Đóng</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s3">
+                <br />
+                <select id="CategoryDepartmentOUTPUT" class="browser-default form-select" style="color: red;">
+                    <option value="0" selected style="color: red;">
+                        Chọn bộ phận / Select department
+                    </option>
+                </select>
+            </div>
+            <div class="input-field col s9">
+                <input id="TextBox4" type="text" class="validate" />
+                <label for="TextBox4">Barcode</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <label>LEAD_NO:</label>
+                <span id="Label15"></span>
+            </div>
+            <div class="col s6">
+                <label>BARCODE:</label>
+                <span id="Label11"></span>
+            </div>
+            <div class="col s3">
+                <label>Total Out:</label>
+                <span id="Label38">0</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="KhungOverflow60">
+                    <table id="DataGridView1" class="responsive-table highlight">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th class="center-header-text">Lead No</th>
+                                <th class="center-header-text">Barcode</th>
+                                <th class="center-header-text">Số lượng</th>
+                                <th class="center-header-text">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1Body">
+                            <tr>
+                                <td colspan="4" class="center-align">Chưa có dữ liệu quét</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal cho C03_RE_IN (ButtonMiddle) -->
+<div id="C03_RE_IN_Modal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s6">
+                <h4>FA -> HOOK RACK</h4>
+            </div>
+            <div class="col s6 right-align">
+                <!-- Buttonsave: Lưu -->
+                <button id="C03_RE_IN_Buttonsave" class="btn waves-effect waves-light cyan darken-1"><i class="material-icons">save</i> Save</button>
+                <!-- Buttonfind: Reset form -->
+                <button id="C03_RE_IN_Buttonfind" class="btn waves-effect waves-light">Reset</button>
+                <!-- Buttonclose: Đóng modal -->
+                <button id="C03_RE_IN_Buttonclose" class="btn waves-effect waves-light modal-close purple darken-1"><i class="material-icons">close</i> Close</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <select id="CategoryDepartmentReINPUT" class="browser-default form-select" style="color: red;">
+                    <option value="0" selected style="color: red;">
+                        Chọn bộ phận / Select department
+                    </option>
+                </select>
+            </div>
+            <!-- TextBox1: Ô nhập barcode -->
+            <div class="col s12">
+                <label for="C03_RE_IN_TextBox1">Barcode</label>
+                <input id="C03_RE_IN_TextBox1" type="text" class="form-control" />
+            </div>
+            <!-- NumericUpDown1: Ô nhập số lượng -->
+            <div class="col s12">
+                <label for="C03_RE_IN_NumericUpDown1">Số lượng (QTY)</label>
+                <input id="C03_RE_IN_NumericUpDown1" type="number" class="form-control" min="0" value="1" />
+            </div>
+        </div>
+        <div class="row">
+            <!-- Label4: LEAD_NO -->
+            <div class="col s3">
+                <label>LEAD_NO:</label>
+                <span id="C03_RE_IN_Label4"></span>
+            </div>
+            <!-- Label5: HOOK_RACK -->
+            <div class="col s3">
+                <label>HOOK_RACK:</label>
+                <span id="C03_RE_IN_Label5"></span>
+            </div>
+            <!-- Label12: BC_count/IN_count -->
+            <div class="col s3">
+                <label>Count:</label>
+                <span id="C03_RE_IN_Label12"></span>
+            </div>
+            <!-- Label37: LEAD_CONT_IN -->
+            <div class="col s3">
+                <label>Total In:</label>
+                <span id="C03_RE_IN_Label37">0</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal cho C03_SET (ButtonRight2) -->
+<div id="C03_SET_Modal" class="modal">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom: 0;">
+            <div class="col s6">
+                <h5 style="margin-top: 0;">C03_SET</h5>
+            </div>
+            <div class="col s6 right-align">
+                <button id="C03_SET_Buttonfind" class="btn waves-effect waves-light green darken-1">Reset</button>
+                <button id="C03_SET_Button2" class="btn waves-effect waves-light green darken-1">Chọn PART_NO</button>
+                <button id="C03_SET_Buttonsave" class="btn waves-effect waves-light cyan darken-1">Lưu</button>
+                <button id="C03_SET_Buttonclose" class="btn waves-effect waves-light purple darken-1">Đóng</button>
+            </div>
+        </div>
+
+        <form>
+            <div class="row">
+                <!-- Barcode -->
+                <div class="col s12 m6">
+                    <label for="C03_SET_TextBox4">Barcode</label>
+                    <input id="C03_SET_TextBox4" type="text" class="validate">
+
+                </div>
+                <!-- PO Quantity -->
+                <div class="col s12 m6">
+                    <label for="C03_SET_NumericUpDown1">PO Quantity</label>
+                    <input id="C03_SET_NumericUpDown1" type="number" min="0" value="100" class="validate">
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s4">
+                    <label>PART_NO:</label>
+                    <span id="C03_SET_Label3">-</span>
+                </div>
+                <div class="col s4">
+                    <label>PART_ENCNO:</label>
+                    <span id="C03_SET_Label7">-</span>
+                </div>
+                <div class="col s4">
+                    <label>Total Out:</label>
+                    <span id="C03_SET_Label38">0</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s6">
+                    <label>
+                        <input type="radio" name="setMode" id="C03_SET_RadioButton1" checked />
+                        <span>All Set</span>
+                    </label>
+                </div>
+                <div class="col s6">
+                    <label>
+                        <input type="radio" name="setMode" id="C03_SET_RadioButton2" />
+                        <span>Not All Set</span>
+                    </label>
+                </div>
+            </div>
+        </form>
+
+        <div class="row" style="display: flex; gap: 10px;">
+            <!-- Bảng DataGridView1 -->
+            <div class="col s6">
+                <div class="KhungOverflow" style="height:30vh;">
+                    <table class="responsive-table highlight">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>BOM_GRUP</th>
+                                <th>LEAD_NO</th>
+                                <th>BOM_DES</th>
+                                <th>STOCK</th>
+                                <th>PO</th>
+                                <th>OUT</th>
+                                <th>PAREN_PART_NO</th>
+                                <th>LV_NO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C03_SET_DataGridView1">
+                            <tr>
+                                <td colspan="8" class="center-align">Nhấn tìm kiếm để hiển thị dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Bảng DataGridView2 -->
+            <div class="col s6">
+                <div class="KhungOverflow" style="height:30vh;">
+                    <table class="responsive-table highlight">
+                        <thead>
+                            <tr>
+                                <th>BARCODE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C03_SET_DataGridView2">
+                            <tr>
+                                <td class="center-align">Chưa có barcode nào</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal cho C03_SET_1 (Tìm kiếm PART_NO) -->
+<div id="C03_SET_1_Modal" class="modal">
+    <div class="modal-content">
+        <h4>Tìm kiếm PART_NO</h4>
+        <div class="row">
+            <!-- TextID: Ô nhập PART_NO -->
+            <div class="input-field col s12">
+                <input id="C03_SET_1_TextID" type="text" class="validate" />
+                <label for="C03_SET_1_TextID">PART_NO</label>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Label1: PART_IDX -->
+            <div class="col s4">
+                <label>PART_IDX:</label>
+                <span id="C03_SET_1_Label1">-</span>
+            </div>
+            <!-- Label2: PART_NO -->
+            <div class="col s4">
+                <label>PART_NO:</label>
+                <span id="C03_SET_1_Label2">-</span>
+            </div>
+            <!-- Label3: PART_ENCNO -->
+            <div class="col s4">
+                <label>PART_ENCNO:</label>
+                <span id="C03_SET_1_Label3">-</span>
+            </div>
+        </div>
+        <div class="row">
+            <!-- DataGridView1: Danh sách PART_NO -->
+            <div class="col s12">
+                <div class="KhungOverflow" style="height:40vh;">
+                    <table class="responsive-table highlight">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th data-sort="PART_NO" class="center-header-text sortable">PART_NO</th>
+                                <th data-sort="PART_NM" class="center-header-text sortable">PART_NM</th>
+                                <th data-sort="BOM_GRP" class="center-header-text sortable">BOM_GRP</th>
+                                <th data-sort="PART_ENCNO" class="center-header-text sortable">PART_ENCNO</th>
+                                <th data-sort="PART_ECN_DATE" class="center-header-text sortable">PART_ECN_DATE</th>
+                                <th data-sort="PART_IDX" class="center-header-text sortable">PART_IDX</th>
+                                <th data-sort="PARTECN_IDX" class="center-header-text sortable">PARTECN_IDX</th>
+                            </tr>
+                        </thead>
+                        <tbody id="C03_SET_1_DataGridView1">
+                            <tr>
+                                <td colspan="7" class="center-align">Nhấn tìm kiếm để hiển thị dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <!-- Button1: Tìm kiếm -->
+                <button id="C03_SET_1_Button1" class="btn waves-effect waves-light green darken-1">Tìm kiếm</button>
+                <!-- Button3: Chọn PART_NO -->
+                <button id="C03_SET_1_Button3" class="btn waves-effect waves-light green darken-1">Chọn</button>
+                <!-- Button2: Đóng modal -->
+                <button id="C03_SET_1_Button2" class="btn waves-effect waves-light purple darken-1">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="C03_IN_ConfirmModal" class="modal">
+    <div class="modal-content">
+        <h1>Xác nhận tái nhập kho</h1>
+        <p id="C03_IN_ConfirmMessage"></p>
+    </div>
+    <div class="modal-footer">
+        <button id="C03_IN_ConfirmYes" class="btn waves-effect waves-light green">Có(Phím ENTER)</button>
+        <button id="C03_IN_ConfirmNo" class="btn waves-effect waves-light red modal-close">Không</button>
+    </div>
+</div>
+
+<script src="~/Scripts/C03.js?v=@GlobalHelper.GetVersionScrip("C03.js")"></script>
+<style>
+    .status-pending {
+        color: #7b1fa2;
+        font-weight: bold;
+    }
+
+    .status-processing {
+        color: #1976d2;
+        font-weight: bold;
+        animation: pulse 1.5s infinite;
+    }
+
+    .status-success {
+        color: #2e7d32;
+        font-weight: bold;
+    }
+
+    .status-error-frontend {
+        color: #f57c00;
+        font-weight: bold;
+    }
+
+    .status-error-backend {
+        color: #d32f2f;
+        font-weight: bold;
+    }
+
+
+
+
+    /* Tùy chỉnh Modal */
+    /* CSS cho tất cả các modal */
+    .modal {
+        max-width: 85% !important;
+        width: 85% !important;
+        height: 85% !important;
+        max-height: 85% !important;
+    }
+
+        .modal .modal-content {
+            padding: 15px;
+            height: calc(100% - 56px); /* Trừ đi chiều cao của footer */
+        }
+
+        .modal .modal-footer {
+            padding: 10px;
+            height: 56px;
+        }
+
+    /* CSS đặc biệt cho C03_RE_IN_Modal - sẽ ghi đè các quy tắc ở trên */
+    #C03_RE_IN_Modal.modal {
+        width: 95% !important;
+        height: 40% !important;
+        max-height: 40% !important;
+    }
+
+
+    /* Đảm bảo các nút có khoảng cách phù hợp */
+    #ButtonDetailSearch, #ButtonDetailExport {
+        margin-right: 10px;
+        margin-top: 20px;
+    }
+
+    .red-text {
+        color: red !important;
+    }
+
+    /* Đảm bảo các input field hiển thị đẹp hơn */
+    .input-field {
+        margin-top: 10px;
+    }
+    /* Thêm vào file CSS hoặc thẻ <style> */
+    .center-cell-text {
+        text-align: center !important; /* Sử dụng !important nếu cần ghi đè các style khác */
+        vertical-align: middle !important; /* Căn giữa theo chiều dọc nếu muốn */
+    }
+
+    /* Nếu bạn cũng muốn header căn giữa */
+    .center-header-text {
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+
+    /* Áp dụng cho các ô căn phải nếu vẫn muốn giữ chúng căn phải */
+    .right-align {
+        text-align: right !important;
+    }
+    /* Tùy chỉnh Modal C03_IN_ConfirmModal */
+    /* Tùy chỉnh Modal C03_IN_ConfirmModal */
+    #C03_IN_ConfirmModal {
+        max-width: 40% !important;
+        width: 40% !important;
+        height: 30% !important;
+        max-height: 30% !important;
+        border-radius: 8px;
+    }
+
+        #C03_IN_ConfirmModal .modal-content {
+            padding: 20px;
+            height: calc(100% - 56px);
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+            #C03_IN_ConfirmModal .modal-content h1 {
+                font-size: 3rem !important; /* Giữ kích cỡ ~48px */
+                font-weight: 700 !important; /* Đậm */
+                color: #2e2e2e !important;
+                margin: 0 0 20px 0 !important;
+                text-align: center !important; /* Căn giữa tiêu đề */
+                line-height: 1.4 !important;
+            }
+
+            #C03_IN_ConfirmModal .modal-content p {
+                font-size: 2.5rem !important; /* ~40px, nội dung lớn hơn */
+                font-weight: 500 !important; /* Đậm nhẹ */
+                color: #4a4a4a !important;
+                line-height: 1.6 !important;
+                text-align: center;
+                margin: 0 !important;
+            }
+
+        #C03_IN_ConfirmModal .modal-footer {
+            padding: 10px 20px;
+            height: 56px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+            #C03_IN_ConfirmModal .modal-footer .btn {
+                font-size: 1.2rem !important; /* Tăng chữ nút */
+                font-weight: 500 !important;
+                text-transform: uppercase;
+                padding: 0 30px;
+                border-radius: 4px;
+                transition: background-color 0.2s ease;
+            }
+
+                #C03_IN_ConfirmModal .modal-footer .btn.green {
+                    background-color: #43a047;
+                }
+
+                #C03_IN_ConfirmModal .modal-footer .btn.red {
+                    background-color: #e53935;
+                }
+</style>
+<!-- Thêm các thẻ audio ẩn -->
+<audio id="audioOk" preload="auto">
+    <source src="~/audio/ok.mp3" type="audio/mpeg" />
+</audio>
+<audio id="audioNg" preload="auto">
+    <source src="~/audio/ng.mp3" type="audio/mpeg" />
+</audio>
+<audio id="audioWarning" preload="auto">
+    <source src="~/audio/warning.mp3" type="audio/mpeg" />
+</audio>

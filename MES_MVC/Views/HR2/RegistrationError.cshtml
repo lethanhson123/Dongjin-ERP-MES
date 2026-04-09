@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Lỗi Đăng Ký";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <!-- Materialize CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/materialize.min.css">
+
+    <style>
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 40px;
+            max-width: 500px;
+        }
+
+        .error-icon {
+            font-size: 120px;
+            color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <div class="card error-container">
+        <i class="material-icons error-icon">error_outline</i>
+        <h5 class="red-text">Không Thể Truy Cập</h5>
+        <p class="grey-text text-darken-2">@ViewBag.ErrorMessage</p>
+        <br>
+        <p>Vui lòng liên hệ phòng Nhân sự để được hỗ trợ.</p>
+        <br>
+        <a href="/" class="btn waves-effect waves-light blue">
+            <i class="material-icons left">home</i>
+            Về Trang Chủ
+        </a>
+    </div>
+
+    <script src="~/js/materialize.min.js"></script>
+</body>
+</html>

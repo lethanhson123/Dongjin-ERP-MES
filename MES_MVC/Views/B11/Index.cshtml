@@ -1,0 +1,243 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IB11Service _B11Service
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string url = "B11";
+	try
+	{
+		//truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+		BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+		BaseResult = await _MAINService.Main_Shown(BaseParameter);
+		if (BaseResult.ListtsauthTranfer != null)
+		{
+			BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+			if (BaseResult.tsauthTranfer != null)
+			{
+				IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+				IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+				IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+				IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+				IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+				IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+				IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+				IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+	try
+	{
+		BaseResult = await _B11Service.Load();
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l3">
+					<h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+				</div>
+				<div class="col s12 m12 l9 right-align-md">
+					<button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+					</button>
+
+					<button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+					</button>
+
+					<button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+					</button>
+
+					<button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+					</button>
+
+					<button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+					</button>
+
+					<button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+					</button>
+
+					<button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+					</button>
+
+					<button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+					</button>
+
+					<button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+							style="margin-right: 10px;">
+						<i class="material-icons">help</i>
+					</button>
+
+					<button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+				</div>
+			</div>
+			<div class="row" id="Tag001">
+				<div class="col s12 m12 l12 card-panel green lighten-4">
+					<div class="col s12 m12 l12">
+						<div class="col s12 m12 l3">
+							<div>
+								<label>PART NO : </label>
+								<input id="TextBox1" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l3">
+							<div>
+								<label>PART NAME : </label>
+								<input id="TextBox2" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l3">
+							<div>
+								<label>SNP : </label>
+								<input id="TextBox3" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l3">
+							<div>
+								<label>DATE (MM/DD/YYYY): </label>
+								<input id="DateTimePicker1" type="date" class="form-control">
+							</div>
+						</div>
+					</div>
+					<div class="col s12 m12 l12">
+						<div class="col s12 m12 l3">
+							<div>
+								<label>Top Barcode : </label>
+								<input id="TextBox5" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l3">
+							<div>
+								<label>Barcode : </label>
+								<input id="TextBox6" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l3">
+							<div>
+								<label>Type : </label>
+								<select id="ComboBox1" class="browser-default form-select">
+									<option value="ALL">
+										ALL
+									</option>
+									<option value="Large">
+										Large
+									</option>
+									<option value="Small">
+										Small
+									</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col s12 m12 l3">
+							<div>
+								<label>Condition : </label>
+								<select id="ComboBox2" class="browser-default form-select">
+									<option value="ALL">
+										ALL
+									</option>
+									<option value="N">
+										N
+									</option>
+									<option value="S(Split)">
+										S(Split)
+									</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col s12 m12 l12">
+						<div class="col s12 m12 l3">
+							<div>
+								<label>Location : </label>
+								<input id="TextBox4" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l3">
+							<div>
+								<label>Pallet NO : </label>
+								<input id="TextBox9" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l3">
+							<div>
+								<label>Shipping NO : </label>
+								<input id="TextBox10" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col s12 m12 l3">
+							<div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="KhungOverflow">
+					<table class="responsive-table" id="DataGridView1Table">
+						<thead class="sticky-header">
+							<tr onclick="DataGridView1Sort()">
+								<th>PART_NO</th>
+								<th>PART_NAME</th>
+								<th>SNP</th>
+								<th>Date</th>
+								<th>Top Barcode</th>
+								<th>Barcode</th>
+								<th>Type</th>
+								<th>Condition</th>
+								<th>Packing Qty</th>
+								<th>Location</th>
+								<th>OUT_QTY</th>
+								<th>QTY</th>
+								<th>Pallet NO</th>
+								<th>Shipping NO</th>
+								<th>STOCK</th>
+							</tr>
+						</thead>
+						<tbody id="DataGridView1">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/B11.js?v=@version"></script>
+

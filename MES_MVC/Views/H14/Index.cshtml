@@ -1,0 +1,296 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH14Service _H14Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H14";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _H14Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<link rel="stylesheet" type="text/css" href="~/css/H14.css?v=@version">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-content">
+        <div class="logo">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
+            </svg>
+            Production Monitoring System
+        </div>
+        <div class="header-stats">
+            <div class="stat-item">
+                <div id="Label19" class="stat-value">0</div>
+                <div class="stat-label">Total Production</div>
+            </div>
+            <div class="stat-item">
+                <div id="Label18" class="stat-value">0%</div>
+                <div class="stat-label">Operating Rate</div>
+            </div>
+            <div class="stat-item">
+                <div id="Label17" class="stat-value">0</div>
+                <div class="stat-label">UPH</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="main-container">
+    <!-- KPI Cards -->
+    <section class="kpi-section">
+        <div class="kpi-card success">
+            <div class="kpi-header">
+                <h3 class="kpi-title">Availability</h3>
+                <div class="kpi-icon">📊</div>
+            </div>
+            <div class="kpi-value">0%</div>
+            <div class="kpi-trend">
+                vs last week
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h3 class="kpi-title">Performance</h3>
+                <div class="kpi-icon">⚡</div>
+            </div>
+            <div class="kpi-value">0%</div>
+            <div class="kpi-trend">
+                vs last week
+            </div>
+        </div>
+
+        <div class="kpi-card success">
+            <div class="kpi-header">
+                <h3 class="kpi-title">Quality</h3>
+                <div class="kpi-icon">✓</div>
+            </div>
+            <div class="kpi-value">99.2%</div>
+            <div class="kpi-trend">
+                vs last week
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h3 class="kpi-title">OEE Score</h3>
+                <div class="kpi-icon">🎯</div>
+            </div>
+            <div class="kpi-value">0%</div>
+            <div class="kpi-trend">
+                vs last week
+            </div>
+        </div>
+    </section>
+
+    <!-- Machines Section -->
+    <section class="machines-section">
+        <div class="section-header">
+            <h2 class="section-title">CRIMPING (FA) Machines Status</h2>
+            <div class="action-buttons">
+                <button id="Button1" class="btn">🔄 Refresh</button>
+                <button id="Button2" class="btn btn-primary">📊 View Details</button>
+            </div>
+        </div>
+
+        <div class="machines-grid" id="PLP_CR">
+            <div id="CR_LY218" class="machine-card">
+                <div class="machine-status status-stopped"></div>
+                <h3 id="CR_NM218" class="machine-name">B218</h3>
+                <div class="machine-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Production:</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Efficiency:</span>
+                        <span class="metric-value">0%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">UPH:</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="machine-status-text"></div>
+            </div>
+
+            <div id="CR_LY219" class="machine-card">
+                <div class="machine-status status-stopped"></div>
+                <h3 id="CR_NM219" class="machine-name">B219</h3>
+                <div class="machine-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Production:</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Efficiency:</span>
+                        <span class="metric-value">0%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">UPH:</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="machine-status-text"></div>
+            </div>
+
+            <div id="CR_LY220" class="machine-card">
+                <div class="machine-status status-stopped"></div>
+                <h3 id="CR_NM220" class="machine-name">B220</h3>
+                <div class="machine-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Production:</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Efficiency:</span>
+                        <span class="metric-value">0%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">UPH:</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="machine-status-text"></div>
+            </div>
+
+            <div id="CR_LY221" class="machine-card">
+                <div class="machine-status status-stopped"></div>
+                <h3 id="CR_NM221" class="machine-name">B221</h3>
+                <div class="machine-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Production:</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Efficiency:</span>
+                        <span class="metric-value">0%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">UPH:</span>
+                        <span class="metric-value">0</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="machine-status-text"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="charts-section">
+        <div class="chart-card">
+            <div class="section-header">
+                <h3 class="section-title">Production Trend</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="productionChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="section-header">
+                <h3 class="section-title">Downtime Analysis</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="downtimeChart"></canvas>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div id="H00_LISTModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <div class="modal-header-info">
+            <div class="info-row">
+                <span><strong>가동율:</strong> (작업 시간 - (비가동 - L, T, M 비가동)) / 작업시간</span>
+                <span style="margin-left: 30px;"><strong>비가동:</strong> L : 식사시간, T : 교육시간, M : 설비교정</span>
+            </div>
+            <div class="info-row">
+                <span><strong>UPH:</strong> 생산수량 / (작업시간 - 비가동)</span>
+            </div>
+        </div>
+        <div class="KhungOverflow">
+            <table class="responsive-table" id="DataGridView1Table">
+                <thead class="sticky-header">
+                    <tr>
+                        <th>DATE</th>
+                        <th>MC_NO</th>
+                        <th>시작시간</th>
+                        <th>종료시간</th>
+                        <th>QTY</th>
+                        <th>STOP_TIME</th>
+                        <th>STOP_TIME(L,T 제외)</th>
+                        <th>WORK_TIME</th>
+                        <th>Operating rate</th>
+                        <th>UPH</th>
+                    </tr>
+                </thead>
+                <tbody id="DataGridView1"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div id="BackGround"></div>
+
+<script src="~/Scripts/H14.js?v=@version"></script>

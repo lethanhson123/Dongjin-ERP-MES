@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Print_Packing_Lable</title>
+    <link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100mm; /* đặt khổ giấy phù hợp */
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight:bold;
+        }
+
+        td, th {
+            border: 2px solid black;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .logo {
+            width: 150px;   
+            height:50px;
+        }
+
+        .cot1{
+            max-width:100px;
+        }
+
+        .cot2 {
+            max-width: 150px;
+        }
+
+        .barcode {
+            margin: 0px;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body onload="window.print()">
+    <div class="label">
+        <table>
+            <tr>
+                <th colspan="4" class="title">현품표</th>
+            </tr>
+            <tr>
+                <td class="cot1">모델</td>
+                <td id="Family" class="cot2">U100</td>
+                <td class="cot1">LOT</td>
+                <td class="cot2">
+                    <div class="col s12 m6 l6" id="lb_lotNo">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="cot1">품명</td>
+                <td colspan="1" class="cot2" id="lb_description"></td>
+                <td class="cot1">납품일자</td>
+                <td class="cot2" id="lb_Date">24/05/2025</td>
+            </tr>
+            <tr>
+                <td class="cot1">품번</td>
+                <td class="cot2" id="lb_partNo">A46-L0A70</td>
+                <td class="cot1">수량</td>
+                <td class="cot2"><div id="lb_Qty">2</div></td>
+            </tr>
+            <tr>
+                <td colspan="2">BOX NO</td>
+                <td colspan="2" id="lb_boxNo">1</td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="row">
+                        <div class="col-5">
+                            <img src="/Image/djlogo.png" class="logo">
+                        </div>
+                        <div class="col-2" style="text-align:center;">
+                            <div id="qrCode" class="qrcode"></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="row">
+                                <div class="col-12" style="font-size:20px;">
+                                    동진글로벌
+                                </div>
+                                <div class="col-12" id="lb_PackingLot" style="font-size:12px;"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="row">
+                       
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12" style="font-size:16px;">
+                                   Made In Vietnam
+                                </div>
+                       
+                            </div>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+       
+    <script>
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            document.getElementById("Family").innerText = params.get("Line") || "N/A";
+            document.getElementById("lb_lotNo").innerText = (params.get("LotNo") || "N/A").replace(" ", "\r\n");
+            document.getElementById("lb_PackingLot").innerText = params.get("SerialNo") || "N/A";
+            document.getElementById("lb_partNo").innerText = params.get("PartNo") || "N/A";
+            document.getElementById("lb_Date").innerText = params.get("MfgDate") || "N/A";
+            document.getElementById("lb_description").innerText = params.get("Description") || "N/A";
+            document.getElementById("lb_Qty").innerText = (params.get("Quantity") || "N/A") + " EA";
+            document.getElementById("lb_boxNo").innerText = params.get("Boxno") || "N/A";
+
+            new QRCode(document.getElementById("qrCode"), { text: params.get("SerialNo") || "", width: 60, height: 60 });           
+
+            setTimeout(() => {
+                window.print();
+                setTimeout(() => {
+                    window.close(); // Đóng tab sau khi in
+                }, 1000); // Đợi 1 giây trước khi đóng để tránh lỗi
+            }, 500);
+        };
+    </script>
+
+    <script src="../lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/js/qrcode.min.js"></script>
+    <script src="/js/JsBarcode.all.min.js"></script>
+
+</body>
+</html>

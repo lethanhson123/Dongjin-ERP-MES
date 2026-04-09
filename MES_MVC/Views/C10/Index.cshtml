@@ -1,0 +1,294 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC10Service _C10Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "C10";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _C10Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .status-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="w-full min-h-screen bg-white rounded-2xl shadow-2xl p-10 space-y-8">
+        <!-- Row 1: Date + Headers A801 - A805 (UNCHANGED) -->
+        <div class="grid grid-cols-6 gap-8 items-end">
+            <div>
+                <input type="date" id="DateTimePicker1" class="border rounded-lg px-5 py-3 w-full text-xl" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+            </div>
+            <div id="MC_NM01" class="text-center font-semibold text-2xl">A801</div>
+            <div id="MC_NM02" class="text-center font-semibold text-2xl">A802</div>
+            <div id="MC_NM03" class="text-center font-semibold text-2xl">A803</div>
+            <div id="MC_NM04" class="text-center font-semibold text-2xl">A804</div>
+            <div id="MC_NM05" class="text-center font-semibold text-2xl">A805</div>
+        </div>
+
+        <!-- Row 2: Side Info + A801 - A805 Data (UNCHANGED) -->
+        <div class="grid grid-cols-6 gap-8 items-start">
+            <!-- Side Info -->
+            <div class="flex flex-col justify-between bg-white border rounded-lg p-5 text-base text-center h-[180px]">
+                <div>
+                    <p class="font-semibold text-xl leading-tight">생산실적</p>
+                    <p class="text-base">(Kết quả sản xuất)</p>
+                    <p class="mt-2">가동률</p>
+                    <p>(Tỷ lệ vận hành)</p>
+                    <p class="mt-2">UPH</p>
+                </div>
+                <div class="mt-3">
+                    <button id="Button2" class="bg-red-100 text-red-800 px-4 py-2 rounded border border-red-400 text-base hover:bg-red-200">
+                        실적데이터 보기
+                    </button>
+                </div>
+            </div>
+            <!-- A801 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY01" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8011" class="text-3xl">0</p>
+                <p id="A8012" class="text-3xl">0</p>
+                <p id="A8013" class="text-3xl">0</p>
+                <p id="STOP01" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A802 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY02" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8021" class="text-3xl">0</p>
+                <p id="A8022" class="text-3xl">0</p>
+                <p id="A8023" class="text-3xl">0</p>
+                <p id="STOP02" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A803 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY03" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8031" class="text-3xl">0</p>
+                <p id="A8032" class="text-3xl">0</p>
+                <p id="A8033" class="text-3xl">0</p>
+                <p id="STOP03" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A804 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY04" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8041" class="text-3xl">0</p>
+                <p id="A8042" class="text-3xl">0</p>
+                <p id="A8043" class="text-3xl">0</p>
+                <p id="STOP04" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A805 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY05" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8051" class="text-3xl">0</p>
+                <p id="A8052" class="text-3xl">0</p>
+                <p id="A8053" class="text-3xl">0</p>
+                <p id="STOP05" class="text-base text-gray-500">--</p>
+            </div>
+        </div>
+
+        <!-- Row 3: Headers for A806-A811 (MODIFIED) -->
+        <div class="grid grid-cols-6 gap-8 items-end">
+            <div id="MC_NM06" class="text-center font-semibold text-2xl">A806</div>
+            <div id="MC_NM07" class="text-center font-semibold text-2xl">A807</div>
+            <div id="MC_NM08" class="text-center font-semibold text-2xl">A808</div>
+            <div id="MC_NM09" class="text-center font-semibold text-2xl">A809</div>
+            <div id="MC_NM10" class="text-center font-semibold text-2xl">A810</div>
+            <div id="MC_NM11" class="text-center font-semibold text-2xl">A811</div>
+        </div>
+
+        <!-- Row 4: Data for A806-A811 (MODIFIED) -->
+        <div class="grid grid-cols-6 gap-8">
+            <!-- A806 (now under Side Info) -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY06" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8061" class="text-3xl">0</p>
+                <p id="A8062" class="text-3xl">0</p>
+                <p id="A8063" class="text-3xl">0</p>
+                <p id="STOP06" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A807 (now under A801) -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY07" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8071" class="text-3xl">0</p>
+                <p id="A8072" class="text-3xl">0</p>
+                <p id="A8073" class="text-3xl">0</p>
+                <p id="STOP07" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A808 (now under A802) -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY08" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8081" class="text-3xl">0</p>
+                <p id="A8082" class="text-3xl">0</p>
+                <p id="A8083" class="text-3xl">0</p>
+                <p id="STOP08" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A809 (now under A803) -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY09" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8091" class="text-3xl">0</p>
+                <p id="A8092" class="text-3xl">0</p>
+                <p id="A8093" class="text-3xl">0</p>
+                <p id="STOP09" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A810 (now under A804) -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY10" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8101" class="text-3xl">0</p>
+                <p id="A8102" class="text-3xl">0</p>
+                <p id="A8103" class="text-3xl">0</p>
+                <p id="STOP10" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A811 (now under A805) -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY11" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8111" class="text-3xl">0</p>
+                <p id="A8112" class="text-3xl">0</p>
+                <p id="A8113" class="text-3xl">0</p>
+                <p id="STOP11" class="text-base text-gray-500">--</p>
+            </div>
+        </div>
+
+        <!-- Row 5: Headers for A812-A816 (MODIFIED) -->
+        <div class="grid grid-cols-6 gap-8 items-end">
+            <div id="MC_NM12" class="text-center font-semibold text-2xl">A812</div>
+            <div id="MC_NM13" class="text-center font-semibold text-2xl">A813</div>
+            <div id="MC_NM14" class="text-center font-semibold text-2xl">A814</div>
+            <div id="MC_NM15" class="text-center font-semibold text-2xl">A815</div>
+            <div id="MC_NM16" class="text-center font-semibold text-2xl">A816</div>
+            <div class="text-center font-semibold text-2xl"></div>
+        </div>
+
+        <!-- Row 6: Data for A812-A816 (MODIFIED) -->
+        <div class="grid grid-cols-6 gap-8">
+            <!-- A812 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY12" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8121" class="text-3xl">0</p>
+                <p id="A8122" class="text-3xl">0</p>
+                <p id="A8123" class="text-3xl">0</p>
+                <p id="STOP12" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A813 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY13" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8131" class="text-3xl">0</p>
+                <p id="A8132" class="text-3xl">0</p>
+                <p id="A8133" class="text-3xl">0</p>
+                <p id="STOP13" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A814 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY14" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8141" class="text-3xl">0</p>
+                <p id="A8142" class="text-3xl">0</p>
+                <p id="A8143" class="text-3xl">0</p>
+                <p id="STOP14" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A815 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY15" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8151" class="text-3xl">0</p>
+                <p id="A8152" class="text-3xl">0</p>
+                <p id="A8153" class="text-3xl">0</p>
+                <p id="STOP15" class="text-base text-gray-500">--</p>
+            </div>
+            <!-- A816 -->
+            <div class="relative bg-gray-200 text-center border rounded-lg p-5">
+                <div id="LY16" class="status-indicator" style="background-color: lime;"></div>
+                <p id="A8161" class="text-3xl">0</p>
+                <p id="A8162" class="text-3xl">0</p>
+                <p id="A8163" class="text-3xl">0</p>
+                <p id="STOP16" class="text-base text-gray-500">--</p>
+            </div>
+          
+        </div>
+        <div class="text-xs text-gray-600 leading-snug border-t pt-4 text-center">
+            <p>
+                S = 설비준비 (Chuẩn bị thiết bị), I = 자재결품 (Thiếu nguyên vật liệu), Q = 품질문제 (Vấn đề chất lượng),<br>
+                M = 설비고장 (Máy hư), T = 교육/회의 (Đào tạo/ họp), L = 식사시간 (Giờ ăn), E = 기타 (Khác)
+            </p>
+        </div>
+     
+
+        <!-- Summary Panel -->
+        <div class="w-full">
+            <div class="summary-panel flex justify-between items-center border rounded-lg p-8">
+                <div class="summary-item flex items-center gap-4">
+                    <div class="summary-label text-lg text-gray-600">생산실적<br>(Kết quả sản xuất)</div>
+                    <div id="Label2" class="summary-value text-3xl font-bold text-blue-700">0</div>
+                </div>
+                <div class="summary-item flex items-center gap-4">
+                    <div class="summary-label text-lg text-gray-600">가동률<br>(Tỷ lệ vận hành)</div>
+                    <div id="Label3" class="summary-value text-3xl font-bold text-blue-700">0</div>
+                </div>
+                <div class="summary-item flex items-center gap-4">
+                    <div class="summary-label text-lg text-gray-600">UPH</div>
+                    <div id="Label4" class="summary-value text-3xl font-bold text-blue-700">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/C10.js?v=@version"></script>
+
+</body>
+</html>

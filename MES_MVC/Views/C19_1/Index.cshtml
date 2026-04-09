@@ -1,0 +1,90 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IC19_1Service _C19_1Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C19_1";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "Excel Import (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <!-- Toolbar area with buttons and radio buttons aligned horizontally -->
+            <div class="row toolbar-row" style="border-bottom: 1px solid #e0e0e0; padding-bottom: 15px; margin-bottom: 15px;">
+                <div class="col s12" style="display: flex; justify-content: space-between; align-items: center;">
+                    <!-- Left side - Wire Check button -->
+                    <div>
+                        <button id="Button1" title="Wire Check" class="btn waves-effect waves-light amber darken-2">Wire Check</button>
+                    </div>
+
+                    <!-- Middle - Radio buttons -->
+                    <div style="display: flex; align-items: center;">
+                        <div style="margin-right: 15px;">
+                            <label>
+                                <input type="radio" class="form-check-input" name="importType" id="RadioButton1" checked onclick="selectRadio('RadioButton1')" />
+                                <span>MASTER</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="radio" class="form-check-input" name="importType" id="RadioButton2" onclick="selectRadio('RadioButton2')" />
+                                <span>MASTER_BOM</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Right side - Import, Save, Close buttons -->
+                    <div>
+                        <button id="Buttoninport" title="Import" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">Import</button>
+                        <button id="Buttonsave" title="Save" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">Save</button>
+                        <button id="Buttonclose" title="Close" class="btn waves-effect waves-light purple darken-1">Close</button>
+                        <input id="FileToUpload" type="file" class="form-control" accept=".xls,.xlsx" style="display:none;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid area -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow70" style="border: 1px solid #e0e0e0;">
+                        <table class="responsive-table" id="DataGridView1Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <!-- Headers will be dynamically added based on data -->
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView1"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/C19_1.js?v=@version"></script>

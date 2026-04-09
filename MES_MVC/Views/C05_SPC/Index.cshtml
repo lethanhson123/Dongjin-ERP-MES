@@ -1,0 +1,395 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string cookie = string.Empty;
+    cookie = CookieHelper.GetCookie(GlobalHelper.UserID);
+    string UserID = cookie;
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "C05_SPC";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "SPC (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <h6><b>SPC (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l6">
+                </div>
+                <div class="col s12 m12 l2 right-align-md">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <div> 
+                        <input id="Label10" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="Label11" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l7">
+                    <div>
+                        <button id="Button1" title="SAVE" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">SAVE</button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input id="MRUS" type="text" class="form-control" readonly value="-" style="border-width: 0px !important; text-align: center;">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l4">
+                    <div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l3" style="text-align:center;">
+                    <div>
+                        <label>Standard</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <label>Inspection value</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1" style="text-align:center;">
+                    <div>
+                        <label>Result</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border: 1px dashed #000000;">
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <br />                        
+                        <label>T1</label>
+                        <br />
+                        <label>CCH/CCW1</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <img id="PictureBox1" src="@DomainSite/Image/CCH.jpg" height="75" width="164" />
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <img id="PictureBox2" src="@DomainSite/Image/CCW.jpg" height="108" width="114" />
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STS1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                        <br />
+                        <input id="STS2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input id="ST11" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STL1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STL2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STM1" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STM2" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="TextBox1" type="number" class="form-control">
+                        <br />
+                        <input id="TextBox2" type="number" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LR1" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LR2" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border: 1px dashed #000000;">
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <br />
+                        <label>T1</label>
+                        <br />
+                        <label>ICH/ICW1</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <img id="PictureBox4" src="@DomainSite/Image/ICH.jpg" height="75" width="164" />
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <img id="PictureBox3" src="@DomainSite/Image/ICW.jpg" height="108" width="114" />
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STS3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                        <br />
+                        <input id="STS4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input id="ST12" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STL3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STL4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STM3" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STM4" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="TextBox3" type="number" class="form-control">
+                        <br />
+                        <input id="TextBox4" type="number" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LR3" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LR4" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border: 1px dashed #000000;">
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <br />
+                        <label>T2</label>
+                        <br />
+                        <label>CCH/CCW2</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <img id="PictureBox6" src="@DomainSite/Image/CCH.jpg" height="75" width="164" />
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <img id="PictureBox5" src="@DomainSite/Image/CCW.jpg" height="108" width="114" />
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STS5" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                        <br />
+                        <input id="STS6" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input id="ST21" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STL5" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STL6" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STM5" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STM6" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="TextBox5" type="number" class="form-control">
+                        <br />
+                        <input id="TextBox6" type="number" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LR5" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LR6" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border: 1px dashed #000000;">
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <br />
+                        <label>T2</label>
+                        <br />
+                        <label>ICH/ICW2</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <img id="PictureBox8" src="@DomainSite/Image/ICH.jpg" height="75" width="164" />
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <img id="PictureBox7" src="@DomainSite/Image/ICW.jpg" height="108" width="114" />
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STS7" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                        <br />
+                        <input id="STS8" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input id="ST22" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STL7" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STL8" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STM7" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="STM8" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="TextBox7" type="number" class="form-control">
+                        <br />
+                        <input id="TextBox8" type="number" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <input type="text" class="form-control" readonly style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LR7" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                        <br />
+                        <input id="LR8" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border: 1px dashed #000000;">
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <label>WIRE</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <label>WIRE</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2" style="text-align:center;">
+                    <div>
+                        <label>WIRE</label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1" style="text-align:center;">
+                    <div>
+                        <label>STRENGTH : </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <input id="Label17" type="text" class="form-control" readonly value="ST" style="border-width: 0px !important; text-align:center; color: blue;">
+                    </div>
+                </div>           
+                <div class="col s12 m12 l2">
+                    <div>                      
+                        <input id="TextBox10" type="number" class="form-control">
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>                     
+                        <input id="LR9" type="text" class="form-control" readonly value="NONE" style="border-width: 0px !important; text-align:center;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/C05_SPC.js?v=@version"></script>
+

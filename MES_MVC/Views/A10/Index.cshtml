@@ -1,0 +1,324 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IA10Service _A10Service
+@{
+    //string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "A10";
+    try
+    {
+        //truyền biến User ID thay thế cho Cookies để lấy phân quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _A10Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <!-- Header + Buttons -->
+            <div class="row" style="align-items:center;">
+                <div class="col s12 m6 l4">
+                    <h6 style="font-weight: bold; margin-bottom: 0;">
+                        @MES_MVC.Resources.Resource.GetObject(url) (@url)
+                    </h6>
+                </div>
+                <div class="col s12 m6 l8 right-align">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1">
+                        <i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="row search-bar">
+                <div class="col s12 m8 l6">
+                    <input id="P07_SearchBox" type="text" class="form-control" placeholder="@MES_MVC.Resources.Resource.Label_SearchPlaceholder" />
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow70">
+                        <table id="DataGridView1" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_Action</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_ID</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_LineGroup</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_LineName</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_LineType</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_Family</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_LineCapa</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_WorkerNumber</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_SUB_Worker</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_FA_Worker</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_RO_Worker</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_CLIP_Worker</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_Channel</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_VisionLeakTest</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_Description</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_CreateDate</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_CreateBy</th>
+                                    <th>@MES_MVC.Resources.Resource.dbTbl_UpdateDate</th>
+                                    <th>@MES_MVC.Resources.Resource.DbTbl_UpdateBy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data fill by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Add/Edit -->
+<div id="modal-add" class="modal">
+    <div class="modal-content">
+        <h5 id="modal-title">@MES_MVC.Resources.Resource.Label_ModalAddEdit</h5>
+        <form id="P07Form">
+            <div class="row">
+                <!-- Line Group -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_LineGroup">
+                        @MES_MVC.Resources.Resource.DbTbl_LineGroup
+                        <span class="red-text">*</span>
+                    </label>
+                    <input id="TextBox_LineGroup" type="text" class="form-control" maxlength="50" required>
+                </div>
+
+                <!-- Line Name -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_LineName">
+                        @MES_MVC.Resources.Resource.DbTbl_LineName
+                        <span class="red-text">*</span>
+                    </label>
+                    <input id="TextBox_LineName" type="text" class="form-control" required>
+                </div>
+
+                <!-- Line Type -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_LineType">@MES_MVC.Resources.Resource.DbTbl_LineType</label>
+                    <select id="TextBox_LineType" class="form-control browser-default">
+                        <option value="Station">Station</option>
+                        <option value="Conveyor">Conveyor</option>
+                    </select>
+                </div>
+
+                <!-- Family -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_Family">@MES_MVC.Resources.Resource.DbTbl_Family</label>
+                    <input id="TextBox_Family" type="text" class="form-control">
+                </div>
+
+                <!-- Line Capa -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_LineCapa">@MES_MVC.Resources.Resource.DbTbl_LineCapa</label>
+                    <input id="TextBox_LineCapa" type="number" min="0" step="0.01" class="form-control">
+                </div>
+
+                <!-- Worker Number -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_WorkerNumber">@MES_MVC.Resources.Resource.DbTbl_WorkerNumber</label>
+                    <input id="TextBox_WorkerNumber" type="number" min="0" class="form-control">
+                </div>
+
+                <!-- SUB Worker -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_SUB_Worker">@MES_MVC.Resources.Resource.DbTbl_SUB_Worker</label>
+                    <input id="TextBox_SUB_Worker" type="number" min="0" class="form-control">
+                </div>
+
+                <!-- FA Worker -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_FA_Worker">@MES_MVC.Resources.Resource.DbTbl_FA_Worker</label>
+                    <input id="TextBox_FA_Worker" type="number" min="0" class="form-control">
+                </div>
+
+                <!-- RO Worker -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_RO_Worker">@MES_MVC.Resources.Resource.DbTbl_RO_Worker</label>
+                    <input id="TextBox_RO_Worker" type="number" min="0" class="form-control">
+                </div>
+
+                <!-- CLIP Worker -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_CLIP_Worker">@MES_MVC.Resources.Resource.DbTbl_CLIP_Worker</label>
+                    <input id="TextBox_CLIP_Worker" type="number" min="0" class="form-control">
+                </div>
+
+                <!-- Channel -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_Channel">@MES_MVC.Resources.Resource.DbTbl_Channel</label>
+                    <input id="TextBox_Channel" type="number" min="0" class="form-control">
+                </div>
+
+                <!-- Vision/LeakTest -->
+                <div class="col s12 m6 l4">
+                    <label for="TextBox_Vision_LeakTest">@MES_MVC.Resources.Resource.DbTbl_VisionLeakTest</label>
+                    <input id="TextBox_Vision_LeakTest" type="number" min="0" class="form-control">
+                </div>
+
+                <!-- Description -->
+                <div class="col s12">
+                    <label for="TextBox_Description">@MES_MVC.Resources.Resource.DbTbl_Description</label>
+                    <input id="TextBox_Description" type="text" class="form-control">
+                </div>
+            </div>
+            <input type="hidden" id="TextBox_ID" />
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="modal-close btn grey lighten-1" type="button">@MES_MVC.Resources.Resource.Btn_Cancel</button>
+        <button id="ModalSaveBtn" class="btn green" type="button">@MES_MVC.Resources.Resource.Btn_Save</button>
+    </div>
+</div>
+
+<!-- Modal Import Line (P07) -->
+<div id="ModalImportLineP07" class="modal modal-fixed-footer" style="width: 90%; height: 85%;">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom:0; align-items: center;">
+            <div class="col s12 m4">
+                <h5 style="margin: 0;">@MES_MVC.Resources.Resource.Label_ModalImport</h5>
+            </div>
+            <div class="col s12 m8 right-align">
+                <a href="/Template/LineList.xlsx" class="btn blue lighten-1" download style="margin-right:8px;">
+                    <i class="material-icons left">file_download</i>@MES_MVC.Resources.Resource.Label_DownloadTemplate
+                </a>
+                <button class="modal-close btn grey lighten-1" type="button" style="margin-right:8px;">
+                    <i class="material-icons left">close</i>@MES_MVC.Resources.Resource.Btn_Cancel
+                </button>
+                <button id="BtnSaveImportLineP07" class="btn green" type="button">
+                    <i class="material-icons left">save</i>@MES_MVC.Resources.Resource.Btn_Save
+                </button>
+            </div>
+        </div>
+        <div class="file-field input-field" style="margin-bottom:15px;">
+            <div class="btn cyan">
+                <span>@MES_MVC.Resources.Resource.Label_SelectFile</span>
+                <input id="FileImportLineP07" type="file" accept=".xlsx,.xls">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="@MES_MVC.Resources.Resource.Label_UploadExcelPlaceholder">
+            </div>
+        </div>
+        <div class="progress" id="importProgressLineP07" style="display:none;">
+            <div class="indeterminate"></div>
+        </div>
+        <div id="ImportSummaryLineP07" style="display:none; padding:10px; background:#e3f2fd; margin-bottom:15px;">
+            <div id="ImportSummaryTextLineP07"></div>
+        </div>
+        <div class="KhungOverflow50" style="max-height:400px;">
+            <table class="responsive-table striped highlight">
+                <thead>
+                    <tr>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_LineGroup</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_LineName</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_LineType</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_Family</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_LineCapa</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_WorkerNumber</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_SUB_Worker</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_FA_Worker</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_RO_Worker</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_CLIP_Worker</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_Channel</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_VisionLeakTest</th>
+                        <th>@MES_MVC.Resources.Resource.DbTbl_Description</th>
+                    </tr>
+                </thead>
+                <tbody id="ImportPreviewTableLineP07">
+                    <tr>
+                        <td colspan="13" class="center-align grey-text">Chưa có dữ liệu. Vui lòng chọn file Excel.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Error Message Modal -->
+<div id="error-modal" class="modal">
+    <div class="modal-content">
+        <h5>@MES_MVC.Resources.Resource.Label_Error</h5>
+        <p id="error-message"></p>
+    </div>
+    <div class="modal-footer">
+        <button class="modal-close btn red">@MES_MVC.Resources.Resource.Label_Close</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="~/Scripts/A10.js?v=@GlobalHelper.GetVersionScrip("A10.js")"></script>

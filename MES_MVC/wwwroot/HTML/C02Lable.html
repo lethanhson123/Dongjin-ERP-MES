@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Print_Label_C02</title>
+    <link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .qrcode {
+            margin: 3px;
+        }
+
+        .border, .border td, .border th {
+            border: 1px solid #000;
+            padding: 2px;
+        }
+
+        .border {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 14px;
+        }
+
+            .border td {
+                height: 12px;
+                vertical-align: top;
+            }
+
+        .label-container {
+            width: 400px;
+            height: 190px;
+            margin: auto;
+            padding: 10px 0;
+            font-weight: bold;
+            line-height: 12px;
+            page-break-after: always;
+        }
+
+        p {
+            margin: 0;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+            }
+
+            .label-container {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="print-content" class="label-container">
+        <table class="border">
+            <tr>
+                <td style="font-size: 10px; width:64px;">[PR27]</td>
+                <td style="font-size: 10px; width:87px;">[PR2]</td>
+                <td style="font-size: 10px; width:87px;">[PR3]</td>
+                <td style="font-size: 10px; min-width:80px;">[PR4]</td>
+                <td rowspan="3" style="width: 80px;"><div id="qrcode_serial" class="qrcode"></div></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="font-size: 24px; font-weight: bold; line-height: 24px;">[PR5]</td>
+            </tr>
+            <tr>
+                <td rowspan="4">B/M: [PR25]</td>
+                <td colspan="4"><p>[PR6]</p>  <br> FG code: [PR26]</td>
+            </tr>
+            <tr>
+                <td colspan="2">[PR7] / [PR8] ([PR20]) [PR24]</td>
+                <td colspan="2">Safety stock: [PR23]</td>
+            </tr>
+            <tr>
+                <td colspan="2">[PR9] [PR21]</td>
+                <td colspan="2">[PR10] [PR22]</td>
+            </tr>
+            <tr>
+                <td colspan="2">[PR11]</td>
+                <td colspan="2">[PR12]</td>
+            </tr>
+            <tr>
+                <td>[PR18]</td>
+                <td colspan="2">[PR13]</td>
+                <td colspan="2">[PR14]</td>
+            </tr>
+            <tr>
+                <td>[PR19]</td>
+                <td colspan="2">[PR15]</td>
+                <td colspan="2">[PR16]</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-size: 10px;">[PR17]</td>
+            </tr>
+            <!--<tr>
+                <td colspan="5" style="font-size: 10px;">FG code: [PR26] - MC:[PR27]</td>
+            </tr>-->
+        </table>
+    </div>
+
+    <script src="/js/qrcode.min.js"></script>
+    <script src="/js/JsBarcode.all.min.js"></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            const keys = [
+                "PR1", "PR2", "PR3", "PR4", "PR5", "PR6", "PR7", "PR8", "PR9",
+                "PR10", "PR11", "PR12", "PR13", "PR14", "PR15", "PR16", "PR17",
+                "PR18", "PR19", "PR20", "PR21", "PR22", "PR23", "PR24", "PR25", "PR26", "PR27"
+            ];
+
+            const container = document.getElementById("print-content");
+            let html = container.innerHTML;
+
+            keys.forEach(k => {
+                let val = params.get(k) || "";
+                if (val.length > 150)
+                    val = [...val].slice(0, 150).join(''); // Unicode-safe
+                const regex = new RegExp("\\[" + k + "\\]", "g");
+                html = html.replace(regex, val);
+            });
+
+            container.innerHTML = html;
+
+            // Render QR code (sau khi nội dung thay thế xong)
+            const qrDiv = document.getElementById("qrcode_serial");
+            if (qrDiv) {
+                new QRCode(qrDiv, {
+                    text: params.get("QRCodeString") || "",
+                    width: 80,
+                    height: 80,
+                    correctLevel: QRCode.CorrectLevel.Q,
+                    margin: 2
+                });
+            }
+
+            // In & đóng (chỉ 1 lần)
+            if (!sessionStorage.getItem("printed")) {
+                sessionStorage.setItem("printed", "true");
+                setTimeout(() => {
+                    window.print();
+                    setTimeout(() => window.close(), 1000);
+                }, 1000);
+            }
+        };
+    </script>
+</body>
+</html>

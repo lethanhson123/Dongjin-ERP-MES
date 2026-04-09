@@ -1,0 +1,934 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IHR2Service _HR2Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "HR2";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _HR2Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <!-- Header + Buttons -->
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l6 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="row search-bar">
+                <div class="col s12 m4 l4">
+                    <input id="PersonalInfo_SearchBox" type="text" class="form-control" placeholder="Tìm kiếm (Họ tên, CCCD, SĐT, Email...)" />
+                </div>
+                <div class="col s12 m3 l3">
+                    <select id="EmployeeType_Filter" class="browser-default form-control">
+                        <option value="" selected>Tất cả loại nhân viên</option>
+                        <option value="Công nhân thời vụ">Công nhân thời vụ</option>
+                        <option value="Office DJG">Office DJG</option>
+                        <option value="Nhân viên DJG">Nhân viên DJG</option>
+                    </select>
+                </div>
+                <div class="col s12 m3 l3">
+                    <select id="Department_Filter" class="browser-default form-control">
+                        <option value="" selected>Tất cả bộ phận</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="row">
+                <div class="col s12">
+                    <div class="KhungOverflow60">
+                        <table id="DataGridView1" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mã NV</th>
+                                    <th>Họ Tên</th>
+                                    <th>Loại NV</th>
+                                    <th>Bộ Phận</th>
+                                    <th>Line</th>
+                                    <th>Ngày PV</th>
+                                    <th>Ngày Nhận Việc</th>
+                                    <th>CCCD</th>
+                                    <th>SĐT</th>
+                                    <th>Hợp Đồng</th>
+                                    <th>BHXH</th>
+                                    <th>Đơn vị</th>
+                                    <th>Trạng thái</th>
+                                    <th>Người tạo</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Người chỉnh sửa</th>
+                                    <th>Ngày chỉnh sửa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data fill by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Add/Edit -->
+<div id="modal-add" class="modal modal-fixed-footer modal-large">
+    <div class="modal-content">
+        @* <div class="row" style="margin-bottom: 0;">
+            <div class="col s12">
+                <h5 id="modal-title">Thông Tin Nhân Viên</h5>
+            </div>
+        </div> *@
+        <div class="divider" style="margin-bottom: 20px;"></div>
+
+        <!-- Thêm tabs -->
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s2"><a class="active" href="#tab-personal">Thông tin cá nhân</a></li>
+                    <li class="tab col s2"><a href="#tab-job">Thông tin công việc</a></li>
+                    <li class="tab col s2"><a href="#tab-contract">Thông tin hợp đồng</a></li>
+                    <li class="tab col s2"><a href="#tab-financial">Thông tin tài chính</a></li>
+                    <li class="tab col s2"><a href="#tab-files">Quản lý tài liệu</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Tab Thông tin cá nhân -->
+        <div id="tab-personal" class="col s12">
+            <!-- Nút lưu tab thông tin cá nhân -->
+            <div class="row">
+                <div class="col s12 right-align">
+                    <label class="mr-3" style="margin-right: 20px; display: inline-block; vertical-align: middle;">
+                        <input id="CheckBox_Active" type="checkbox" checked />
+                        <span>Đang hoạt động</span>
+                    </label>
+                    <button id="PersonalInfoSaveBtn" class="waves-effect waves-light btn green" type="button">Lưu</button>
+                    <button class="modal-close waves-effect waves-light btn grey lighten-1">Huỷ</button>
+                </div>
+            </div>
+
+            <form id="PersonalInfoForm">
+                <div class="row">
+                    <div class="col s12 m6">
+                        <label for="TextBox_Name">Họ tên <span class="red-text">*</span></label>
+                        <input id="TextBox_Name" type="text" class="form-control" placeholder="Nhập họ và tên" required>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="ComboBox_Gender">Giới tính <span class="red-text">*</span></label>
+                        <select id="ComboBox_Gender" class="browser-default">
+                            <option value="" disabled selected>Chọn giới tính</option>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                            @* <option value="Khác">Khác</option> *@
+                        </select>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="DatePicker_DOB">Ngày sinh <span class="red-text">*</span></label>
+                        <input id="DatePicker_DOB" type="date" class="form-control" placeholder="DD/MM/YYYY" required>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="ComboBox_MaritalStatus">Tình trạng hôn nhân</label>
+                        <select id="ComboBox_MaritalStatus" class="browser-default">
+                            <option value="" disabled selected>Chọn tình trạng hôn nhân</option>
+                            <option value="Độc thân">Độc thân</option>
+                            <option value="Đã kết hôn">Đã kết hôn</option>
+                            @* <option value="Ly hôn">Ly hôn</option> *@
+                            @* <option value="Góa">Góa</option> *@
+                        </select>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="TextBox_Dependents">Số người phụ thuộc</label>
+                        <input id="TextBox_Dependents" type="number" min="0" class="form-control" placeholder="Nhập số người phụ thuộc">
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="TextBox_CitizenID">Số CCCD <span class="red-text">*</span></label>
+                        <input id="TextBox_CitizenID" type="text" class="form-control" placeholder="Nhập 12 số CCCD" required>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="DatePicker_IDIssueDate">Ngày cấp <span class="red-text">*</span></label>
+                        <input id="DatePicker_IDIssueDate" type="date" class="form-control" placeholder="DD/MM/YYYY" required>
+                    </div>
+
+                    <div class="col s6 m6">
+                        <label for="TextBox_IDIssuePlace">Nơi cấp <span class="red-text">*</span></label>
+                        <input id="TextBox_IDIssuePlace" type="text" class="form-control" placeholder="Nhập nơi cấp CCCD" required>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="TextBox_PermAddress">Địa chỉ thường trú <span class="red-text">*</span></label>
+                        <input id="TextBox_PermAddress" type="text" class="form-control" placeholder="Nhập địa chỉ thường trú đầy đủ" required>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="TextBox_CurrAddress">Địa chỉ hiện tại <span class="red-text">*</span></label>
+                        <input id="TextBox_CurrAddress" type="text" class="form-control" placeholder="Nhập địa chỉ hiện tại đầy đủ" required>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="TextBox_Phone">Số điện thoại <span class="red-text">*</span></label>
+                        <input id="TextBox_Phone" type="tel" class="form-control" placeholder="Nhập 10-11 số" required>
+                    </div>
+
+                    <div class="col s12 m6">
+                        <label for="TextBox_Email">Email</label>
+                        <input id="TextBox_Email" type="email" class="form-control" placeholder="example@email.com">
+                    </div>
+                </div>
+                <input type="hidden" id="TextBox_ID" />
+            </form>
+        </div>
+
+        <!-- Tab Thông tin công việc -->
+        <div id="tab-job" class="col s12">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12">
+                    <div class="KhungOverflow40">
+                        <table id="employeeJobGrid" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Mã NV <span class="red-text">*</span></th>
+                                    <th>Loại NV <span class="red-text">*</span></th>
+                                    <th>Bộ phận <span class="red-text">*</span></th>
+                                    <th>Vị trí <span class="red-text">*</span></th>
+                                    <th>Line</th>
+                                    <th>Học vấn</th>
+                                    <th>Chuyên môn</th>
+                                    <th>Email công ty</th>
+                                    <th>Ngày PV</th>
+                                    <th>Ngày làm việc <span class="red-text">*</span></th>
+                                    <th>Đơn vị</th>
+                                    <th>Trạng thái</th> 
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="newJobRow">
+                                    <td><input type="text" id="EmployeeCode" class="browser-default" placeholder="Mã NV"></td>
+                                    <td>
+                                        <select id="EmployeeType" class="browser-default">
+                                            <option value="" disabled selected>Chọn loại</option>
+                                            <option value="Công nhân thời vụ">Công nhân thời vụ</option>
+                                            <option value="Office DJG">Office DJG</option>
+                                            <option value="Nhân viên DJG">Nhân viên DJG</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="Department" class="browser-default">
+                                            <option value="" disabled selected>Chọn bộ phận</option>
+                                            <option value="FA">FA</option>
+                                            <option value="HR">HR</option>
+                                            <option value="CTLP">CTLP</option>
+                                            <option value="QC">QC</option>
+                                            <option value="PC">PC</option>
+                                            <option value="ME">ME</option>
+                                            <option value="ADMIN">ADMIN</option>
+                                            <option value="QA">QA</option>
+                                            <option value="Tổng vụ">Tổng vụ</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="Position" class="browser-default">
+                                            <option value="" disabled selected>Chọn vị trí</option>
+                                            <option value="STAFF">STAFF</option>
+                                            <option value="SUPERVIOR">SUPERVIOR</option>
+                                            <option value="ASS.MANAGER">ASS.MANAGER</option>
+                                            <option value="MANAGER">MANAGER</option>
+                                            <option value="WORKER">WORKER</option>
+                                            <option value="LEADER">LEADER</option>
+                                            <option value="FOREMAN">FOREMAN</option>
+                                            <option value="REWORK">REWORK</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="Line" class="browser-default">
+                                            <option value="" disabled selected>Chọn line</option>
+                                            <option value="Step1.2">Step1.2</option>
+                                            <option value="Step3">Step3</option>
+                                            <option value="DR/PA">DR/PA</option>
+                                            <option value="RL/LH">RL/LH</option>
+                                            <option value="HVAC">HVAC</option>
+                                            <option value="AWD">AWD</option>
+                                            <option value="FWD">FWD</option>
+                                            <option value="LIH">LIH</option>
+                                            <option value="BAT">BAT</option>
+                                            <option value="HDI">HDI</option>
+                                            <option value="DH">DH</option>
+                                            <option value="U100">U100</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="Education" class="browser-default">
+                                            <option value="" disabled selected>Trình độ</option>
+                                            <option value="Trung học">Trung học</option>
+                                            <option value="Cao đẳng">Cao đẳng</option>
+                                            <option value="Đại học">Đại học</option>
+                                            <option value="Sau đại học">Sau đại học</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" id="Specialization" class="browser-default" placeholder="Chuyên môn"></td>
+                                    <td><input type="email" id="CompanyEmail" class="browser-default" placeholder="email@company.com"></td>
+                                    <td><input type="date" id="InterviewDate" class="browser-default" placeholder="Ngày PV"></td>
+                                    <td><input type="date" id="StartDate" class="browser-default" placeholder="Ngày bắt đầu"></td>
+                                    <td>
+                                        <select id="TimeUnit" class="browser-default">
+                                            <option value="" disabled selected>Thời gian</option>
+                                            <option value="MD">MD</option>
+                                            <option value="TTD">TTD</option>
+                                            <option value="PTT">PTT</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" id="JobActive" checked />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button id="JobSaveBtn" class="btn-small waves-effect waves-light green" type="button">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Mẫu dòng nhập liệu (template row) -->
+                                <tr id="employeeJobTemplate" style="display: none;">
+                                    <td><input type="text" name="EmployeeCode" class="browser-default"></td>
+                                    <td>
+                                        <select name="EmployeeType" class="browser-default job-employee-type">
+                                            <option value="" disabled selected>Chọn</option>
+                                            <option value="Công nhân thời vụ">Công nhân thời vụ</option>
+                                            <option value="Office DJG">Office DJG</option>
+                                            <option value="Nhân viên DJG">Nhân viên DJG</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="Department" class="browser-default job-department">
+                                            <option value="" disabled selected>Chọn</option>
+                                            <option value="FA">FA</option>
+                                            <option value="HR">HR</option>
+                                            <option value="CTLP">CTLP</option>
+                                            <option value="QC">QC</option>
+                                            <option value="PC">PC</option>
+                                            <option value="ME">ME</option>
+                                            <option value="ADMIN">ADMIN</option>
+                                            <option value="QA">QA</option>
+                                            <option value="Tổng vụ">Tổng vụ</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="Position" class="browser-default">
+                                            <option value="" disabled selected>Chọn</option>
+                                            <option value="STAFF">STAFF</option>
+                                            <option value="SUPERVIOR">SUPERVIOR</option>
+                                            <option value="ASS.MANAGER">ASS.MANAGER</option>
+                                            <option value="MANAGER">MANAGER</option>
+                                            <option value="WORKER">WORKER</option>
+                                            <option value="LEADER">LEADER</option>
+                                            <option value="FOREMAN">FOREMAN</option>
+                                            <option value="REWORK">REWORK</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="Line" class="browser-default">
+                                            <option value="" disabled selected>Chọn</option>
+                                            <option value="Step1.2">Step1.2</option>
+                                            <option value="Step3">Step3</option>
+                                            <option value="DR/PA">DR/PA</option>
+                                            <option value="RL/LH">RL/LH</option>
+                                            <option value="HVAC">HVAC</option>
+                                            <option value="AWD">AWD</option>
+                                            <option value="FWD">FWD</option>
+                                            <option value="LIH">LIH</option>
+                                            <option value="BAT">BAT</option>
+                                            <option value="HDI">HDI</option>
+                                            <option value="DH">DH</option>
+                                            <option value="U100">U100</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="Education" class="browser-default">
+                                            <option value="" disabled selected>Chọn</option>
+                                            <option value="Trung học">Trung học</option>
+                                            <option value="Cao đẳng">Cao đẳng</option>
+                                            <option value="Đại học">Đại học</option>
+                                            <option value="Sau đại học">Sau đại học</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" name="Specialization" class="browser-default"></td>
+                                    <td><input type="email" name="CompanyEmail" class="browser-default"></td>
+                                    <td><input type="date" name="InterviewDate" class="browser-default"></td>
+                                    <td><input type="date" name="StartDate" class="browser-default"></td>
+                                    <td>
+                                        <select name="TimeUnit" class="browser-default">
+                                            <option value="" disabled selected>Chọn</option>
+                                            <option value="MD">MD</option>
+                                            <option value="TTD">TTD</option>
+                                            <option value="PTT">PTT</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" name="JobActive" />
+                                            <span>Hoạt động</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button class="btn-small waves-effect waves-light green job-save-btn" type="button">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                        <button class="btn-small waves-effect waves-light red job-delete-btn" type="button">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                              
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút đóng cho tab thông tin công việc -->
+            <div class="row">
+                <div class="col s12 right-align">
+                    <button class="modal-close waves-effect waves-light btn grey lighten-1">Đóng</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tab Thông tin hợp đồng -->
+        <div id="tab-contract" class="col s12">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12">
+                    <div class="KhungOverflow40">
+                        <table id="employeeContractGrid" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Loại hợp đồng <span class="red-text">*</span></th>
+                                    <th>Ngày ký <span class="red-text">*</span></th>
+                                    <th>Ngày bắt đầu <span class="red-text">*</span></th>
+                                    <th>Ngày kết thúc</th>
+                                    <th>File hợp đồng</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dòng nhập thông tin mới -->
+                                <tr id="newContractRow">
+                                    <td>
+                                        <select id="ContractType" class="browser-default">
+                                            <option value="" disabled selected>Chọn loại hợp đồng</option>
+                                            <option value="Thử việc">Thử việc</option>
+                                            <option value="Xác định thời hạn">Xác định thời hạn</option>
+                                            <option value="Không xác định thời hạn">Không xác định thời hạn</option>
+                                            <option value="Thời vụ">Thời vụ</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="date" id="ContractDate" class="browser-default" placeholder="Ngày ký"></td>
+                                    <td><input type="date" id="StartDate" class="browser-default" placeholder="Ngày bắt đầu"></td>
+                                    <td><input type="date" id="EndDate" class="browser-default" placeholder="Ngày kết thúc"></td>
+                                    <td>
+                                        <div class="file-field input-field" style="margin: 0;">
+                                            <div class="btn-small">
+                                                <span><i class="material-icons">attach_file</i></span>
+                                                <input type="file" id="ContractFile">
+                                            </div>
+                                            <div class="file-path-wrapper" style="width: 120px;">
+                                                <input class="file-path validate" type="text" placeholder="Chọn file">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" id="ContractActive" checked />
+                                            <span>Hoạt động</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button id="ContractSaveBtn" class="btn-small waves-effect waves-light green">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Mẫu dòng template -->
+                                <tr id="employeeContractTemplate" style="display: none;">
+                                    <td>
+                                        <select name="ContractType" class="browser-default">
+                                            <option value="" disabled selected>Chọn</option>
+                                            <option value="Thử việc">Thử việc</option>
+                                            <option value="Xác định thời hạn">Xác định thời hạn</option>
+                                            <option value="Không xác định thời hạn">Không xác định thời hạn</option>
+                                            <option value="Thời vụ">Thời vụ</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="date" name="ContractDate" class="browser-default"></td>
+                                    <td><input type="date" name="StartDate" class="browser-default"></td>
+                                    <td><input type="date" name="EndDate" class="browser-default"></td>
+                                    <td>
+                                        <a href="#" target="_blank" class="contract-file-link blue-text">
+                                            <i class="material-icons">description</i>
+                                            <span>Xem file</span>
+                                        </a>
+                                        <input type="file" name="ContractFile" style="display: none;">
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" name="ContractActive" />
+                                            <span>Hoạt động</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button class="btn-small waves-effect waves-light green contract-save-btn" type="button">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                        <button class="btn-small waves-effect waves-light red contract-delete-btn" type="button">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút đóng cho tab -->
+            <div class="row">
+                <div class="col s12 right-align">
+                    <button class="modal-close waves-effect waves-light btn grey lighten-1">Đóng</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tab Thông tin tài chính -->
+        <div id="tab-financial" class="col s12">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12">
+                    <div class="KhungOverflow40">
+                        <table id="employeeFinanceGrid" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Mã số BHXH</th>
+                                    <th>Mã số thuế</th>
+                                    <th>Ngân hàng</th>
+                                    <th>Số tài khoản MSB</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dòng nhập thông tin mới -->
+                                <tr id="newFinanceRow">
+                                    <td><input type="text" id="InsuranceCode" class="browser-default" placeholder="Mã BHXH 10 số"></td>
+                                    <td><input type="text" id="TaxCode" class="browser-default" placeholder="Mã số thuế 10-13 số"></td>
+                                    <td><input type="text" id="BankName" class="browser-default" placeholder="Tên ngân hàng"></td>
+                                    <td><input type="text" id="BankAccount" class="browser-default" placeholder="Số tài khoản 8-20 số"></td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" id="FinanceActive" checked />
+                                            <span>Hoạt động</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button id="FinanceSaveBtn" class="btn-small waves-effect waves-light green" type="button">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Mẫu dòng dữ liệu -->
+                                <tr id="employeeFinanceTemplate" style="display: none;">
+                                    <td><input type="text" name="InsuranceCode" class="browser-default"></td>
+                                    <td><input type="text" name="TaxCode" class="browser-default"></td>
+                                    <td><input type="text" name="BankName" class="browser-default"></td>
+                                    <td><input type="text" name="BankAccount" class="browser-default"></td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" name="FinanceActive" />
+                                            <span>Hoạt động</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button class="btn-small waves-effect waves-light green finance-save-btn" type="button">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                        <button class="btn-small waves-effect waves-light red finance-delete-btn" type="button">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút đóng cho tab -->
+            <div class="row">
+                <div class="col s12 right-align">
+                    <button class="modal-close waves-effect waves-light btn grey lighten-1">Đóng</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tab Quản lý tài liệu -->
+        <div id="tab-files" class="col s12">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s12">
+                    <div class="KhungOverflow40">
+                        <table id="employeeFileGrid" class="highlight responsive-table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>Tên tài liệu <span class="red-text">*</span></th>
+                                    <th>Loại tài liệu <span class="red-text">*</span></th>
+                                    <th>File đính kèm <span class="red-text">*</span></th>
+                                    <th>Ngày tạo</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dòng nhập thông tin mới -->
+                                <tr id="newFileRow">
+                                    <td><input type="text" id="FileName" class="browser-default" placeholder="Nhập tên tài liệu"></td>
+                                    <td>
+                                        <select id="FileType" class="browser-default">
+                                            <option value="" disabled selected>Chọn loại tài liệu</option>
+                                            <option value="PORTRAIT">Ảnh chân dung</option>
+                                            <option value="ID_FRONT">CCCD mặt trước</option>
+                                            <option value="ID_BACK">CCCD mặt sau</option>
+                                            <option value="CONTRACT">Hợp đồng</option>
+                                            <option value="CERTIFICATE">Văn bằng/Chứng chỉ</option>
+                                            <option value="OTHER">Khác</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="file-field input-field" style="margin: 0;">
+                                            <div class="btn-small">
+                                                <span><i class="material-icons">attach_file</i></span>
+                                                <input type="file" id="FileUpload">
+                                            </div>
+                                            <div class="file-path-wrapper" style="width: 120px;">
+                                                <input class="file-path validate" type="text" placeholder="Chọn file tài liệu">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="browser-default" disabled value="Tự động" style="background-color: #f5f5f5;">
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" id="FileActive" checked />
+                                            <span>Hoạt động</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button id="FileSaveBtn" class="btn-small waves-effect waves-light green" type="button">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Mẫu dòng dữ liệu (template) -->
+                                <tr id="employeeFileTemplate" style="display: none;">
+                                    <td><input type="text" name="FileName" class="browser-default"></td>
+                                    <td>
+                                        <select name="FileType" class="browser-default">
+                                            <option value="" disabled selected>Chọn loại</option>
+                                            <option value="PORTRAIT">Ảnh chân dung</option>
+                                            <option value="ID_FRONT">CCCD mặt trước</option>
+                                            <option value="ID_BACK">CCCD mặt sau</option>
+                                            <option value="CONTRACT">Hợp đồng</option>
+                                            <option value="CERTIFICATE">Văn bằng/Chứng chỉ</option>
+                                            <option value="OTHER">Khác</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <a href="#" target="_blank" class="file-download-link blue-text" title="Tải xuống">
+                                            <i class="material-icons">description</i>
+                                            <span class="file-name"></span>
+                                        </a>
+                                        <input type="file" name="FileUpload" style="display: none;">
+                                    </td>
+                                    <td class="create-date"></td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" name="FileActive" />
+                                            <span>Hoạt động</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button class="btn-small waves-effect waves-light green file-save-btn" type="button">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                        <button class="btn-small waves-effect waves-light red file-delete-btn" type="button">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                        @* <button class="btn-small waves-effect waves-light blue file-download-btn" type="button">
+                                            <i class="material-icons">file_download</i>
+                                        </button> *@
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút đóng cho tab -->
+            <div class="row">
+                <div class="col s12 right-align">
+                    <button class="modal-close waves-effect waves-light btn grey lighten-1">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Tab Thông tin hợp đồng -->
+<div id="modal-import" class="modal">
+    <div class="modal-content">
+        <div class="row" style="margin-bottom:0;">
+            <div class="col s8">
+                <h5>Import Nhân Viên</h5>
+            </div>
+            <div class="right-align" style="margin-bottom:10px;">
+                <a href="/Template/Danh_sach_nhan_vien.xlsx" class="btn blue lighten-1" download style="margin-right:8px;">
+                    <i class="material-icons left">file_download</i>File mẫu
+                </a>
+                <button id="BtnSaveImport" class="btn green" style="margin-right:8px;">
+                    <i class="material-icons left">save</i>Import
+                </button>
+                <button class="modal-close btn red">
+                    <i class="material-icons left">close</i>Hủy
+                </button>
+            </div>
+        </div>
+        <div class="file-field input-field" style="margin-bottom:0;">
+            <div class="btn cyan">
+                <span>Chọn File</span>
+                <input id="FileImport" type="file" accept=".xlsx,.xls">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Tải file Excel...">
+            </div>
+        </div>
+        <div class="progress" id="importProgress" style="display:none;">
+            <div class="indeterminate"></div>
+        </div>
+        <div class="KhungOverflow" style="max-height:400px;">
+            <table class="responsive-table striped">
+                <thead>
+                    <tr>
+                        <th>Mã NV</th>
+                        <th>Họ Tên</th>
+                        <th>Loại NV</th>
+                        <th>Bộ Phận</th>
+                        <th>Line</th>
+                        <th>Ngày PV</th>
+                        <th>Ngày Nhận Việc</th>
+                        <th>CCCD</th>
+                        <th>SĐT</th>
+                        <th>Hợp Đồng</th>
+                        <th>BHXH</th>
+                        <th>Đơn vị</th>
+                    </tr>
+                </thead>
+                <tbody id="ImportPreviewTable">
+                    <!-- Preview từ JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+    /* Tăng kích thước của modal */
+    .modal.modal-large {
+        width: 95%;
+        max-height: 90%;
+    }
+
+    /* Đảm bảo các input nhỏ gọn */
+    #tab-job .browser-default {
+        height: 30px;
+        font-size: 12px;
+        padding: 2px 5px;
+    }
+
+    /* Đảm bảo bảng có thanh cuộn ngang */
+    #tab-job .KhungOverflow30 {
+        overflow-x: auto;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    /* Đảm bảo các cột có kích thước phù hợp */
+    #employeeJobGrid th, #employeeJobGrid td {
+        padding: 8px 5px;
+    }
+
+    /* Style cho các nút thao tác */
+    #employeeJobGrid .btn-small {
+        height: 24px;
+        width: 30px;
+        line-height: 24px;
+        padding: 0;
+        margin: 0 2px;
+    }
+
+        #employeeJobGrid .btn-small i {
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+    /* Hiệu ứng khi lưu thành công */
+    @@keyframes pulse-animation {
+        0%
+
+    {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+
+    }
+
+    .pulse {
+        animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) 1;
+    }
+
+    /* Highlight hàng khi hover */
+    #employeeJobGrid tbody tr:hover {
+        background-color: rgba(242, 242, 242, 0.5);
+    }
+
+    .inactive-row {
+        opacity: 0.6;
+        background-color: #f5f5f5;
+    }
+
+    .selected {
+        background-color: #e3f2fd !important;
+        font-weight: 500;
+    }
+    /* Style cho checkbox trong bảng */
+    #employeeJobGrid td label {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+
+        #employeeJobGrid td label span {
+            padding-left: 25px;
+        }
+</style>
+<script src="~/Scripts/HR2.js?v=@version"></script>

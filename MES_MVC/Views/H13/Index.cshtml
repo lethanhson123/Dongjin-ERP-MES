@@ -1,0 +1,463 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IH13Service _H13Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "H13";
+    try
+    {
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _H13Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+<link rel="stylesheet" type="text/css" href="~/css/H13.css?v=@version">
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <!-- HEADER - 10% chiều cao -->
+                <div class="col s12 dashboard-header">
+                    <div class="header-reload">
+                        <button id="Button1" class="reload-btn">Reload</button>
+                    </div>
+                    <div class="header-section-names">
+                        <div class="section-name">TWIST</div>
+                        <div class="section-name">WELDING</div>
+                    </div>
+                    <div class="header-production-title">
+                        <div class="production-title-text">생산실적</div>
+                        <div class="production-title-text">(Kết quả sản xuất)</div>
+                    </div>
+                    <div class="header-production-values">
+                        <div id="Label2" class="production-value">0</div>
+                        <div id="Label12" class="production-value">0</div>
+                    </div>
+                    <div class="header-operation-title">
+                        <div class="operation-title-text">가동률</div>
+                        <div class="operation-title-text">(Tỷ lệ vận hành)</div>
+                    </div>
+                    <div class="header-operation-values">
+                        <div id="Label3" class="operation-value">0</div>
+                        <div id="Label11" class="operation-value">0</div>
+                    </div>
+                    <div class="header-uph-title">
+                        <div class="uph-title">UPH</div>
+                    </div>
+                    <div class="header-uph-values">
+                        <div id="Label4" class="uph-value">0</div>
+                        <div id="Label9" class="uph-value">0</div>
+                    </div>
+                </div>
+
+                <!-- BODY - Cấu trúc mới -->
+                <div class="col s12" style="display: flex; flex-direction: column; height: 78vh;">
+                    <!-- Thanh bên và nội dung chính -->
+                    <div style="display: flex; height: 100%;">
+                        <!-- SIDEBAR - 10% -->
+                        <div class="dashboard-sidebar">
+                            <div id="Button2" class="sidebar-button">
+                                실적데이터 보기
+                            </div>
+
+                            <!-- Tiêu đề Notes -->
+                            <div class="sidebar-title">Notes</div>
+
+                            <!-- Hộp thông tin sản xuất -->
+                            <div class="sidebar-box">
+                                <div class="production-text">생산실적</div>
+                                <div class="production-text">(Kết quả sản xuất)</div>
+                                <div class="production-text">가동률</div>
+                                <div class="production-text">(Tỷ lệ vận hành)</div>
+                                <div class="production-text">UPH</div>
+                            </div>
+
+                            <!-- Chú thích biểu tượng -->
+                            <div class="sidebar-legend">
+                                <div class="legend-item">
+                                    <div class="legend-symbol">S= </div>
+                                    <div class="legend-text">설비준비<br>Chuẩn bị thiết bị</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-symbol">I= </div>
+                                    <div class="legend-text">자재결품<br>Thiếu nguyên vật liệu</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-symbol">Q= </div>
+                                    <div class="legend-text">품질문제<br>Vấn đề chất lượng</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-symbol">M= </div>
+                                    <div class="legend-text">설비고장<br>Máy hư</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-symbol">T= </div>
+                                    <div class="legend-text">교육/회의<br>Đào tạo/họp</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-symbol">L= </div>
+                                    <div class="legend-text">식사시간<br>Giờ ăn</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nội dung chính - 90% -->
+                        <div class="main-content">
+                            <!-- DÒNG 1: TWIST - 8 máy -->
+                            <div class="section-container">
+                                <div class="section-title">TWIST</div>
+                                <div class="machines-row">
+                                    <!-- ZZ101 -->
+                                    <div class="machine-item" id="TW_LY01">
+                                        <div class="machine-name" id="TW_NM01">ZZ101</div>
+                                        <div class="machine-data-box">
+                                            <div id="Z1011">0</div>
+                                            <div id="Z1012">0</div>
+                                            <div id="Z1013">0</div>
+                                            <div id="TW_STOP01" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZZ102 -->
+                                    <div class="machine-item" id="TW_LY02">
+                                        <div class="machine-name" id="TW_NM02">ZZ102</div>
+                                        <div class="machine-data-box">
+                                            <div id="Z1021">0</div>
+                                            <div id="Z1022">0</div>
+                                            <div id="Z1023">0</div>
+                                            <div id="TW_STOP02" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZZ103 -->
+                                    <div class="machine-item" id="TW_LY03">
+                                        <div class="machine-name" id="TW_NM03">ZZ103</div>
+                                        <div class="machine-data-box">
+                                            <div id="Z1031">0</div>
+                                            <div id="Z1032">0</div>
+                                            <div id="Z1033">0</div>
+                                            <div id="TW_STOP03" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZZ104 -->
+                                    <div class="machine-item" id="TW_LY04">
+                                        <div class="machine-name" id="TW_NM04">ZZ104</div>
+                                        <div class="machine-data-box">
+                                            <div id="Z1041">0</div>
+                                            <div id="Z1042">0</div>
+                                            <div id="Z1043">0</div>
+                                            <div id="TW_STOP04" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZZ105 -->
+                                    <div class="machine-item" id="TW_LY05">
+                                        <div class="machine-name" id="TW_NM05">ZZ105</div>
+                                        <div class="machine-data-box">
+                                            <div id="Z1051">0</div>
+                                            <div id="Z1052">0</div>
+                                            <div id="Z1053">0</div>
+                                            <div id="TW_STOP05" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZZ106 -->
+                                    <div class="machine-item" id="TW_LY06">
+                                        <div class="machine-name" id="TW_NM06">ZZ106</div>
+                                        <div class="machine-data-box">
+                                            <div id="Z1061">0</div>
+                                            <div id="Z1062">0</div>
+                                            <div id="Z1063">0</div>
+                                            <div id="TW_STOP06" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZZ107 -->
+                                    <div class="machine-item" id="TW_LY07">
+                                        <div class="machine-name" id="TW_NM07">ZZ107</div>
+                                        <div class="machine-data-box">
+                                            <div id="Z1071">0</div>
+                                            <div id="Z1072">0</div>
+                                            <div id="Z1073">0</div>
+                                            <div id="TW_STOP07" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZZ108 -->
+                                    <div class="machine-item" id="TW_LY08">
+                                        <div class="machine-name" id="TW_NM08">ZZ108</div>
+                                        <div class="machine-data-box">
+                                            <div id="Z1081">0</div>
+                                            <div id="Z1082">0</div>
+                                            <div id="Z1083">0</div>
+                                            <div id="TW_STOP08" class="stop-text"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DÒNG 2: WELDING - 8 máy -->
+                            <div class="section-container">
+                                <div class="section-title">WELDING</div>
+                                <div class="machines-row">
+                                    <!-- ZS101 -->
+                                    <div class="machine-item" id="WD_LY01">
+                                        <div class="machine-name" id="WD_NM01">ZS101</div>
+                                        <div class="machine-data-box">
+                                            <div id="S1011">0</div>
+                                            <div id="S1012">0</div>
+                                            <div id="S1013">0</div>
+                                            <div id="WD_STOP01" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZS102 -->
+                                    <div class="machine-item" id="WD_LY02">
+                                        <div class="machine-name" id="WD_NM02">ZS102</div>
+                                        <div class="machine-data-box">
+                                            <div id="S1021">0</div>
+                                            <div id="S1022">0</div>
+                                            <div id="S1023">0</div>
+                                            <div id="WD_STOP02" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZS103 -->
+                                    <div class="machine-item" id="WD_LY03">
+                                        <div class="machine-name" id="WD_NM03">ZS103</div>
+                                        <div class="machine-data-box">
+                                            <div id="S1031">0</div>
+                                            <div id="S1032">0</div>
+                                            <div id="S1033">0</div>
+                                            <div id="WD_STOP03" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZS104 -->
+                                    <div class="machine-item" id="WD_LY04">
+                                        <div class="machine-name" id="WD_NM04">ZS104</div>
+                                        <div class="machine-data-box">
+                                            <div id="S1041">0</div>
+                                            <div id="S1042">0</div>
+                                            <div id="S1043">0</div>
+                                            <div id="WD_STOP04" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZS105 -->
+                                    <div class="machine-item" id="WD_LY05">
+                                        <div class="machine-name" id="WD_NM05">ZS105</div>
+                                        <div class="machine-data-box">
+                                            <div id="S1051">0</div>
+                                            <div id="S1052">0</div>
+                                            <div id="S1053">0</div>
+                                            <div id="WD_STOP05" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZS106 -->
+                                    <div class="machine-item" id="WD_LY06">
+                                        <div class="machine-name" id="WD_NM06">ZS106</div>
+                                        <div class="machine-data-box">
+                                            <div id="S1061">0</div>
+                                            <div id="S1062">0</div>
+                                            <div id="S1063">0</div>
+                                            <div id="WD_STOP06" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZS107 -->
+                                    <div class="machine-item" id="WD_LY07">
+                                        <div class="machine-name" id="WD_NM07">ZS107</div>
+                                        <div class="machine-data-box">
+                                            <div id="S1071">0</div>
+                                            <div id="S1072">0</div>
+                                            <div id="S1073">0</div>
+                                            <div id="WD_STOP07" class="stop-text"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ZS108 -->
+                                    <div class="machine-item" id="WD_LY08">
+                                        <div class="machine-name" id="WD_NM08">ZS108</div>
+                                        <div class="machine-data-box">
+                                            <div id="S1081">0</div>
+                                            <div id="S1082">0</div>
+                                            <div id="S1083">0</div>
+                                            <div id="WD_STOP08" class="stop-text"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for production data -->
+<div id="H00_LISTModal" class="modal modal-fixed-footer" style="width: 95%; height: 85%;">
+    <div class="modal-content">
+        <div class="modal-header-info">
+            <div class="info-row">
+                <span><strong>가동율:</strong> (작업 시간 - (비가동 - L, T, M 비가동)) / 작업시간</span>
+                <span style="margin-left: 30px;"><strong>비가동:</strong> L : 식사시간, T : 교육시간, M : 설비교정</span>
+            </div>
+            <div class="info-row">
+                <span><strong>UPH:</strong> 생산수량 / (작업시간 - 비가동)</span>
+            </div>
+        </div>
+
+        <div class="KhungOverflow">
+            <table class="responsive-table" id="DataGridView1Table">
+                <thead class="sticky-header">
+                    <tr>
+                        <th>DATE</th>
+                        <th>MC_NO</th>
+                        <th>시작시간</th>
+                        <th>종료시간</th>
+                        <th>QTY</th>
+                        <th>STOP_TIME</th>
+                        <th>STOP_TIME(L,T 제외)</th>
+                        <th>WORK_TIME</th>
+                        <th>Operating rate</th>
+                        <th>UPH</th>
+                    </tr>
+                </thead>
+                <tbody id="DataGridView1">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+
+<!-- Context menus for machine status changes -->
+<div id="TW01ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem1" href="#">Run</a>
+    <a id="ToolStripMenuItem2" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="TW02ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem3" href="#">Run</a>
+    <a id="ToolStripMenuItem4" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="TW03ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem5" href="#">Run</a>
+    <a id="ToolStripMenuItem6" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="TW04ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem7" href="#">Run</a>
+    <a id="ToolStripMenuItem8" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="TW05ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem9" href="#">Run</a>
+    <a id="ToolStripMenuItem10" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="TW06ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem11" href="#">Run</a>
+    <a id="ToolStripMenuItem12" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="TW07ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem13" href="#">Run</a>
+    <a id="ToolStripMenuItem14" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="TW08ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem15" href="#">Run</a>
+    <a id="ToolStripMenuItem16" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="WD01ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem17" href="#">Run</a>
+    <a id="ToolStripMenuItem18" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="WD02ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem19" href="#">Run</a>
+    <a id="ToolStripMenuItem20" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="WD03ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem21" href="#">Run</a>
+    <a id="ToolStripMenuItem22" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="WD04ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem23" href="#">Run</a>
+    <a id="ToolStripMenuItem24" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="WD05ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem25" href="#">Run</a>
+    <a id="ToolStripMenuItem26" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="WD06ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem27" href="#">Run</a>
+    <a id="ToolStripMenuItem28" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="WD07ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem29" href="#">Run</a>
+    <a id="ToolStripMenuItem30" href="#">Stop (No Worker)</a>
+</div>
+
+<div id="WD08ContextMenu" class="dropdown-content">
+    <a id="ToolStripMenuItem31" href="#">Run</a>
+    <a id="ToolStripMenuItem32" href="#">Stop (No Worker)</a>
+</div>
+
+<script src="~/Scripts/H13.js?v=@version"></script>

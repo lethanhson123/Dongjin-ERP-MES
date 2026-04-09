@@ -1,0 +1,350 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject IV07Service _V07Service
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "V07";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _V07Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    <button @(IsButtonfind ? "" : "Disabled") id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                    </button>
+
+                    <button @(IsButtonadd ? "" : "Disabled") id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                    </button>
+
+                    <button @(IsButtonsave ? "" : "Disabled") id="Buttonsave" title="@MES_MVC.Resources.Resource.Buttonsave" class="btn waves-effect waves-light cyan darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                    </button>
+
+                    <button @(IsButtondelete ? "" : "Disabled") id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete" class="btn waves-effect waves-light red darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                    </button>
+
+                    <button @(IsButtoncancel ? "" : "Disabled") id="Buttoncancel" title="@MES_MVC.Resources.Resource.Buttoncancel" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">error</i> @MES_MVC.Resources.Resource.Buttoncancel
+                    </button>
+
+                    <button @(IsButtoninport ? "" : "Disabled") id="Buttoninport" title="@MES_MVC.Resources.Resource.Buttoninport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_upload</i> @MES_MVC.Resources.Resource.Buttoninport
+                    </button>
+
+                    <button @(IsButtonexport ? "" : "Disabled") id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                    </button>
+
+                    <button @(IsButtonprint ? "" : "Disabled") id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                    </button>
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l4">
+                    <ul class="tabs" id="TabControl1">
+                        <li class="tab col s6 p-0">
+                            <a id="ATag001" class="active p-0" href="#TabPage1">ME_ORDER_LIST</a>
+                        </li>
+                        <li class="tab col s6 p-0">
+                            <a id="ATag002" class="p-0" href="#TabPage2">ADD ORDER</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col s12 m6 l8">
+                </div>
+            </div>
+
+            <div class="row" id="TabPage1">
+                <!-- Tab buttons for different order types -->
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <button id="Button1" class="btn waves-effect waves-light grey lighten-2 black-text" style="width:100%;">
+                                발주서 một tờ đơn đặt hàng
+                            </button>
+                        </div>
+                        <div class="col s4 m4 l4">
+                            <button id="Button2" class="btn waves-effect waves-light grey lighten-2 black-text" style="width:100%;">
+                                견적서 Ước tính
+                            </button>
+                        </div>
+                        <div class="col s4 m4 l4">
+                            <button id="Button3" class="btn waves-effect waves-light grey lighten-2 black-text" style="width:100%;">
+                                보고서 Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter panel -->
+                <div class="col s12 m6 l12 card-panel light-blue lighten-4">
+                    <div class="row">
+                        <!-- Column 1: PUR DATE, Order NO -->
+                        <div class="col s12 m6 l3">
+                            <div>
+                                <label>PUR DATE</label>
+                                <div class="row" style="margin-bottom: 0;">
+                                    <div class="col s6" style="padding: 0 5px 0 0;">
+                                        <input id="DateTimePicker1" type="date" class="form-control">
+                                    </div>
+                                    <div class="col s6" style="padding: 0 0 0 5px;">
+                                        <input id="DateTimePicker2" type="date" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <label>Order NO</label>
+                                <input id="TextBox15" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Column 2: MC_TYPE, State -->
+                        <div class="col s12 m6 l3">
+                            <div>
+                                <label>MC_TYPE</label>
+                                <input id="TextBox10" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <label>State</label>
+                                <select id="ComboBox1" class="browser-default form-select">
+                                    <option>ALL(NOT Finish)</option>
+                                    <option>Finished</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Product NO, By Order -->
+                        <div class="col s12 m6 l3">
+                            <div>
+                                <label>Product NO</label>
+                                <input id="TextBox11" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <label>By Order</label>
+                                <select id="ComboBox2" class="browser-default form-select">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Column 4: NAEM, Company -->
+                        <div class="col s12 m6 l3">
+                            <div>
+                                <label>NAEM</label>
+                                <input id="TextBox1" type="text" class="form-control">
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <label>Company</label>
+                                <input id="TextBox13" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Grid -->
+                <div class="KhungOverflow60">
+                    <table class="responsive-table" id="DataGridView1Table">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Order</th>
+                                <th>CODE</th>
+                                <th>Product_NO</th>
+                                <th>PHOTO</th>
+                                <th>PART NO</th>
+                                <th>PART NAME</th>
+                                <th>Description</th>
+                                <th>MC_Type</th>
+                                <th>MC_NO</th>
+                                <th>PUR_DATE</th>
+                                <th>QTY</th>
+                                <th>Order_Confirm</th>
+                                <th>Unit</th>
+                                <th>COST</th>
+                                <th>SUM_COST</th>
+                                <th>By Order</th>
+                                <th>STAY</th>
+                                <th>Company</th>
+                                <th>Edit Date</th>
+                                <th>SUM_COST($)</th>
+                                <th>ORDER_NO</th>
+                                <th>REMARK</th>
+                                <th>PD_PAYCOST</th>
+                                <th>UPDATE_DATE</th>
+                                <th>UPDATE_USER</th>
+                                <th>CREATE_DATE</th>
+                                <th>CREATE_USER</th>
+                                <th>PHOTO_TEXT</th>
+                                <th>PD_PART_IDX</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataGridView1">
+                            <!-- Data will be filled here from JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row" id="TabPage2">
+                <!-- Search panel with pink background -->
+                <div class="col s12 m12 l12 card-panel pink lighten-5">
+                    <div class="row" style="margin-bottom: 0;">
+                        <div class="col s12 m6 l3">
+                            <div>
+                                <label>MC_NO :</label>
+                                <select id="ComboBox3" class="browser-default form-select">
+                                    <option value="9BUX_PRESS">9BUX_PRESS</option>
+                                    <!-- Add other options as needed -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col s12 m6 l3">
+                            <div>
+                                <label>검색 Tìm :</label>
+                                <input id="TextBox5" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l6">
+                            <!-- Empty space -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top data grid -->
+                <div class="col s12 m12 l8">
+                    <div class="KhungOverflow30">
+                        <table class="responsive-table" id="DataGridView5Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>ORDER</th>
+                                    <th>CODE</th>
+                                    <th>PART_NO</th>
+                                    <th>MC_TYPE</th>
+                                    <th>PART_NAME</th>
+                                    <th>Description</th>
+                                    <th>UNIT_KR</th>
+                                    <th>Bundles_QTY</th>
+                                    <th>Product_NO</th>
+                                    <th>PHOTO</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView5">
+                                <!-- Data will be filled here from JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Image preview area -->
+                <div class="col s12 m12 l4">
+                    <div class="card" style="height: 320px; margin-top: 0;">
+                        <div class="card-content" style="padding: 0;">
+                            <div id="PictureBox1" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                                <!-- Image will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom data grid -->
+                <div class="col s12 m12 l12">
+                    <div class="KhungOverflow">
+                        <table class="responsive-table" id="DataGridView6Table">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th>MC_NO</th>
+                                    <th>PART_NO</th>
+                                    <th>MC_TYPE</th>
+                                    <th>PART_NAME</th>
+                                    <th>Description</th>
+                                    <th>UNIT_KR</th>
+                                    <th>Bundles_QTY</th>
+                                    <th>Product_NO</th>
+                                    <th>PO_QTY</th>
+                                    <th>Progress</th>
+                                    <th>DEP_CODE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DataGridView6">
+                                <!-- Data will be filled here from JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/V07.js?v=@version"></script>

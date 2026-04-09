@@ -1,0 +1,152 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+    string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string DomainSite = CookieHelper.GetCookie(GlobalHelper.DomainSite) ?? GlobalHelper.URLSite;
+    string url = "Z04_ADMIN_EXCEL";
+    string ExcelTemplateURL = DomainSite + "/" + GlobalHelper.Excel + "/" + url + ".xlsx";
+    try
+    {
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    ViewData["Title"] = "Inport_EXECL (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <h6><b>Inport_EXECL (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l6">
+                    <div>
+                        <label>Download <a href="@ExcelTemplateURL" title="@ExcelTemplateURL">Excel Template</a> (if you don't have it)</label>
+                        <input id="FileToUpload" type="file" class="form-control" accept=".xls,.xlsx" style="display:none;">
+                    </div>
+                </div>
+            </div>
+            <div class="row card-panel light-blue lighten-4">
+                <div class="col s12 m12 l3">
+                    <div>
+                        <label>Option : </label>
+                        <br />
+                        <label>
+                            <input id="RadioButton1" name="Z04_ADMIN_EXCEL" type="radio" />
+                            <span>Year-end</span>
+                        </label>
+                        <label>
+                            <input id="RadioButton2" name="Z04_ADMIN_EXCEL" type="radio" />
+                            <span>Quarter</span>
+                        </label>
+                        <label>
+                            <input id="RadioButton3" name="Z04_ADMIN_EXCEL" type="radio" />
+                            <span>FREE</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>MES NO. : </label>
+                        <input id="TextBox1" type="text" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l2">
+                    <div>
+                        <label>.</label>
+                        <input id="TextBox15" type="text" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <label>Count : </label>
+                        <input id="Label3" type="text" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <br />
+                        <button id="Buttoninport" class="btn waves-effect waves-light green darken-1" style="width: 100%;">Import</button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <br />
+                        <button id="Buttondelete" class="btn waves-effect waves-light red darken-1" style="width: 100%;">Delete</button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <br />
+                        <button id="Buttonsave" class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">Save</button>
+                    </div>
+                </div>
+                <div class="col s12 m12 l1">
+                    <div>
+                        <br />
+                        <button id="Buttonclose" class="btn waves-effect waves-light purple darken-1" style="width: 100%;">Close</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="KhungOverflow">
+                <table class="responsive-table">
+                    <thead class="sticky-header">
+                        <tr onclick="DataGridView1Sort()">
+                            <th>MES NO</th>
+                            <th>Department</th>
+                            <th>PKI ERP Location</th>
+                            <th>Inputer</th>
+                            <th>Serial No 1</th>
+                            <th>Serial No 2</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataGridView1">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Z04_ADMIN_EXCELRadioButton3" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div>
+                    <label>MES CODE(Year) number.(년도 입력)", "MES CODE(Year) number</label>
+                    <input id="Z04_ADMIN_EXCELRadioButtonTextBox1" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="col s12 m12 l12">
+                <div>
+                    <label>Enter the desired number.(등록번호 입력)", "Enter the desired number</label>
+                    <input id="Z04_ADMIN_EXCELRadioButtonTextBox15" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="Z04_ADMIN_EXCELRadioButton3OK" class="btn waves-effect waves-light green">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+        <button id="Z04_ADMIN_EXCELRadioButton3Cancel" class="btn waves-effect waves-light red modal-close">Cancel</button>
+    </div>
+</div>
+<script src="~/Scripts/Z04_ADMIN_EXCEL.js?v=@version"></script>
+

@@ -1,0 +1,90 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@{
+	string version = GlobalHelper.InitializationDateTimeCode;
+	bool IsButtonfind = false;
+	bool IsButtonadd = false;
+	bool IsButtonsave = false;
+	bool IsButtondelete = false;
+	bool IsButtoncancel = false;
+	bool IsButtoninport = false;
+	bool IsButtonexport = false;
+	bool IsButtonprint = false;
+
+	BaseResult BaseResult = new BaseResult();
+	BaseParameter BaseParameter = new BaseParameter();
+	string url = "D04_RANK";
+	try
+	{
+	}
+	catch (Exception ex)
+	{
+		string mes = ex.Message;
+	}
+}
+
+@{
+	Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+	ViewData["Title"] = "Shipment Rank (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+	<div class="card card card-default scrollspy">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12 m12 l12">
+					<h6><b>Shipment Rank (@url)</b></h6>
+				</div>
+			</div>
+			<div class="row card-panel light-blue lighten-4">
+				<div class="col s12 m12 l9">
+					<div>						
+						<input id="Label1" type="text" class="form-control" readonly value="PART NO" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l3">
+					<div>						
+						<input id="Label5" type="text" class="form-control" readonly value="IDX" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div>
+						<input id="Label2" type="text" class="form-control" readonly value="PART NM" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div>
+						<input id="Label3" type="text" class="form-control" readonly value="LINE" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div>
+						<input id="Label4" type="text" class="form-control" readonly value="PO QTY" style="border-width: 0px !important;">
+					</div>
+				</div>
+				<div class="col s12 m12 l12">
+					<div>
+						<input id="Label6" type="text" class="form-control" readonly style="color: blue; border-width: 0px !important;" value="Thứ tự ưu tiên xuất hàng 출하 우선 순위">
+					</div>
+				</div>
+				<div class="col s12 m12 l4">
+					<div>
+						<button id="Button1" class="btn waves-effect waves-light orange darken-1" style="width: 100%; font-size: 20px;">1</button>
+					</div>
+				</div>
+				<div class="col s12 m12 l4">
+					<div>
+						<button id="Button3" class="btn waves-effect waves-light yellow darken-1" style="width: 100%; font-size: 20px;">2</button>
+					</div>
+				</div>
+				<div class="col s12 m12 l4">
+					<div>
+						<button id="Button4" class="btn waves-effect waves-light grey darken-1" style="width: 100%; font-size: 20px;">3</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/D04_RANK.js?v=@version"></script>
+

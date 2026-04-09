@@ -1,0 +1,287 @@
+﻿@inject IMAINService _MAINService
+@inject CookieHelper CookieHelper
+@inject Iadmin4Service _admin4Service
+@{
+    //string version = GlobalHelper.InitializationDateTimeCode;
+    bool IsButtonfind = false;
+    bool IsButtonadd = false;
+    bool IsButtonsave = false;
+    bool IsButtondelete = false;
+    bool IsButtoncancel = false;
+    bool IsButtoninport = false;
+    bool IsButtonexport = false;
+    bool IsButtonprint = false;
+
+    BaseResult BaseResult = new BaseResult();
+    BaseParameter BaseParameter = new BaseParameter();
+    string url = "Admin4";
+    try
+    {
+        //truyền biến User ID thay thê cho Cookeis đẻ lấy phan quyền action cho button
+        BaseParameter.USER_IDX = CookieHelper.GetCookie(GlobalHelper.USER_IDX) ?? string.Empty;
+        BaseResult = await _MAINService.Main_Shown(BaseParameter);
+        if (BaseResult.ListtsauthTranfer != null)
+        {
+            BaseResult.tsauthTranfer = BaseResult.ListtsauthTranfer.Where(o => o.SCRN_PATH == url).FirstOrDefault();
+            if (BaseResult.tsauthTranfer != null)
+            {
+                IsButtonfind = bool.Parse(BaseResult.tsauthTranfer.IQ_AUTH_YN);
+                IsButtonadd = bool.Parse(BaseResult.tsauthTranfer.RGST_AUTH_YN);
+                IsButtonsave = bool.Parse(BaseResult.tsauthTranfer.MDFY_AUTH_YN);
+                IsButtondelete = bool.Parse(BaseResult.tsauthTranfer.DEL_AUTH_YN);
+                IsButtoncancel = bool.Parse(BaseResult.tsauthTranfer.CAN_AUTH_YN);
+                IsButtoninport = bool.Parse(BaseResult.tsauthTranfer.EXCL_AUTH_YN);
+                IsButtonexport = bool.Parse(BaseResult.tsauthTranfer.DNLD_AUTH_YN);
+                IsButtonprint = bool.Parse(BaseResult.tsauthTranfer.PRNT_AUTH_YN);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+    try
+    {
+        BaseResult = await _admin4Service.Load();
+    }
+    catch (Exception ex)
+    {
+        string mes = ex.Message;
+    }
+}
+
+@{
+    ViewData["Title"] = @MES_MVC.Resources.Resource.GetObject(url) + " (" + url + ")";
+}
+
+<div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6><b>@MES_MVC.Resources.Resource.GetObject(url) (@url)</b></h6>
+                </div>
+                <div class="col s12 m12 l9 right-align-md">
+                    @if (IsButtonfind)
+                    {
+                        <button id="Buttonfind" title="@MES_MVC.Resources.Resource.Buttonfind"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">search</i> @MES_MVC.Resources.Resource.Buttonfind
+                        </button>
+                    }
+
+                    @if (IsButtonadd)
+                    {
+                        <button id="Buttonadd" title="@MES_MVC.Resources.Resource.Buttonadd"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">add</i> @MES_MVC.Resources.Resource.Buttonadd
+                        </button>
+                    }            
+
+                    @if (IsButtondelete)
+                    {
+                        <button id="Buttondelete" title="@MES_MVC.Resources.Resource.Buttondelete"
+                                class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">delete</i> @MES_MVC.Resources.Resource.Buttondelete
+                        </button>
+                    }
+                                      
+
+                    @if (IsButtonexport)
+                    {
+                        <button id="Buttonexport" title="@MES_MVC.Resources.Resource.Buttonexport"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">cloud_download</i> @MES_MVC.Resources.Resource.Buttonexport
+                        </button>
+                    }
+
+                    @if (IsButtonprint)
+                    {
+                        <button id="Buttonprint" title="@MES_MVC.Resources.Resource.Buttonprint"
+                                class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                            <i class="material-icons">print</i> @MES_MVC.Resources.Resource.Buttonprint
+                        </button>
+                    }
+
+                    <button id="Buttonhelp" title="@MES_MVC.Resources.Resource.Buttonhelp" class="btn waves-effect waves-light green darken-1"
+                            style="margin-right: 10px;">
+                        <i class="material-icons">help</i>
+                    </button>
+
+                    <button id="Buttonclose" title="@MES_MVC.Resources.Resource.Buttonclose" class="btn waves-effect waves-light purple darken-1"><i class="material-icons">close</i> @MES_MVC.Resources.Resource.Buttonclose</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <table id="Menu_Table">
+                        <thead>
+                            <tr>  
+                                <th class="text-center" style=" cursor:pointer;">
+                                    <label style="display: flex; align-items: center; justify-content: center; gap: 2px; margin: 0;">
+                                        <input id="check_all" type="checkbox" style="margin:0px;" />
+                                        <span>@MES_MVC.Resources.Resource.Btn_All</span>
+                                    </label>
+                                </th>
+                                <th class="text-center" style=" cursor:pointer;">@MES_MVC.Resources.Resource.DbTbl_MenuFullName</th>
+                                <th class="text-center" style=" cursor:pointer;">@MES_MVC.Resources.Resource.DbTbl_MenuLevel</th>
+                                <th class="text-center" style=" cursor:pointer;">@MES_MVC.Resources.Resource.DbTbl_NameKorea</th>
+                                <th class="text-center" style=" cursor:pointer;">@MES_MVC.Resources.Resource.DbTbl_Group</th>
+                                <th class="text-center" style=" cursor:pointer;">@MES_MVC.Resources.Resource.DbTbl_Code</th>    
+                                <th class="text-center" style=" cursor:pointer;">@MES_MVC.Resources.Resource.DbTbl_CreateDate</th>    
+                                <th class="text-center" style=" cursor:pointer;">@MES_MVC.Resources.Resource.DbTbl_CreateBy</th>    
+                            </tr>
+                        </thead>
+                        <tbody id="Menu_Table_view">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editModal" class="modal" style="width:700px; height:450px;">
+    <div class="modal-content">
+        <label id="confirmTitle" class="header-form">@MES_MVC.Resources.Resource.MML_Menu: @MES_MVC.Resources.Resource.Btn_Create </label>
+        <label id="Edit_IDX" class="header-form"></label>
+        <div class="row" style="margin:5px;">
+            <div class="row">
+                <div class="col s12 s2 l3">
+                    <label>@MES_MVC.Resources.Resource.DbTbl_MenuLevel:</label>
+                </div>
+                <div class="col s12 s10 l9">
+                    <div class="row">
+                        <div class="col s12 m12 l6">
+                            <label style="margin-left:10px">
+                                <input id="RadioButton1" name="STATUS" type="radio" value="1" checked />
+                                <span>@MES_MVC.Resources.Resource.DbTbl_PrimaryMenu</span>
+                            </label>
+                        </div>
+                        <div class="col s12 m12 l6">
+                            <label style="margin-left:10px">
+                                <input id="RadioButton2" name="STATUS" type="radio" value="2" />
+                                <span>@MES_MVC.Resources.Resource.DbTbl_SecondaryMenu</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col s12 s6 l4">
+                    <label style="text-align:right;">@MES_MVC.Resources.Resource.DbTbl_Code (SCRN_Path):</label>
+                </div>
+                <div class="col s12 s6 l8">
+                    <input id="txt_menuCode" type="text" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 s6 l4">
+                    <label>@MES_MVC.Resources.Resource.English:</label>
+                </div>
+                <div class="col s12 s6 l8">
+                    <input id="txt_MenuEng" type="text" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 s6 l4">
+                    <label>@MES_MVC.Resources.Resource.Korean:</label>
+                </div>
+                <div class="col s12 s6 l8">
+                    <input id="txt_MenuKo" type="text" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 s6 l4">
+                    <label>@MES_MVC.Resources.Resource.DbTbl_GroupCode:</label>
+                </div>
+                <div class="col s12 s6 l8">
+                    <input id="txt_GroupMenuCode" type="text" class="form-control" maxlength="80" style="color: black; font-size: 16px; min-height:30px;">
+                </div>
+            </div>   
+            <div class="row">
+                <div class="col s12 s6 l4">
+                    <label>@MES_MVC.Resources.Resource.DbTbl_Group:</label>
+                </div>
+                <div class=" col s12 m8 l8">
+                    <select id="selector_menuGroup" class="form-control browser-default" style="color: black; font-size: 14px;min-height:32px; background-color:burlywood;">
+                        @{
+                            if (BaseResult.ListtsmenuTranfer.Count() > 0)
+                            {
+                                foreach (var item in BaseResult.ListtsmenuTranfer)
+                                {
+                                    <option value="@item.MENU_NM_VIE">
+                                       ( @item.SCRN_PATH ) @item.MENU_NM_EN
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <button id="btnSave" title="@MES_MVC.Resources.Resource.Buttonsave"
+                        class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                    <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                </button>
+            </div>
+            <div class="col s12 m6 l6">
+                <button id="btnCancel" title="@MES_MVC.Resources.Resource.Buttoncancel"
+                        class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                    <i class="material-icons">cancel</i> @MES_MVC.Resources.Resource.Buttoncancel
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="confirmModal" class="modal" style="width:600px; min-height:250px;">
+    <div class="modal-content">
+        <h4 id="confirmTitle">@MES_MVC.Resources.Resource.Btn_Confirm</h4>
+        <p id="confirmMessage" style="font-size:20px;">Bạn có chắc chắn muốn thực hiện thao tác này?</p>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <button id="btn_confirmYes" title="@MES_MVC.Resources.Resource.Buttonsave"
+                        class="btn waves-effect waves-light green darken-1" style="margin-right: 10px;">
+                    <i class="material-icons">save</i> @MES_MVC.Resources.Resource.Buttonsave
+                </button>
+            </div>
+            <div class="col s12 m6 l6">
+                <button id="btn_confirmCancel" title="@MES_MVC.Resources.Resource.Buttoncancel"
+                        class="btn waves-effect waves-light red darken-1" style="margin-right: 10px;">
+                    <i class="material-icons">cancel</i> @MES_MVC.Resources.Resource.Buttoncancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Lấy text từ C# resource đưa vào biến JS
+    const MessageText = {
+        Success: '@MES_MVC.Resources.Resource.SUCCESS_Success',
+        Empty: '@MES_MVC.Resources.Resource.ERROR_NoData',
+        CannotDelete: '@MES_MVC.Resources.Resource.ERROR_CannotDelete',
+        NotSelectOnGrid:'@MES_MVC.Resources.Resource.WARN_NotSelectOnGrid',
+        DeleteData: '@MES_MVC.Resources.Resource.CONFIRM_Delete',  
+    };
+
+    const HeaderText = {
+        No: '@MES_MVC.Resources.Resource.DbTbl_ItemNo',
+        ID: '@MES_MVC.Resources.Resource.DbTbl_ID',
+        GroupCode: '@MES_MVC.Resources.Resource.DbTbl_GroupCode',
+        GroupName: '@MES_MVC.Resources.Resource.DbTbl_GroupName',     
+        Create: '@MES_MVC.Resources.Resource.MML_Menu: @MES_MVC.Resources.Resource.Buttonadd',
+    };
+
+</script>
+
+<script src="~/Scripts/admin4.js?v=@GlobalHelper.GetVersionScrip("admin4.js")"></script>
+
