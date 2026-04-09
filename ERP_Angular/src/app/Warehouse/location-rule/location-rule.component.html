@@ -1,0 +1,37 @@
+<hr />
+<div class="row">
+    <div class="col s12 m12 l3">
+        <h6 class="breadcrumbs-title">
+            Location Rule
+        </h6>
+    </div>
+    <div class="col s12 m12 l1" *ngFor="let CategoryLayer of CategoryLayerService.ListFilter;">
+        <button *ngIf="CategoryLayer.Active==false" title="{{CategoryLayer.Name}}"
+            class="btn waves-effect waves-light green darken-1" (click)="CategoryLayerView(CategoryLayer)"
+            style="width: 100%;">{{CategoryLayer.Name}}</button>
+        <button *ngIf="CategoryLayer.Active==true" title="{{CategoryLayer.Name}}"
+            class="btn waves-effect waves-light cyan darken-1" (click)="CategoryLayerView(CategoryLayer)"
+            style="width: 100%;">{{CategoryLayer.Name}}</button>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col s12 m12 l1" *ngFor="let CategoryRack of CategoryRackService.ListFilter;">
+        <div style="font-size: 20px; text-align: center; font-weight: bold;">{{CategoryRack.Name}}</div>
+        <div class="row" *ngFor="let CategoryLocation of CategoryLocationService.ListFilter;">
+            <div class="col s12 m12 l12"
+                *ngIf="CategoryLocation.ParentID==CategoryRack.ID && CategoryLocation.CategoryLayerID==CategoryLayerService.BaseParameter.BaseModel.ID"
+                style="min-height: 200px; border: #000000 2px solid; cursor: pointer; border-bottom-width: 0px; text-align: center;">
+                <a style="cursor: pointer;" class="link-primary"
+                    (click)="CategoryLocationModal(CategoryLocation)"><b>{{CategoryLocation.Name}}</b></a>
+                <div *ngFor="let CategoryLocationMaterial of CategoryLocationMaterialService.ListFilter;">
+                    <div *ngIf="CategoryLocationMaterial.ParentID==CategoryLocation.ID">
+                        <b>{{CategoryLocationMaterial.Name}}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<app-loading *ngIf="CategoryLayerService.IsShowLoading"></app-loading>

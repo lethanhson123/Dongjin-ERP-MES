@@ -1,0 +1,194 @@
+<div class="row">
+    <div class="col s12 m12 l12">
+        <h5>DJM - CUT: Kiểm kê <span *ngIf="WarehouseInputDetailBarcodeService.BaseParameter.ListChild"
+                style="font-size: 24px;">({{WarehouseInputDetailBarcodeService.BaseParameter.ListChild.length}}
+                items)</span></h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <button title="Save" class="btn waves-effect waves-light cyan" style="width: 100%;" (click)="Save()"><i
+                class="material-icons">save</i> Save</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <label>Location</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <input #SearchString placeholder="Location"
+            [(ngModel)]="WarehouseInputDetailBarcodeService.BaseParameter.SearchString" type="text" class="form-control"
+            (keyup.enter)="WarehouseInputDetailBarcodeSearchString()">
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <label>Barcode</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <input #SearchStringFilter placeholder="Barcode"
+            [(ngModel)]="WarehouseInputDetailBarcodeService.BaseParameter.SearchStringFilter" type="text"
+            class="form-control" (keyup.enter)="WarehouseInputDetailBarcodeCheck()"
+            (change)="WarehouseInputDetailBarcodeCheck()">
+    </div>
+</div>
+<!-- <div class="row">
+    <div class="col s4 m4 l4">
+        <label>Quantity Actual</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <input #PageSize placeholder="Quantity Actual"
+            [(ngModel)]="WarehouseInputDetailBarcodeService.BaseParameter.PageSize" type="number" class="form-control">
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <button title="Add" class="btn waves-effect waves-light green" style="width: 100%;"
+            (click)="WarehouseInputDetailBarcodeSearchStringFilter()"><i class="material-icons">arrow_downward</i></button>
+    </div>
+</div> -->
+<div class="KhungOverflow">
+    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #WarehouseInputDetailBarcodeSort="matSort"
+        [dataSource]="WarehouseInputDetailBarcodeService.DataSource">
+        <ng-container matColumnDef="No">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                No
+            </th>
+            <td mat-cell *matCellDef="let element; index as i;">
+                <div *ngIf="WarehouseInputDetailBarcodePaginator">
+                    {{
+                    WarehouseInputDetailBarcodePaginator.pageSize *
+                    WarehouseInputDetailBarcodePaginator.pageIndex + i + 1
+                    }}
+                </div>
+            </td>
+        </ng-container>
+         <ng-container matColumnDef="SortOrder">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Location ID</th>
+            <td mat-cell *matCellDef="let element">
+                <b>{{element.SortOrder}}</b>
+            </td>
+        </ng-container>
+         <ng-container matColumnDef="Note">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Location old</th>
+            <td mat-cell *matCellDef="let element">
+                <b style="color: red;">{{element.Note}}</b>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="Barcode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+            <td mat-cell *matCellDef="let element">
+                <b>{{element.Barcode}}</b>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="CategoryLocationName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.CategoryLocationName}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="DateScan">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date scan</th>
+            <td mat-cell *matCellDef="let element">
+                <b>{{element.DateScan |
+                    date:'dd/MM/yyyy HH:mm:ss'}}</b>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="Quantity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Inventory 01</th>
+            <td mat-cell *matCellDef="let element" style="max-width: 100px;">
+                <input class="form-control" type="number" placeholder="Inventory 01" name="Quantity{{element.ID}}"
+                    [(ngModel)]="element.Quantity">
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="UpdateDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.UpdateDate |
+                date:'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="UpdateUserCode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.UpdateUserCode}} | {{element.UpdateUserName}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="Quantity02">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="background-color: aqua;">Inventory 02</th>
+            <td mat-cell *matCellDef="let element" style="max-width: 100px;">
+                <input class="form-control" type="number" placeholder="Inventory 02" name="Quantity02{{element.ID}}"
+                    [(ngModel)]="element.Quantity02">
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="UpdateDate02">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="background-color: aqua;">Date</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.UpdateDate02 |
+                date:'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="UpdateUserCode02">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="background-color: aqua;">User</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.UpdateUserCode02}} | {{element.UpdateUserName02}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="Quantity03">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Inventory 03</th>
+            <td mat-cell *matCellDef="let element" style="max-width: 100px;">
+                <input class="form-control" type="number" placeholder="Inventory 01" name="Quantity03{{element.ID}}"
+                    [(ngModel)]="element.Quantity03">
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="UpdateDate03">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.UpdateDate03 |
+                date:'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+        </ng-container>        
+        <ng-container matColumnDef="UpdateUserCode03">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.UpdateUserCode03}} | {{element.UpdateUserName03}}
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="WarehouseInputDetailBarcodeService.DisplayColumns045">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: WarehouseInputDetailBarcodeService.DisplayColumns045;">
+        </tr>
+    </table>
+    <mat-paginator *ngIf="!NotificationService.IsMobile" #WarehouseInputDetailBarcodePaginator="matPaginator"
+        [pageSizeOptions]="[10,20,50,100]" [pageSize]="1000000" [showFirstLastButtons]></mat-paginator>
+
+    <table *ngIf="NotificationService.IsMobile" mat-table matSort #WarehouseInputDetailBarcodeSort="matSort"
+        [dataSource]="WarehouseInputDetailBarcodeService.DataSource">
+        <ng-container matColumnDef="No">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                List
+            </th>
+            <td mat-cell *matCellDef="let element; index as i;">
+                <div class="row">
+                    Barcode: <b>{{element.Barcode}}</b>
+                </div>
+                <div class="row">
+                    Location: <b>{{element.CategoryLocationName}}</b>
+                </div>
+                <div class="row">
+                    Quantity Actual: <input class="form-control" type="number" placeholder="Quantity Actual"
+                        name="Quantity{{element.ID}}" [(ngModel)]="element.Quantity" style="width: 200px;">
+                </div>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="WarehouseInputDetailBarcodeService.DisplayColumnsMobile">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: WarehouseInputDetailBarcodeService.DisplayColumnsMobile;">
+        </tr>
+    </table>
+    <mat-paginator *ngIf="NotificationService.IsMobile" #WarehouseInputDetailBarcodePaginator="matPaginator"
+        [pageSizeOptions]="[10,20,50,100]" [pageSize]="1000000" [showFirstLastButtons]></mat-paginator>
+
+
+</div>
+<app-loading *ngIf="WarehouseInputDetailBarcodeService.IsShowLoading"></app-loading>

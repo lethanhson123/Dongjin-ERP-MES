@@ -1,0 +1,1089 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        Inventory By Company
+                        <span *ngIf="WarehouseInventoryService.List">({{WarehouseInventoryService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Warehouse">Warehouse</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/WarehouseInventory" title="Warehouse Inventory">Warehouse Inventory</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l2">
+                    <select class="browser-default form-select" (change)="CompanyChange()"
+                        [(ngModel)]="WarehouseInventoryService.BaseParameter.CompanyID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>               
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select"
+                        [(ngModel)]="WarehouseInventoryService.BaseParameter.Year">
+                        <option *ngFor="let item of WarehouseInventoryService.ListYear;" [value]="item.SortOrder">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select"
+                        [(ngModel)]="WarehouseInventoryService.BaseParameter.Month">
+                        <option *ngFor="let item of WarehouseInventoryService.ListMonth;" [value]="item.SortOrder">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l6">
+                    <input [(ngModel)]="WarehouseInventoryService.BaseParameter.SearchString" placeholder="Search ..."
+                        class="form-control" (keyup.enter)="WarehouseInventorySearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="search" (click)="WarehouseInventorySearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </a>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Sync" (click)="CreateAutoAsync()" class="btn waves-effect waves-light cyan darken-1"
+                        style="width: 100%;">
+                        <i class="material-icons">sync</i>
+                    </button>
+                </div>
+                <div class="KhungOverflow">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #WarehouseInventorySort="matSort"
+                        [dataSource]="WarehouseInventoryService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="WarehouseInventoryPaginator">
+                                    {{
+                                    WarehouseInventoryPaginator.pageSize *
+                                    WarehouseInventoryPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0">
+                                    {{element.ID}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ParentID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NAME</th>
+                            <td mat-cell *matCellDef="let element">{{element.ParentName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateDate}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserCode}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateDate}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="RowVersion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                            <td mat-cell *matCellDef="let element">{{element.RowVersion}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="SortOrder">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SortOrder</th>
+                            <td mat-cell *matCellDef="let element">{{element.SortOrder}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                            <td mat-cell *matCellDef="let element">{{element.Active}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-col">PART NO</th>
+                            <td mat-cell *matCellDef="let element" class="sticky-col" style="background-color: #e4e4e4;">
+                                <div *ngIf="element.ID>0">
+                                    <a style="cursor: pointer;" class="link-primary"
+                                        (click)="MaterialModal(element)"><b>{{element.Code}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                            <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Display</th>
+                            <td mat-cell *matCellDef="let element">{{element.Display}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                            <td mat-cell *matCellDef="let element">{{element.Description}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                            <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                            <td mat-cell *matCellDef="let element">{{element.FileName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Action">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                            <td mat-cell *matCellDef="let element">{{element.Action}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryDepartmentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CategoryDepartmentID</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryDepartmentID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryDepartmentName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0">
+                                    {{element.CategoryDepartmentName}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Date">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">{{element.Date}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Year">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0">
+                                    <b>{{element.Year}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Month">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0">
+                                    <b>{{element.Month}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Day">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Day</th>
+                            <td mat-cell *matCellDef="let element">{{element.Day}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityStock">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    <b>{{element.QuantityStock | number:'1.0-0'}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityBegin">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Begin</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    <b>{{element.QuantityBegin | number:'1.0-0'}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput00">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    <b>{{element.QuantityInput00 | number:'1.0-0'}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput00">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    <b>{{element.QuantityOutput00 | number:'1.0-0'}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity00">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    <b>{{element.Quantity00 |
+                                        number:'1.0-0'}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityEnd">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>End</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    <b>{{element.QuantityEnd | number:'1.0-0'}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input00">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input00</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input00}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output00">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output00</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output00}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>01 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput01 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input01}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>01 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    {{element.QuantityOutput01 | number:'1.0-0'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>01 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity01 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input01</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output01</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>02 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput02 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input02}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>02 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    {{element.QuantityOutput02 | number:'1.0-0'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>02 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    {{element.Quantity02 |
+                                    number:'1.0-0'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input02</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output02</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>03 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput03 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input03}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>03 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    {{element.QuantityOutput03 | number:'1.0-0'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>03 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <div *ngIf="element.ID>0">
+                                    {{element.Quantity03 |
+                                    number:'1.0-0'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input03</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input03}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output03</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output03}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>04 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput04 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input04}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>04 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput04 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>04 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity04 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input04</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input04}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output04</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output04}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput05">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>05 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput05 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input05}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput05">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>05 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput05 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity05">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>05 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity05 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input05">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input05</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input05}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output05">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output05</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output05}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput06">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>06 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput06 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input06}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput06">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>06 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput06 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity06">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>06 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity06 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input06">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input06</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input06}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output06">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output06</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output06}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput07">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>07 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput07 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input07}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput07">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>07 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput07 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity07">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>07 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity07 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input07">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input07</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input07}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output07">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output07</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output07}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput08">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>08 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput08 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input08}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput08">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>08 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput08 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity08">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>08 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity08 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input08">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input08</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input08}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output08">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output08</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output08}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput09">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>09 Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0" style="color: green; text-align: right;">
+                                    {{element.QuantityInput09 | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="element.ID==0" style="color: #000000; text-align: center;">
+                                    <b>{{element.Input09}}</b>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput09">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>09 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput09 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity09">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>09 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity09 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input09">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input09</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input09}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output09">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output09</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output09}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>10 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput10 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>10 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput10 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>10 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity10 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input10</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input10}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output10</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output10}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput11">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>11 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput11 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput11">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>11 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput11 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity11">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>11 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity11 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input11">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input11</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input11}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output11">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output11</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output11}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput12">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>12 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput12 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput12">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>12 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput12 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity12">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>12 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity12 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input12">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input12</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input12}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output12">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output12</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output12}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput13">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>13 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput13 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput13">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>13 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput13 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity13">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>13 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity13 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input13">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input13</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input13}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output13">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output13</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output13}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput14">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>14 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput14 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput14">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>14 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput14 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity14">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>14 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity14 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input14">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input14</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input14}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output14">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output14</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output14}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput15">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>15 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput15 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput15">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>15 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput15 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity15">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>15 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity15 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input15">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input15</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input15}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output15">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output15</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output15}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput16">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>16 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput16 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput16">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>16 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput16 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity16">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>16 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity16 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input16">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input16</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input16}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output16">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output16</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output16}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput17">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>17 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput17 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput17">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>17 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput17 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity17">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>17 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity17 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input17">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input17</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input17}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output17">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output17</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output17}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput18">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>18 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput18 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput18">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>18 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput18 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity18">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>18 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity18 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input18">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input18</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input18}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output18">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output18</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output18}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput19">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>19 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput19 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput19">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>19 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput19 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity19">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>19 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity19 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input19">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input19</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input19}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output19">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output19</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output19}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput20">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>20 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput20 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput20">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>20 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput20 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity20">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>20 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity20 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input20">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input20</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input20}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output20">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output20</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output20}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput21">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>21 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput21 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput21">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>21 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput21 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity21">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>21 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity21 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input21">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input21</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input21}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output21">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output21</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output21}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput22">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>22 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput22 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput22">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>22 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput22 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity22">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>22 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity22 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input22">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input22</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input22}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output22">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output22</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output22}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput23">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>23 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput23 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput23">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>23 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput23 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity23">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>23 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity23 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input23">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input23</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input23}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output23">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output23</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output23}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput24">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>24 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput24 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput24">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>24 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput24 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity24">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>24 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity24 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input24">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input24</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input24}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output24">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output24</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output24}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput25">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>25 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput25 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput25">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>25 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput25 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity25">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>25 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity25 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input25">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input25</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input25}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output25">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output25</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output25}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput26">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>26 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput26 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput26">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>26 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput26 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity26">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>26 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity26 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input26">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input26</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input26}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output26">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output26</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output26}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput27">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>27 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput27 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput27">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>27 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput27 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity27">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>27 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity27 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input27">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input27</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input27}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output27">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output27</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output27}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput28">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>28 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput28 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput28">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>28 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput28 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity28">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>28 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity28 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input28">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input28</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input28}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output28">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output28</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output28}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput29">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>29 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput29 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput29">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>29 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput29 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity29">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>29 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity29 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input29">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input29</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input29}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output29">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output29</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output29}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput30">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>30 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput30 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput30">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>30 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput30 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity30">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>30 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity30 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input30">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input30</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input30}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output30">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output30</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output30}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityInput31">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>31 Input</th>
+                            <td mat-cell *matCellDef="let element" style="color: green; text-align: right;">
+                                {{element.QuantityInput31 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityOutput31">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>31 Output</th>
+                            <td mat-cell *matCellDef="let element" style="color: red; text-align: right;">
+                                {{element.QuantityOutput31 | number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity31">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>31 Inventory</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.Quantity31 |
+                                number:'1.0-0'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Input31">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Input31</th>
+                            <td mat-cell *matCellDef="let element">{{element.Input31}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Output31">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Output31</th>
+                            <td mat-cell *matCellDef="let element">{{element.Output31}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <a (click)="WarehouseInventorySave(element)"
+                                    class="btn-floating waves-effect waves-light cyan" title="Save">
+                                    <i class="material-icons">save</i>
+                                </a>&nbsp;&nbsp;&nbsp;
+                                <a *ngIf="element.ID>0" (click)="WarehouseInventoryDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" style="padding-top: 3px;"
+                                    title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="WarehouseInventoryService.DisplayColumns000">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: WarehouseInventoryService.DisplayColumns000;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #WarehouseInventoryPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,200,500,1000,1000000]" [pageSize]="20" [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="WarehouseInventoryService.IsShowLoading"></app-loading>

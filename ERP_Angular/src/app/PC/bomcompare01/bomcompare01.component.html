@@ -1,0 +1,640 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        BOM Compare
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Production">Production</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/BOM" title="BOM">BOM</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <label>Company</label>
+                </div>
+                <div class="col s12 m12 l3">
+                    <label>Finish Goods | Semi-Finished</label>
+                </div>
+                <div class="col s12 m12 l3">
+                    <label>ECN 01</label>
+                </div>
+                <div class="col s12 m12 l3">
+                    <label>ECN 02</label>
+                </div>
+                <div class="col s12 m12 l1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l2">
+                    <select class="browser-default form-select form-control"
+                        [(ngModel)]="BOMService.BaseParameter.CompanyID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}</option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l3">
+                    <input [(ngModel)]="BOMService.BaseParameter.Code" placeholder="Finish Goods | Semi-Finished"
+                        class="form-control">
+                </div>
+                <div class="col s12 m12 l3">
+                    <input [(ngModel)]="BOMService.BaseParameter.Name" placeholder="ECN 01" class="form-control">
+                </div>
+                <div class="col s12 m12 l3">
+                    <input [(ngModel)]="BOMService.BaseParameter.Display" placeholder="ECN 02" class="form-control">
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="search" (click)="BOMSearch()" class="btn waves-effect waves-light green darken-1"
+                        style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="col s12 m12 l9">
+                <input [(ngModel)]="BOMDetailService.BaseParameter.SearchString" placeholder="Search ..."
+                    class="form-control" (keyup.enter)="BOMDetailSearch()">
+            </div>
+            <div class="col s12 m12 l2">
+                <label>
+                    <input type="checkbox" class="form-check-input" name="Active" (change)="BOMDetailSearch()"
+                        [(ngModel)]="BOMDetailService.BaseParameter.Active" />
+                    <span>Greater than 0 / All</span>
+                </label>
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="search" (click)="BOMDetailSearch()" class="btn waves-effect waves-light green darken-1"
+                    style="width: 100%;">
+                    <i class="material-icons">search</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l6">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l12">
+                    <h6>ECN 01 <span *ngIf="BOMDetailService.List">({{BOMDetailService.List.length}} items)</span></h6>
+                </div>
+                <div class="KhungOverflow">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #BOMDetailSort="matSort"
+                        [dataSource]="BOMDetailService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="BOMDetailPaginator">
+                                    {{
+                                    BOMDetailPaginator.pageSize *
+                                    BOMDetailPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ParentID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ECN 01</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/BOMInfo/{{element.ParentID}}"><b>{{element.ParentName}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateDate}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserCode}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateDate}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="RowVersion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                            <td mat-cell *matCellDef="let element">{{element.RowVersion}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="SortOrder">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SortOrder</th>
+                            <td mat-cell *matCellDef="let element">{{element.SortOrder}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Process</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Code" name="Code{{element.ID}}"
+                                    [(ngModel)]="element.Code">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                            <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Code</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Display"
+                                    name="Display{{element.ID}}" [(ngModel)]="element.Display">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Description"
+                                    name="Description{{element.ID}}" [(ngModel)]="element.Description">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                            <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                            <td mat-cell *matCellDef="let element">{{element.FileName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CompanyID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyID</th>
+                            <td mat-cell *matCellDef="let element">{{element.CompanyID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CompanyName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyName</th>
+                            <td mat-cell *matCellDef="let element">{{element.CompanyName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Version">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Version</th>
+                            <td mat-cell *matCellDef="let element">{{element.Version}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialID01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialID01</th>
+                            <td mat-cell *matCellDef="let element">{{element.MaterialID01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialName01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Part No</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0">
+                                    <a style="cursor: pointer;" class="link-primary"
+                                        (click)="MaterialModal(element.MaterialID01)"><b>{{element.MaterialCode01}}</b></a>
+                                </div>
+                                <div *ngIf="element.ID==0">
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialCode01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialCode01</th>
+                            <td mat-cell *matCellDef="let element">{{element.MaterialCode01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity 01</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; font-weight: bold;">
+                                {{element.Quantity01}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryUnitID01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CategoryUnitID01</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryUnitID01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryUnitName01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CategoryUnitName01</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryUnitName01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialID02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialID02</th>
+                            <td mat-cell *matCellDef="let element">{{element.MaterialID02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialName02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0">
+                                    <a style="cursor: pointer;" class="link-primary"
+                                        (click)="MaterialModal(element.MaterialID02)"><b>{{element.MaterialCode02}}</b></a>
+                                </div>
+                                <div *ngIf="element.ID==0">
+                                    <input class="form-control" type="text" placeholder="PART NO"
+                                        name="MaterialCode02{{element.ID}}" [(ngModel)]="element.MaterialCode02">
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialCode02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialCode02</th>
+                            <td mat-cell *matCellDef="let element">{{element.MaterialCode02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Quantity"
+                                    name="Quantity02{{element.ID}}" [(ngModel)]="element.Quantity02">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityActual">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity Actual</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.QuantityActual |
+                                    number:
+                                    '1.0-3'}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityCompare">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Compare</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.QuantityCompare |
+                                    number:
+                                    '1.0-3'}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Percent">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Percent (%)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b [style.color]="(element.Percent>0) ? 'green' : 'red'">{{element.Percent |
+                                    number:
+                                    '1.0-3'}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryUnitID02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CategoryUnitID02</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryUnitID02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryUnitName02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit</th>
+                            <td mat-cell *matCellDef="let element" style="width: 100px;">
+                                <div *ngIf="element.ID>0">
+                                    {{element.CategoryUnitName02}}
+                                </div>
+                                <div *ngIf="element.ID==0">
+                                    <select class="browser-default form-select form-control"
+                                        [(ngModel)]="element.CategoryUnitID02">
+                                        <option *ngFor="let item of CategoryUnitService.ListFilter;" [value]="item.ID">
+                                            {{item.Name}}</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryMaterialName01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category 01</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryMaterialName01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryMaterialName02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryMaterialName02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <a (click)="WarehouseInputDetailSave(element)" class="btn waves-effect waves-light cyan"
+                                    title="Save">
+                                    <i class="material-icons">save</i>
+                                </a>&nbsp;&nbsp;&nbsp;
+                                <a *ngIf="element.ID>0" (click)="BOMDetailDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" style="padding-top: 3px;"
+                                    title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="BOMDetailService.DisplayColumns006">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: BOMDetailService.DisplayColumns006;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #BOMDetailPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,200,500,1000]" [pageSize]="1000"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l6">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l12">
+                    <h6>ECN 02 <span *ngIf="BOMDetailService.ListFilter">({{BOMDetailService.ListFilter.length}}
+                            items)</span></h6>
+                </div>
+                <div class="KhungOverflow">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #BOMDetailSort02="matSort"
+                        [dataSource]="BOMDetailService.DataSourceFilter">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="BOMDetailPaginator02">
+                                    {{
+                                    BOMDetailPaginator02.pageSize *
+                                    BOMDetailPaginator02.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ParentID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ECN 02</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/BOMInfo/{{element.ParentID}}"><b>{{element.ParentName}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateDate}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserCode}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateDate}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="RowVersion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                            <td mat-cell *matCellDef="let element">{{element.RowVersion}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="SortOrder">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SortOrder</th>
+                            <td mat-cell *matCellDef="let element">{{element.SortOrder}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Process</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Code" name="Code{{element.ID}}"
+                                    [(ngModel)]="element.Code">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                            <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Code</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Display"
+                                    name="Display{{element.ID}}" [(ngModel)]="element.Display">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Description"
+                                    name="Description{{element.ID}}" [(ngModel)]="element.Description">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                            <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                            <td mat-cell *matCellDef="let element">{{element.FileName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CompanyID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyID</th>
+                            <td mat-cell *matCellDef="let element">{{element.CompanyID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CompanyName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyName</th>
+                            <td mat-cell *matCellDef="let element">{{element.CompanyName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Version">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Version</th>
+                            <td mat-cell *matCellDef="let element">{{element.Version}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialID01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialID01</th>
+                            <td mat-cell *matCellDef="let element">{{element.MaterialID01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialName01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Part No</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0">
+                                    <a style="cursor: pointer;" class="link-primary"
+                                        (click)="MaterialModal(element.MaterialID01)"><b>{{element.MaterialCode01}}</b></a>
+                                </div>
+                                <div *ngIf="element.ID==0">
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialCode01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialCode01</th>
+                            <td mat-cell *matCellDef="let element">{{element.MaterialCode01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity 01</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; font-weight: bold;">
+                                {{element.Quantity01}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryUnitID01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CategoryUnitID01</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryUnitID01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryUnitName01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CategoryUnitName01</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryUnitName01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialID02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialID02</th>
+                            <td mat-cell *matCellDef="let element">{{element.MaterialID02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialName02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ID>0">
+                                    <a style="cursor: pointer;" class="link-primary"
+                                        (click)="MaterialModal(element.MaterialID02)"><b>{{element.MaterialCode02}}</b></a>
+                                </div>
+                                <div *ngIf="element.ID==0">
+                                    <input class="form-control" type="text" placeholder="PART NO"
+                                        name="MaterialCode02{{element.ID}}" [(ngModel)]="element.MaterialCode02">
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialCode02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialCode02</th>
+                            <td mat-cell *matCellDef="let element">{{element.MaterialCode02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Quantity"
+                                    name="Quantity02{{element.ID}}" [(ngModel)]="element.Quantity02">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityActual">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity Actual</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.QuantityActual |
+                                    number:
+                                    '1.0-3'}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityCompare">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Compare</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.QuantityCompare |
+                                    number:
+                                    '1.0-3'}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Percent">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Percent (%)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b [style.color]="(element.Percent>0) ? 'green' : 'red'">{{element.Percent |
+                                    number:
+                                    '1.0-3'}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryUnitID02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CategoryUnitID02</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryUnitID02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryUnitName02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit</th>
+                            <td mat-cell *matCellDef="let element" style="width: 100px;">
+                                <div *ngIf="element.ID>0">
+                                    {{element.CategoryUnitName02}}
+                                </div>
+                                <div *ngIf="element.ID==0">
+                                    <select class="browser-default form-select form-control"
+                                        [(ngModel)]="element.CategoryUnitID02">
+                                        <option *ngFor="let item of CategoryUnitService.ListFilter;" [value]="item.ID">
+                                            {{item.Name}}</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryMaterialName01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category 01</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryMaterialName01}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryMaterialName02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+                            <td mat-cell *matCellDef="let element">{{element.CategoryMaterialName02}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <a (click)="WarehouseInputDetailSave(element)" class="btn waves-effect waves-light cyan"
+                                    title="Save">
+                                    <i class="material-icons">save</i>
+                                </a>&nbsp;&nbsp;&nbsp;
+                                <a *ngIf="element.ID>0" (click)="BOMDetailDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" style="padding-top: 3px;"
+                                    title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="BOMDetailService.DisplayColumns006">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: BOMDetailService.DisplayColumns006;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #BOMDetailPaginator02="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,200,500,1000]" [pageSize]="1000"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="BOMService.IsShowLoading"></app-loading>

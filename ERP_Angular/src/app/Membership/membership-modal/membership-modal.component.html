@@ -1,0 +1,633 @@
+<div class="row">
+    <div class="col s12 m12 l2">
+        <h6>Membership</h6>
+    </div>
+    <div class="col s12 m12 l5">
+        <h6 style="color: red;" *ngIf="MembershipService.BaseResult">{{MembershipService.BaseResult.Message}}</h6>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="Active"
+                [(ngModel)]="MembershipService.BaseParameter.BaseModel.Active" />
+            <span>Active</span>
+        </label>
+    </div>
+    <div class="col s12 m12 l4 right-align-md">
+        <button title="Save" class="btn waves-effect waves-light cyan" style="margin-right: 10px;" (click)="Save()"><i
+                class="material-icons">save</i></button>
+        <button title="Password Reset" class="btn waves-effect waves-light cyan" style="margin-right: 10px;"
+            (click)="SavePasswordReset()"><i class="material-icons">casino</i> Password Reset</button>
+        <button title="Close" class="btn waves-effect waves-light purple lightrn-1" (click)="Close()">
+            <i class="material-icons">close</i>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>ID</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="ID" [(ngModel)]="MembershipService.BaseParameter.BaseModel.ID"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Full Name</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Name" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Name" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Display</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Display" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Display" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Phone</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Phone" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Phone" type="text"
+                    class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="col s4 m4 l4">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>USER_IDX</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="USER_IDX" [(ngModel)]="MembershipService.BaseParameter.BaseModel.USER_IDX"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>UserName</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="UserName" [(ngModel)]="MembershipService.BaseParameter.BaseModel.UserName"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Password</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Password" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Password"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Note</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Note" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Note" type="text"
+                    class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="col s4 m4 l4">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Company [{{MembershipService.BaseParameter.BaseModel.CompanyName}}]</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select form-control" (change)="CompanyChange()"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CompanyID">
+                    <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Department [{{MembershipService.BaseParameter.BaseModel.CategoryDepartmentName}}]</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryDepartmentID">
+                    <option *ngFor="let item of CategoryDepartmentService.ListParent;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Position [{{MembershipService.BaseParameter.BaseModel.CategoryPositionName}}]</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryPositionID">
+                    <option *ngFor="let item of CategoryPositionService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Email</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Email" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Email" type="text"
+                    class="form-control">
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col s12 m12 l4">
+        <div class="col s12 m12 l3">
+            <h6>Menu</h6>
+        </div>
+        <div class="col s12 m12 l2">
+            <label>
+                <input name="IsMembershipMenuActiveAll" [(ngModel)]="IsMembershipMenuActiveAll"
+                    (change)="MembershipMenuActiveAllChange()" type="checkbox" class="form-check-input" />
+                <span>All</span>
+            </label>
+        </div>
+        <div class="col s12 m12 l4">
+            <input [(ngModel)]="MembershipMenuService.BaseParameter.SearchString" placeholder="Search ..."
+                class="form-control" (keyup.enter)="MembershipMenuSearch()">
+        </div>
+        <div class="col s12 m12 l3">
+            <button title="search" (click)="MembershipMenuSearch()" style="width: 100%;"
+                class="btn waves-effect waves-light green darken-1">
+                <i class="material-icons">search</i>
+            </button>
+        </div>
+        <div class="KhungOverflow">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipMenuSort="matSort"
+                [dataSource]="MembershipMenuService.DataSource">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div *ngIf="MembershipMenuPaginator">
+                            {{
+                            MembershipMenuPaginator.pageSize *
+                            MembershipMenuPaginator.pageIndex + i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ParentID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                    <td mat-cell *matCellDef="let element">{{element.ParentID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ParentName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentName</th>
+                    <td mat-cell *matCellDef="let element">{{element.ParentName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateDate}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserCode}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateDate}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="RowVersion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                    <td mat-cell *matCellDef="let element">{{element.RowVersion}}</td>
+                </ng-container>
+                <ng-container matColumnDef="SortOrder">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Sort Order</th>
+                    <td mat-cell *matCellDef="let element">{{element.SortOrder}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                    <td mat-cell *matCellDef="let element">
+                        <label>
+                            <input type="checkbox" class="form-check-input" [(ngModel)]="element.Active"
+                                (change)="MembershipMenuActiveChange(element)" />
+                            <span></span>
+                        </label>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Code">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                    <td mat-cell *matCellDef="let element">{{element.Code}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Display">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Parent</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Display}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                    <td mat-cell *matCellDef="let element">{{element.Description}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Note">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                    <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                </ng-container>
+                <ng-container matColumnDef="FileName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                    <td mat-cell *matCellDef="let element">{{element.FileName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CompanyID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyID</th>
+                    <td mat-cell *matCellDef="let element">{{element.CompanyID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CompanyName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyName</th>
+                    <td mat-cell *matCellDef="let element">{{element.CompanyName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CategoryMenuID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CategoryMenuID</th>
+                    <td mat-cell *matCellDef="let element">{{element.CategoryMenuID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CategoryMenuName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Menu</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left; font-weight: bold;">
+                        {{element.CategoryMenuName}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Save">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <a (click)="MembershipMenuSave(element)" class="btn-floating waves-effect waves-light cyan"
+                            title="Save">
+                            <i class="material-icons">save</i>
+                        </a>&nbsp;&nbsp;&nbsp;
+                        <a *ngIf="element.ID>0" (click)="MembershipMenuDelete(element)"
+                            class="btn-floating waves-effect waves-light red" style="padding-top: 3px;" title="Delete">
+                            <i class="material-icons">delete_outline</i>
+                        </a>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="MembershipMenuService.DisplayColumns001">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: MembershipMenuService.DisplayColumns001;">
+                </tr>
+            </table>
+            <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipMenuPaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+        </div>
+    </div>
+    <div class="col s12 m12 l4">
+        <div class="col s12 m12 l3">
+            <h6>Company</h6>
+        </div>
+        <div class="col s12 m12 l2">
+            <label>
+                <input name="IsMembershipCompanyActiveAll" [(ngModel)]="IsMembershipCompanyActiveAll"
+                    (change)="MembershipCompanyActiveAllChange()" type="checkbox" class="form-check-input" />
+                <span>All</span>
+            </label>
+        </div>
+        <div class="col s12 m12 l4">
+            <input [(ngModel)]="MembershipCompanyService.BaseParameter.SearchString" placeholder="Search ..."
+                class="form-control" (keyup.enter)="MembershipCompanySearch()">
+        </div>
+        <div class="col s12 m12 l3">
+            <button title="search" (click)="MembershipCompanySearch()" style="width: 100%;"
+                class="btn waves-effect waves-light green darken-1">
+                <i class="material-icons">search</i>
+            </button>
+        </div>
+        <div class="KhungOverflow">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipCompanySort="matSort"
+                [dataSource]="MembershipCompanyService.DataSource">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div *ngIf="MembershipCompanyPaginator">
+                            {{
+                            MembershipCompanyPaginator.pageSize *
+                            MembershipCompanyPaginator.pageIndex + i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ParentID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                    <td mat-cell *matCellDef="let element">{{element.ParentID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ParentName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentName</th>
+                    <td mat-cell *matCellDef="let element">{{element.ParentName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateDate}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserCode}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateDate}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="RowVersion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                    <td mat-cell *matCellDef="let element">{{element.RowVersion}}</td>
+                </ng-container>
+                <ng-container matColumnDef="SortOrder">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>SortOrder</th>
+                    <td mat-cell *matCellDef="let element">{{element.SortOrder}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                    <td mat-cell *matCellDef="let element">
+                        <label>
+                            <input type="checkbox" class="form-check-input" [(ngModel)]="element.Active"
+                                (change)="MembershipCompanyActiveChange(element)" />
+                            <span></span>
+                        </label>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Code">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                    <td mat-cell *matCellDef="let element">{{element.Code}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Display">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Display</th>
+                    <td mat-cell *matCellDef="let element">{{element.Display}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                    <td mat-cell *matCellDef="let element">{{element.Description}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Note">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                    <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                </ng-container>
+                <ng-container matColumnDef="FileName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                    <td mat-cell *matCellDef="let element">{{element.FileName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CompanyID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyID</th>
+                    <td mat-cell *matCellDef="let element">{{element.CompanyID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CompanyName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left; font-weight: bold;">
+                        {{element.CompanyName}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Save">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <a (click)="MembershipCompanySave(element)" class="btn-floating waves-effect waves-light cyan"
+                            title="Save">
+                            <i class="material-icons">save</i>
+                        </a>&nbsp;&nbsp;&nbsp;
+                        <a *ngIf="element.ID>0" (click)="MembershipCompanyDelete(element)"
+                            class="btn-floating waves-effect waves-light red" style="padding-top: 3px;" title="Delete">
+                            <i class="material-icons">delete_outline</i>
+                        </a>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="MembershipCompanyService.DisplayColumns001">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: MembershipCompanyService.DisplayColumns001;">
+                </tr>
+            </table>
+            <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipCompanyPaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+        </div>
+    </div>
+    <div class="col s12 m12 l4">
+        <div class="col s12 m12 l3">
+            <h6>Department</h6>
+        </div>
+        <div class="col s12 m12 l2">
+            <label>
+                <input name="IsMembershipDepartmentActiveAll" [(ngModel)]="IsMembershipDepartmentActiveAll"
+                    (change)="MembershipDepartmentActiveAllChange()" type="checkbox" class="form-check-input" />
+                <span>All</span>
+            </label>
+        </div>
+        <div class="col s12 m12 l4">
+            <input [(ngModel)]="MembershipDepartmentService.BaseParameter.SearchString" placeholder="Search ..."
+                class="form-control" (keyup.enter)="MembershipDepartmentSearch()">
+        </div>
+        <div class="col s12 m12 l3">
+            <button title="search" (click)="MembershipDepartmentSearch()" style="width: 100%;"
+                class="btn waves-effect waves-light green darken-1">
+                <i class="material-icons">search</i>
+            </button>
+        </div>
+        <div class="KhungOverflow">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipDepartmentSort="matSort"
+                [dataSource]="MembershipDepartmentService.DataSource">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div *ngIf="MembershipDepartmentPaginator">
+                            {{
+                            MembershipDepartmentPaginator.pageSize *
+                            MembershipDepartmentPaginator.pageIndex + i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ParentID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                    <td mat-cell *matCellDef="let element">{{element.ParentID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ParentName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentName</th>
+                    <td mat-cell *matCellDef="let element">{{element.ParentName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateDate}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserCode}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CreateUserName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreateUserName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateDate}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}}</td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="RowVersion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                    <td mat-cell *matCellDef="let element">{{element.RowVersion}}</td>
+                </ng-container>
+                <ng-container matColumnDef="SortOrder">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>SortOrder</th>
+                    <td mat-cell *matCellDef="let element">{{element.SortOrder}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                    <td mat-cell *matCellDef="let element">
+                        <label>
+                            <input type="checkbox" class="form-check-input" [(ngModel)]="element.Active"
+                                (change)="MembershipDepartmentActiveChange(element)" />
+                            <span></span>
+                        </label>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Code">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                    <td mat-cell *matCellDef="let element">{{element.Code}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Display">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Display</th>
+                    <td mat-cell *matCellDef="let element">{{element.Display}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                    <td mat-cell *matCellDef="let element">{{element.Description}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Note">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                    <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                </ng-container>
+                <ng-container matColumnDef="FileName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                    <td mat-cell *matCellDef="let element">{{element.FileName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CompanyID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyID</th>
+                    <td mat-cell *matCellDef="let element">{{element.CompanyID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CompanyName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left; font-weight: bold;">
+                        {{element.CompanyName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CategoryDepartmentName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left; font-weight: bold;">
+                        {{element.CategoryDepartmentName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Save">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <a (click)="MembershipDepartmentSave(element)"
+                            class="btn-floating waves-effect waves-light cyan" title="Save">
+                            <i class="material-icons">save</i>
+                        </a>&nbsp;&nbsp;&nbsp;
+                        <a *ngIf="element.ID>0" (click)="MembershipDepartmentDelete(element)"
+                            class="btn-floating waves-effect waves-light red" style="padding-top: 3px;" title="Delete">
+                            <i class="material-icons">delete_outline</i>
+                        </a>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="MembershipDepartmentService.DisplayColumns001">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: MembershipDepartmentService.DisplayColumns001;">
+                </tr>
+            </table>
+            <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipDepartmentPaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

@@ -1,0 +1,563 @@
+<div class="row">
+    <div class="col s12 m12 l8">
+        <h6><b>Master Data</b></h6>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="Active"
+                [(ngModel)]="MaterialService.BaseParameter.BaseModel.Active" />
+            <span>Active</span>
+        </label>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="IsSNP"
+                [(ngModel)]="MaterialService.BaseParameter.BaseModel.IsSNP" />
+            <span>SNP</span>
+        </label>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="IsSpecial"
+                [(ngModel)]="MaterialService.BaseParameter.BaseModel.IsSpecial" />
+            <span>Special</span>
+        </label>
+    </div>
+    <!-- <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="IsFactory01"
+                [(ngModel)]="MaterialService.BaseParameter.BaseModel.IsFactory01" />
+            <span>DJG</span>
+        </label>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="IsFactory02"
+                [(ngModel)]="MaterialService.BaseParameter.BaseModel.IsFactory02" />
+            <span>DJM</span>
+        </label>
+    </div> -->
+    <div class="col s12 m12 l1">
+        <button title="Save" class="btn waves-effect waves-light cyan" style="margin-right: 10px;" (click)="Save()"><i
+                class="material-icons">save</i></button>
+        <button title="Close" class="btn waves-effect waves-light purple lightrn-1" (click)="Close()">
+            <i class="material-icons">close</i>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>ID</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="ID" [(ngModel)]="MaterialService.BaseParameter.BaseModel.ID" type="number"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Update Date</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="UpdateDate"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.UpdateDate" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Update User Code</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="UpdateUserCode"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.UpdateUserCode" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Update User Name</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="UpdateUserName"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.UpdateUserName" type="text"
+                    class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Parent</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="Parent" [(ngModel)]="MaterialService.BaseParameter.BaseModel.ParentName"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Company</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select form-control"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.CompanyID">
+                    <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Category</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.CategoryMaterialID">
+                    <option *ngFor="let item of CategoryMaterialService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Family</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <!-- <select class="browser-default form-select"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.CategoryFamilyID">
+                    <option *ngFor="let item of CategoryFamilyService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select> -->
+                <input placeholder="Family" [(ngModel)]="MaterialService.BaseParameter.BaseModel.CategoryFamilyName"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Line</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Line" [(ngModel)]="MaterialService.BaseParameter.BaseModel.CategoryLineName"
+                    type="text" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="col s4 m4 l4">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Code</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Code" [(ngModel)]="MaterialService.BaseParameter.BaseModel.Code" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Part Number</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Part Number" [(ngModel)]="MaterialService.BaseParameter.BaseModel.PartNumber"
+                    type="text" class="form-control">
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Name</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Name" [(ngModel)]="MaterialService.BaseParameter.BaseModel.Name" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Display</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Display" [(ngModel)]="MaterialService.BaseParameter.BaseModel.Display" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Quantity SNP</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="QuantitySNP" [(ngModel)]="MaterialService.BaseParameter.BaseModel.QuantitySNP"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Quantity SNP Last</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Quantity SNP Last"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.QuantitySNP_TMMTIN_Last" type="number"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>OEM</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="OEM"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.OriginalEquipmentManufacturer" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Car Maker</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Car Maker" [(ngModel)]="MaterialService.BaseParameter.BaseModel.CarMaker"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Car Name</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Car Name" [(ngModel)]="MaterialService.BaseParameter.BaseModel.CarType" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Item</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Item" [(ngModel)]="MaterialService.BaseParameter.BaseModel.Item" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Development Stage</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Development Stage"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.DevelopmentStage" type="text"
+                    class="form-control">
+            </div>
+        </div> -->
+        <!-- <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Family</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Family" [(ngModel)]="MaterialService.BaseParameter.BaseModel.CategoryFamilyName" type="text"
+                    class="form-control">
+            </div>
+        </div> -->
+
+    </div>
+    <div class="col s4 m4 l4">
+        <!-- <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Location</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.CategoryLocationID">
+                    <option *ngFor="let item of CategoryLocationService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div> -->
+        <!--  <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Quantity Output</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="QuantityOutput"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.QuantityOutput" type="number"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Quantity</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="Quantity" [(ngModel)]="MaterialService.BaseParameter.BaseModel.Quantity"
+                    type="number" class="form-control">
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>MES ID</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="MES ID" [(ngModel)]="MaterialService.BaseParameter.BaseModel.MESID"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>MESCreateDate</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="MESCreateDate"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.MESCreateDate" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>MESCreateUserCode</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="MESCreateUserCode"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.MESCreateUserCode" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>MESCreateUserName</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="MESCreateUserName"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.MESCreateUserName" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>MESUpdateDate</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="MESUpdateDate"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.MESUpdateDate" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>MESUpdateUserCode</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="MESUpdateUserCode"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.MESUpdateUserCode" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>MESUpdateUserName</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="MESUpdateUserName"
+                    [(ngModel)]="MaterialService.BaseParameter.BaseModel.MESUpdateUserName" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Description</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Description" [(ngModel)]="MaterialService.BaseParameter.BaseModel.Description"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Location</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Location" [(ngModel)]="MaterialService.BaseParameter.BaseModel.CategoryLocationName"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Location HOOK_RACK</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Location HOOK_RACK" [(ngModel)]="MaterialService.BaseParameter.BaseModel.CategoryLocationName01"
+                    type="text" class="form-control">
+            </div>
+        </div> -->
+    </div>
+</div>
+<hr />
+<div class="row">
+    <!-- <div class="col s12 m12 l6" style="display: none;">
+        <div class="col s12 m12 l3">
+            <h6><b>Material</b></h6>
+        </div>
+        <div class="col s12 m12 l5">
+            <input [(ngModel)]="MaterialService.BaseParameter.SearchStringFilter" placeholder="Search ..."
+                class="form-control" (keyup.enter)="MaterialSearch()">
+        </div>
+        <div class="col s12 m12 l2">
+            <a title="search" (click)="MaterialSearch()" class="btn waves-effect waves-light green darken-1"
+                style="width: 100%;">
+                <i class="material-icons">search</i>
+            </a>
+        </div>
+        <div class="col s12 m12 l2">
+            <a title="Save" (click)="MaterialConvertSave()" class="btn waves-effect waves-light cyan darken-1"
+                style="width: 100%;">
+                <i class="material-icons">arrow_forward</i>
+            </a>
+        </div>
+        <div class="KhungOverflow">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MaterialSort01="matSort"
+                [dataSource]="MaterialService.DataSourceFilter">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div *ngIf="MaterialPaginator01">
+                            {{
+                            MaterialPaginator01.pageSize *
+                            MaterialPaginator01.pageIndex + i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Code">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Part NO</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Code}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Part Name</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Name}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Display">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Display</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Display}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Select</th>
+                    <td mat-cell *matCellDef="let element">
+                        <label>
+                            <input type="checkbox" class="form-check-input" [(ngModel)]="element.Active" />
+                            <span></span>
+                        </label>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="MaterialService.DisplayColumns003">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: MaterialService.DisplayColumns003;">
+                </tr>
+            </table>
+            <mat-paginator *ngIf="!NotificationService.IsMobile" #MaterialPaginator01="matPaginator"
+                [pageSizeOptions]="[10,20,50,100,200,500,1000,10000]" [pageSize]="10"
+                [showFirstLastButtons]></mat-paginator>
+        </div>
+    </div> -->
+    <div class="col s12 m12 l12">
+        <div class="col s12 m12 l5">
+            <h6>Material Convert <span *ngIf="MaterialConvertService.List">({{MaterialConvertService.List.length}}
+                    items)</span></h6>
+        </div>
+        <div class="col s12 m12 l5">
+            <input [(ngModel)]="MaterialConvertService.BaseParameter.SearchString" placeholder="Search ..."
+                class="form-control" (keyup.enter)="MaterialConvertSearch()">
+        </div>
+        <div class="col s12 m12 l2">
+            <a title="search" (click)="MaterialConvertSearch()" class="btn waves-effect waves-light green darken-1"
+                style="width: 100%;">
+                <i class="material-icons">search</i>
+            </a>
+        </div>
+        <div class="KhungOverflow">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MaterialConvertSort="matSort"
+                [dataSource]="MaterialConvertService.DataSource">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div *ngIf="MaterialConvertPaginator">
+                            {{
+                            MaterialConvertPaginator.pageSize *
+                            MaterialConvertPaginator.pageIndex + i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.ID}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Code">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                    <td mat-cell *matCellDef="let element">
+                        <input class="form-control" type="text" placeholder="PART NO" name="Code{{element.ID}}"
+                            [(ngModel)]="element.Code">
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="SortOrder">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Sort Order</th>
+                    <td mat-cell *matCellDef="let element">
+                        <input class="form-control" type="number" placeholder="SortOrder" name="SortOrder{{element.ID}}"
+                            [(ngModel)]="element.SortOrder">
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateUserCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Update User</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.UpdateUserCode}} | {{element.UpdateUserName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="UpdateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Update Date</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.UpdateDate}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                [(ngModel)]="element.Active">
+                            <span></span>
+                        </label>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Save">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button (click)="MaterialConvertSave(element)" class="btn waves-effect waves-light cyan"
+                            title="Save">
+                            <i class="material-icons">save</i>
+                        </button>&nbsp;&nbsp;&nbsp;
+                        <button *ngIf="element.ID>0" (click)="MaterialConvertDelete(element)"
+                            class="btn-floating waves-effect waves-light red" title="Delete">
+                            <i class="material-icons">delete_outline</i>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="MaterialConvertService.DisplayColumns004">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: MaterialConvertService.DisplayColumns004;">
+                </tr>
+            </table>
+            <mat-paginator *ngIf="!NotificationService.IsMobile" #MaterialConvertPaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="8" [showFirstLastButtons]></mat-paginator>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="MaterialService.IsShowLoading"></app-loading>

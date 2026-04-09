@@ -1,0 +1,173 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        Warehouse Input GAP
+                        <span *ngIf="WarehouseInputDetailService.List">({{WarehouseInputDetailService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Warehouse">Warehouse</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/WarehouseInputDetail" title="Warehouse Input GAP">Warehouse Input GAP</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select" (change)="CompanyChange()"
+                        [(ngModel)]="WarehouseInputDetailService.BaseParameter.CompanyID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l2">
+                    <select class="browser-default form-select"
+                        [(ngModel)]="WarehouseInputDetailService.BaseParameter.CategoryDepartmentID">
+                        <option *ngFor="let item of CategoryDepartmentService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l5">
+                    <input [(ngModel)]="WarehouseInputDetailService.BaseParameter.SearchString" placeholder="Search ..."
+                        class="form-control" (keyup.enter)="WarehouseInputDetailSearch()">
+                </div>
+                <div class="col s12 m12 l3">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="Active"
+                            [(ngModel)]="WarehouseInputDetailService.BaseParameter.Active" />
+                        <span>GAP > 0 / GAP < 0 </span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="search" (click)="WarehouseInputDetailSearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+                <div class="KhungOverflow70">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #WarehouseInputDetailSort="matSort"
+                        [dataSource]="WarehouseInputDetailService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="WarehouseInputDetailPaginator">
+                                    {{
+                                    WarehouseInputDetailPaginator.pageSize *
+                                    WarehouseInputDetailPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ID}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Parent ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/WarehouseInputInfo/{{element.ParentID}}"><b>{{element.ParentID}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Parent Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/WarehouseInputInfo/{{element.ParentID}}"><b>{{element.ParentName}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantitySNP">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SNP</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.QuantitySNP |
+                                number:
+                                '1.0-3'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.Quantity |
+                                number:
+                                '1.0-3'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityActual">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.QuantityActual |
+                                number:
+                                '1.0-3'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityGAP">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.QuantityGAP |
+                                number:
+                                '1.0-3'}}
+                            </td>
+                        </ng-container>
+                         <ng-container matColumnDef="MaterialName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.MaterialName}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Name}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Description}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Active}}
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="WarehouseInputDetailService.DisplayColumns029">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: WarehouseInputDetailService.DisplayColumns029;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #WarehouseInputDetailPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="20"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="WarehouseInputDetailService.IsShowLoading"></app-loading>

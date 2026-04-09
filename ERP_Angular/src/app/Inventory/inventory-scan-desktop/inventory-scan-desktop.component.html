@@ -1,0 +1,328 @@
+<div class="row">
+    <div class="col s6 m6 l2">
+        <h6>
+            Total <span *ngIf="InventoryDetailBarcodeService.ListParent"
+                style="font-size: 18px;">({{InventoryDetailBarcodeService.ListParent.length}}
+                items)</span>
+        </h6>
+    </div>
+    <div class="col s6 m6 l2">
+        <h6>Barcode <span *ngIf="InventoryDetailBarcodeService.ListFilter"
+                style="font-size: 18px;">({{InventoryDetailBarcodeService.ListFilter.length}}
+                items)</span></h6>
+    </div>
+    <div class="col s6 m6 l2">
+        <h6>PART NO <span *ngIf="InventoryDetailService.ListFilter"
+                style="font-size: 18px;">({{InventoryDetailService.ListFilter.length}}
+                items)</span></h6>
+    </div>
+    <div class="col s6 m6 l2">
+        <button title="Save" class="btn waves-effect waves-light purple" style="width: 100%;"
+            (click)="DownloadByParrentID()"><i class="material-icons">cloud_download</i> Download</button>
+    </div>
+
+    <div class="col s6 m6 l1">
+        <button title="Save" class="btn waves-effect waves-light red" style="width: 100%;" (click)="Sync()"><i
+                class="material-icons">cloud_upload</i> Sync</button>
+    </div>    
+    <div class="col s6 m6 l1">
+        <button title="Local Storage Sync" class="btn waves-effect waves-light cyan" style="width: 100%;"
+            (click)="LocalStorageSync()"><i class="material-icons">sync</i></button>
+    </div>
+    <div class="col s6 m6 l1">
+        <button title="Print" class="btn waves-effect waves-light green" style="width: 100%;" (click)="Print()"><i
+                class="material-icons">print</i></button>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="Active" (change)="InventoryDetailActiveChange()"
+                [(ngModel)]="InventoryDetailService.BaseParameter.Active" />
+            <span>Local</span>
+        </label>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <button title="Save" class="btn btn-large waves-effect waves-light cyan" style="width: 100%;"
+            (click)="Save()"><i class="material-icons">save</i> Save</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l4">
+        <label>Department</label>
+    </div>
+    <div class="col s12 m12 l4">
+        <select class="browser-default form-select"
+            [(ngModel)]="InventoryDetailBarcodeService.BaseParameter.CategoryDepartmentID"
+            (change)="CategoryDepartmentChange()">
+            <option *ngFor="let item of CategoryDepartmentService.ListFilter;" [value]="item.ID">
+                {{item.CompanyName}} - {{item.Name}}</option>
+        </select>
+    </div>
+    <div class="col s12 m12 l4">
+        <select class="browser-default form-select" [(ngModel)]="InventoryDetailBarcodeService.BaseParameter.ParentID">
+            <option *ngFor="let item of InventoryService.ListFilter;" [value]="item.ID">
+                {{item.ID}} - {{item.Code}}</option>
+        </select>
+    </div>
+</div>
+<!-- <div class="row">
+    <div class="col s4 m4 l2">
+        <label>Tag Current</label>
+    </div>
+    <div class="col s4 m4 l2">
+        <label>{{InventoryDetailBarcodeService.BaseParameter.Action}}</label>
+    </div>
+    <div class="col s4 m4 l1">
+        <label>Begin</label>
+    </div>
+    <div class="col s4 m4 l3">
+        <input placeholder="Begin" [(ngModel)]="InventoryDetailBarcodeService.BaseParameter.Page" type="number"
+            class="form-control">
+    </div>
+    <div class="col s4 m4 l1">
+        <label>End</label>
+    </div>
+    <div class="col s4 m4 l3">
+        <input placeholder="End" [(ngModel)]="InventoryDetailBarcodeService.BaseParameter.PageSize" type="number"
+            class="form-control">
+    </div>
+</div> -->
+<div class="row">
+    <div class="col s4 m4 l4">
+        <label>Location</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <input #SearchString placeholder="Location"
+            [(ngModel)]="InventoryDetailBarcodeService.BaseParameter.SearchString" type="text" class="form-control"
+            (keyup.enter)="InventoryDetailBarcodeSearchString()">
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <label>Barcode</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <input #SearchStringFilter placeholder="Barcode"
+            [(ngModel)]="InventoryDetailBarcodeService.BaseParameter.SearchStringFilter" type="text"
+            class="form-control" (keyup.enter)="InventoryDetailBarcodeSearchStringFilter()">
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l4">
+        <div class="KhungOverflow">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #InventoryDetailSort="matSort"
+                [dataSource]="InventoryDetailService.DataSource">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div *ngIf="InventoryDetailPaginator">
+                            {{
+                            InventoryDetailPaginator.pageSize *
+                            InventoryDetailPaginator.pageIndex + i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Week">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tag</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Week}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="MaterialName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                    <td mat-cell *matCellDef="let element">
+                        <b>{{element.MaterialName}}</b>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="CategoryLocationName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.CategoryLocationName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Quantity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                    <td mat-cell *matCellDef="let element">
+                        <b style="color: green;">{{element.Quantity}}</b>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Count">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Count</th>
+                    <td mat-cell *matCellDef="let element">
+                        <b style="color: green;">{{element.Count}}</b>
+                    </td>
+                </ng-container>               
+                <tr mat-header-row *matHeaderRowDef="InventoryDetailService.DisplayColumns005">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: InventoryDetailService.DisplayColumns005;">
+                </tr>
+            </table>
+            <mat-paginator *ngIf="!NotificationService.IsMobile" #InventoryDetailPaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="1000000" [showFirstLastButtons]></mat-paginator>
+        </div>
+    </div>
+    <div class="col s12 m12 l8">
+        <div class="KhungOverflow">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #InventoryDetailBarcodeSort="matSort"
+                [dataSource]="InventoryDetailBarcodeService.DataSource">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div *ngIf="InventoryDetailBarcodePaginator">
+                            {{
+                            InventoryDetailBarcodePaginator.pageSize *
+                            InventoryDetailBarcodePaginator.pageIndex + i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                 <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.ID}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ProductID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Sort</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.ProductID}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Week">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tag</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Week}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ParentName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Parent</th>
+                    <td mat-cell *matCellDef="let element">
+                        <a style="cursor: pointer;" class="link-primary" target="_blank"
+                            routerLink="/InventoryInfo/{{element.ParentID}}"><b>{{element.ParentName}}</b></a>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Barcode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+                    <td mat-cell *matCellDef="let element" style="font-size: 12px;">
+                        <b *ngIf="element.IsScan" style="color: red;">{{element.Barcode}}</b>
+                        <b *ngIf="!element.IsScan && !element.Active">{{element.Barcode}}</b>
+                        <b *ngIf="!element.IsScan && element.Active && element.Description==element.CategoryLocationName"
+                            style="color: green;">{{element.Barcode}}</b>
+                        <b *ngIf="!element.IsScan && element.Active && element.Description!=element.CategoryLocationName"
+                            style="color: red;">{{element.Barcode}}</b>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                    <td mat-cell *matCellDef="let element">
+                        <b *ngIf="element.Description==element.CategoryLocationName">{{element.Description}}</b>
+                        <b *ngIf="element.Description!=element.CategoryLocationName"
+                            style="color: red;">{{element.Description}}</b>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="CategoryLocationName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.CategoryLocationName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Quantity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ERP</th>
+                    <td mat-cell *matCellDef="let element">
+                        <b style="color: green;">{{element.Quantity}}</b>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Note">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                    <td mat-cell *matCellDef="let element">
+                        <input class="form-control" type="text" placeholder="Note" name="Note{{element.ID}}"
+                            [(ngModel)]="element.Note">
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Quantity01">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 01</th>
+                    <td mat-cell *matCellDef="let element">
+                        <input class="form-control" type="number"
+                            style="width: 100px !important;" placeholder="Actual 01" name="Quantity01{{element.ID}}"
+                            [(ngModel)]="element.Quantity01">
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Quantity02">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 02</th>
+                    <td mat-cell *matCellDef="let element">
+                        <input class="form-control" type="number"
+                            style="width: 100px !important;" placeholder="Actual 01" name="Quantity02{{element.ID}}"
+                            [(ngModel)]="element.Quantity02">
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Quantity03">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 03</th>
+                    <td mat-cell *matCellDef="let element">
+                        <input class="form-control" type="number" placeholder="Actual 03"
+                            name="Quantity03{{element.ID}}" [(ngModel)]="element.Quantity03">
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="InventoryDetailBarcodeService.DisplayColumns012">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: InventoryDetailBarcodeService.DisplayColumns012;">
+                </tr>
+            </table>
+            <mat-paginator *ngIf="!NotificationService.IsMobile" #InventoryDetailBarcodePaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="1000000" [showFirstLastButtons]></mat-paginator>
+
+            <table *ngIf="NotificationService.IsMobile" mat-table matSort #InventoryDetailBarcodeSort="matSort"
+                [dataSource]="InventoryDetailBarcodeService.DataSource">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        List
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div class="row">
+                            <b *ngIf="element.IsScan" style="color: red;">{{element.Barcode}}</b>
+                            <b *ngIf="!element.IsScan && !element.Active">{{element.Barcode}}</b>
+                            <b *ngIf="!element.IsScan && element.Active && element.Note==element.CategoryLocationName"
+                                style="color: green;">{{element.Barcode}}</b>
+                            <b *ngIf="!element.IsScan && element.Active && element.Note!=element.CategoryLocationName"
+                                style="color: red;">{{element.Barcode}}</b>
+                        </div>
+                        <div class="row">
+                            Description: <b
+                                *ngIf="element.Description==element.CategoryLocationName">{{element.Description}}</b>
+                            <b *ngIf="element.Description!=element.CategoryLocationName"
+                                style="color: red;">{{element.Description}}</b> |
+                            Location: <b>{{element.CategoryLocationName}}</b>
+                        </div>
+                        <div class="row">
+                            ERP: <b style="color: green;">{{element.Quantity}}</b> | Note: <input class="form-control"
+                                type="text" placeholder="Note" name="Note{{element.ID}}" [(ngModel)]="element.Note"
+                                style="width: 50px !important;">
+                        </div>
+                        <div class="row">
+                            Actual 01: <input [disabled]="element.UpdateUserID01" class="form-control" type="number"
+                                placeholder="Actual 01" name="Quantity01{{element.ID}}" [(ngModel)]="element.Quantity01"
+                                style="width: 50px !important;"> Actual 02: <input [disabled]="element.UpdateUserID02"
+                                class="form-control" type="number" placeholder="Actual 02"
+                                name="Quantity02{{element.ID}}" [(ngModel)]="element.Quantity02"
+                                style="width: 50px !important;">
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="InventoryDetailBarcodeService.DisplayColumnsMobile">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: InventoryDetailBarcodeService.DisplayColumnsMobile;">
+                </tr>
+            </table>
+            <mat-paginator *ngIf="NotificationService.IsMobile" #InventoryDetailBarcodePaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="1000000" [showFirstLastButtons]></mat-paginator>
+
+        </div>
+    </div>
+</div>
+
+<app-loading *ngIf="InventoryDetailBarcodeService.IsShowLoading"></app-loading>

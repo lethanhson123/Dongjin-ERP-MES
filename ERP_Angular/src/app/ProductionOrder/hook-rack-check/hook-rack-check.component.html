@@ -1,0 +1,242 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l4">
+                    <h6 class="breadcrumbs-title">
+                        HOOK RACK real-time
+                        <span *ngIf="BOMService.List">({{BOMService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l4"></div>
+                <div class="col s12 m6 l4 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Manufacture">Manufacture</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/HookRackCheck" title="HOOK RACK real-time">HOOK RACK real-time</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select" [(ngModel)]="BOMService.BaseParameter.CompanyID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [(ngModel)]="BOMService.BaseParameter.Name" placeholder="PART NO (Required)"
+                        class="form-control" (keyup.enter)="BOMSearch()">
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [(ngModel)]="BOMService.BaseParameter.Code" placeholder="ECN (optional)" class="form-control"
+                        (keyup.enter)="BOMSearch()">
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [(ngModel)]="BOMService.BaseParameter.Quantity" placeholder="Quantity (optional)"
+                        class="form-control" type="number" (keyup.enter)="BOMSearch()">
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="Active"
+                            [(ngModel)]="BOMService.BaseParameter.Active" />
+                        <span>BOM / Lead No</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="search" (click)="BOMSearch()" class="btn waves-effect waves-light green darken-1"
+                        style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </a>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Excel" (click)="BOMExcel()" class="btn waves-effect waves-light green darken-1"
+                        style="width: 100%;">
+                        <i class="material-icons">cloud_download</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Sync" (click)="BOMSync()" class="btn waves-effect waves-light cyan darken-1"
+                        style="width: 100%;">
+                        <i class="material-icons">sync</i>
+                    </button>
+                </div>
+                <div class="KhungOverflow70" #TABLE>
+                    <table #table *ngIf="!NotificationService.IsMobile" mat-table matSort #BOMDetailSort="matSort" class="TableMaterial"
+                        [dataSource]="BOMService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="BOMDetailPaginator">
+                                    {{
+                                    BOMDetailPaginator.pageSize *
+                                    BOMDetailPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateDate |
+                                date:'dd/MM/yyyy hh:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ECN</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Code}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/BOMInfo/{{element.ParentID}}"><b>{{element.ParentName}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>1st_Step</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ParentID01>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ParentID01}}"><b>{{element.ParentName01}}</b></a>
+                                </div>
+                                <div *ngIf="element.ParentID01<=0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ID}}"><b>{{element.MaterialCode}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>2nd_Step</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ParentID02>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ParentID02}}"><b>{{element.ParentName02}}</b></a>
+                                </div>
+                                <div *ngIf="element.ParentID02<=0 && element.ParentID01>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ID}}"><b>{{element.MaterialCode}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>3rd_Step</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ParentID03>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ParentID03}}"><b>{{element.ParentName03}}</b></a>
+                                </div>
+                                <div *ngIf="element.ParentID03<=0 && element.ParentID01>0 && element.ParentID02>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ID}}"><b>{{element.MaterialCode}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>4th_Step</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ParentID04>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ParentID04}}"><b>{{element.ParentName04}}</b></a>
+                                </div>
+                                <div
+                                    *ngIf="element.ParentID04<=0 && element.ParentID01>0 && element.ParentID02>0 && element.ParentID03>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ID}}"><b>{{element.MaterialCode}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods List</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div style="width: 200px; text-align: left;">
+                                    {{element.Description}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="IsLeadNo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>LeadNo</th>
+                            <td mat-cell *matCellDef="let element">{{element.IsLeadNo}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="IsSPST">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SP / ST</th>
+                            <td mat-cell *matCellDef="let element">{{element.IsSPST}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="RowVersion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>H.R</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; color: green;">
+                                {{element.RowVersion |
+                                number:
+                                '1.0-0'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="SortOrder">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SPST</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; color: green;">
+                                {{element.SortOrder |
+                                number:
+                                '1.0-0'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="RawMaterialCount">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; color: green;">
+                                {{element.RawMaterialCount |
+                                number:
+                                '1.0-0'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; font-weight: bold;">
+                                {{element.Quantity |
+                                number:
+                                '1.0-0'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="BOMCount">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; color: red;">
+                                {{element.BOMCount |
+                                number:
+                                '1.0-0'}}
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="BOMService.DisplayColumns022">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: BOMService.DisplayColumns022;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #BOMDetailPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="1000000"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="BOMService.IsShowLoading"></app-loading>

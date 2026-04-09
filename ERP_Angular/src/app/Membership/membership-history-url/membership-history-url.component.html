@@ -1,0 +1,150 @@
+<div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <h6 class="breadcrumbs-title">
+                    Membership History
+                    <span *ngIf="MembershipHistoryURLService.List">({{MembershipHistoryURLService.List.length}}
+                        items)</span>
+                </h6>
+            </div>
+            <div class="col s12 m6 l6 right-align-md">
+                <ol class="breadcrumbs mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:history.back()" title="Back">
+                            <<< Back </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a routerLink="/Homepage" title="Home">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a routerLink="/MembershipHistoryURL" title="Membership History">Membership History</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="col s12 m12 l2">
+                <input [ngModel]="MembershipHistoryURLService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+                    style="text-align: right;" (ngModelChange)="DateBegin($event)"
+                    (keyup.enter)="MembershipHistoryURLSearch()" [ngModelOptions]="{ updateOn: 'blur' }" type="date"
+                    class="form-control" autocomplete="off">
+            </div>
+            <div class="col s12 m12 l2">
+                <input [ngModel]="MembershipHistoryURLService.BaseParameter.DateEnd | date:'yyyy-MM-dd'"
+                    style="text-align: right;" (ngModelChange)="DateEnd($event)"
+                    (keyup.enter)="MembershipHistoryURLSearch()" [ngModelOptions]="{ updateOn: 'blur' }" type="date"
+                    class="form-control" autocomplete="off">
+            </div>
+            <div class="col s12 m12 l2">
+                <input [(ngModel)]="MembershipHistoryURLService.BaseParameter.ParentName" placeholder="User"
+                    class="form-control" (keyup.enter)="MembershipHistoryURLSearch()">
+            </div>
+            <div class="col s12 m12 l5">
+                <input [(ngModel)]="MembershipHistoryURLService.BaseParameter.SearchString" placeholder="Search..."
+                    class="form-control" (keyup.enter)="MembershipHistoryURLSearch()">
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="search" (click)="MembershipHistoryURLSearch()"
+                    class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                    <i class="material-icons">search</i>
+                </button>
+            </div>
+            <div class="KhungOverflow70">
+                <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipHistoryURLSort="matSort"
+                    [dataSource]="MembershipHistoryURLService.DataSource">
+                    <ng-container matColumnDef="No">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            No
+                        </th>
+                        <td mat-cell *matCellDef="let element; index as i;">
+                            <div *ngIf="MembershipHistoryURLPaginator">
+                                {{
+                                MembershipHistoryURLPaginator.pageSize *
+                                MembershipHistoryURLPaginator.pageIndex + i + 1
+                                }}
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                        <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Code">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                        <td mat-cell *matCellDef="let element">{{element.Code}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ParentName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary"
+                                (click)="MembershipModal(element)"><b>{{element.ParentName}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                        <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date |
+                            date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="URL">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>URL</th>
+                        <td mat-cell *matCellDef="let element">{{element.URL}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Token">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Token</th>
+                        <td mat-cell *matCellDef="let element">{{element.Token}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="IPAddress">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>IP Address</th>
+                        <td mat-cell *matCellDef="let element">{{element.IPAddress}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="IPAddressLocal">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>IP Address Local</th>
+                        <td mat-cell *matCellDef="let element">{{element.IPAddressLocal}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Type">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                        <td mat-cell *matCellDef="let element">{{element.Type}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Longitude">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Longitude</th>
+                        <td mat-cell *matCellDef="let element">{{element.Longitude}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Latitude">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Latitude</th>
+                        <td mat-cell *matCellDef="let element">{{element.Latitude}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Country">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
+                        <td mat-cell *matCellDef="let element">{{element.Country}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Region">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Region</th>
+                        <td mat-cell *matCellDef="let element">{{element.Region}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="City">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
+                        <td mat-cell *matCellDef="let element">{{element.City}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="MembershipHistoryURLService.DisplayColumns001">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: MembershipHistoryURLService.DisplayColumns001;">
+                    </tr>
+                </table>
+                <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipHistoryURLPaginator="matPaginator"
+                    [pageSizeOptions]="[10,20,50,100,200,500,1000,10000]" [pageSize]="20"
+                    [showFirstLastButtons]></mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="MembershipHistoryURLService.IsShowLoading"></app-loading>

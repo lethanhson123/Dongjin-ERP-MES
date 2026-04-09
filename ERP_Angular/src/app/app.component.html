@@ -1,0 +1,117 @@
+<header class="page-topbar" id="header">
+    <div class="navbar navbar-fixed">
+        <nav class="navbar-main navbar-color nav-collapsible sideNav-lock navbar-dark gradient-45deg-light-blue-cyan">
+            <div class="nav-wrapper">
+                <ul class="left">
+                    <li>
+                        <h1 class="logo-wrapper"><a class="brand-logo darken-1" href="#"><img
+                                    src="../assets/image/logo.png" alt="materialize logo"><span
+                                    class="logo-text hide-on-med-and-down">DONGJIN - ERP</span></a></h1>
+                    </li>
+                </ul>
+                <div class="header-search-wrapper hide-on-med-and-down">
+                    <!-- <input class="header-search-input z-depth-2" type="text" name="Search"
+                        placeholder="ERP - Enterprise Resource Planning" style="color: #000000;" value="ERP - Enterprise Resource Planning" disabled> -->
+                </div>
+                <ul class="navbar-list right">
+                    <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light translation-button"
+                            href="javascript:void(0);" data-target="translation-dropdown">
+                            <img src="../image/{{LanguageFlag}}" style="border: 1px solid #000000; margin-top: 22px;" width="30"
+                                height="20" />
+                        </a></li>
+                    <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light toggle-fullscreen"
+                            href="javascript:void(0);"><i class="material-icons">settings_overscan</i></a></li>
+                    <!-- <li class="hide-on-large-only"><a class="waves-effect waves-block waves-light search-button"
+                            href="javascript:void(0);"><i class="material-icons">search </i></a></li> -->
+                    <li><a class="waves-effect waves-block waves-light notification-button" href="javascript:void(0);"
+                            data-target="notifications-dropdown"><i class="material-icons">notifications_none<small
+                                    class="notification-badge orange accent-3"
+                                    *ngIf="NotificationService.List">{{NotificationService.List.length}}</small></i></a>
+                    </li>
+                    <li><a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);"
+                            data-target="profile-dropdown"><span class="avatar-status avatar-online"><img
+                                    src="../assets/image/logo.png" alt="avatar"><i></i></span></a>
+                    </li>
+                    <li><a class="waves-effect waves-block waves-light sidenav-trigger" href="#"
+                            data-target="slide-out-right"><i class="material-icons">format_indent_increase</i></a></li>
+                </ul>
+                <!-- translation-button-->
+                <ul class="dropdown-content" id="translation-dropdown">
+                     <li><a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-gb"></i> English</a>
+                    </li>
+                    <li><a class="grey-text text-darken-1" (click)="ChangeLanguage(1)"><img src="../image/en.png" style="border: 1px solid #000000;" width="70" height="50" /></a>
+                    </li>
+                    <li><a class="grey-text text-darken-1" (click)="ChangeLanguage(2)"><img src="../image/vi.png" style="border: 1px solid #000000;" width="70" height="50" /></a>
+                    </li>
+                    <li><a class="grey-text text-darken-1" (click)="ChangeLanguage(3)"><img src="../image/kr.png" style="border: 1px solid #000000;" width="70" height="50" /></a>
+                    </li>
+                </ul>
+                <!-- notifications-dropdown-->
+                <ul class="dropdown-content" id="notifications-dropdown">
+                    <li>
+                        <h6>NOTIFICATIONS<span class="new badge"
+                                *ngIf="NotificationService.List">{{NotificationService.List.length}}</span></h6>
+                    </li>
+                    <li class="divider"></li>
+                    <li *ngFor="let Notification of NotificationService.List;"><a class="grey-text text-darken-2"
+                            href="#/{{Notification.Display}}/{{Notification.ID}}"><span
+                                class="material-icons icon-bg-circle cyan small">add_shopping_cart</span>
+                            {{Notification.Name}}: {{Notification.Code}}</a>
+                        <time class="media-meta">{{Notification.Description}}</time>
+                    </li>
+                </ul>
+                <!-- profile-dropdown-->
+                <ul class="dropdown-content" id="profile-dropdown">
+                    <li></li>
+                    <li></li>
+                    <li *ngIf="MembershipService.FormData && MembershipService.FormData.ID>0">
+                        <a class="grey-text text-darken-1" routerLink="/MembershipInfo" style="font-weight: bold;"><i
+                                class="material-icons">lock_outline</i>
+                            {{MembershipService.FormData.UserName}} |
+                            {{MembershipService.FormData.Name}}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li *ngIf="MembershipService.FormData && MembershipService.FormData.ID>0">
+                        <a class="grey-text text-darken-1" (click)="Logout()"><i class="material-icons">keyboard_tab</i>
+                            Logout | Đăng xuất | 로그아웃</a>
+                    </li>
+                </ul>
+            </div>
+            <nav class="display-none search-sm">
+                <div class="nav-wrapper">
+                    <form>
+                        <div class="input-field">
+                            <input class="search-box-sm" type="search" required="">
+                            <label class="label-icon" for="search"><i
+                                    class="material-icons search-sm-icon">search</i></label><i
+                                class="material-icons search-sm-close">close</i>
+                        </div>
+                    </form>
+                </div>
+            </nav>
+        </nav>
+        <nav class="white hide-on-med-and-down" id="horizontal-nav">
+            <div class="nav-wrapper">
+                <ul class="left hide-on-med-and-down" id="ul-horizontal-nav" data-menu="menu-navigation">
+                    <li *ngFor="let itemParent of CategoryMenuService.ListParent;">
+                        <a [style]="MenuCSS" (click)="MenuClick(itemParent)" class="dropdown-menu"
+                            data-target="{{itemParent.ID}}"><i
+                                class="material-icons">{{itemParent.Display}}</i><span>{{itemParent.Name}}<i
+                                    class="material-icons right">keyboard_arrow_down</i></span></a>
+                        <ul class="dropdown-content dropdown-horizontal-list" id="{{itemParent.ID}}"
+                            [style]="itemParent.CSS">
+                            <li data-menu="" *ngFor="let itemChild of itemParent.ListChild;"><a
+                                    routerLink="{{itemChild.Code}}" title="{{itemChild.Name}}">{{itemChild.Name}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+<div id="main">
+    <div class="row">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -1,0 +1,1018 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l4">
+                    <h6 class="breadcrumbs-title">
+                        Inventory | Lệnh kiểm kê
+                    </h6>
+                </div>
+                <div class="col s12 m6 l4">
+
+                </div>
+                <div class="col s12 m6 l4 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Inventory">Inventory</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Inventory" title="Inventory | Lệnh kiểm kê">Inventory | Lệnh kiểm kê</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l1">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="Active"
+                            [(ngModel)]="InventoryService.BaseParameter.BaseModel.Active" />
+                        <span>Active</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="IsSync"
+                            [(ngModel)]="InventoryService.BaseParameter.BaseModel.IsSync" />
+                        <span>Sync</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="IsComplete"
+                            [(ngModel)]="InventoryService.BaseParameter.BaseModel.IsComplete" />
+                        <span>Complete</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Save" class="btn waves-effect waves-light cyan" style="width: 100%;"
+                        (click)="Save()"><i class="material-icons">save</i></button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="Add" routerLink="/InventoryInfo/0" target="_blank"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button title="Location" class="btn waves-effect waves-light green" style="width: 100%;"
+                        (click)="InventoryDetailBarcodeDownloadCategoryLocationName()"><i
+                            class="material-icons">cloud_download</i> Location</button>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button title="Quantity" class="btn waves-effect waves-light green" style="width: 100%;"
+                        (click)="InventoryDetailBarcodeDownloadQuantity()"><i class="material-icons">cloud_download</i>
+                        Quantity</button>
+                </div>
+                <div class="col s12 m12 l2">
+                    <button title="Not Exist" class="btn waves-effect waves-light green" style="width: 100%;"
+                        (click)="InventoryDetailBarcodeDownloadNotExist()"><i class="material-icons">cloud_download</i>
+                        Not Exist</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>ID</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input disabled placeholder="ID" [(ngModel)]="InventoryService.BaseParameter.BaseModel.ID"
+                                type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>Date</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input [ngModel]="InventoryService.BaseParameter.BaseModel.Date | date:'yyyy-MM-dd'"
+                                style="text-align: right;" (ngModelChange)="Date($event)"
+                                [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>Editor</label>
+                        </div>
+                        <div class="col s8 m8 l8" class="form-control" style="text-align: right;">
+                            {{InventoryService.BaseParameter.BaseModel.UpdateUserCode}} |
+                            {{InventoryService.BaseParameter.BaseModel.UpdateUserName}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>Update date</label>
+                        </div>
+                        <div class="col s8 m8 l8" class="form-control" style="text-align: right;">
+                            {{InventoryService.BaseParameter.BaseModel.UpdateDate |
+                            date:'dd/MM/yyyy HH:mm:ss'}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m12 l6">
+                    <div class="row">
+                        <div class="col s4 m4 l6">
+                            <label>Company [ {{InventoryService.BaseParameter.BaseModel.CompanyName}} ]</label>
+                        </div>
+                        <div class="col s8 m8 l6">
+                            <select class="browser-default form-select form-control" (change)="CompanyChange()"
+                                [(ngModel)]="InventoryService.BaseParameter.BaseModel.CompanyID">
+                                <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                                    {{item.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l6">
+                            <label>Department [ {{InventoryService.BaseParameter.BaseModel.SupplierName}} ]</label>
+                        </div>
+                        <div class="col s8 m8 l6">
+                            <select class="browser-default form-select"
+                                [(ngModel)]="InventoryService.BaseParameter.BaseModel.SupplierID">
+                                <option *ngFor="let item of CategoryDepartmentService.ListFilter;" [value]="item.ID">
+                                    {{item.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l6">
+                            <label>Code</label>
+                        </div>
+                        <div class="col s4 m4 l6">
+                            <input placeholder="Code" [(ngModel)]="InventoryService.BaseParameter.BaseModel.Code"
+                                type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l6">
+                            <label>Note</label>
+                        </div>
+                        <div class="col s8 m8 l6">
+                            <input placeholder="Note" [(ngModel)]="InventoryService.BaseParameter.BaseModel.Note"
+                                type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l6">
+                            <label>Begin</label>
+                        </div>
+                        <div class="col s8 m8 l6">
+                            <input placeholder="Begin"
+                                [(ngModel)]="InventoryService.BaseParameter.BaseModel.QuantityBegin" type="number"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l6">
+                            <label>End</label>
+                        </div>
+                        <div class="col s8 m8 l6">
+                            <input placeholder="End" [(ngModel)]="InventoryService.BaseParameter.BaseModel.QuantityEnd"
+                                type="number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy" style="display: none;">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l5">
+                    <div class="col s12 m12 l12">
+                        <h6>PART NO <span
+                                *ngIf="InventoryDetailService.ListFilter">({{InventoryDetailService.ListFilter.length}}
+                                items)</span></h6>
+                    </div>
+                    <div class="KhungOverflow">
+                        <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+                            #InventoryDetailSortFilter="matSort" [dataSource]="InventoryDetailService.DataSourceFilter">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    No
+                                </th>
+                                <td mat-cell *matCellDef="let element; index as i;">
+                                    <div *ngIf="InventoryDetailPaginatorFilter">
+                                        {{
+                                        InventoryDetailPaginatorFilter.pageSize *
+                                        InventoryDetailPaginatorFilter.pageIndex + i + 1
+                                        }}
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ID">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ID}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Active">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Active}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Week">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tag</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Week}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="FileName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>OEM</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.FileName}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="MaterialName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.MaterialName}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CategoryLocationName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                                <td mat-cell *matCellDef="let element">
+                                    [{{element.CategoryLocationName}}]
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Note">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Note}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ERP</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right; font-weight: bold;">
+                                    {{element.Quantity}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="QuantityActual">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual</th>
+                                <td mat-cell *matCellDef="let element"
+                                    style="text-align: right; font-weight: bold; color: green;">
+                                    {{element.QuantityActual}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="QuantityGAP">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                                <td mat-cell *matCellDef="let element"
+                                    style="text-align: right; font-weight: bold; color: red;">
+                                    {{element.QuantityGAP}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CreateDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                    {{element.CreateDate |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CreateUserCode">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.UpdateUserCode}} | {{element.UpdateUserName}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Save">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button *ngIf="element.ID>0" (click)="InventoryDetailDelete(element)"
+                                        class="btn-floating waves-effect waves-light red" title="Delete">
+                                        <i class="material-icons">delete_outline</i>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="InventoryDetailService.DisplayColumns003">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: InventoryDetailService.DisplayColumns003;">
+                            </tr>
+                        </table>
+                        <mat-paginator *ngIf="!NotificationService.IsMobile"
+                            #InventoryDetailPaginatorFilter="matPaginator" [pageSizeOptions]="[10,20,50,100,1000000]"
+                            [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+                    </div>
+                </div>
+                <div class="col s12 m12 l7">
+                    <div class="col s12 m12 l4">
+                        <h6>Barcode <span
+                                *ngIf="InventoryDetailBarcodeService.ListYear">({{InventoryDetailBarcodeService.ListYear.length}}
+                                items)</span></h6>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <input [(ngModel)]="InventoryDetailService.BaseParameter.SearchString" placeholder="Search ..."
+                            class="form-control" (keyup.enter)="InventoryDetailSearch()">
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <button title="search" (click)="InventoryDetailSearch()"
+                            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                            <i class="material-icons">search</i>
+                        </button>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <button title="Sync" class="btn waves-effect waves-light cyan" style="width: 100%;"
+                            (click)="InventoryDetailSync()"><i class="material-icons">sync</i></button>
+                    </div>
+                    <div class="KhungOverflow">
+                        <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+                            #InventoryDetailBarcodeSort="matSort"
+                            [dataSource]="InventoryDetailBarcodeService.DataSource">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    No
+                                </th>
+                                <td mat-cell *matCellDef="let element; index as i;">
+                                    <div *ngIf="InventoryDetailBarcodePaginator">
+                                        {{
+                                        InventoryDetailBarcodePaginator.pageSize *
+                                        InventoryDetailBarcodePaginator.pageIndex + i + 1
+                                        }}
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ID">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ID}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Active">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Active}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Week">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tag</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <input class="form-control" type="number" placeholder="Week"
+                                        name="Week{{element.ID}}" [(ngModel)]="element.Week">
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="FileName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>OEM</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.FileName}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="MaterialID">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialID</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <input class="form-control" type="number" placeholder="Material ID"
+                                        name="MaterialID{{element.ID}}" [(ngModel)]="element.MaterialID">
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="MaterialName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.MaterialName}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Barcode">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <input class="form-control" type="text" placeholder="Barcode"
+                                        name="Barcode{{element.ID}}" [(ngModel)]="element.Barcode">
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CategoryLocationName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <input class="form-control" type="text" placeholder="Location"
+                                        name="CategoryLocationName{{element.ID}}"
+                                        [(ngModel)]="element.CategoryLocationName">
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Description">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Description}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Note">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Note}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ERP</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right; font-weight: bold;">
+                                    {{element.Quantity}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity01">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 01</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right; color: green;">
+                                    <input class="form-control" type="number" placeholder="Actual 01"
+                                        name="Quantity01{{element.ID}}" [(ngModel)]="element.Quantity01">
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity02">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 02</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right; color: green;">
+                                    {{element.Quantity02}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity03">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 03</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right; color: green;">
+                                    {{element.Quantity03}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="UpdateUserCode01">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.UpdateUserCode01}} | {{element.UpdateUserName01}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="UpdateUserCode02">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.UpdateUserCode02}} | {{element.UpdateUserName02}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="UpdateUserCode03">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.UpdateUserCode03}} | {{element.UpdateUserName03}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Date01">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Date01 |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Date02">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Date02 |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Date03">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Date03 |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="QuantityGAP01">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right; color: red;">
+                                    {{element.QuantityGAP01}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="QuantityGAP02">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right; color: red;">
+                                    {{element.QuantityGAP02}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="QuantityGAP03">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                                <td mat-cell *matCellDef="let element" style="text-align: right; color: red;">
+                                    {{element.QuantityGAP03}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="UpdateDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Update Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.UpdateDate |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="UpdateUserCode">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Update User</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.UpdateUserCode}} | {{element.UpdateUserName}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Save">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button (click)="InventoryDetailBarcodeSave(element)"
+                                        class="btn waves-effect waves-light cyan" title="Save">
+                                        <i class="material-icons">save</i>
+                                    </button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button *ngIf="element.ID>0" (click)="InventoryDetailBarcodeDelete(element)"
+                                        class="btn-floating waves-effect waves-light red" title="Delete">
+                                        <i class="material-icons">delete_outline</i>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="InventoryDetailBarcodeService.DisplayColumns010">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: InventoryDetailBarcodeService.DisplayColumns010;">
+                            </tr>
+                        </table>
+                        <mat-paginator *ngIf="!NotificationService.IsMobile"
+                            #InventoryDetailBarcodePaginator="matPaginator" [pageSizeOptions]="[10,20,50,100,1000000]"
+                            [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l3">
+                        <h6>PART NO <span
+                                *ngIf="InventoryDetailService.ListYear">({{InventoryDetailService.ListYear.length}}
+                                items)</span></h6>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <input [(ngModel)]="InventoryDetailService.BaseParameter.SearchString" placeholder="Search ..."
+                            class="form-control" (keyup.enter)="InventoryDetailSearch()">
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <button title="search" (click)="InventoryDetailSearch()"
+                            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                            <i class="material-icons">search</i>
+                        </button>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <button title="Excel" (click)="InventoryDetailDownload()"
+                            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                            <i class="material-icons">cloud_download</i>
+                        </button>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <button title="Sync" class="btn waves-effect waves-light cyan" style="width: 100%;"
+                            (click)="InventoryDetailSync()"><i class="material-icons">sync</i></button>
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <button title="Sync" class="btn waves-effect waves-light cyan" style="width: 100%;"
+                            (click)="InventoryDetailSyncCategoryLocationName()"><i class="material-icons">sync</i>
+                            Location</button>
+                    </div>
+                </div>
+                <!-- <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l1">
+                        <button title="Excel" (click)="InventoryDetailSave0()" class="btn waves-effect waves-light cyan"
+                            style="width: 100%;">
+                            <i class="material-icons">save</i>
+                        </button>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input #Week [(ngModel)]="InventoryDetailService.BaseParameter.BaseModel.Week" placeholder="Tag"
+                            type="number" class="form-control" (keyup.enter)="InventoryDetailWeek0()">
+                    </div>
+                    <div class="col s12 m12 l3">
+                        <mat-select (selectionChange)="MaterialChange0()"
+                            style="width: 300px; padding-top:20px; padding-bottom:10px; border: #000000 1px solid;"
+                            id="MaterialID" class="browser-default"
+                            [(ngModel)]="InventoryDetailService.BaseParameter.BaseModel.MaterialID">
+                            <input (keyup)="MaterialFilter($event.target.value)">
+                            <mat-option *ngFor="let item of MaterialService.ListFilter" [value]="item.ID">
+                                {{item.Code}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input #MaterialName [(ngModel)]="InventoryDetailService.BaseParameter.BaseModel.MaterialName"
+                            type="text" placeholder="PART NO" class="form-control"
+                            (keyup.enter)="InventoryDetailMaterialName0()">
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input #QuantityActual
+                            [(ngModel)]="InventoryDetailService.BaseParameter.BaseModel.QuantityActual" type="number"
+                            placeholder="Actual" class="form-control" (keyup.enter)="InventoryDetailQuantityActual0()">
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input #CategoryLocationName
+                            [(ngModel)]="InventoryDetailService.BaseParameter.BaseModel.CategoryLocationName"
+                            type="number" placeholder="Location" class="form-control"
+                            (keyup.enter)="InventoryDetailSave0()">
+                    </div>
+                </div> -->
+                <div class="KhungOverflow" #TABLEInventoryDetail>
+                    <table #tableInventoryDetail *ngIf="!NotificationService.IsMobile" mat-table matSort
+                        #InventoryDetailSort="matSort" [dataSource]="InventoryDetailService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="InventoryDetailPaginator">
+                                    {{
+                                    InventoryDetailPaginator.pageSize *
+                                    InventoryDetailPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ID}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Week">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tag</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Tag" name="Week{{element.ID}}"
+                                    [(ngModel)]="element.Week">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>OEM</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="OEM" name="FileName{{element.ID}}"
+                                    [(ngModel)]="element.FileName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                            <td mat-cell *matCellDef="let element" style="width: 300px;">
+                                <!-- <mat-select (selectionChange)="MaterialChange(element)"
+                                    style="width: 200px; padding-top:20px; padding-bottom:10px; border-bottom-color: #000000; border-bottom-width: 1px; border-bottom-style: solid;"
+                                    id="MaterialID{{element.ID}}" class="browser-default"
+                                    [(ngModel)]="element.MaterialID">
+                                    <input (keyup)="MaterialFilter($event.target.value)">
+                                    <mat-option *ngFor="let item of MaterialService.ListFilter" [value]="item.ID">
+                                        {{item.Code}}
+                                    </mat-option>
+                                </mat-select> -->
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="PART NO" style="width: 200px;"
+                                    name="MaterialName{{element.ID}}" [(ngModel)]="element.MaterialName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryLocationName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Location"
+                                    name="CategoryLocationName{{element.ID}}"
+                                    [(ngModel)]="element.CategoryLocationName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Note" name="Note{{element.ID}}"
+                                    [(ngModel)]="element.Note">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Display</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Display"
+                                    name="Display{{element.ID}}" [(ngModel)]="element.Display">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ERP</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; font-weight: bold;">
+                                <input class="form-control" type="number" placeholder="ERP"
+                                    name="Quantity{{element.ID}}" [(ngModel)]="element.Quantity">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityActual">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; color: green;">
+                                <input class="form-control" type="number" placeholder="Actual"
+                                    id="QuantityActual{{element.ID}}" [(ngModel)]="element.QuantityActual"
+                                    (keyup.enter)="InventoryDetailSave(element)">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityGAP">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; color: red;">
+                                {{element.QuantityGAP}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.CreateDate |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateUserCode}} | {{element.UpdateUserName}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button title="Print" (click)="PrintByID(element)"
+                                    class="btn waves-effect waves-light green darken-1">
+                                    <i class="material-icons">print</i> In tem
+                                </button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button title="Print" (click)="Print2025ByID(element)"
+                                    class="btn waves-effect waves-light green darken-1">
+                                    <i class="material-icons">print</i> In giấy
+                                </button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button (click)="InventoryDetailSave(element)"
+                                    class="btn waves-effect waves-light cyan" title="Save">
+                                    <i class="material-icons">save</i>
+                                </button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button *ngIf="element.ID>0" (click)="InventoryDetailDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="InventoryDetailService.DisplayColumns004">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: InventoryDetailService.DisplayColumns004;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #InventoryDetailPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="10"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <h6>Barcode <span
+                            *ngIf="InventoryDetailBarcodeService.ListYear">({{InventoryDetailBarcodeService.ListYear.length}}
+                            items)</span></h6>
+                </div>
+                <div class="col s12 m12 l5">
+                    <input [(ngModel)]="InventoryDetailBarcodeService.BaseParameter.SearchString"
+                        placeholder="Search ..." class="form-control" (keyup.enter)="InventoryDetailBarcodeSearch()">
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="Active"
+                            [(ngModel)]="InventoryDetailBarcodeService.BaseParameter.Active" />
+                        <span>Active / All</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="search" (click)="InventoryDetailBarcodeSearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Excel" (click)="InventoryDetailBarcodeDownload()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">cloud_download</i>
+                    </button>
+                </div>
+                <div class="KhungOverflow" #TABLE>
+                    <table #table *ngIf="!NotificationService.IsMobile" mat-table matSort
+                        #InventoryDetailBarcodeSortFilter="matSort"
+                        [dataSource]="InventoryDetailBarcodeService.DataSourceFilter">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="InventoryDetailBarcodePaginatorFilter">
+                                    {{
+                                    InventoryDetailBarcodePaginatorFilter.pageSize *
+                                    InventoryDetailBarcodePaginatorFilter.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ID}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Week">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tag</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Week" name="Week{{element.ID}}"
+                                    [(ngModel)]="element.Week">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>OEM</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.FileName}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialID</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Material ID"
+                                    name="MaterialID{{element.ID}}" [(ngModel)]="element.MaterialID">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="PART NO"
+                                    name="MaterialName{{element.ID}}" [(ngModel)]="element.MaterialName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Barcode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Barcode"
+                                    name="Barcode{{element.ID}}" [(ngModel)]="element.Barcode">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryLocationName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Location"
+                                    name="CategoryLocationName{{element.ID}}"
+                                    [(ngModel)]="element.CategoryLocationName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Description}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Note}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ERP</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; font-weight: bold;">
+                                {{element.Quantity}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 01</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; color: green;">
+                                <input class="form-control" type="number" placeholder="Actual 01"
+                                    name="Quantity01{{element.ID}}" [(ngModel)]="element.Quantity01">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 02</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; color: green;">
+                                {{element.Quantity02}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual 03</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; color: green;">
+                                {{element.Quantity03}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateUserCode01}} | {{element.UpdateUserName01}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateUserCode02}} | {{element.UpdateUserName02}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateUserCode03}} | {{element.UpdateUserName03}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Date01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Date01 |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Date02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Date02 |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Date03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Date03 |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityGAP01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; color: red;">
+                                {{element.QuantityGAP01}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityGAP02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; color: red;">
+                                {{element.QuantityGAP02}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityGAP03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; color: red;">
+                                {{element.QuantityGAP03}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Update Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateDate |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Update User</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateUserCode}} | {{element.UpdateUserName}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button (click)="InventoryDetailBarcodeSave(element)"
+                                    class="btn waves-effect waves-light cyan" title="Save">
+                                    <i class="material-icons">save</i>
+                                </button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button *ngIf="element.ID>0" (click)="InventoryDetailBarcodeDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="InventoryDetailBarcodeService.DisplayColumns009">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: InventoryDetailBarcodeService.DisplayColumns009;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile"
+                        #InventoryDetailBarcodePaginatorFilter="matPaginator" [pageSizeOptions]="[10,20,50,100,1000000]"
+                        [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="InventoryService.IsShowLoading"></app-loading>

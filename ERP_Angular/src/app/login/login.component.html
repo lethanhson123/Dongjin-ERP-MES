@@ -1,0 +1,50 @@
+<div class="col s12 m6 l4">
+</div>
+<div class="col s12 m6 l4 z-depth-4 card-panel border-radius-6 login-card bg-opacity-8">
+    <div class="row">
+        <br />
+        <div class="col s12 m12 l12" style="text-align: center;">
+            <img src="/image/logo01.png" class="responsive-img" />
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="input-field col s3">
+            <label for="UserName" class="center-align">User Name</label>
+        </div>
+        <div class="input-field col s9">
+            <input [(ngModel)]="MembershipService.BaseParameter.UserName" placeholder="User Name" type="text"
+                class="form-control" autofocus>
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="input-field col s3">
+            <label for="Password">Password</label>
+        </div>
+        <div class="input-field col s7">
+            <input [(ngModel)]="MembershipService.BaseParameter.Password" placeholder="Password" type="text"
+                class="form-control" [type]="MatKhauIsActive ? 'password' : 'text'">
+        </div>
+        <div class="input-field col s2">
+            <i class="material-icons prefix pt-2" (click)="MatKhauChangeType()"
+                style="cursor: pointer;">remove_red_eye</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <button id="Login" class="btn waves-effect waves-light cyan col s12" (click)="Login()"
+                [disabled]="!MembershipService.BaseParameter.UserName || !MembershipService.BaseParameter.Password">
+                Login
+            </button>
+        </div>
+        <!-- <div class="input-field col s6">
+            <a id="Cancel" class="btn waves-effect waves-light purple col s12">
+                Cancel
+            </a>
+        </div> -->
+    </div>
+
+</div>
+<div class="col s12 m6 l4">
+</div>
+
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

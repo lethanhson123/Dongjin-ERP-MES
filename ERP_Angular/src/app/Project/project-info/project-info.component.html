@@ -1,0 +1,839 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        Project
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Project">Project</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Project" title="Project">Project</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l8">
+                </div>
+                <div class="col s12 m12 l1">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="Active"
+                            [(ngModel)]="ProjectService.BaseParameter.BaseModel.Active" />
+                        <span>Active</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="IsComplete"
+                            [(ngModel)]="ProjectService.BaseParameter.BaseModel.IsComplete" />
+                        <span>Complete</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Save" class="btn waves-effect waves-light cyan" style="width: 100%;"
+                        (click)="Save()"><i class="material-icons">save</i></button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="Add" routerLink="/ProjectInfo/0" target="_blank"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <label>ID</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input disabled placeholder="ID" [(ngModel)]="ProjectService.BaseParameter.BaseModel.ID"
+                                type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <label>Begin</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input [ngModel]="ProjectService.BaseParameter.BaseModel.DateBegin | date:'yyyy-MM-dd'"
+                                style="text-align: right;" (ngModelChange)="DateBegin($event)"
+                                [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <label>End</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input [ngModel]="ProjectService.BaseParameter.BaseModel.DateEnd | date:'yyyy-MM-dd'"
+                                style="text-align: right;" (ngModelChange)="DateEnd($event)"
+                                [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                autocomplete="off">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col s12 m12 l4">
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <label>Code</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input placeholder="Code" [(ngModel)]="ProjectService.BaseParameter.BaseModel.Code"
+                                type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <label>Korea</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input placeholder="Korea" [(ngModel)]="ProjectService.BaseParameter.BaseModel.Name"
+                                type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <label>English</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input placeholder="English" [(ngModel)]="ProjectService.BaseParameter.BaseModel.Display"
+                                type="text" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col s12 m12 l4">
+                    <div class="row">
+                        <div class="col s4 m4 l6">
+                            <label>Company [ {{ProjectService.BaseParameter.BaseModel.CompanyName}} ]</label>
+                        </div>
+                        <div class="col s8 m8 l6">
+                            <select class="browser-default form-select form-control"
+                                [(ngModel)]="ProjectService.BaseParameter.BaseModel.CompanyID">
+                                <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                                    {{item.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12 l4">
+                            <label>Parent</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input placeholder="Parent" [(ngModel)]="ProjectService.BaseParameter.BaseModel.ParentName"
+                                type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>Create by</label>
+                        </div>
+                        <div class="col s8 m8 l8" class="form-control" style="text-align: right;">
+                            {{ProjectService.BaseParameter.BaseModel.CreateUserName}} |
+                            {{ProjectService.BaseParameter.BaseModel.CreateDate |
+                            date:'dd/MM/yyyy HH:mm:ss'}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>Update by</label>
+                        </div>
+                        <div class="col s8 m8 l8" class="form-control" style="text-align: right;">
+                            {{ProjectService.BaseParameter.BaseModel.UpdateUserName}} |
+                            {{ProjectService.BaseParameter.BaseModel.UpdateDate |
+                            date:'dd/MM/yyyy HH:mm:ss'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="col s12 m12 l2">
+                <h6>Task <span *ngIf="ProjectTaskService.List">({{ProjectTaskService.List.length}}
+                        items)</span></h6>
+            </div>
+            <div class="col s12 m12 l9">
+                <input [(ngModel)]="ProjectTaskService.BaseParameter.SearchString" placeholder="Search ..."
+                    class="form-control" (keyup.enter)="ProjectTaskSearch()">
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="search" (click)="ProjectTaskSearch()" class="btn waves-effect waves-light green darken-1"
+                    style="width: 100%;">
+                    <i class="material-icons">search</i>
+                </button>
+            </div>
+            <div class="KhungOverflow70">
+                <table *ngIf="!NotificationService.IsMobile" mat-table matSort #ProjectTaskSort="matSort"
+                    class="TableMaterial" [dataSource]="ProjectTaskService.DataSource">
+                    <ng-container matColumnDef="No">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            No
+                        </th>
+                        <td mat-cell *matCellDef="let element; index as i;">
+                            <div *ngIf="i>0 && ProjectTaskPaginator">
+                                {{
+                                ProjectTaskPaginator.pageSize *
+                                ProjectTaskPaginator.pageIndex + i
+                                }}
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                        <td mat-cell *matCellDef="let element;index as i;">
+                            {{element.ID}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Active">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <label>
+                                <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                    [(ngModel)]="element.Active">
+                                <span></span>
+                            </label>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="IsComplete">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Complete
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <label>
+                                <input class="form-check-input" type="checkbox" name="IsComplete{{element.ID}}"
+                                    [(ngModel)]="element.IsComplete">
+                                <span></span>
+                            </label>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="CategoryDepartmentID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Department
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.CategoryDepartmentID"
+                                [(ngModel)]="element.CategoryDepartmentID" style="width: 100px;">
+                                <option *ngFor="let item of CategoryDepartmentService.ListParent;" [value]="item.ID">
+                                    {{item.Name}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="CategorySystemID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>System
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.CategorySystemID"
+                                [(ngModel)]="element.CategorySystemID" style="width: 100px;">
+                                <option *ngFor="let item of CategorySystemService.ListFilter;" [value]="item.ID">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ModuleID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Module
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.ModuleID"
+                                [(ngModel)]="element.ModuleID" style="width: 200px;">
+                                <option *ngFor="let item of ModuleService.ListFilter;" [value]="item.ID">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="CategoryTypeID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.CategoryTypeID"
+                                [(ngModel)]="element.CategoryTypeID" style="width: 100px;">
+                                <option *ngFor="let item of CategoryTypeService.ListFilter;" [value]="item.ID">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="CategoryLevelID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Level
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.CategoryLevelID"
+                                [(ngModel)]="element.CategoryLevelID" style="width: 100px;">
+                                <option *ngFor="let item of CategoryLevelService.ListFilter;" [value]="item.ID">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="CategoryStatusID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.CategoryStatusID"
+                                [(ngModel)]="element.CategoryStatusID" style="width: 200px;">
+                                <option *ngFor="let item of CategoryStatusService.ListFilter;" [value]="item.ID">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Requirement">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Requirement
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.Requirement"
+                                [(ngModel)]="element.Requirement" style="width: 100px;">
+                                <option *ngFor="let item of CategoryStatusService.ListFilter;" [value]="item.Code">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Development">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Development
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.Development"
+                                [(ngModel)]="element.Development" style="width: 100px;">
+                                <option *ngFor="let item of CategoryStatusService.ListFilter;" [value]="item.Code">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Testing">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Testing
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.Testing"
+                                [(ngModel)]="element.Testing" style="width: 100px;">
+                                <option *ngFor="let item of CategoryStatusService.ListFilter;" [value]="item.Code">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Training">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Training
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.Training"
+                                [(ngModel)]="element.Training" style="width: 100px;">
+                                <option *ngFor="let item of CategoryStatusService.ListFilter;" [value]="item.Code">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Handover">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Handover
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <select class="browser-default form-select form-control" name="element.Handover"
+                                [(ngModel)]="element.Handover" style="width: 100px;">
+                                <option *ngFor="let item of CategoryStatusService.ListFilter;" [value]="item.Code">
+                                    {{item.Code}}</option>
+                            </select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Code">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                        <td mat-cell *matCellDef="let element">
+                            <input class="form-control" type="text" placeholder="Code" name="Code{{element.ID}}"
+                                style="width: 300px;" [(ngModel)]="element.Code">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Korea</th>
+                        <td mat-cell *matCellDef="let element">
+                            <input class="form-control" type="text" placeholder="Korea" name="Code{{element.ID}}"
+                                style="width: 300px;" [(ngModel)]="element.Name">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">
+                            <textarea class="materialize-textarea" placeholder="Note" style="width: 500px;"
+                                name="Note{{element.ID}}" [(ngModel)]="element.Note"></textarea>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Description">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                        <td mat-cell *matCellDef="let element">
+                            <textarea class="materialize-textarea" placeholder="Description" style="width: 500px;"
+                                name="Description{{element.ID}}" [(ngModel)]="element.Description"></textarea>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Display">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Korea</th>
+                        <td mat-cell *matCellDef="let element">
+                            <textarea class="materialize-textarea" placeholder="Korea" style="width: 500px;"
+                                name="Display{{element.ID}}" [(ngModel)]="element.Display"></textarea>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="DateBegin">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Begin</th>
+                        <td mat-cell *matCellDef="let element">
+                            <input [ngModel]="element.DateBegin | date:'yyyy-MM-dd'" style="text-align: right;"
+                                (ngModelChange)="ProjectTaskDateBegin($event, element)"
+                                [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                autocomplete="off">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="DateEnd">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>End</th>
+                        <td mat-cell *matCellDef="let element">
+                            <input [ngModel]="element.DateEnd | date:'yyyy-MM-dd'" style="text-align: right;"
+                                (ngModelChange)="ProjectTaskDateEnd($event, element)"
+                                [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                autocomplete="off">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Hour">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hour</th>
+                        <td mat-cell *matCellDef="let element">
+                            <input class="form-control" type="number" placeholder="Hour" name="Hour{{element.ID}}"
+                                [(ngModel)]="element.Hour">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Save">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-col">
+                        </th>
+                        <td mat-cell *matCellDef="let element ; index as i;" class="sticky-col"
+                            style="background-color: #e4e4e4;">
+                            <button (click)="ProjectTaskSave(element)"
+                                class="btn-floating waves-effect waves-light cyan" title="Save">
+                                <i class="material-icons">save</i>
+                            </button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button *ngIf="element.ID>0" (click)="ProjectTaskDelete(element)"
+                                class="btn-floating waves-effect waves-light red" title="Delete">
+                                <i class="material-icons">delete_outline</i>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="ProjectTaskService.DisplayColumns001">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: ProjectTaskService.DisplayColumns001;">
+                    </tr>
+                </table>
+                <mat-paginator *ngIf="!NotificationService.IsMobile" #ProjectTaskPaginator="matPaginator"
+                    [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l5">
+                    <h6><b>Membership <span
+                                *ngIf="ProjectTaskMembershipService.List">{{ProjectTaskMembershipService.List.length}}
+                                (items)</span></b></h6>
+                </div>
+                <div class="col s12 m12 l6">
+                    <input [(ngModel)]="ProjectTaskMembershipService.BaseParameter.SearchString"
+                        placeholder="Search ..." class="form-control" (keyup.enter)="ProjectTaskMembershipSearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="search" (click)="ProjectTaskMembershipSearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </a>
+                </div>
+                <div class="KhungOverflow">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #ProjectTaskMembershipSort="matSort"
+                        [dataSource]="ProjectTaskMembershipService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="ProjectTaskMembershipPaginator">
+                                    {{
+                                    ProjectTaskMembershipPaginator.pageSize *
+                                    ProjectTaskMembershipPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ProjectTaskID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Task
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <select class="browser-default form-select form-control" name="element.ProjectTaskID" style="width: 400px;"
+                                    [(ngModel)]="element.ProjectTaskID">
+                                    <option *ngFor="let item of ProjectTaskService.List;" [value]="item.ID">
+                                        {{item.Code}}</option>
+                                </select>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryStatusID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <select class="browser-default form-select form-control" name="element.CategoryStatusID"
+                                    [(ngModel)]="element.CategoryStatusID" style="width: 200px;">
+                                    <option *ngFor="let item of CategoryStatusService.ListFilter;" [value]="item.ID">
+                                        {{item.Code}}</option>
+                                </select>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CategoryLevelID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Level
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <select class="browser-default form-select form-control" name="element.CategoryLevelID"
+                                    [(ngModel)]="element.CategoryLevelID" style="width: 100px;">
+                                    <option *ngFor="let item of CategoryLevelService.ListFilter;" [value]="item.ID">
+                                        {{item.Code}}</option>
+                                </select>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MembershipCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>User name</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="User name"
+                                    name="MembershipCode{{element.ID}}" [(ngModel)]="element.MembershipCode">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MembershipName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Full name</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Full name"
+                                    name="MembershipName{{element.ID}}" [(ngModel)]="element.MembershipName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Hour">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Hour</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Hour" name="Hour{{element.ID}}"
+                                    [(ngModel)]="element.Hour">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button (click)="ProjectTaskMembershipSave(element)"
+                                    class="btn-floating waves-effect waves-light cyan" title="Save">
+                                    <i class="material-icons">save</i>
+                                </button>&nbsp;&nbsp;&nbsp;
+                                <button *ngIf="element.ID>0" (click)="ProjectTaskMembershipDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" style="padding-top: 3px;"
+                                    title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="ProjectTaskMembershipService.DisplayColumns001">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: ProjectTaskMembershipService.DisplayColumns001;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #ProjectTaskMembershipPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="10"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l5">
+                    <h6><b>History <span
+                                *ngIf="ProjectTaskHistoryService.List">{{ProjectTaskHistoryService.List.length}}
+                                (items)</span></b></h6>
+                </div>
+                <div class="col s12 m12 l6">
+                    <input [(ngModel)]="ProjectTaskHistoryService.BaseParameter.SearchString" placeholder="Search ..."
+                        class="form-control" (keyup.enter)="ProjectTaskHistorySearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="search" (click)="ProjectTaskHistorySearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </a>
+                </div>
+                <div class="KhungOverflow">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #ProjectTaskHistorySort="matSort"
+                        [dataSource]="ProjectTaskHistoryService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="ProjectTaskHistoryPaginator">
+                                    {{
+                                    ProjectTaskHistoryPaginator.pageSize *
+                                    ProjectTaskHistoryPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ProjectTaskID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Task
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <select class="browser-default form-select form-control" name="element.ProjectTaskID" style="width: 400px;"
+                                    [(ngModel)]="element.ProjectTaskID">
+                                    <option *ngFor="let item of ProjectTaskService.List;" [value]="item.ID">
+                                        {{item.Code}}</option>
+                                </select>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MembershipCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>User name</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="User name"
+                                    name="MembershipCode{{element.ID}}" [(ngModel)]="element.MembershipCode">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MembershipName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Full name</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Full name"
+                                    name="MembershipName{{element.ID}}" [(ngModel)]="element.MembershipName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateBegin">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input [ngModel]="element.DateBegin | date:'yyyy-MM-dd'" style="text-align: right;"
+                                    (ngModelChange)="ProjectTaskHistoryDateBegin($event, element)"
+                                    [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                    autocomplete="off">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateEnd">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>End</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input [ngModel]="element.DateEnd | date:'yyyy-MM-dd'" style="text-align: right;"
+                                    (ngModelChange)="ProjectTaskHistoryDateEnd($event, element)"
+                                    [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                    autocomplete="off">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="HourBegin">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Begin</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Begin" name="HourBegin{{element.ID}}"
+                                    [(ngModel)]="element.HourBegin">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="HourEnd">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>End</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="End" name="HourEnd{{element.ID}}"
+                                    [(ngModel)]="element.HourEnd">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Hour">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Hour</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Hour" name="Hour{{element.ID}}"
+                                    [(ngModel)]="element.Hour">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="IsComplete">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Complete
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="IsComplete{{element.ID}}"
+                                        [(ngModel)]="element.IsComplete">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                         <ng-container matColumnDef="Code">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                        <td mat-cell *matCellDef="let element">
+                            <input class="form-control" type="text" placeholder="Code" name="Code{{element.ID}}"
+                                style="width: 300px;" [(ngModel)]="element.Code">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Korea</th>
+                        <td mat-cell *matCellDef="let element">
+                            <input class="form-control" type="text" placeholder="Korea" name="Code{{element.ID}}"
+                                style="width: 300px;" [(ngModel)]="element.Name">
+                        </td>
+                    </ng-container>                   
+                    <ng-container matColumnDef="Description">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                        <td mat-cell *matCellDef="let element">
+                            <textarea class="materialize-textarea" placeholder="Description" style="width: 500px;"
+                                name="Description{{element.ID}}" [(ngModel)]="element.Description"></textarea>
+                        </td>
+                    </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button (click)="ProjectTaskHistorySave(element)"
+                                    class="btn-floating waves-effect waves-light cyan" title="Save">
+                                    <i class="material-icons">save</i>
+                                </button>&nbsp;&nbsp;&nbsp;
+                                <button *ngIf="element.ID>0" (click)="ProjectTaskHistoryDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" style="padding-top: 3px;"
+                                    title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="ProjectTaskHistoryService.DisplayColumns001">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: ProjectTaskHistoryService.DisplayColumns001;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #ProjectTaskHistoryPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="10"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l5">
+                    <h6><b>File <span *ngIf="ProjectFileService.List">{{ProjectFileService.List.length}}
+                                (items)</span></b></h6>
+                </div>
+                <div class="col s12 m12 l6">
+                    <input [(ngModel)]="ProjectFileService.BaseParameter.SearchString" placeholder="Search ..."
+                        class="form-control" (keyup.enter)="ProjectFileSearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="search" (click)="ProjectFileSearch()" class="btn waves-effect waves-light green darken-1"
+                        style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </a>
+                </div>
+                <div class="KhungOverflow">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #ProjectFileSort="matSort"
+                        [dataSource]="ProjectFileService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="ProjectFilePaginator">
+                                    {{
+                                    ProjectFilePaginator.pageSize *
+                                    ProjectFilePaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ProjectTaskID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Task
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <select class="browser-default form-select form-control" name="element.ProjectTaskID" style="width: 400px;"
+                                    [(ngModel)]="element.ProjectTaskID">
+                                    <option *ngFor="let item of ProjectTaskService.List;" [value]="item.ID">
+                                        {{item.Code}}</option>
+                                </select>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Name" name="Name{{element.ID}}"
+                                    [(ngModel)]="element.Name">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>URL</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="URL" name="FileName{{element.ID}}"
+                                    [(ngModel)]="element.FileName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Upload</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input *ngIf="element.ID==0" class="form-control" multiple type="file"
+                                    (change)="ProjectFileChange($event, $event.target.files)">
+                                <a *ngIf="element.ID>0" target="_blank" class="link-primary"
+                                    href="{{element.FileName}}">{{element.FileName}}</a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button (click)="ProjectFileSave(element)"
+                                    class="btn-floating waves-effect waves-light cyan" title="Save">
+                                    <i class="material-icons">save</i>
+                                </button>&nbsp;&nbsp;&nbsp;
+                                <button *ngIf="element.ID>0" (click)="ProjectFileDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" style="padding-top: 3px;"
+                                    title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="ProjectFileService.DisplayColumns001">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: ProjectFileService.DisplayColumns001;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #ProjectFilePaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="10"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="ProjectService.IsShowLoading"></app-loading>

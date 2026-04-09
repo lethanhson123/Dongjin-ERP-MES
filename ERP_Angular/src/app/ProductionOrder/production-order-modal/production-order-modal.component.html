@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="row">
+        <div class="col s12 m12 l8">
+            <h6 class="breadcrumbs-title">
+                Production Order (PO)
+            </h6>
+        </div>
+        <div class="col s12 m12 l1">
+            <label>
+                <input type="checkbox" class="form-check-input" name="Active"
+                    [(ngModel)]="ProductionOrderService.BaseParameter.BaseModel.Active" />
+                <span>Active</span>
+            </label>
+        </div>
+        <div class="col s12 m12 l1">
+            <label>
+                <input type="checkbox" class="form-check-input" name="IsComplete"
+                    [(ngModel)]="ProductionOrderService.BaseParameter.BaseModel.IsComplete" />
+                <span>Complete</span>
+            </label>
+        </div>
+        <div class="col s12 m12 l1">
+            <button title="Save" class="btn waves-effect waves-light cyan" style="width: 100%;" (click)="Save()"><i
+                    class="material-icons">save</i></button>
+        </div>
+        <div class="col s12 m12 l1 right-align-md">
+            <button title="Close" class="btn waves-effect waves-light purple lightrn-1" (click)="Close()">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m12 l3">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <label>ID</label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <input disabled placeholder="ID" [(ngModel)]="ProductionOrderService.BaseParameter.BaseModel.ID"
+                        type="number" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <label>Begin</label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <input [ngModel]="ProductionOrderService.BaseParameter.BaseModel.Date | date:'yyyy-MM-dd'"
+                        style="text-align: right;" (ngModelChange)="Date($event)"
+                        [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <label>End</label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <input [ngModel]="ProductionOrderService.BaseParameter.BaseModel.DateEnd | date:'yyyy-MM-dd'"
+                        style="text-align: right;" (ngModelChange)="DateEnd($event)"
+                        [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+                </div>
+            </div>
+
+        </div>
+        <div class="col s12 m12 l3">
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <label>Code</label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <input placeholder="Code" [(ngModel)]="ProductionOrderService.BaseParameter.BaseModel.Code"
+                        type="text" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <label>Name</label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <input placeholder="Name" [(ngModel)]="ProductionOrderService.BaseParameter.BaseModel.Name"
+                        type="text" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12 l4">
+                    <label>Day Span</label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <input [(ngModel)]="ProductionOrderService.BaseParameter.BaseModel.DaySpan" type="number"
+                        class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m12 l6">
+            <div class="row">
+                <div class="col s4 m4 l4">
+                    <label>From [{{ProductionOrderService.BaseParameter.BaseModel.SupplierName}}]</label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <select class="browser-default form-select form-control"
+                        [(ngModel)]="ProductionOrderService.BaseParameter.BaseModel.SupplierID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4 m4 l4">
+                    <label>To [{{ProductionOrderService.BaseParameter.BaseModel.SupplierName}}]</label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <select class="browser-default form-select form-control"
+                        [(ngModel)]="ProductionOrderService.BaseParameter.BaseModel.CustomerID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4 m4 l4">
+                    <label><a style="cursor: pointer;" class="link-primary" target="_blank"
+                            href="{{URLTemplate}}">(Download Template)</a></label>
+                </div>
+                <div class="col s8 m8 l8">
+                    <input class="form-control" type="file" (change)="ProductionOrderChange($event, $event.target.files)">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="ProductionOrderService.IsShowLoading"></app-loading>

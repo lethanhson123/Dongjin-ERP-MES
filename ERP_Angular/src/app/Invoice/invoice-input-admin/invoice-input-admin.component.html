@@ -1,0 +1,306 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l3">
+                    <h6 class="breadcrumbs-title">
+                        Invoice Input
+                        <span *ngIf="InvoiceInputService.List">({{InvoiceInputService.List.length}} items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l3">
+                    <div style="font-size: 24px;">
+                        Total: <b>{{InvoiceInputService.BaseParameter.Total |
+                            number:
+                            '1.0-3'}} USD</b>
+                    </div>
+                </div>
+                <div class="col s12 m6 l3">
+                    <div style="font-size: 24px;">
+                        Quantity: <b>{{InvoiceInputService.BaseParameter.Sum |
+                            number:
+                            '1.0-3'}}</b>
+                    </div>
+                </div>
+                <div class="col s12 m6 l3 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Invoice">Invoice</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/InvoiceInput" title="Input">Input</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select"
+                        [(ngModel)]="InvoiceInputService.BaseParameter.CompanyID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [ngModel]="InvoiceInputService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+                        style="text-align: right;" (ngModelChange)="DateBegin($event)" (keyup.enter)="InvoiceInputSearch()"
+                        [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+                </div>
+               <div class="col s12 m12 l2">
+                    <input [ngModel]="InvoiceInputService.BaseParameter.DateEnd | date:'yyyy-MM-dd'"
+                        style="text-align: right;" (ngModelChange)="DateEnd($event)" (keyup.enter)="InvoiceInputSearch()"
+                        [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+                </div>
+                <div class="col s12 m12 l5">
+                    <input [(ngModel)]="InvoiceInputService.BaseParameter.SearchString" placeholder="Search by Code ..."
+                        class="form-control" (keyup.enter)="InvoiceInputSearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="search" (click)="InvoiceInputSearch()" class="btn waves-effect waves-light green darken-1"
+                        style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </a>
+                </div>
+                <div class="col s12 m12 l1">
+                    <a title="add" routerLink="/InvoiceInputInfo/0"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>
+                <div class="KhungOverflow70">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #InvoiceInputSort="matSort"
+                        [dataSource]="InvoiceInputService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="InvoiceInputPaginator">
+                                    {{
+                                    InvoiceInputPaginator.pageSize *
+                                    InvoiceInputPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                            <td mat-cell *matCellDef="let element">{{element.ParentID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentName</th>
+                            <td mat-cell *matCellDef="let element">{{element.ParentName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateDate}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserCode}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                            <td mat-cell *matCellDef="let element">{{element.CreateUserName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateDate}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                            <td mat-cell *matCellDef="let element">{{element.UpdateUserName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="RowVersion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                            <td mat-cell *matCellDef="let element">{{element.RowVersion}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="SortOrder">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SortOrder</th>
+                            <td mat-cell *matCellDef="let element">{{element.SortOrder}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                            <td mat-cell *matCellDef="let element">{{element.Active}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="IsFuture">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Future</th>
+                            <td mat-cell *matCellDef="let element">{{element.IsFuture}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="IsSync">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sync</th>
+                            <td mat-cell *matCellDef="let element">{{element.IsSync}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="IsComplete">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Complete</th>
+                            <td mat-cell *matCellDef="let element">{{element.IsComplete}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/InvoiceInputInfo/{{element.ID}}"><b>{{element.Code}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                            <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Display</th>
+                            <td mat-cell *matCellDef="let element">{{element.Display}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                            <td mat-cell *matCellDef="let element">{{element.Description}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                            <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                            <td mat-cell *matCellDef="let element">{{element.FileName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="PurchaseCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Purchase Code</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary"
+                                    routerLink="/InvoiceInputInfo/{{element.ID}}"><b>{{element.PurchaseCode}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateETD">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ETD</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.DateETD |
+                                date:'dd/MM/yyyy'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateETA">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ETA</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.DateETA |
+                                date:'dd/MM/yyyy'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Year">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+                            <td mat-cell *matCellDef="let element">{{element.Year}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Month">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                            <td mat-cell *matCellDef="let element">{{element.Month}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Day">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Day</th>
+                            <td mat-cell *matCellDef="let element">{{element.Day}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="SupplierID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SupplierID</th>
+                            <td mat-cell *matCellDef="let element">{{element.SupplierID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="SupplierName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>From</th>
+                            <td mat-cell *matCellDef="let element">{{element.SupplierName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CustomerID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CustomerID</th>
+                            <td mat-cell *matCellDef="let element">{{element.CustomerID}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="CustomerName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>To</th>
+                            <td mat-cell *matCellDef="let element">{{element.CustomerName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Total">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; font-size: 14px; color: red;">
+                                {{element.Total |
+                                number:
+                                '1.0-3'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="TotalQuantity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Quantity</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; font-size: 14px; color: red;">
+                                {{element.TotalQuantity |
+                                number:
+                                '1.0-3'}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Tax">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tax</th>
+                            <td mat-cell *matCellDef="let element">{{element.Tax}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="TotalTax">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>TotalTax</th>
+                            <td mat-cell *matCellDef="let element">{{element.TotalTax}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Discount">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Discount</th>
+                            <td mat-cell *matCellDef="let element">{{element.Discount}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="TotalDiscount">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>TotalDiscount</th>
+                            <td mat-cell *matCellDef="let element">{{element.TotalDiscount}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="TotalFinal">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Final</th>
+                            <td mat-cell *matCellDef="let element">{{element.TotalFinal}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="Coefficient">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Coefficient</th>
+                            <td mat-cell *matCellDef="let element">{{element.Coefficient}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <a *ngIf="element.ID>0" (click)="InvoiceInputDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" style="padding-top: 3px;"
+                                    title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="InvoiceInputService.DisplayColumns008">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: InvoiceInputService.DisplayColumns008;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #InvoiceInputPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="InvoiceInputService.IsShowLoading"></app-loading>

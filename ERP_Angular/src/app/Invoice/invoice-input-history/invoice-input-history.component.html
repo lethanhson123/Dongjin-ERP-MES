@@ -1,0 +1,209 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        Invoice Input History
+                        <span *ngIf="InvoiceInputHistoryService.List">({{InvoiceInputHistoryService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Invoice">Invoice</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/InvoiceInputHistory" title="Invoice Input History">Invoice Input History</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l2">
+                    <select class="browser-default form-select form-control"
+                        [(ngModel)]="InvoiceInputHistoryService.BaseParameter.CompanyID"
+                        (change)="InvoiceInputHistorySearch()">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}</option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l9">
+                    <input [(ngModel)]="InvoiceInputHistoryService.BaseParameter.SearchString" placeholder="Search ..."
+                        class="form-control" (keyup.enter)="InvoiceInputHistorySearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="search" (click)="InvoiceInputHistorySearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+                <div class="KhungOverflow">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #InvoiceInputHistorySort="matSort"
+                        [dataSource]="InvoiceInputHistoryService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="InvoiceInputHistoryPaginator">
+                                    {{
+                                    InvoiceInputHistoryPaginator.pageSize *
+                                    InvoiceInputHistoryPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ID}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="SupplierID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+                            <td mat-cell *matCellDef="let element" style="width: 200px;">
+                                <select class="browser-default form-select form-control"
+                                    [(ngModel)]="element.SupplierID">
+                                    <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                                        {{item.Name}}</option>
+                                </select>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active (Arrival)
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Invoice" name="Code{{element.ID}}"
+                                    [(ngModel)]="element.Code">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Container</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Container"
+                                    name="Name{{element.ID}}" [(ngModel)]="element.Name">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>BOL</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="BOL" name="Display{{element.ID}}"
+                                    [(ngModel)]="element.Display">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Description"
+                                    name="Description{{element.ID}}" [(ngModel)]="element.Description">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Note" name="Note{{element.ID}}"
+                                    [(ngModel)]="element.Note">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="FileName"
+                                    name="FileName{{element.ID}}" [(ngModel)]="element.FileName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateATA">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ATA (Dự kiến)</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input [ngModel]="element.DateATA | date:'yyyy-MM-dd'" style="text-align: right;"
+                                    (ngModelChange)="DateDateATA(element, $event)"
+                                    [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                    autocomplete="off">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateETD">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ETD</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input [ngModel]="element.DateETD | date:'yyyy-MM-dd'" style="text-align: right;"
+                                    (ngModelChange)="DateDateETD(element, $event)"
+                                    [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                    autocomplete="off">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateETA">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ETA</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input [ngModel]="element.DateETA | date:'yyyy-MM-dd'" style="text-align: right;"
+                                    (ngModelChange)="DateDateETA(element, $event)"
+                                    [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                    autocomplete="off">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateFT">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>FT</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input [ngModel]="element.DateFT | date:'yyyy-MM-dd'" style="text-align: right;"
+                                    (ngModelChange)="DateDateFT(element, $event)"
+                                    [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                    autocomplete="off">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="DateReal">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual (Thực tế)</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input [ngModel]="element.DateReal | date:'yyyy-MM-dd'" style="text-align: right;"
+                                    (ngModelChange)="DateDateReal(element, $event)"
+                                    [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                                    autocomplete="off">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <a (click)="InvoiceInputHistorySave(element)" class="btn waves-effect waves-light cyan"
+                                    title="Save">
+                                    <i class="material-icons">save</i>
+                                </a>&nbsp;&nbsp;&nbsp;
+                                <a *ngIf="element.ID>0" (click)="InvoiceInputHistoryDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="InvoiceInputHistoryService.DisplayColumns001">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: InvoiceInputHistoryService.DisplayColumns001;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #InvoiceInputHistoryPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="InvoiceInputHistoryService.IsShowLoading"></app-loading>

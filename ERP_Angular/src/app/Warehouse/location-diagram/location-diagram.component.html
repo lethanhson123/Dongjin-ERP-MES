@@ -1,0 +1,112 @@
+<style>
+    table tbody tr:hover {
+        background-color: transparent;
+    }
+</style>
+
+<hr />
+<div class="row">
+    <div class="col s12 m12 l1">
+        <select class="browser-default form-select form-control" (change)="CompanyChange()"
+            [(ngModel)]="CategoryLayerService.BaseParameter.CompanyID">
+            <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                {{item.Code}}</option>
+        </select>
+    </div>
+    <div class="col s12 m12 l1">
+        <select class="browser-default form-select" (change)="CategoryDepartmentChange()"
+            [(ngModel)]="CategoryLayerService.BaseParameter.CategoryDepartmentID">
+            <option *ngFor="let item of CategoryDepartmentService.ListFilter;" [value]="item.ID">
+                {{item.Name}}
+            </option>
+        </select>
+    </div>
+    <div class="col s12 m12 l2">
+        <input [(ngModel)]="CategoryLayerService.BaseParameter.SearchString" placeholder="Search ..."
+            class="form-control" (keyup.enter)="CategoryLocationMaterialSearch()">
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="Active" (change)="CategoryLayerActiveChange()"
+                [(ngModel)]="WarehouseInputDetailBarcodeService.BaseParameter.Active" />
+            <span>Open / Close</span>
+        </label>
+    </div>
+    <div class="col s12 m12 l1">
+        <button title="Search" (click)="CategoryLocationMaterialSearch()"
+            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+            <i class="material-icons">search</i>
+        </button>
+    </div>
+    <div class="col s12 m12 l1">
+        <button title="Sync" (click)="CreateAutoAsync()" class="btn waves-effect waves-light cyan darken-1"
+            style="width: 100%;">
+            <i class="material-icons">sync</i>
+        </button>
+    </div>
+    <div class="col s12 m12 l5 right-align-md">
+        <div class="col s12 m12 l1" *ngFor="let CategoryLayer of CategoryLayerService.ListFilter;">
+            <button *ngIf="CategoryLayer.Active==false" title="{{CategoryLayer.Name}}"
+                class="btn waves-effect waves-light dark darken-1" (click)="CategoryLayerView(CategoryLayer)"
+                style="width: 100%; font-size: 12px;">{{CategoryLayer.Code}}</button>
+            <button *ngIf="CategoryLayer.Active==true" title="{{CategoryLayer.Name}}"
+                class="btn waves-effect waves-light green darken-1" (click)="CategoryLayerView(CategoryLayer)"
+                style="width: 100%; font-size: 12px;">{{CategoryLayer.Code}}</button>
+        </div>
+    </div>
+</div>
+<div class="KhungOverflowParent">
+    <div class="KhungOverflowChild">
+        <div class="KhungOverflow1">
+            <table>
+                <tbody>
+                    <tr>
+                        <td *ngFor="let CategoryRack of CategoryRackService.ListFilter;" style="vertical-align: top;">
+                            <div style="width: 200px;">
+                                <div style="font-size: 20px; text-align: center; font-weight: bold;">
+                                    {{CategoryRack.Name}}
+                                </div>
+                                <div class="row"
+                                    *ngFor="let CategoryLocation of CategoryLocationSearch001(CategoryRack);">
+                                    <div class="col s12 m12 l12"
+                                        *ngIf="CategoryLocation.ParentID==CategoryRack.ID && CategoryLocation.CategoryLayerID==CategoryLayerService.BaseParameter.BaseModel.ID"
+                                        style="height: 50px; border: #000000 2px solid; cursor: pointer; border-bottom-width: 0px; padding: 0px; text-align: center;"
+                                        [style.backgroundColor]="(CategoryLocation.IsTemporary) ? '#b6b6b6' : ''"
+                                        [style.height]="(CategoryLocation.Active) ? '1000px' : '50px'">
+                                        <a style="cursor: pointer;" class="link-primary"
+                                            (click)="CategoryLocationModal(CategoryLocation)"><b>{{CategoryLocation.Name}}</b></a>
+                                        <table>
+                                            <thead (click)="CategoryLocationActiveChange(CategoryLocation)">
+                                                <th style="font-size: 10px;">Part No</th>
+                                                <th style="font-size: 10px;"></th>
+                                            </thead>
+                                            <tbody [style.display]="(CategoryLocation.Active) ? 'block' : 'none'">
+                                                <tr
+                                                    *ngFor="let CategoryLocationMaterial of CategoryLocationMaterialSearch001(CategoryLocation);">
+                                                    <td *ngIf="CategoryLocationMaterial.ParentName==CategoryLocation.Name"
+                                                        [style.color]="(CategoryLocationMaterial.Active==true) ? 'green' : 'red'">
+                                                        <div (click)="WarehouseInputDetailBarcodeModal(CategoryLocationMaterial)"
+                                                            *ngIf="CategoryLocationMaterial.Name">
+                                                            {{CategoryLocationMaterial.Name}}</div>
+                                                    </td>
+                                                    <td *ngIf="CategoryLocationMaterial.ParentID==CategoryLocation.ID"
+                                                        [style.color]="(CategoryLocationMaterial.Active==true) ? 'green' : 'red'"
+                                                        style="text-align: right;">
+                                                        <div
+                                                            (click)="WarehouseInputDetailBarcodeModal(CategoryLocationMaterial)">
+                                                            {{CategoryLocationMaterial.Count | number:'1.0-0'}}</div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="CategoryLayerService.IsShowLoading"></app-loading>

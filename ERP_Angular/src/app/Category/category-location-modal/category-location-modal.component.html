@@ -1,0 +1,417 @@
+<div class="row">
+    <div class="col s12 m12 l7">
+        <h6>Location</h6>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="Active"
+                [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.Active" />
+            <span>Active</span>
+        </label>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="IsTemporary"
+                [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.IsTemporary" />
+            <span>Temporary</span>
+        </label>
+    </div>
+    <div class="col s12 m12 l3 right-align-md">
+        <button title="Save" class="btn waves-effect waves-light cyan" style="margin-right: 10px;" (click)="Save()"><i
+                class="material-icons">save</i></button>
+        <button title="Copy" class="btn waves-effect waves-light cyan" style="margin-right: 10px;" (click)="Copy()"><i
+                class="material-icons">content_copy</i></button>
+        <button title="Add" class="btn waves-effect waves-light green" style="margin-right: 10px;" (click)="Add()"><i
+                class="material-icons">add</i></button>
+        <button title="Print" class="btn waves-effect waves-light green" style="margin-right: 10px;"
+            (click)="Print()"><i class="material-icons">print</i></button>
+        <button title="Close" class="btn waves-effect waves-light purple lightrn-1" (click)="Close()">
+            <i class="material-icons">close</i>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>ID</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="ID" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.ID"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Name</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Name" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.Name" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Code</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Code" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.Code" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>IP Address</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="IP Address" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.Display" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Sort Order</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="SortOrder" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.SortOrder"
+                    type="number" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="col s4 m4 l4">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Height (m)</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Height" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.Height"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Width (m)</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Width" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.Width"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Length (m)</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Length" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.Length"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Weight (kg)</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Weight" [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.Weight"
+                    type="number" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="col s4 m4 l4">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Company [{{CategoryLocationService.BaseParameter.BaseModel.CompanyName}}]</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select form-control" (change)="CompanyChange()"
+                    [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.CompanyID">
+                    <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+         <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Department [{{CategoryLocationService.BaseParameter.BaseModel.CategoryDepartmentName}}]</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select form-control" (change)="CategoryDepartmentChange()"
+                    [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.CategoryDepartmentID">
+                    <option *ngFor="let item of CategoryDepartmentService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Rack [{{CategoryLocationService.BaseParameter.BaseModel.ParentName}}]</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select form-control"
+                    [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.ParentID">
+                    <option *ngFor="let item of CategoryRackService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Floor [{{CategoryLocationService.BaseParameter.BaseModel.CategoryLayerName}}]</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select form-control"
+                    [(ngModel)]="CategoryLocationService.BaseParameter.BaseModel.CategoryLayerID">
+                    <option *ngFor="let item of CategoryLayerService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>QR</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <img width="100" height="100" [src]="CategoryLocationService.BaseParameter.BaseModel.FileName">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l11">
+        <input [(ngModel)]="CategoryLocationMaterialService.BaseParameter.SearchString" placeholder="Search ..."
+            class="form-control" (keyup.enter)="CategoryLocationMaterialSearch()">
+    </div>
+    <div class="col s12 m12 l1">
+        <button title="search" (click)="CategoryLocationMaterialSearch()"
+            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+            <i class="material-icons">search</i>
+        </button>
+    </div>
+    <div class="KhungOverflow">
+        <table *ngIf="!NotificationService.IsMobile" mat-table matSort #CategoryLocationMaterialSort="matSort"
+            [dataSource]="CategoryLocationMaterialService.DataSource">
+            <ng-container matColumnDef="No">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    No
+                </th>
+                <td mat-cell *matCellDef="let element; index as i;">
+                    <div *ngIf="CategoryLocationMaterialPaginator">
+                        {{
+                        CategoryLocationMaterialPaginator.pageSize *
+                        CategoryLocationMaterialPaginator.pageIndex + i + 1
+                        }}
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="ID">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.ID}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="ParentID">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="ParentID" name="ParentID{{element.ID}}"
+                        [(ngModel)]="element.ParentID">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="ParentName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentName</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="ParentName" name="ParentName{{element.ID}}"
+                        [(ngModel)]="element.ParentName">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CreateDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="CreateDate" name="CreateDate{{element.ID}}"
+                        [(ngModel)]="element.CreateDate">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CreateUserID">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="CreateUserID" name="CreateUserID{{element.ID}}"
+                        [(ngModel)]="element.CreateUserID">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CreateUserCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="CreateUserCode"
+                        name="CreateUserCode{{element.ID}}" [(ngModel)]="element.CreateUserCode">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CreateUserName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="CreateUserName"
+                        name="CreateUserName{{element.ID}}" [(ngModel)]="element.CreateUserName">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="UpdateDate" name="UpdateDate{{element.ID}}"
+                        [(ngModel)]="element.UpdateDate">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateUserID">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="UpdateUserID" name="UpdateUserID{{element.ID}}"
+                        [(ngModel)]="element.UpdateUserID">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateUserCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="UpdateUserCode"
+                        name="UpdateUserCode{{element.ID}}" [(ngModel)]="element.UpdateUserCode">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateUserName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="UpdateUserName"
+                        name="UpdateUserName{{element.ID}}" [(ngModel)]="element.UpdateUserName">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="RowVersion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="RowVersion" name="RowVersion{{element.ID}}"
+                        [(ngModel)]="element.RowVersion">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="SortOrder">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>SortOrder</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="SortOrder" name="SortOrder{{element.ID}}"
+                        [(ngModel)]="element.SortOrder">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Active">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                <td mat-cell *matCellDef="let element">
+                    <label>
+                        <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                            [(ngModel)]="element.Active">
+                        <span></span>
+                    </label>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Code">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="Code" name="Code{{element.ID}}"
+                        [(ngModel)]="element.Code">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="Name" name="Name{{element.ID}}"
+                        [(ngModel)]="element.Name">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Display">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Display</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="Display" name="Display{{element.ID}}"
+                        [(ngModel)]="element.Display">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="Description" name="Description{{element.ID}}"
+                        [(ngModel)]="element.Description">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Note">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="Note" name="Note{{element.ID}}"
+                        [(ngModel)]="element.Note">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="FileName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="FileName" name="FileName{{element.ID}}"
+                        [(ngModel)]="element.FileName">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CompanyID">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyID</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="CompanyID" name="CompanyID{{element.ID}}"
+                        [(ngModel)]="element.CompanyID">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CompanyName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>CompanyName</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="CompanyName" name="CompanyName{{element.ID}}"
+                        [(ngModel)]="element.CompanyName">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="MaterialD">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>MaterialD</th>
+                <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" placeholder="MaterialD" name="MaterialD{{element.ID}}"
+                        [(ngModel)]="element.MaterialD">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="MaterialName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Part No</th>
+                <td mat-cell *matCellDef="let element" style="min-width: 400px;">
+                    <div *ngIf="element.ID>0">
+                        <a style="cursor: pointer;" class="link-primary"
+                            (click)="MaterialModal(element)"><b>{{element.MaterialName}}</b></a>
+                    </div>
+                    <div *ngIf="element.ID==0">
+                        <mat-select class="browser-default form-select" style="height: 40px; border: 1px solid #000000;"
+                            [(ngModel)]="element.MaterialID">
+                            <input placeholder="Search..." class="form-control"
+                                (keyup)="MaterialFilter($event.target.value)">
+                            <mat-option *ngFor="let item of MaterialService.ListFilter01" [value]="item.ID"
+                                style="font-size: 16px;">
+                                {{item.Code}} </mat-option>
+                        </mat-select>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Count">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Count</th>
+                <td mat-cell *matCellDef="let element" style="text-align: right;">
+                    {{element.Count}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Save">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <a (click)="CategoryLocationMaterialSave(element)" class="btn waves-effect waves-light cyan"
+                        title="Save">
+                        <i class="material-icons">save</i>
+                    </a>&nbsp;&nbsp;&nbsp;
+                    <a *ngIf="element.ID>0" (click)="CategoryLocationMaterialDelete(element)"
+                        class="btn-floating waves-effect waves-light red" title="Delete">
+                        <i class="material-icons">delete_outline</i>
+                    </a>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="CategoryLocationMaterialService.DisplayColumns001">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: CategoryLocationMaterialService.DisplayColumns001;">
+            </tr>
+        </table>
+        <mat-paginator *ngIf="!NotificationService.IsMobile" #CategoryLocationMaterialPaginator="matPaginator"
+            [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+    </div>
+</div>
+<app-loading *ngIf="CategoryLocationService.IsShowLoading"></app-loading>

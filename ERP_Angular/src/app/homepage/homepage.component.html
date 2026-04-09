@@ -1,0 +1,39 @@
+<br />
+<div class="row">
+    <div class="container">
+        <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m6 l6">
+                        <h6 class="breadcrumbs-title">
+                            Homepage
+                        </h6>
+                    </div>
+                    <div class="col s12 m6 l6 right-align-md">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m12 l3" *ngFor="let itemParent of CategoryMenuService.ListParent;">
+            <div class="col s12 m12 l12 grey darken-4"
+                style="cursor: pointer; padding: 2px; padding-top: 4px; margin: 3px; color: white;"
+                (click)="MenuClick(itemParent)">
+                <!-- <div class="col s3 m3 l3">
+                    <i class="material-icons">{{itemParent.Display}}</i>
+                </div> -->
+                <div class="col s12 m12 l12">
+                    <b>{{itemParent.Name}}</b>
+                </div>
+                <div class="row" *ngIf="itemParent.Active">
+                    <div class="col s12 m12 l12" *ngFor="let itemChild of itemParent.ListChild; index as i;"
+                        style="background-color: white;">
+                        <a class="link-primary" routerLink="/{{itemChild.Code}}" title="{{itemChild.Name}}"
+                            style="font-size: 16px;">
+                            {{i+1}}. {{itemChild.Name}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+import { Base } from "./Base.model";
+
+export class BaseParameter extends Base {
+    BaseModel?: Base;
+    List?: Base[];
+    ListID?: number[];
+    Page?: number;
+    PageSize?: number;
+    SearchString?: string;
+    SearchStringFilter?: string;
+    SearchStringFilter01?: string;
+    SearchStringFilter02?: string;
+    Active?: boolean;
+    ParentID?: number;
+    Year?: number;
+    Month?: number;
+    Day?: number;
+    Quarter?: number;
+    UserID?: number;
+    UserName?: string;
+    Password?: string;
+    Token?: string;
+    FileName?: string;
+    Longitude?: string;
+    Latitude?: string;
+    UpdateUserID?: number;
+    Active001?: boolean;
+    Active002?: boolean;
+    Active003?: boolean;
+    Date?: Date;
+    DateBegin?: Date;
+    DateEnd?: Date;
+    Action?: number;
+    Count?: number;
+    Total?: number;
+    Sum?: number;
+    CategoryDepartmentID?: number;
+    CategoryPositionID?: number;
+    LanguageID?: number;
+    CompanyID?: number;
+    IsComplete?: boolean;
+    IsShow?: boolean;
+    GeneralID?: number;
+    Barcode?: string;
+    Event?: any;
+}

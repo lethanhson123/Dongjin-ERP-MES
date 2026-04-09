@@ -1,0 +1,127 @@
+<div class="row">
+    <div class="col s12 m12 l12">
+        <h5>Scan Location <span *ngIf="WarehouseInputDetailBarcodeService.BaseParameter.ListChild"
+                style="font-size: 24px;">({{WarehouseInputDetailBarcodeService.BaseParameter.ListChild.length}}
+                items)</span></h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <button title="Save" class="btn waves-effect waves-light cyan" style="width: 100%;" (click)="Save()"><i
+                class="material-icons">save</i> Save</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <label>Department</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <select class="browser-default form-select"
+            [(ngModel)]="WarehouseInputDetailBarcodeService.BaseParameter.CategoryDepartmentID">
+            <option *ngFor="let item of CategoryDepartmentService.ListFilter;" [value]="item.ID">
+                {{item.CompanyName}} - {{item.Name}}</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <label>Location</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <input #SearchString placeholder="Location"
+            [(ngModel)]="WarehouseInputDetailBarcodeService.BaseParameter.SearchString" type="text" class="form-control"
+            (keyup.enter)="WarehouseInputDetailBarcodeSearchString()">
+    </div>
+</div>
+<div class="row">
+    <div class="col s4 m4 l4">
+        <label>Barcode</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <input #SearchStringFilter placeholder="Barcode"
+            [(ngModel)]="WarehouseInputDetailBarcodeService.BaseParameter.SearchStringFilter" type="text"
+            class="form-control" (keyup.enter)="WarehouseInputDetailBarcodeSearchStringFilter()">
+    </div>
+</div>
+<!-- <div class="row">
+    <div class="col s4 m4 l4">
+        <label>Size</label>
+    </div>
+    <div class="col s8 m8 l8">
+        <input #SearchStringFilter placeholder="Size"
+            [(ngModel)]="WarehouseInputDetailBarcodeService.BaseParameter.PageSize" type="number" class="form-control">
+    </div>
+</div> -->
+<div class="KhungOverflow">
+    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #WarehouseInputDetailBarcodeSort="matSort"
+        [dataSource]="WarehouseInputDetailBarcodeService.DataSource">
+        <ng-container matColumnDef="No">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                No
+            </th>
+            <td mat-cell *matCellDef="let element; index as i;">
+                <div *ngIf="WarehouseInputDetailBarcodePaginator">
+                    {{
+                    WarehouseInputDetailBarcodePaginator.pageSize *
+                    WarehouseInputDetailBarcodePaginator.pageIndex + i + 1
+                    }}
+                </div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="Barcode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+            <td mat-cell *matCellDef="let element">
+                <b>{{element.Barcode}}</b>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="CategoryLocationName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.CategoryLocationName}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="PageSize">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Size</th>
+            <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="number" placeholder="Size" name="PageSize{{element.ID}}"
+                    [(ngModel)]="element.PageSize">
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="WarehouseInputDetailBarcodeService.DisplayColumns024">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: WarehouseInputDetailBarcodeService.DisplayColumns024;">
+        </tr>
+    </table>
+    <mat-paginator *ngIf="!NotificationService.IsMobile" #WarehouseInputDetailBarcodePaginator="matPaginator"
+        [pageSizeOptions]="[10,20,50,100]" [pageSize]="1000000" [showFirstLastButtons]></mat-paginator>
+
+    <table *ngIf="NotificationService.IsMobile" mat-table matSort #WarehouseInputDetailBarcodeSort="matSort"
+        [dataSource]="WarehouseInputDetailBarcodeService.DataSource">
+        <ng-container matColumnDef="No">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                List
+            </th>
+            <td mat-cell *matCellDef="let element; index as i;">
+                <div class="row">
+                    Barcode: <b>{{element.Barcode}}</b>
+                </div>
+                <div class="row">
+                    Location: <b>{{element.CategoryLocationName}}</b>
+                </div>
+                <div class="row">
+                    Size: <input class="form-control" type="number" placeholder="Size" name="PageSize{{element.ID}}"
+                        [(ngModel)]="element.PageSize" style="width: 200px;">
+                </div>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="WarehouseInputDetailBarcodeService.DisplayColumnsMobile">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: WarehouseInputDetailBarcodeService.DisplayColumnsMobile;">
+        </tr>
+    </table>
+    <mat-paginator *ngIf="NotificationService.IsMobile" #WarehouseInputDetailBarcodePaginator="matPaginator"
+        [pageSizeOptions]="[10,20,50,100]" [pageSize]="1000000" [showFirstLastButtons]></mat-paginator>
+
+
+</div>
+<app-loading *ngIf="WarehouseInputDetailBarcodeService.IsShowLoading"></app-loading>

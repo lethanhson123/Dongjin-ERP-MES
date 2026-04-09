@@ -1,0 +1,231 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        Production Tracking
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="ProductionOrder">Production Order</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/ProductionTracking" title="Production Tracking">Production Tracking</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select form-control"
+                        [(ngModel)]="ReportService.BaseParameter.CompanyID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}</option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l1">
+                    <input [ngModel]="ReportService.BaseParameter.Date | date:'yyyy-MM-dd'"
+                        style="text-align: right;" (ngModelChange)="ReportDate($event)"
+                        [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [(ngModel)]="ReportService.BaseParameter.Code" placeholder="Semi-Finished"
+                        class="form-control" (keyup.enter)="ReportSearch()">
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [(ngModel)]="ReportService.BaseParameter.Name" placeholder="Finish Goods"
+                        class="form-control" (keyup.enter)="ReportSearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <input [(ngModel)]="ReportService.BaseParameter.Display" placeholder="ECN" class="form-control" (keyup.enter)="ReportSearch()">
+                </div>
+                <div class="col s12 m12 l2">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="Active"
+                            [(ngModel)]="ReportService.BaseParameter.Active" />
+                        <span>Production / All</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="search" (click)="ReportSearch()" style="width: 100%;"
+                        class="btn waves-effect waves-light green darken-1">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Excel" (click)="ReportExcel()" class="btn waves-effect waves-light green darken-1"
+                        style="width: 100%;">
+                        <i class="material-icons">cloud_download</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Sync" (click)="ReportSync()" style="width: 100%;"
+                        class="btn waves-effect waves-light cyan darken-1">
+                        <i class="material-icons">sync</i>
+                    </button>
+                </div>
+                <div class="KhungOverflow70" #TABLE>
+                    <table #table *ngIf="!NotificationService.IsMobile" mat-table matSort #ReportDetailSort="matSort"
+                        class="TableMaterial" [dataSource]="ReportDetailService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="ReportDetailPaginator">
+                                    {{
+                                    ReportDetailPaginator.pageSize *
+                                    ReportDetailPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ID}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ParentID}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods</th>
+                            <td mat-cell *matCellDef="let element">
+                                <b>{{element.Name}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ECN</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Display}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Semi-Finished</th>
+                            <td mat-cell *matCellDef="let element">
+                                <b>{{element.Code}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Lead No / SPST</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Active}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity31">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>FG Ready</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; font-weight: bold;">
+                                {{element.Quantity31}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity30">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+                            <td mat-cell *matCellDef="let element"
+                                style="text-align: right; font-weight: bold; color: green;">
+                                {{element.Quantity30}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>HOOK_RACK</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.Quantity01}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SPST</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.Quantity02}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity05">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>KOMAX (C02)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.Quantity05}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity06">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Complete (C02)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b [style.color]="(element.Quantity13) ? 'red' : ''">{{element.Quantity06}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>LP (C05)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.Quantity10}}
+                            </td>
+                        </ng-container>
+                         <ng-container matColumnDef="Quantity13">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Complete (C05)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.Quantity13}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity11">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Left (L)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.Quantity11}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity12">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Right (R)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.Quantity12}}
+                            </td>
+                        </ng-container>                       
+                        <ng-container matColumnDef="Quantity20">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SP/ST (C09)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                {{element.Quantity20}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity21">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Complete (C09)</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.Quantity21}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods List</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Description}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SPST</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Note}}
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="ReportDetailService.DisplayColumns006">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: ReportDetailService.DisplayColumns006;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #ReportDetailPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="20"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="ReportService.IsShowLoading"></app-loading>

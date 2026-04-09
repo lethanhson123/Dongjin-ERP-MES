@@ -1,0 +1,310 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l4">
+                    <h6 class="breadcrumbs-title">
+                        Tolerance
+                        <span *ngIf="CategoryToleranceService.List">({{CategoryToleranceService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m12 l4">                   
+                </div>
+                <div class="col s12 m6 l4 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Category">Category</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/CategoryTolerance" title="Tolerance">Tolerance</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l2">
+                    <select class="browser-default form-select form-control"
+                        [(ngModel)]="CategoryToleranceService.BaseParameter.CompanyID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}</option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l9">
+                    <input [(ngModel)]="CategoryToleranceService.BaseParameter.SearchString" placeholder="Search ..."
+                        class="form-control" (keyup.enter)="CategoryToleranceSearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="search" (click)="CategoryToleranceSearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+                <div class="KhungOverflow">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #CategoryToleranceSort="matSort"
+                        [dataSource]="CategoryToleranceService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="CategoryTolerancePaginator">
+                                    {{
+                                    CategoryTolerancePaginator.pageSize *
+                                    CategoryTolerancePaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ID}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+                            <td mat-cell *matCellDef="let element">
+
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+                            <td mat-cell *matCellDef="let element">
+                                <select class="browser-default form-select form-control" [(ngModel)]="element.ParentID">
+                                    <option *ngFor="let item of CategoryDepartmentService.ListFilter;"
+                                        [value]="item.ID">
+                                        {{item.Name}}</option>
+                                </select>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="CreateDate"
+                                    name="CreateDate{{element.ID}}" [(ngModel)]="element.CreateDate">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="CreateUserID"
+                                    name="CreateUserID{{element.ID}}" [(ngModel)]="element.CreateUserID">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="CreateUserCode"
+                                    name="CreateUserCode{{element.ID}}" [(ngModel)]="element.CreateUserCode">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CreateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="CreateUserName"
+                                    name="CreateUserName{{element.ID}}" [(ngModel)]="element.CreateUserName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="UpdateDate"
+                                    name="UpdateDate{{element.ID}}" [(ngModel)]="element.UpdateDate">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="UpdateUserID"
+                                    name="UpdateUserID{{element.ID}}" [(ngModel)]="element.UpdateUserID">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="UpdateUserCode"
+                                    name="UpdateUserCode{{element.ID}}" [(ngModel)]="element.UpdateUserCode">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="UpdateUserName"
+                                    name="UpdateUserName{{element.ID}}" [(ngModel)]="element.UpdateUserName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="RowVersion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="RowVersion"
+                                    name="RowVersion{{element.ID}}" [(ngModel)]="element.RowVersion">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="SortOrder">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sort Order</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="SortOrder"
+                                    name="SortOrder{{element.ID}}" [(ngModel)]="element.SortOrder">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Count">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Count</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Count" name="Count{{element.ID}}"
+                                    [(ngModel)]="element.Count">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Active
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>단자명</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="단자명" name="Code{{element.ID}}"
+                                    [(ngModel)]="element.Code">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>재질</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="재질" name="Name{{element.ID}}"
+                                    [(ngModel)]="element.Name">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Display">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SEAL</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="SEAL"
+                                    name="Display{{element.ID}}" [(ngModel)]="element.Display">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Description"
+                                    name="Description{{element.ID}}" [(ngModel)]="element.Description">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="Note" name="Note{{element.ID}}"
+                                    [(ngModel)]="element.Note">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="FileName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="text" placeholder="FileName"
+                                    name="FileName{{element.ID}}" [(ngModel)]="element.FileName">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CompanyName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CompanyName}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MESID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>MESID</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="MESID" name="MESID{{element.ID}}"
+                                    [(ngModel)]="element.MESID">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Begin">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Begin</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="Begin" name="Begin{{element.ID}}"
+                                    [(ngModel)]="element.Begin">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="SQ">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SQ</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="SQ" name="SQ{{element.ID}}"
+                                    [(ngModel)]="element.SQ">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="End">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>End</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="End" name="End{{element.ID}}"
+                                    [(ngModel)]="element.End">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="CCH"
+                                    name="CCH1{{element.ID}}" [(ngModel)]="element.CCH1">
+                            </td>
+                        </ng-container>
+                         <ng-container matColumnDef="CCW1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="CCW"
+                                    name="CCW1{{element.ID}}" [(ngModel)]="element.CCW1">
+                            </td>
+                        </ng-container>
+                         <ng-container matColumnDef="ICH1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="ICH"
+                                    name="ICH1{{element.ID}}" [(ngModel)]="element.ICH1">
+                            </td>
+                        </ng-container>
+                         <ng-container matColumnDef="ICW1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW</th>
+                            <td mat-cell *matCellDef="let element">
+                                <input class="form-control" type="number" placeholder="ICW"
+                                    name="ICW1{{element.ID}}" [(ngModel)]="element.ICW1">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Save">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <a (click)="CategoryToleranceSave(element)" class="btn waves-effect waves-light cyan"
+                                    title="Save">
+                                    <i class="material-icons">save</i>
+                                </a>&nbsp;&nbsp;&nbsp;
+                                <a *ngIf="element.ID>0" (click)="CategoryToleranceDelete(element)"
+                                    class="btn-floating waves-effect waves-light red" title="Delete">
+                                    <i class="material-icons">delete_outline</i>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="CategoryToleranceService.DisplayColumns001">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: CategoryToleranceService.DisplayColumns001;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #CategoryTolerancePaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="CategoryToleranceService.IsShowLoading"></app-loading>

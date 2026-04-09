@@ -1,0 +1,382 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        BOM Compare
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="Material + BOM">Material + BOM</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/BOMCompare" title="BOM Compare">BOM Compare</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="col s12 m12 l1">
+                <select class="browser-default form-select form-control"
+                    [(ngModel)]="BOMCompareService.BaseParameter.CompanyID">
+                    <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}</option>
+                </select>
+            </div>
+            <div class="col s12 m12 l1">
+                <label>From</label>
+            </div>
+            <div class="col s12 m12 l1">
+                <select class="browser-default form-select" [(ngModel)]="BOMCompareService.BaseParameter.Month">
+                    <option *ngFor="let item of BOMCompareService.ListYear;" [value]="item.SortOrder">
+                        {{item.Name}}
+                    </option>
+                </select>
+            </div>
+            <div class="col s12 m12 l1">
+                <label>To</label>
+            </div>
+            <div class="col s12 m12 l1">
+                <select class="browser-default form-select" [(ngModel)]="BOMCompareService.BaseParameter.Year">
+                    <option *ngFor="let item of BOMCompareService.ListYear;" [value]="item.SortOrder">
+                        {{item.Name}}
+                    </option>
+                </select>
+            </div>
+            <div class="col s12 m12 l3">
+                <input [(ngModel)]="BOMCompareService.BaseParameter.SearchString" placeholder="Search ..."
+                    class="form-control" (keyup.enter)="BOMCompareSearch()">
+            </div>
+            <div class="col s12 m12 l2">
+                <label>
+                    <input type="checkbox" class="form-check-input" name="Active"
+                        [(ngModel)]="BOMCompareService.BaseParameter.Active" />
+                    <span>GAP > 0</span>
+                </label>
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="search" (click)="BOMCompareSearch()" class="btn waves-effect waves-light green darken-1"
+                    style="width: 100%;">
+                    <i class="material-icons">search</i>
+                </button>
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="Sync" (click)="CreateAutoAsync()" class="btn waves-effect waves-light cyan darken-1"
+                    style="width: 100%;">
+                    <i class="material-icons">sync</i> Sync
+                </button>
+            </div>
+            <div class="KhungOverflow">
+                <table *ngIf="!NotificationService.IsMobile" mat-table matSort #BOMCompareSort="matSort"
+                    [dataSource]="BOMCompareService.DataSource">
+                    <ng-container matColumnDef="No">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            No
+                        </th>
+                        <td mat-cell *matCellDef="let element; index as i;">
+                            <div *ngIf="BOMComparePaginator">
+                                {{
+                                BOMComparePaginator.pageSize *
+                                BOMComparePaginator.pageIndex + i + 1
+                                }}
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                        <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Code">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary"
+                                (click)="MaterialModal(element.ParentID)"><b>{{element.Code}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="MaterialName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary"
+                                (click)="MaterialModal(element.MaterialID)"><b>{{element.MaterialName}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN01">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>01 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID01}}"><b>{{element.ECN01}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note01">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note01}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date01">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date01 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity01">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity01 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP01">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP01>0) ? 'green' : 'red'">
+                            {{element.QuantityGAP01 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN02">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>02 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID02}}"><b>{{element.ECN02}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note02">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note02}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date02">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date02 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity02">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity02 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP02">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP02>0) ? 'green' : 'red'">{{element.QuantityGAP02 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN03">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>03 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                             <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID03}}"><b>{{element.ECN03}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note03">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note03}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date03">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date03 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity03">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity03 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP03">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP03>0) ? 'green' : 'red'">{{element.QuantityGAP03 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN04">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>04 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID04}}"><b>{{element.ECN04}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note04">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note04}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date04">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date04 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity04">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity04 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP04">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP04>0) ? 'green' : 'red'">{{element.QuantityGAP04 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN05">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>05 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID05}}"><b>{{element.ECN05}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note05">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note05}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date05">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date05 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity05">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity05 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP05">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP05>0) ? 'green' : 'red'">{{element.QuantityGAP05 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN06">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>06 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID06}}"><b>{{element.ECN06}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note06">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note06}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date06">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date06 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity06">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity06 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP06">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP06>0) ? 'green' : 'red'">{{element.QuantityGAP06 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN07">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>07 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID07}}"><b>{{element.ECN07}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note07">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note07}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date07">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date07 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity07">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity07 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP07">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP07>0) ? 'green' : 'red'">{{element.QuantityGAP07 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN08">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>08 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID08}}"><b>{{element.ECN08}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note08">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note08}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date08">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date08 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity08">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity08 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP08">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP08>0) ? 'green' : 'red'">{{element.QuantityGAP08 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="ECN09">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>09 ECN</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                routerLink="/BOMInfo/{{element.BOMID09}}"><b>{{element.ECN09}}</b></a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Note09">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+                        <td mat-cell *matCellDef="let element">{{element.Note09}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Date09">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let element">{{element.Date09 |
+                            date:'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity09">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                        <td mat-cell *matCellDef="let element">{{element.Quantity09 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="QuantityGAP09">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bold;" [style.color]="(element.QuantityGAP09>0) ? 'green' : 'red'">{{element.QuantityGAP09 |
+                            number:
+                            '1.0-3'}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="BOMCompareService.DisplayColumns001">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: BOMCompareService.DisplayColumns001;">
+                    </tr>
+                </table>
+                <mat-paginator *ngIf="!NotificationService.IsMobile" #BOMComparePaginator="matPaginator"
+                    [pageSizeOptions]="[10,20,50,100,200,500,1000000]" [pageSize]="20"
+                    [showFirstLastButtons]></mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="BOMCompareService.IsShowLoading"></app-loading>

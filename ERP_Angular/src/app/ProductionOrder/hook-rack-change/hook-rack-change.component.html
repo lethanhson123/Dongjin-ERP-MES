@@ -1,0 +1,259 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l4">
+                    <h6 class="breadcrumbs-title">
+                        HOOK RACK change
+                        <span *ngIf="trackmtimService.List">({{trackmtimService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l2">
+                    <h6 class="breadcrumbs-title" style="color: green;">
+                        Hook Rack: {{trackmtimService.BaseParameter.Sum |
+                        number:
+                        '1.0-0'}}
+                    </h6>
+                </div>
+                <div class="col s12 m6 l2">
+                    <h6 class="breadcrumbs-title" style="color: red;">
+                        GAP: {{trackmtimService.BaseParameter.Count |
+                        number:
+                        '1.0-0'}}
+                    </h6>
+                </div>
+                <div class="col s12 m6 l4 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="CUTTING">CUTTING</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/HookRackChange" title="HOOK RACK change">HOOK RACK change</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12 m12 l1">
+                        <label>Company</label>
+                    </div>
+                    <div class="col s12 m12 l1">                        
+                        <label style="color: red;">Semi-Finished (*)</label>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <label style="color: red;">Quantity (*)</label>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <label>PO Original</label>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <label>Finish Goods</label>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <label>ECN</label>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <label style="color:blue;">PO Change</label>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <label style="color: blue;">Finish Goods (*)</label>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <label style="color: blue;">ECN</label>
+                    </div>                    
+                    <div class="col s12 m12 l1">
+                    </div>
+                    <div class="col s12 m12 l1">
+                    </div>
+                     <div class="col s12 m12 l1">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l1">
+                        <select class="browser-default form-select"
+                            [(ngModel)]="trackmtimService.BaseParameter.CompanyID">
+                            <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                                {{item.Name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <input [(ngModel)]="trackmtimService.BaseParameter.Name" placeholder="Semi-Finished"
+                            class="form-control" (keyup.enter)="trackmtimSearch()">
+                    </div>
+                     <div class="col s12 m12 l1">
+                        <input [(ngModel)]="trackmtimService.BaseParameter.Quantity" placeholder="Quantity"
+                            class="form-control" type="number" (keyup.enter)="trackmtimSearch()">
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <input [(ngModel)]="trackmtimService.BaseParameter.CreateUserCode" placeholder="PO Original"
+                            class="form-control" (keyup.enter)="trackmtimSearch()">
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <input [(ngModel)]="trackmtimService.BaseParameter.Code" placeholder="Finish Goods"
+                            class="form-control" (keyup.enter)="trackmtimSearch()">
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <input [(ngModel)]="trackmtimService.BaseParameter.CreateUserName" placeholder="ECN"
+                            class="form-control" (keyup.enter)="trackmtimSearch()">
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <input [(ngModel)]="trackmtimService.BaseParameter.UpdateUserCode" placeholder="PO Change"
+                            class="form-control" (keyup.enter)="trackmtimSearch()">
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <input [(ngModel)]="trackmtimService.BaseParameter.Display" placeholder="Finish Goods"
+                            class="form-control" (keyup.enter)="trackmtimSearch()">
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <input [(ngModel)]="trackmtimService.BaseParameter.UpdateUserName" placeholder="ECN"
+                            class="form-control" (keyup.enter)="trackmtimSearch()">
+                    </div>                   
+                    <div class="col s12 m12 l1">
+                        <label>
+                            <input type="checkbox" class="form-check-input" name="Active"
+                                [(ngModel)]="trackmtimService.BaseParameter.Active" />
+                            <span>All</span>
+                        </label>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <a title="search" (click)="trackmtimSearch()"
+                            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                            <i class="material-icons">search</i>
+                        </a>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <button title="Save" (click)="trackmtimSave()"
+                            class="btn waves-effect waves-light cyan darken-1" style="width: 100%;">
+                            <i class="material-icons">save</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="KhungOverflow" #TABLE>
+                    <table #table *ngIf="!NotificationService.IsMobile" mat-table matSort #trackmtimDetailSort="matSort"
+                        class="TableMaterial" [dataSource]="trackmtimService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="trackmtimDetailPaginator">
+                                    {{
+                                    trackmtimDetailPaginator.pageSize *
+                                    trackmtimDetailPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Select
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <label>
+                                    <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                        [(ngModel)]="element.Active">
+                                    <span></span>
+                                </label>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TRACK_IDX">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.TRACK_IDX}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="RACKDTM">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Input</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.RACKDTM |
+                                date:'dd/MM/yyyy hh:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="POCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PO</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.POCode}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="FinishGoodsCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods</th>
+                            <td mat-cell *matCellDef="let element">
+                                <b>{{element.FinishGoodsCode}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ECN">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ECN</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ECN}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="LEAD_NM">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Semi-Finished</th>
+                            <td mat-cell *matCellDef="let element">
+                                <b>{{element.LEAD_NM}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="BARCODE_NM">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>BARCODE</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.BARCODE_NM}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QTY">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Hook Rack</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; color: green;">
+                                {{element.QTY}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="QuantityGAP">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>GAP</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right; color: red;">
+                                {{element.QuantityGAP}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="FinishGoodsList">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods List</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.FinishGoodsList}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Update Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateDate |
+                                date:'dd/MM/yyyy hh:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Update User</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateUserCode}} | {{element.UpdateUserName}}
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="trackmtimService.DisplayColumns001">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: trackmtimService.DisplayColumns001;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #trackmtimDetailPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="1000000"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="trackmtimService.IsShowLoading"></app-loading>

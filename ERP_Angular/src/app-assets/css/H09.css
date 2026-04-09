@@ -1,0 +1,235 @@
+﻿.machine-container {
+    width: 150px; /* Giữ nguyên */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2px;
+}
+
+.machine-title {
+    font-family: "Arial Black", sans-serif; /* Hoặc sử dụng font khác nếu muốn */
+    font-weight: bold;
+    color: black;
+    margin-bottom: 4px;
+    font-size: 25px; /* Giảm từ 25px xuống 20px (~80%) */
+    width: 100%;
+    text-align: center;
+    line-height: 1.15;
+    height: auto;
+}
+
+.machine-data {
+    background-color: #ccc;
+    border: 1px solid #4682b4;
+    padding: 10px 7px;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+    .machine-data div {
+        color: black;
+        font-weight: bold;
+        margin-bottom: 4px;
+        font-size: 22px; /* Giảm từ 25px xuống 20px (~80%) */
+        line-height: 1.15;
+    }
+
+.machine-status {
+    font-size: 12px; /* Giảm từ 15px xuống 12px (~80%) */
+    color: red;
+    font-weight: bold;
+    margin-top: 4px;
+    width: 100%;
+    text-align: center;
+    line-height: 1.15;
+}
+
+.dashboard-header {
+    background-color: #f2f2d9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: 12vh;
+    display: flex;
+    align-items: center;
+}
+
+.header-reload {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+}
+
+.reload-btn {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 15px; /* Giảm từ 18px xuống 15px (~83%) */
+    font-weight: bold;
+}
+
+.header-section-names {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.section-name {
+    color: blue;
+    font-weight: bold;
+    font-size: 20px; /* Giảm từ 24px xuống 20px (~83%) */
+    margin: 6px 0;
+    letter-spacing: 0.5px;
+}
+
+.header-production-title {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+.production-title-text {
+    font-size: 18px; /* Giảm từ 24px xuống 20px (~83%) */
+    text-align: center;
+    margin: 6px 0;
+}
+
+.header-production-values {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.production-value {
+    font-weight: bold;
+    font-size: 20px; /* Giảm từ 24px xuống 20px (~83%) */
+    margin: 6px 0;
+}
+
+.header-operation-title {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+.operation-title-text {
+    font-size: 20px; /* Giảm từ 24px xuống 20px (~83%) */
+    text-align: center;
+    margin: 6px 0;
+}
+
+.header-operation-values {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.operation-value {
+    color: blue;
+    font-weight: bold;
+    font-size: 20px; /* Giảm từ 24px xuống 20px (~83%) */
+    margin: 6px 0;
+}
+
+.header-uph-title {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.uph-title {
+    font-size: 20px; /* Giảm từ 24px xuống 20px (~83%) */
+    margin: 6px 0;
+    font-weight: bold;
+}
+
+.header-uph-values {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.uph-value {
+    color: blue;
+    font-weight: bold;
+    font-size: 20px; /* Giảm từ 24px xuống 20px (~83%) */
+    margin: 6px 0;
+}
+
+.dashboard-sidebar {
+    width: 10%;
+    background-color: #f9e0e0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-button {
+    background-color: #ffdddd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px 10px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 12px; /* Giảm từ 14px xuống 12px (~86%) */
+    cursor: pointer;
+}
+
+.sidebar-title {
+    font-size: 22px; /* Giảm từ 26px xuống 22px (~85%) */
+    font-weight: bold;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.sidebar-box {
+    border: 1px solid #ccc;
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 25px;
+}
+
+.production-text {
+    font-size: 14px; /* Giảm từ 16px xuống 14px (~88%) */
+    font-weight: bold;
+    text-align: center;
+    margin: 13px 0;
+}
+
+.sidebar-legend {
+    border: 1px solid #ccc;
+    background-color: white;
+    padding: 18px;
+}
+
+.legend-item {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.legend-symbol {
+    font-weight: bold;
+    margin-right: 5px;
+    font-size: 14px; /* Giảm từ 16px xuống 14px (~88%) */
+}
+
+.legend-text {
+    font-size: 13px; /* Giảm từ 15px xuống 13px (~87%) */
+    font-weight: bold;
+    line-height: 1.4;
+}
