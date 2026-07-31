@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col s12">
+        <div class="container">
+            <div id="login-page" class="row" style="display: flex; justify-content: flex-end;">
+                <div class="col s12 m12 l4 z-depth-4 card-panel border-radius-6 login-card bg-opacity-8">
+                    <div class="row">
+                        <h4 class="input-field col s12" style="text-align: center;">
+                            Thông tin người dùng / 사용자 정보
+                        </h4>
+                        <h2 class="input-field col s12" style="text-align: center;">
+                            {{MembershipService.BaseParameter.BaseModel.UserName}}
+                        </h2>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix pt-2">face</i>
+                            <input style="font-size: 20px;" type="text" placeholder="Họ tên / 성명"
+                                [(ngModel)]="MembershipService.BaseParameter.BaseModel.Name">
+                        </div>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix pt-2">phone</i>
+                            <input style="font-size: 20px;" type="text" placeholder="Điện thoại / 핸드폰"
+                                [(ngModel)]="MembershipService.BaseParameter.BaseModel.Phone">
+                        </div>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix pt-2">email</i>
+                            <input style="font-size: 20px;" type="text" placeholder="Email"
+                                [(ngModel)]="MembershipService.BaseParameter.BaseModel.Email">
+                        </div>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s11">
+                            <i class="material-icons prefix pt-2">lock_outline</i>
+                            <input style="font-size: 20px;" placeholder="Mật khẩu / 비밀번호"
+                                [type]="MatKhauIsActive ? 'password' : 'text'"
+                                [(ngModel)]="MembershipService.BaseParameter.BaseModel.Password">
+                            <i class="material-icons prefix pt-2" (click)="MatKhauChangeType()"
+                                style="cursor: pointer;">remove_red_eye</i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button (click)="Save()"
+                                class="btn btn-large waves-effect waves-light border-round gradient-45deg-light-blue-cyan col s12">Save</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6 m6 l6" style="background: transparent !important;">
+                            <p class="margin medium-small"><a routerLink="/Overview" style="font-size: 20px;" title="Overview">Overview</a></p>
+                        </div>
+                        <div class="input-field col s6 m6 l6" style="background: transparent !important;">
+                            <p class="margin right-align medium-small"><a href="#" style="font-size: 20px;">Hỗ trợ: IT đẹp trai</a></p>
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

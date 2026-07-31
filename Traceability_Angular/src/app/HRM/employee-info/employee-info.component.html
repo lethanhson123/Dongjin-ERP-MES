@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <ul class="tabs">
+                <li class="tab col s2 p-0">
+                    <a id="ATag001" class="active p-0" href="#Tag001">Employee</a>
+                </li>                
+            </ul>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy" id="Tag001">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12 m12 l11">
+                    <h6 style="color: red;" *ngIf="MembershipService.BaseResult">
+                        {{MembershipService.BaseResult.Message}}
+                    </h6>
+                </div>
+                <div class="col s12 m12 l1">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="Active"
+                            [(ngModel)]="MembershipService.BaseParameter.BaseModel.Active" />
+                        <span>Active</span>
+                    </label>
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col s4 m4 l4">
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>ID</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input disabled placeholder="ID" [(ngModel)]="MembershipService.BaseParameter.BaseModel.ID"
+                                type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>Employee Code</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input placeholder="Mã nhân viên"
+                                [(ngModel)]="MembershipService.BaseParameter.BaseModel.UserName" type="text"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4 l4">
+                            <label>Full Name</label>
+                        </div>
+                        <div class="col s8 m8 l8">
+                            <input placeholder="Nhân viên" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Name"
+                                type="text" class="form-control">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col s4 m4 l4">                   
+                </div>
+                <div class="col s4 m4 l4">                    
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

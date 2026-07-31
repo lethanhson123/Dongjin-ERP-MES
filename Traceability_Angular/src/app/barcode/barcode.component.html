@@ -1,0 +1,1088 @@
+<div class="row">
+    <div class="col s12 m12 l11">
+        <input [(ngModel)]="TraceabilityService.BaseParameter.SearchString" placeholder="Search by Barcode ..."
+            class="form-control" (keyup.enter)="TraceabilitySearch()">
+    </div>
+    <div class="col s12 m12 l1">
+        <button title="search" (click)="TraceabilitySearch()" class="btn waves-effect waves-light green darken-1"
+            style="width: 100%;">
+            <i class="material-icons">search</i>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <h4 class="text-center">Traceability of DONGJIN / 동진의 추적성</h4>
+            <hr />
+            <h6 class="text-center">Overview [ERP:{{TraceabilityService.BaseParameter.BaseModel.ID}}] [MES:
+                {{TraceabilityService.BaseParameter.BaseModel.MESID}}]</h6>
+            <div class="row">
+                <div class="col s4 m4 l1">
+                    <h6>Company:</h6>
+                </div>
+                <div class="col s8 m8 l2">
+                    <h6 style="color: green;">{{TraceabilityService.BaseParameter.BaseModel.CompanyName}}</h6>
+                </div>
+                <div class="col s4 m4 l1">
+                    <h6>Name:</h6>
+                </div>
+                <div class="col s8 m8 l2">
+                    <h6 style="color: green;">{{TraceabilityService.BaseParameter.BaseModel.MaterialCode}}</h6>
+                </div>
+                <div class="col s4 m4 l1">
+                    <h6>Barcode:</h6>
+                </div>
+                <div class="col s8 m8 l5">
+                    <h6><a style="cursor: pointer;" class="link-primary" target="_blank"
+                            routerLink="/WarehouseInputDetailBarcodeInfo/{{TraceabilityService.BaseParameter.BaseModel.ParentID}}"><b>{{TraceabilityService.BaseParameter.BaseModel.Barcode}}</b></a>
+                    </h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4 m4 l1">
+                    <h6>Date:</h6>
+                </div>
+                <div class="col s8 m8 l2">
+                    <h6 style="color: green;">{{TraceabilityService.BaseParameter.BaseModel.Date |
+                        date:'dd/MM/yyyy HH:mm:ss'}}</h6>
+                </div>
+                <div class="col s4 m4 l1">
+                    <h6>BOM:</h6>
+                </div>
+                <div class="col s8 m8 l2">
+                    <h6><a style="cursor: pointer;" class="link-primary" target="_blank"
+                            routerLink="/BOMInfo/{{TraceabilityService.BaseParameter.BaseModel.BOMID}}"><b>{{TraceabilityService.BaseParameter.BaseModel.BOMECN}}</b></a>
+                    </h6>
+                </div>
+                <div class="col s4 m4 l1">
+                    <h6>Bundle Size:</h6>
+                </div>
+                <div class="col s8 m8 l2">
+                    <h6 style="color: green;">{{TraceabilityService.BaseParameter.BaseModel.BundleSize}}</h6>
+                </div>
+                <div class="col s4 m4 l1">
+                    <h6>Quantity:</h6>
+                </div>
+                <div class="col s8 m8 l2">
+                    <h6 style="color: green;">{{TraceabilityService.BaseParameter.BaseModel.Quantity}}</h6>
+                </div>
+            </div>
+            <hr />
+            <div *ngIf="TraceabilityService.BaseParameter.BaseModel.IsFinishGoods">
+                <h6 class="text-center">1. SP/ST + Lead No</h6>
+                <div class="KhungOverflow00">
+                    <table mat-table matSort #TraceabilityDetailSort06="matSort"
+                        [dataSource]="TraceabilityDetailService.DataSource07">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div>
+                                    {{
+                                    i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/BOMInfo/{{element.ParentID}}"><b>{{element.ParentName}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>1st_Step</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ParentID01>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ParentID01}}"><b>{{element.ParentName01}}</b></a>
+                                </div>
+                                <div *ngIf="element.ParentID01<=0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ID}}"><b>{{element.MaterialCode}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>2nd_Step</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ParentID02>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ParentID02}}"><b>{{element.ParentName02}}</b></a>
+                                </div>
+                                <div *ngIf="element.ParentID02<=0 && element.ParentID01>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ID}}"><b>{{element.MaterialCode}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>3rd_Step</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ParentID03>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ParentID03}}"><b>{{element.ParentName03}}</b></a>
+                                </div>
+                                <div *ngIf="element.ParentID03<=0 && element.ParentID01>0 && element.ParentID02>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ID}}"><b>{{element.MaterialCode}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ParentID04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>4th_Step</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.ParentID04>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ParentID04}}"><b>{{element.ParentName04}}</b></a>
+                                </div>
+                                <div
+                                    *ngIf="element.ParentID04<=0 && element.ParentID01>0 && element.ParentID02>0 && element.ParentID03>0">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/BOMInfo/{{element.ID}}"><b>{{element.MaterialCode}}</b></a>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div style="text-align: right;"><b>{{element.Quantity}}</b></div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.UpdateDate |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Note">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+                            <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                Loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="TraceabilityDetailService.DisplayColumns007">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: TraceabilityDetailService.DisplayColumns007;">
+                        </tr>
+                    </table>
+                </div>
+                <h6 class="text-center">2. Raw Material</h6>
+                <div class="KhungOverflow00">
+                    <table mat-table matSort #TraceabilityDetailSort06="matSort"
+                        [dataSource]="TraceabilityDetailService.DataSource06">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div>
+                                    {{
+                                    i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Date">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Date |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>USER</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/EmployeeInfo/{{element.UpdateUserCode}}"><b>{{element.UpdateUserCode}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="InvoiceInputName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/WarehouseInputInfo/{{element.InvoiceInputID}}"><b>[{{element.InvoiceInputID}}]
+                                        {{element.InvoiceInputName}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.MaterialName}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.Quantity}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Barcode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+                            <td mat-cell *matCellDef="let element" style="white-space: pre;">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/WarehouseInputDetailBarcodeInfo/{{element.WarehouseInputDetailBarcodeIDMaterial}}"><b>{{element.Barcode}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                Loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="TraceabilityDetailService.DisplayColumns006">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: TraceabilityDetailService.DisplayColumns006;">
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div *ngIf="TraceabilityService.BaseParameter.BaseModel.IsSPST">              
+                <h6 class="text-center">1. SP / ST</h6>
+                <div class="row">
+                    <div class="col s12 m12 l6 KhungOverflow00">
+                        <table mat-table matSort #TraceabilityDetailSort02="matSort"
+                            [dataSource]="TraceabilityDetailService.DataSource02">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    No
+                                </th>
+                                <td mat-cell *matCellDef="let element; index as i;">
+                                    <div>
+                                        {{
+                                        i + 1
+                                        }}
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CREATE_DTM">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CREATE_DTM |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CREATE_USER">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>USER</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CREATE_USER}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="MC2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Machine</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.MC2}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CHK_LR">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Left / Right</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CHK_LR}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="COLSIP">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>COLSIP</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.COLSIP}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CCH_W1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH_W1</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CCH_W1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ICH_W1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH_W1</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ICH_W1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CCH_W2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH_W2</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CCH_W2}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ICH_W2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH_W2</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ICH_W2}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CCH1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH1</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CCH1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CCW1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW1</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CCW1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CCH2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH2</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CCH2}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CCW2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW2</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CCW2}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ICH1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH1</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ICH1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ICW1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW1</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ICW1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ICH2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH2</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ICH2}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ICW2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW2</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ICW2}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="WIRE_FORCE">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>WIRE_FORCE</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.WIRE_FORCE}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="WIRE_LENGTH">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>WIRE_LENGTH</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.WIRE_LENGTH}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="STRENGTH">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>STRENGTH</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.STRENGTH}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="LOC_LRJ">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>LOC_LRJ</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.LOC_LRJ}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CCH">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CCH}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CCW">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.CCW}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ICH">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ICH}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ICW">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ICW}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="RES_H">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>RES_H</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.RES_H}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="RES_V">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>RES_V</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.RES_V}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="4">
+                                    No data.
+                                </mat-footer-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="4">
+                                    No data.
+                                </mat-footer-cell>
+                            </ng-container>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide':TraceabilityDetailService.DataSource02!=null}"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(TraceabilityDetailService.DataSource02!=null && TraceabilityDetailService.DataSource02.data.length==0)}">
+                            </mat-footer-row>
+                            <tr mat-header-row *matHeaderRowDef="TraceabilityDetailService.DisplayColumns002">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: TraceabilityDetailService.DisplayColumns002;">
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col s12 m12 l6 KhungOverflow00">
+                        <table mat-table matSort #TraceabilityDetailSort021="matSort"
+                            [dataSource]="TraceabilityDetailService.DataSource021">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    No
+                                </th>
+                                <td mat-cell *matCellDef="let element; index as i;">
+                                    <div>
+                                        {{
+                                        i + 1
+                                        }}
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.Date |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="MaterialCode">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Lead No</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.MaterialCode}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Barcode">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                        routerLink="/Barcode/{{element.Barcode}}"><b>{{element.Barcode}}</b></a>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="4">
+                                    No data.
+                                </mat-footer-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="4">
+                                    No data.
+                                </mat-footer-cell>
+                            </ng-container>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide':TraceabilityDetailService.DataSource021!=null}"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(TraceabilityDetailService.DataSource021!=null && TraceabilityDetailService.DataSource021.data.length==0)}">
+                            </mat-footer-row>
+                            <tr mat-header-row *matHeaderRowDef="TraceabilityDetailService.DisplayColumns0021">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: TraceabilityDetailService.DisplayColumns0021;">
+                            </tr>
+                        </table>
+                    </div>
+                </div>              
+            </div>
+            <div *ngIf="TraceabilityService.BaseParameter.BaseModel.IsLeadNo">                            
+                <h6 class="text-center">1. SHIELD WIRE</h6>
+                <div class="KhungOverflow00">
+                    <table mat-table matSort #TraceabilityDetailSort03="matSort"
+                        [dataSource]="TraceabilityDetailService.DataSource03">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div>
+                                    {{
+                                    i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CREATE_DTM">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CREATE_DTM |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CREATE_USER">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>USER</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CREATE_USER}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MC2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Machine</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.MC2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CHK_LR">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Left / Right</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CHK_LR}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="COLSIP">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>COLSIP</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.COLSIP}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH_W1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH_W1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH_W1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH_W1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH_W1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH_W1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH_W2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH_W2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH_W2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH_W2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH_W2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH_W2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCW1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCW1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCW2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCW2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICW1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICW1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICW2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICW2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="WIRE_FORCE">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>WIRE_FORCE</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.WIRE_FORCE}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="WIRE_LENGTH">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>WIRE_LENGTH</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.WIRE_LENGTH}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="STRENGTH">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>STRENGTH</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.STRENGTH}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="LOC_LRJ">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>LOC_LRJ</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.LOC_LRJ}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCW">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCW}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICW">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICW}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{'hide':TraceabilityDetailService.DataSource03!=null}"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(TraceabilityDetailService.DataSource03!=null && TraceabilityDetailService.DataSource03.data.length==0)}">
+                        </mat-footer-row>
+                        <tr mat-header-row *matHeaderRowDef="TraceabilityDetailService.DisplayColumns003">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: TraceabilityDetailService.DisplayColumns003;">
+                        </tr>
+                    </table>
+                </div>
+                <h6 class="text-center">2. LP</h6>
+                <div class="KhungOverflow00">
+                    <table mat-table matSort #TraceabilityDetailSort04="matSort"
+                        [dataSource]="TraceabilityDetailService.DataSource04">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div>
+                                    {{
+                                    i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CREATE_DTM">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CREATE_DTM |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CREATE_USER">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>USER</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CREATE_USER}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MC2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Machine</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.MC2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CHK_LR">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Left / Right</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CHK_LR}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="COLSIP">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>COLSIP</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.COLSIP}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH_W1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH_W1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH_W1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH_W1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH_W1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH_W1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH_W2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH_W2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH_W2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH_W2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH_W2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH_W2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCW1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCW1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCW2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCW2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICW1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICW1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICW2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICW2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="WIRE_FORCE">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>WIRE_FORCE</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.WIRE_FORCE}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="WIRE_LENGTH">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>WIRE_LENGTH</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.WIRE_LENGTH}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="STRENGTH">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>STRENGTH</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.STRENGTH}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{'hide':TraceabilityDetailService.DataSource04!=null}"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(TraceabilityDetailService.DataSource04!=null && TraceabilityDetailService.DataSource04.data.length==0)}">
+                        </mat-footer-row>
+                        <tr mat-header-row *matHeaderRowDef="TraceabilityDetailService.DisplayColumns004">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: TraceabilityDetailService.DisplayColumns004;">
+                        </tr>
+                    </table>
+                </div>
+                <h6 class="text-center">3. KOMAX</h6>
+                <div class="KhungOverflow00">
+                    <table mat-table matSort #TraceabilityDetailSort05="matSort"
+                        [dataSource]="TraceabilityDetailService.DataSource05">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div>
+                                    {{
+                                    i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CREATE_DTM">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CREATE_DTM |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CREATE_USER">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>USER</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/EmployeeInfo/{{element.CREATE_USER}}"><b>{{element.CREATE_USER}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="COLSIP">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>COLSIP</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.COLSIP}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH_W1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH_W1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH_W1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH_W1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH_W1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH_W1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH_W2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH_W2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH_W2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH_W2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH_W2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH_W2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCW1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCW1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCH2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCH2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCH2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CCW2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>CCW2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.CCW2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICW1">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW1</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICW1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICH2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICH2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICH2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ICW2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ICW2</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ICW2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="WIRE_FORCE">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>WIRE_FORCE</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.WIRE_FORCE}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="WIRE_LENGTH">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>WIRE_LENGTH</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.WIRE_LENGTH}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MC">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PLAN</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.MC}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MC2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Machine</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.MC2}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                Loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="TraceabilityDetailService.DisplayColumns005">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: TraceabilityDetailService.DisplayColumns005;">
+                        </tr>
+                    </table>
+                </div>
+                <h6 class="text-center">4. Raw Material</h6>
+                <div class="KhungOverflow00">
+                    <table mat-table matSort #TraceabilityDetailSort06="matSort"
+                        [dataSource]="TraceabilityDetailService.DataSource06">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div>
+                                    {{
+                                    i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Date">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.Date |
+                                date:'dd/MM/yyyy HH:mm:ss'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="UpdateUserCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>USER</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/EmployeeInfo/{{element.UpdateUserCode}}"><b>{{element.UpdateUserCode}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="InvoiceInputName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/WarehouseInputInfo/{{element.InvoiceInputID}}"><b>[{{element.InvoiceInputID}}]
+                                        {{element.InvoiceInputName}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="MaterialName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PART NO</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.MaterialName}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Quantity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.Quantity}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Barcode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Barcode</th>
+                            <td mat-cell *matCellDef="let element" style="white-space: pre;">
+                                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                                    routerLink="/WarehouseInputDetailBarcodeInfo/{{element.WarehouseInputDetailBarcodeIDMaterial}}"><b>{{element.Barcode}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                Loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="4">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="TraceabilityDetailService.DisplayColumns006">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: TraceabilityDetailService.DisplayColumns006;">
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="TraceabilityService.IsShowLoading"></app-loading>

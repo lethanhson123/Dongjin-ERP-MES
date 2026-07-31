@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col s12">
+        <div class="container">
+            <div id="login-page" class="row" style="display: flex; justify-content: flex-end;">
+                <div class="col s12 m12 l4 z-depth-4 card-panel border-radius-6 login-card bg-opacity-8">
+                    <div class="row">
+                        <div class="input-field col s12" style="text-align: center; padding-top: 5px;">
+                            <img width="224" height="46" src="/assets/image/logo02.png"
+                                title="Hệ sinh thái số của Dongjin" alt="Hệ sinh thái số của Dongjin">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4 class="input-field col s12" style="text-align: center;">
+                            Hệ sinh thái số Dongjin
+                        </h4>
+                        <h5 class="input-field col s12" style="text-align: center;">
+                            동진의 디지털 생태계
+                        </h5>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix pt-2">face</i>
+                            <input style="font-size: 20px;" type="text" placeholder="Mã nhân viên / 직원 코드" autofocus
+                                [(ngModel)]="MembershipService.BaseParameter.UserName">
+                        </div>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s11">
+                            <i class="material-icons prefix pt-2">lock_outline</i>
+                            <input style="font-size: 20px;" placeholder="Mật khẩu / 비밀번호"
+                                [type]="MatKhauIsActive ? 'password' : 'text'"
+                                [(ngModel)]="MembershipService.BaseParameter.Password">
+                            <i class="material-icons prefix pt-2" (click)="MatKhauChangeType()"
+                                style="cursor: pointer;">remove_red_eye</i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button (click)="Login()"
+                                [disabled]="!MembershipService.BaseParameter.UserName || !MembershipService.BaseParameter.Password"
+                                class="btn btn-large waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12">Đăng
+                                nhập / 로그인</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6 m6 l6" style="background: transparent !important;">
+                            <p class="margin medium-small"></p>
+                        </div>
+                        <div class="input-field col s6 m6 l6" style="background: transparent !important;">
+                            <p class="margin right-align medium-small"><a href="#" style="font-size: 20px;">Hỗ trợ: IT đẹp trai</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

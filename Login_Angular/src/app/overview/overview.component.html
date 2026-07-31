@@ -1,0 +1,48 @@
+<div class="row" id="ecommerce-products"
+    style="display: flex; align-items: center; justify-content: center; min-height: 100vh; flex-wrap: wrap;">
+    <div class="col s12 m12 l12">
+        <div class="col s12 m12 l2" *ngFor="let Application of ApplicationService.List;">
+            <a target="_blank" href="{{Application.Code}}" title="{{ApplicationService.BaseParameter.Code}}">
+                <div class="card animate fadeLeft">
+                    <div class="card-badge"><a class="white-text"> <b>{{Application.Name}}</b> </a></div>
+                    <div class="card-content">
+                        <img src="{{Application.FileName}}" alt="{{ApplicationService.BaseParameter.Code}}"
+                            title="{{ApplicationService.BaseParameter.Code}}" class="responsive-img">
+                        <div class="row">
+                            <h4 class="deep-purple-text text-darken-3 mt-5" style="text-align: center;">
+                                {{Application.Name}}
+                            </h4>
+                            <div style="text-align: center;">{{Application.Description}}</div>
+                            <div style="text-align: center;">{{Application.Display}}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col s12 m12 l2">
+            <div class="card animate fadeLeft">
+                <div class="card-badge"><a class="white-text"><b>System</b> </a></div>
+                <div class="card-content">
+                    <div class="row">
+                        <h4 class="deep-purple-text text-darken-3 mt-5" style="text-align: center;">
+                            {{MembershipService.BaseParameter.UserName}}
+                        </h4>
+                        <h6 class="deep-purple-text text-darken-3 mt-5" style="text-align: center;">
+                            {{MembershipService.BaseParameter.Name}}
+                        </h6>
+                        <div class="input-field col s12">
+                            <button (click)="Membership()"
+                                class="btn waves-effect waves-light border-round gradient-45deg-green-teal col s12">Change
+                                passwword</button>
+                        </div>
+                        <div class="input-field col s12">
+                            <button (click)="Logout()"
+                                class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12">Logout</button>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="ApplicationService.IsShowLoading"></app-loading>

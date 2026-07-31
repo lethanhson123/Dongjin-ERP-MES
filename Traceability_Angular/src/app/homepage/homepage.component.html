@@ -1,0 +1,191 @@
+<div class="row">
+    <div class="col s12 m12 l12">
+        <div class="col s12 m12 l1">
+            <select class="browser-default form-select" [(ngModel)]="TraceabilityService.BaseParameter.CompanyID">
+                <option [value]="16">
+                    DJG
+                </option>
+                <option [value]="17">
+                    DJM
+                </option>
+            </select>
+        </div>
+        <div class="col s12 m12 l2">
+            <input [ngModel]="TraceabilityService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+                style="text-align: right;" (ngModelChange)="DateBegin($event)" (keyup.enter)="TraceabilitySearch()"
+                [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+        </div>
+        <div class="col s12 m12 l2">
+            <input [ngModel]="TraceabilityService.BaseParameter.DateEnd | date:'yyyy-MM-dd'" style="text-align: right;"
+                (ngModelChange)="DateEnd($event)" (keyup.enter)="TraceabilitySearch()"
+                [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+        </div>
+        <div class="col s12 m12 l6">
+            <input #SearchString [(ngModel)]="TraceabilityService.BaseParameter.SearchString" placeholder="Search ..."
+                class="form-control" (keyup.enter)="TraceabilitySearch()">
+        </div>
+        <div class="col s12 m12 l1">
+            <a title="Search" (click)="TraceabilitySearch()" class="btn waves-effect waves-light green darken-1"
+                style="width: 100%;">
+                <i class="material-icons">search</i>
+            </a>
+        </div>
+    </div>
+    <div class="col s12 m12 l6">
+        <div class="KhungOverflow70">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #TraceabilitySort="matSort"
+                [dataSource]="TraceabilityService.DataSource">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div>
+                            {{
+                            i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.ID}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                    <td mat-cell *matCellDef="let element">{{element.Active}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CompanyName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+                    <td mat-cell *matCellDef="let element">{{element.CompanyName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="MESID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>MES.ORDER.ID</th>
+                    <td mat-cell *matCellDef="let element">{{element.MESID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Date |
+                        date:'dd/MM/yyyy HH:mm:ss'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="MaterialCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let element"><b>{{element.MaterialCode}}</b></td>
+                </ng-container>
+                <ng-container matColumnDef="Barcode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Finish Goods</th>
+                    <td mat-cell *matCellDef="let element" style="white-space: pre;">
+                        <a style="cursor: pointer;" class="link-primary" target="_blank"
+                            routerLink="/Barcode/{{element.Barcode}}"><b>{{element.Barcode}}</b></a>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="BOMID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ECN</th>
+                    <td mat-cell *matCellDef="let element">
+                        <a style="cursor: pointer;" class="link-primary" target="_blank"
+                            routerLink="/BOMInfo/{{element.BOMID}}"><b>{{element.BOMECN}}</b></a>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="BundleSize">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>BundleSize</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;">
+                        <b>{{element.BundleSize}}</b>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Quantity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;">
+                        <b>{{element.Quantity}}</b>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="TraceabilityService.DisplayColumns002">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: TraceabilityService.DisplayColumns002;">
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="col s12 m12 l6">
+        <div class="KhungOverflow70">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #TraceabilitySort="matSort"
+                [dataSource]="TraceabilityService.DataSource02">
+                <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                        <div>
+                            {{
+                            i + 1
+                            }}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.ID}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                    <td mat-cell *matCellDef="let element">{{element.Active}}</td>
+                </ng-container>
+                <ng-container matColumnDef="CompanyName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+                    <td mat-cell *matCellDef="let element">{{element.CompanyName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="MESID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>MES.ORDER.ID</th>
+                    <td mat-cell *matCellDef="let element">{{element.MESID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Date |
+                        date:'dd/MM/yyyy HH:mm:ss'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="MaterialCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let element"><b>{{element.MaterialCode}}</b></td>
+                </ng-container>
+                <ng-container matColumnDef="Barcode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>SP | ST | Lead No</th>
+                    <td mat-cell *matCellDef="let element" style="white-space: pre;">
+                        <a style="cursor: pointer;" class="link-primary" target="_blank"
+                            routerLink="/Barcode/{{element.Barcode}}"><b>{{element.Barcode}}</b></a>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="BOMID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ECN</th>
+                    <td mat-cell *matCellDef="let element">
+                        <a style="cursor: pointer;" class="link-primary" target="_blank"
+                            routerLink="/BOMInfo/{{element.BOMID}}"><b>{{element.BOMECN}}</b></a>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="BundleSize">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>BundleSize</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;">
+                        <b>{{element.BundleSize}}</b>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Quantity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;">
+                        <b>{{element.Quantity}}</b>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="TraceabilityService.DisplayColumns002">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: TraceabilityService.DisplayColumns002;">
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="TraceabilityService.IsShowLoading"></app-loading>
