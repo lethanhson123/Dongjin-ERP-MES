@@ -1,0 +1,145 @@
+<div class="row annualLeaveHistory-page">
+  <div class="col s12">
+    <div class="card card-default scrollspy">
+      <div class="card-content">
+        <div class="row annualLeaveHistory-filter-row">
+          <div class="col s12 m6 l1">
+            <select id="annualLeaveHistoryCompany" class="browser-default form-select"
+              [(ngModel)]="SelectedCompanyID" (change)="CompanyChange()">
+              <option *ngFor="let company of CompanyService.ListFilter" [ngValue]="company.ID">
+                {{ company.Name }}
+              </option>
+            </select>
+          </div>
+          <div class="col s12 m6 l2">
+            <input id="annualLeaveHistoryFromDate" type="date" class="form-control"
+              [(ngModel)]="FromDate" [max]="ToDate" (change)="Search()">
+          </div>
+          <div class="col s12 m6 l2">
+            <input id="annualLeaveHistoryToDate" type="date" class="form-control"
+              [(ngModel)]="ToDate" [min]="FromDate" (change)="Search()">
+          </div>
+          <div class="col s12 m6 l2">
+            <select id="annualLeaveHistoryDepartment" class="browser-default form-select"
+              [(ngModel)]="SelectedDepartmentID" (change)="Search()">
+              <option [ngValue]="0">All</option>
+              <option *ngFor="let department of CategoryHRMPhongBanService.ListFilter" [ngValue]="department.ID">
+                {{ GetDepartmentName(department) }}
+              </option>
+            </select>
+          </div>
+          <div class="col s12 m6 l1 annualLeaveHistory-office-filter">
+            <select id="annualLeaveHistoryOffice" class="browser-default form-select"
+              [(ngModel)]="SelectedIsOffice" (change)="Search()">
+              <option [ngValue]="null">All</option>
+              <option [ngValue]="true">{{ 'hrm-nghi-phep.overview.office' | translate }}</option>
+              <option [ngValue]="false">{{ 'hrm-nghi-phep.overview.production' | translate }}</option>
+            </select>
+          </div>
+          <div class="col s12 m6 l1">
+            <input id="annualLeaveHistorySearch" type="text" class="form-control" placeholder="Search"
+              [(ngModel)]="SearchString" (keyup.enter)="Search()">
+          </div>
+          <div class="col s12 m6 l1 annualLeaveHistory-filter-action">
+            <button type="button" class="btn waves-effect waves-light green darken-1 annualLeaveHistory-filter-button"
+              [title]="'hrm-nghi-phep.overview.search' | translate" (click)="Search()">
+              <i class="material-icons">search</i>
+            </button>
+          </div>
+          <div class="col s12 m6 l1 annualLeaveHistory-filter-action">
+            <button type="button" class="btn waves-effect waves-light grey annualLeaveHistory-filter-button"
+              [title]="'hrm-nghi-phep.overview.reset' | translate" (click)="ResetFilters()">
+              <i class="material-icons">refresh</i>
+            </button>
+          </div>
+          <div class="col s12 m6 l1 annualLeaveHistory-filter-action">
+            <button type="button" class="btn waves-effect waves-light green darken-1 annualLeaveHistory-filter-button"
+              [disabled]="SelectedCompanyID <= 0 || IsLoading"
+              [title]="'hrm-nghi-phep.requests.exportExcel' | translate" (click)="ExportExcel()">
+              <i class="material-icons">cloud_download</i> Export
+            </button>
+          </div>
+        </div>
+
+        <div class="annualLeaveHistory-table-container">
+          <table mat-table matSort class="TableMaterial annualLeaveHistory-table" [dataSource]="DataSource">
+            <ng-container matColumnDef="No">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-nghi-phep.overview.columns.no' | translate }}</th>
+              <td mat-cell *matCellDef="let row; index as i">{{ PageIndex * PageSize + i + 1 }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="EmployeeCode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-nghi-phep.overview.columns.employeeCode' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.EmployeeCode }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="EmployeeName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-nghi-phep.overview.columns.employeeName' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.EmployeeName }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="DepartmentName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-nghi-phep.overview.columns.department' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.DepartmentName }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="ChangeType">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-nghi-phep.balance.historyColumns.changeType' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.ChangeType }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="OldBalance">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true" class="annualLeaveHistory-number-cell">{{ 'hrm-nghi-phep.balance.historyColumns.oldBalance' | translate }}</th>
+              <td mat-cell *matCellDef="let row" class="annualLeaveHistory-number-cell">{{ row.OldBalance | number:'1.0-2' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="ChangeAmount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true" class="annualLeaveHistory-number-cell">{{ 'hrm-nghi-phep.balance.historyColumns.changeAmount' | translate }}</th>
+              <td mat-cell *matCellDef="let row"
+                class="annualLeaveHistory-number-cell"
+                [ngClass]="{
+                  'annualLeaveHistory-positive': row.ChangeAmount > 0,
+                  'annualLeaveHistory-negative': row.ChangeAmount < 0
+                }">
+                {{ (row.ChangeAmount > 0 ? '+' : '') + (row.ChangeAmount | number:'1.0-2') }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="NewBalance">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true" class="annualLeaveHistory-number-cell">{{ 'hrm-nghi-phep.balance.historyColumns.newBalance' | translate }}</th>
+              <td mat-cell *matCellDef="let row" class="annualLeaveHistory-number-cell">{{ row.NewBalance | number:'1.0-2' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Reason">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-nghi-phep.balance.historyColumns.reason' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.Reason || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="CreatedDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-nghi-phep.balance.historyColumns.createdDate' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.CreatedDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="CreatedBy">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-nghi-phep.balance.historyColumns.createdBy' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.CreatedBy || '-' }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="DisplayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: DisplayColumns"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell text-center" [attr.colspan]="DisplayColumns.length">
+                <span *ngIf="!IsLoading">{{ NoDataKey | translate }}</span>
+              </td>
+            </tr>
+          </table>
+
+          <mat-paginator [length]="TotalCount" [pageIndex]="PageIndex" [pageSizeOptions]="[10, 20, 50]"
+            [pageSize]="PageSize" [showFirstLastButtons]="true" (page)="PageChange($event)">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="IsLoading"></app-loading>

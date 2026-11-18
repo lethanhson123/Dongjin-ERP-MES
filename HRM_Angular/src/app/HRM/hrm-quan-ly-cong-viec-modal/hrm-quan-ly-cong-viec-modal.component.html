@@ -1,0 +1,273 @@
+<div class="row" style="display: flex; align-items: center;">
+  <div class="col s12 m12 l8">
+    <h6 style="margin:0;"><b>Quản lý công việc | 업무 관리</b></h6>
+  </div>
+  <div class="col s12 m12 l2">
+    <label>
+      <input type="checkbox" class="form-check-input" name="Active"
+        [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.Active" />
+      <span>Active</span>
+    </label>
+  </div>
+  <div class="col s12 m12 l2" style="text-align: right; display: flex; justify-content: flex-end; gap: 6px;">
+    <button title="Save" style="width: 50%;"
+      class="btn waves-effect waves-light cyan d-inline-flex align-items-center justify-content-center"
+      (click)="HRMQuanLyCongViecSave()"><i class="material-icons">save</i></button>
+    <button title="Close"
+      class="btn waves-effect waves-light purple lighten-1 d-inline-flex align-items-center justify-content-center"
+      (click)="HRMQuanLyCongViecClose()"><i class="material-icons">close</i></button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l4">
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>ID</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input disabled placeholder="ID" [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.ID" type="number"
+          class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Người giao việc | 부여 </label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input disabled
+          [value]="HRMQuanLyCongViecService.BaseParameter.BaseModel.CreateUserCode + ' - ' + HRMQuanLyCongViecService.BaseParameter.BaseModel.CreateUserName"
+          class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Ngày tạo | 생성일</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input disabled
+          [ngModel]="HRMQuanLyCongViecService.BaseParameter.BaseModel.CreateDate | date:'yyyy-MM-dd HH:mm:ss'"
+          class="form-control" style="text-align: right;">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Công ty | 회사</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <select class="browser-default form-select"
+          [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.CompanyID">
+          <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">{{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Phòng ban | 부서</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <select class="browser-default form-select"
+          [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.CategoryDepartmentID"
+          (change)="MembershipFilter('')">
+          <option [ngValue]="0">— Chọn —</option>
+          <option *ngFor="let item of CategoryDepartmentService.ListParent" [ngValue]="item.ID">{{item.Name ||
+            item.Code}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Nhân viên | 직원</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <mat-select class="browser-default form-select" panelClass="my-custom-dropdown-panel"
+          style="border-bottom-color: #000000; border-bottom-width: 1px; border-bottom-style: solid;"
+          [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.MembershipID">
+          <input [(ngModel)]="MembershipService.BaseParameter.SearchString" style="font-size: 40px; color: green;"
+            (keydown)="$event.stopPropagation()" (keyup)="MembershipFilter($event.target.value)">
+          <mat-option style="height: 100px; padding: 10px; margin: 10px;"
+            *ngFor="let item of MembershipService.ListChild" [value]="item.ID">
+            <table>
+              <tr>
+                <td style="width: 100px;"><img src="{{item.FileName}}" width="100" height="100"></td>
+                <td><span style="font-size: 40px;">{{item.UserName}} - {{item.Name}} -
+                    {{item.CategoryDepartmentName}}</span></td>
+              </tr>
+            </table>
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col s12 m12 l4">
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Trạng thái | 상태</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <select class="browser-default form-select"
+          [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.CategoryStatusID">
+          <option [ngValue]="0">— Chọn —</option>
+          <option *ngFor="let item of CategoryStatusService.ListFilter" [ngValue]="item.ID">{{item.Name || item.Code}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Ngày bắt đầu | 시작일</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input [ngModel]="HRMQuanLyCongViecService.BaseParameter.BaseModel.DateBegin | date:'yyyy-MM-dd'"
+          (ngModelChange)="HRMQuanLyCongViecDateBegin($event)" type="date" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Ngày kết thúc | 마감일</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input [ngModel]="HRMQuanLyCongViecService.BaseParameter.BaseModel.DateEnd | date:'yyyy-MM-dd'"
+          (ngModelChange)="HRMQuanLyCongViecDateEnd($event)" type="date" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Hoàn thành (%) | 완료율</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input placeholder="Hoàn thành" [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.Complete"
+          type="number" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Điểm | 점수</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input placeholder="Điểm" [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.Point" type="number"
+          class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Ghi chú | 비고</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input placeholder="Ghi chú" [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.Note" type="text"
+          class="form-control">
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="col s12 m12 l4">
+    <div class="row">
+      <div class="col s12 m12 l12">
+        <label style="margin-bottom: 8px; display: inline-block;">Mô tả công việc | 설명</label>
+      </div>
+      <div class="col s12 m12 l12">
+        <textarea placeholder="Mô tả công việc"
+          [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.BaseModel.Description" class="form-control"
+          style="height: 200px !important; resize: none;" rows="8"></textarea>
+      </div>
+    </div>
+      <input multiple class="form-control" type="file" (change)="HRMQuanLyCongViecChange($event, $event.target.files)"
+                    style="width: 200px !important;">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l6">
+    <p>Nội dung trái 6 phần 123</p>
+  </div>
+
+  <div class="col s12 m12 l6">
+    <div class="card card-default scrollspy">
+      <div class="card-content">
+        <div class="row mb-0">
+          <div class="col s12 m12 l5">
+            <h6><b>Tài liệu | 문서<span
+                  *ngIf="HRMQuanLyCongViecFileService.List">({{HRMQuanLyCongViecFileService.List.length}}
+                  items)</span></b></h6>
+          </div>
+          <div class="col s12 m12 l5">
+            <input [(ngModel)]="HRMQuanLyCongViecFileService.BaseParameter.SearchString"
+              placeholder="Tìm kiếm... | 찾다..." class="form-control" (keyup.enter)="HRMQuanLyCongViecFileSearch()">
+          </div>
+          <div class="col s12 m12 l2">
+            <a title="search" (click)="HRMQuanLyCongViecFileSearch()"
+              class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+              <i class="material-icons">search</i>
+            </a>
+          </div>
+        </div>
+        <div class="KhungOverflow70" style="min-height:300px !important; height: auto !important;">
+          <table *ngIf="!NotificationService.IsMobile" mat-table matSort #HRMQuanLyCongViecFileSort="matSort"
+            [dataSource]="HRMQuanLyCongViecFileService.DataSource">
+            <ng-container matColumnDef="No">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+              <td mat-cell *matCellDef="let element; index as i;">
+                <div *ngIf="HRMQuanLyCongViecFilePaginator">
+                  {{HRMQuanLyCongViecFilePaginator.pageSize * HRMQuanLyCongViecFilePaginator.pageIndex + i + 1}}
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên | 이름</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.ID>0">{{element.Name}}</span>
+                <input *ngIf="element.ID==0" class="form-control" type="text" placeholder="Name"
+                  name="Name{{element.ID}}" [(ngModel)]="element.Name">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="FileName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tải lên | 업로드</th>
+              <td mat-cell *matCellDef="let element">
+                <input *ngIf="element.ID==0 && !element.FileToUpload" class="form-control" type="file" multiple
+                  (change)="HRMQuanLyCongViecFileChange($event, $event.target.files)"
+                  title="Tải tệp | 파일 다운로드">
+                <span *ngIf="element.ID==0 && element.FileToUpload" style="color: green">
+                  {{element.FileToUpload.name}}
+                </span>
+                <a *ngIf="element.ID>0" target="_blank" class="btn waves-effect waves-light green darken-1"
+                  href="{{element.FileName}}" title="{{element.FileName}}"><i
+                    class="material-icons">cloud_download</i></a>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Thời gian | 시간</th>
+              <td mat-cell *matCellDef="let element">{{element.UpdateDate | date:'dd/MM/yyyy hh:mm:ss'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateUserCode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Người chỉnh sửa | 편집자</th>
+              <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}} | {{element.UpdateUserName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Save">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+              <td mat-cell *matCellDef="let element">
+                <button *ngIf="element.ID>0" (click)="HRMQuanLyCongViecFileDelete(element)"
+                  class="btn-floating waves-effect waves-light red" style="padding-top: 3px;" title="Delete">
+                  <i class="material-icons">delete_outline</i>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="HRMQuanLyCongViecFileService.DisplayColumns001"></tr>
+            <tr mat-row *matRowDef="let row; columns: HRMQuanLyCongViecFileService.DisplayColumns001;"></tr>
+          </table>
+          <mat-paginator *ngIf="!NotificationService.IsMobile" #HRMQuanLyCongViecFilePaginator="matPaginator"
+            [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loading *ngIf="HRMQuanLyCongViecService.IsShowLoading"></app-loading>

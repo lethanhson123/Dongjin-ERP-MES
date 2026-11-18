@@ -1,0 +1,93 @@
+<form #annualLeaveBalanceEditForm="ngForm" (ngSubmit)="Save(annualLeaveBalanceEditForm)">
+  <div class="annualLeaveBalanceEditModal-header">
+    <h6><b>{{ 'hrm-nghi-phep.balance.editDialog.title' | translate }}</b></h6>
+    <div class="annualLeaveBalanceEditModal-header-actions">
+      <button type="submit" title="Save | 저장" class="btn waves-effect waves-light cyan"
+        [disabled]="annualLeaveBalanceEditForm.invalid || IsSaving">
+        <i class="material-icons">save</i>
+      </button>
+      <button type="button" title="Close | 닫다" class="btn waves-effect waves-light purple lighten-1"
+        (click)="Close()" [disabled]="IsSaving">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+  </div>
+
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col s12 m6 l6">
+        <div class="row">
+          <div class="col s4 m4 l4"><label>{{ 'hrm-nghi-phep.balance.editDialog.employeeCode' | translate }}</label></div>
+          <div class="col s8 m8 l8"><input class="form-control" [value]="Data.EmployeeCode" disabled></div>
+        </div>
+        <div class="row">
+          <div class="col s4 m4 l4"><label>{{ 'hrm-nghi-phep.balance.editDialog.employeeName' | translate }}</label></div>
+          <div class="col s8 m8 l8"><input class="form-control" [value]="Data.EmployeeName || '-'" disabled></div>
+        </div>
+        <div class="row">
+          <div class="col s4 m4 l4"><label>{{ 'hrm-nghi-phep.balance.editDialog.department' | translate }}</label></div>
+          <div class="col s8 m8 l8"><input class="form-control" [value]="Data.DepartmentName || '-'" disabled></div>
+        </div>
+      </div>
+      <div class="col s12 m6 l6">
+        <div class="row">
+          <div class="col s4 m4 l4"><label>{{ 'hrm-nghi-phep.balance.editDialog.year' | translate }}</label></div>
+          <div class="col s8 m8 l8"><input class="form-control" [value]="Data.Year" disabled></div>
+        </div>
+        <div class="row">
+          <div class="col s4 m4 l4"><label>{{ 'hrm-nghi-phep.balance.editDialog.openingBalance' | translate }}</label></div>
+          <div class="col s8 m8 l8"><input class="form-control" [value]="Data.OpeningBalance | number:'1.0-2'" disabled></div>
+        </div>
+        <div class="row">
+          <div class="col s4 m4 l4"><label>{{ 'hrm-nghi-phep.balance.editDialog.currentBalance' | translate }}</label></div>
+          <div class="col s8 m8 l8"><input class="form-control" [value]="Data.CurrentBalance | number:'1.0-2'" disabled></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label for="annualLeaveBalanceAdjustmentAmount">{{ 'hrm-nghi-phep.balance.editDialog.amount' | translate }}</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input id="annualLeaveBalanceAdjustmentAmount" class="form-control annualLeaveBalanceEditModal-amount-input" type="number" name="Amount"
+          [(ngModel)]="Amount" step="0.5" required [disabled]="IsSaving" #amountInput="ngModel">
+        <div class="annualLeaveBalanceEditModal-adjustment-buttons">
+          <button type="button" class="btn waves-effect waves-light green darken-1"
+            (click)="IncreaseAmount()" [disabled]="IsSaving">
+            <i class="material-icons">add</i> {{ 'hrm-nghi-phep.balance.editDialog.add' | translate }}
+          </button>
+          <button type="button" class="btn waves-effect waves-light red darken-1"
+            (click)="DecreaseAmount()" [disabled]="IsSaving">
+            <i class="material-icons">remove</i> {{ 'hrm-nghi-phep.balance.editDialog.subtract' | translate }}
+          </button>
+        </div>
+        <div class="text-danger" *ngIf="amountInput.invalid && amountInput.touched">
+          {{ 'hrm-nghi-phep.balance.editDialog.amountRequired' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label for="annualLeaveBalanceNewCurrentBalance">{{ 'hrm-nghi-phep.balance.editDialog.newBalance' | translate }}</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input id="annualLeaveBalanceNewCurrentBalance" class="form-control"
+          [value]="NewCurrentBalance | number:'1.0-2'" disabled>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label for="annualLeaveBalanceEditReason">{{ 'hrm-nghi-phep.balance.editDialog.reason' | translate }}</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <textarea id="annualLeaveBalanceEditReason" class="form-control annualLeaveBalanceEditModal-reason-textarea" name="Reason" rows="3"
+          [(ngModel)]="Reason" maxlength="2000"></textarea>
+      </div>
+    </div>
+  </mat-dialog-content>
+</form>
+
+<app-loading *ngIf="IsSaving"></app-loading>

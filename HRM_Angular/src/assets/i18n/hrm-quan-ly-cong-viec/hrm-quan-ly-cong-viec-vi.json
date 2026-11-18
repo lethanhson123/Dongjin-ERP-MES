@@ -1,0 +1,29 @@
+{
+  "hrm-quan-ly-cong-viec": {
+    "title": "Quản lý công việc",
+    "back": "Quay lại",
+    "home": "Trang chủ",
+    "hrm": "HRM",
+    "all": "Tất cả",
+    "search": "Tìm kiếm",
+    "search_placeholder": "Tìm kiếm ...",
+    "add": "Thêm mới",
+    "status": "Trạng thái",
+    "total": "Tổng",
+    "department": "Phòng ban",
+    "deadline": "Thời hạn",
+    "assigner": "Người giao việc",
+    "assignee": "Người nhận việc",
+    "no": "STT",
+    "id": "ID",
+    "complete": "Hoàn thành",
+    "point": "Điểm",
+    "date_begin": "Ngày bắt đầu",
+    "date_end": "Ngày kết thúc",
+    "note": "Ghi chú",
+    "task": "Công việc",
+    "document": "Tài liệu",
+    "active": "Kích hoạt",
+    "delete": "Xoá"
+  }
+}

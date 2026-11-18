@@ -1,0 +1,34 @@
+/* Khung chứa sơ đồ tổ chức.
+   Override lại CSS global (.KhungOverflowParent/.KhungOverflowChild trong index.html)
+   vì chúng dùng transform: rotateX(180deg) để lật trục scroll => làm cuộn chuột bị ngược
+   và gây lệch khi canh giữa. Component này bỏ rotate, dùng layout thường cho dễ kiểm soát. */
+:host ::ng-deep .KhungOverflowParent {
+    transform: none !important;
+    /* Cho phép cuộn tự nhiên, không lật trục */
+}
+
+/* Child chỉ chịu transform scale (không còn rotate). */
+:host ::ng-deep .KhungOverflowChild {
+    transform: none;
+    /* transform: scale(zoomLevel) được bind từ component qua [style.transform] */
+    transform-origin: top left;
+}
+
+/* Wrapper nội dung sơ đồ: block, không đặt width cố định để đo đúng kích thước nội dung. */
+.KhungOverflow1 {
+    display: block;
+}
+
+/* === Drag-to-pan === */
+/* Đang giữ Space => con trỏ hình bàn tay mở */
+:host ::ng-deep .KhungOverflowParent.is-space-down {
+    cursor: grab;
+}
+
+/* Đang kéo => con trỏ hình bàn tay nắm, chặn bôi đen khi kéo */
+:host ::ng-deep .KhungOverflowParent.is-panning {
+    cursor: grabbing;
+    user-select: none;
+    -webkit-user-select: none;
+}
+

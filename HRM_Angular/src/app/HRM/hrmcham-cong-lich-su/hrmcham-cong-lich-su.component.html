@@ -1,0 +1,225 @@
+<div class="row">
+  <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <h6 class="breadcrumbs-title">
+            {{ 'hrm-cham-cong-lich-su.title' | translate }}
+            <span style="font-size: 30px;" *ngIf="HRMChamCongLichSuService.List">({{HRMChamCongLichSuService.List.length}} {{ 'common.items' | translate }})</span>
+          </h6>
+        </div>
+        <div class="col s12 m6 l6 right-align-md">
+          <ol class="breadcrumbs mb-0">
+            <li class="breadcrumb-item"><a href="javascript:history.back()" [title]="'common.back' | translate"><<< {{ 'common.back' | translate }}</a></li>
+            <li class="breadcrumb-item"><a [title]="'common.hrm' | translate">{{ 'common.hrm' | translate }}</a></li>
+            <li class="breadcrumb-item"><a routerLink="/HRMChamCongLichSu" [title]="'hrm-cham-cong-lich-su.title' | translate">{{ 'hrm-cham-cong-lich-su.title' | translate }}</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+      <div class="card-content">
+        <div class="col s12 m12 l1">
+          <select class="browser-default form-select" (change)="CompanyChange()"
+            [(ngModel)]="HRMChamCongLichSuService.BaseParameter.CompanyID">
+            <option *ngFor="let item of CompanyService.ListFilter" [value]="item.ID">{{item.Name}}</option>
+          </select>
+        </div>
+        <div class="col s12 m12 l2">
+          <input [ngModel]="HRMChamCongLichSuService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+            style="text-align: right;" (ngModelChange)="DateBegin($event)" (keyup.enter)="HRMChamCongLichSuSearch()"
+            [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+        </div>
+        <div class="col s12 m12 l2">
+          <input [ngModel]="HRMChamCongLichSuService.BaseParameter.DateEnd | date:'yyyy-MM-dd'"
+            style="text-align: right;" (ngModelChange)="DateEnd($event)" (keyup.enter)="HRMChamCongLichSuSearch()"
+            [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+        </div>
+        <div class="col s12 m12 l1">
+          <select class="browser-default form-select" [(ngModel)]="HRMChamCongLichSuService.BaseParameter.CategoryHRMPhongBanID">
+            <option [value]="0">{{ 'hrm-cham-cong-lich-su.all' | translate }}</option>
+            <option *ngFor="let item of CategoryHRMPhongBanService.ListFilter" [value]="item.ID">{{item.Name}}</option>
+          </select>
+        </div>
+        <div class="col s12 m12 l2">
+          <input [(ngModel)]="HRMChamCongLichSuService.BaseParameter.SearchString" [placeholder]="'hrm-cham-cong-lich-su.searchPlaceholder' | translate"
+            class="form-control" (keyup.enter)="HRMChamCongLichSuSearch()">
+        </div>
+        <div class="col s12 m12 l1">
+          <button [title]="'hrm-cham-cong-lich-su.searchEmployee' | translate" (click)="HRMChamCongLichSuSearch()"
+            class="btn waves-effect waves-light green darken-1" style="width: 100%;"><i class="material-icons">search</i></button>
+        </div>
+        <div class="col s12 m12 l1">
+          <button [title]="'hrm-cham-cong-lich-su.deviceSync' | translate" (click)="HRMChamCongLichSuDeviceSync()"
+            class="btn waves-effect waves-light cyan darken-1" style="width: 100%;"><i class="material-icons">fingerprint</i></button>
+        </div>
+        <div class="col s12 m12 l1">
+          <button [title]="'hrm-cham-cong-lich-su.sync' | translate" (click)="HRMChamCongLichSuSync()"
+            class="btn waves-effect waves-light cyan darken-1" style="width: 100%;"><i class="material-icons">sync</i></button>
+        </div>
+        <div class="col s12 m12 l1">
+          <button [title]="'hrm-cham-cong-lich-su.exportExcel' | translate" (click)="HRMChamCongLichSuExcel()"
+            class="btn waves-effect waves-light green darken-1" style="width: 100%;"><i class="material-icons">cloud_download</i></button>
+        </div>
+
+        <div class="col s12 m12 l3">
+          <div class="KhungOverflow80">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+              #HRMChamCongLichSuSortFilter="matSort" class="TableMaterial" style="width: 100%;"
+              [dataSource]="HRMChamCongLichSuService.DataSourceFilter">
+              <ng-container matColumnDef="CategoryHRMCaLamViecName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.overtime' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CategoryHRMCaLamViecName}}</td>
+              </ng-container>
+              <ng-container matColumnDef="SortOrder">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.total' | translate }}</th>
+                <td mat-cell *matCellDef="let element"><b>{{element.SortOrder}}</b></td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="HRMChamCongLichSuService.DisplayColumns002"></tr>
+              <tr mat-row *matRowDef="let row; columns: HRMChamCongLichSuService.DisplayColumns002;"></tr>
+            </table>
+            <br />
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+              #HRMChamCongLichSuSort02="matSort" class="TableMaterial" style="width: 100%;"
+              [dataSource]="HRMChamCongLichSuService.DataSource02">
+              <ng-container matColumnDef="CategoryHRMCaLamViecName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.workShift' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CategoryHRMCaLamViecName}}</td>
+              </ng-container>
+              <ng-container matColumnDef="SortOrder">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.total' | translate }}</th>
+                <td mat-cell *matCellDef="let element"><b>{{element.SortOrder}}</b></td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="HRMChamCongLichSuService.DisplayColumns002"></tr>
+              <tr mat-row *matRowDef="let row; columns: HRMChamCongLichSuService.DisplayColumns002;"></tr>
+            </table>
+            <br />
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+              #HRMChamCongLichSuSort01="matSort" class="TableMaterial" style="width: 100%;"
+              [dataSource]="HRMChamCongLichSuService.DataSource01">
+              <ng-container matColumnDef="CategoryHRMCaLamViecName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.department' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CategoryHRMCaLamViecName}}</td>
+              </ng-container>
+              <ng-container matColumnDef="SortOrder">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.total' | translate }}</th>
+                <td mat-cell *matCellDef="let element"><b>{{element.SortOrder}}</b></td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="HRMChamCongLichSuService.DisplayColumns002"></tr>
+              <tr mat-row *matRowDef="let row; columns: HRMChamCongLichSuService.DisplayColumns002;"></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="col s12 m12 l9">
+          <div class="KhungOverflow80">
+            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #HRMChamCongLichSuSort004="matSort"
+              class="TableMaterial" style="width: 100%;" [dataSource]="HRMChamCongLichSuService.SummaryDataSource">
+              <ng-container matColumnDef="No">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+                <td mat-cell *matCellDef="let element; index as i;">
+                  <div *ngIf="HRMChamCongLichSuPaginator004">
+                    {{HRMChamCongLichSuPaginator004.pageSize * HRMChamCongLichSuPaginator004.pageIndex + i + 1}}
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="MembershipCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.employee' | translate }}</th>
+                <td mat-cell *matCellDef="let element">
+                  <a style="cursor: pointer;" class="link-primary" target="_blank"
+                    href="http://192.168.103.221:91/#/EmployeeInfo/{{element.MembershipCode}}">
+                    <b>{{element.MembershipCode}} - {{element.MembershipName}}</b>
+                  </a>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="HasFingerprint">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.fingerprint' | translate }}</th>
+                <td mat-cell *matCellDef="let element">
+                  <label>
+                    <input class="form-check-input" type="checkbox" [checked]="element.HasFingerprint === true" disabled>
+                    <span></span>
+                  </label>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="CategoryHRMPhongBanName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.department' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CategoryHRMPhongBanName}}</td>
+              </ng-container>
+              <ng-container matColumnDef="Date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.date' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.Date | date:'dd/MM/yyyy'}}</td>
+              </ng-container>
+              <ng-container matColumnDef="DayOfWeek">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.dayOfWeek' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.DayOfWeek}}</td>
+              </ng-container>
+              <ng-container matColumnDef="CheckIn01">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.checkIn01' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CheckIn01}}</td>
+              </ng-container>
+              <ng-container matColumnDef="CheckOut01">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.checkOut01' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CheckOut01}}</td>
+              </ng-container>
+              <ng-container matColumnDef="CheckIn02">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.checkIn02' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CheckIn02}}</td>
+              </ng-container>
+              <ng-container matColumnDef="CheckOut02">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.checkOut02' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CheckOut02}}</td>
+              </ng-container>
+              <ng-container matColumnDef="CheckIn03">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.checkIn03' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CheckIn03}}</td>
+              </ng-container>
+              <ng-container matColumnDef="CheckOut03">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.checkOut03' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CheckOut03}}</td>
+              </ng-container>
+              <ng-container matColumnDef="Workday">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.workday' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.Workday}}</td>
+              </ng-container>
+              <ng-container matColumnDef="Hour">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.hour' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.Hour | number:'1.2-2'}}</td>
+              </ng-container>
+              <ng-container matColumnDef="Overtime01">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.overtime01' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.Overtime01}}</td>
+              </ng-container>
+              <ng-container matColumnDef="Overtime02">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.overtime02' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.Overtime02}}</td>
+              </ng-container>
+              <ng-container matColumnDef="Overtime03">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.overtime03' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.Overtime03}}</td>
+              </ng-container>
+              <ng-container matColumnDef="ShiftName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.shiftName' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.ShiftName}}</td>
+              </ng-container>
+              <ng-container matColumnDef="Symbol">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.symbol' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.Symbol}}</td>
+              </ng-container>
+              <ng-container matColumnDef="CategoryHRMSuatAnName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-lich-su.meal' | translate }}</th>
+                <td mat-cell *matCellDef="let element">{{element.CategoryHRMSuatAnName}}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="HRMChamCongLichSuService.DisplayColumns004"></tr>
+              <tr mat-row *matRowDef="let row; columns: HRMChamCongLichSuService.DisplayColumns004"></tr>
+            </table>
+            <mat-paginator *ngIf="!NotificationService.IsMobile" #HRMChamCongLichSuPaginator004="matPaginator"
+              [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="14" [showFirstLastButtons]></mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="HRMChamCongLichSuService.IsShowLoading"></app-loading>

@@ -1,0 +1,672 @@
+<div class="row">
+  <div class="col s12 m12 l12">
+    <ul class="tabs eval-top-tabs"
+      style="height: auto !important; background: transparent; overflow: visible; margin-bottom: 20px;">
+      <li class="tab col s6 p-0" style="height: auto !important; line-height: normal; padding-right: 15px !important;">
+        <a class="active p-0 eval-top-btn blue-btn" href="#Tag001"
+          style="height: auto !important; display: block; padding: 12px 20px !important; text-transform: none;">
+          <div class="btn-title" style="text-align: left;">📋 1. Phiếu đánh giá quản lý</div>
+          <div class="btn-sub" style="text-align: left;">Tất cả các mục đánh giá hiện có</div>
+        </a>
+      </li>
+      <li class="tab col s6 p-0" style="height: auto !important; line-height: normal;">
+        <a class="p-0 eval-top-btn green-btn" href="#Tag202"
+          style="height: auto !important; display: block; padding: 12px 20px !important; text-transform: none;">
+          <div class="btn-title" style="text-align: left;">🏭 2. Phiếu đánh giá công nhân sản xuất</div>
+          <div class="btn-sub" style="text-align: left;">Hoạt động riêng biệt</div>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+      <div class="card-content">
+        <div id="Tag001" class="col s12 p-0 eval-wrapper">
+          <h2 class="eval-main-title"><i class="material-icons">person</i> Menu phụ Đánh giá hiệu suất</h2>
+          <div class="mapping-section">
+            <div class="mapping-header">
+              <h3 class="mapping-title"><i class="material-icons"
+                  style="color: #10b981; font-size: 20px; vertical-align: bottom;">bar_chart</i>Bảng phân công đánh giá theo cấp bậc</h3>
+              <div class="mapping-actions">
+                <button class="action-btn orange-action">
+                  <strong><i class="material-icons" style="font-size: 14px;">smart_toy</i> Bước 1: Phân công tự động dựa
+                    trên sơ đồ tổ chức</strong>
+                  <small>Bước 1: Tự động xác định theo sơ đồ</small>
+                </button>
+                <button class="action-btn blue-action">
+                  <strong><i class="material-icons" style="font-size: 14px;">settings</i> Bước 2: Chỉnh sửa bản đồ thủ
+                    công</strong>
+                  <small>Bước 2: Chỉnh sửa bản đồ thủ công</small>
+                </button>
+              </div>
+            </div>
+
+            <div class="weight-cards-grid">
+              <div class="w-card">
+                <div class="w-card-header bg-navy">
+                  <i class="material-icons" style="font-size: 14px;">person</i> Đánh giá thành viên nhóm (Team Member)
+                  <div class="w-card-sub">Đánh giá thông điệp</div>
+                </div>
+                <div class="w-card-body">
+                  <div class="w-row"><span>Đồng nghiệp - Team Member (Peer) / Đồng nghiệp</span><span
+                      class="w-val">10%</span></div>
+                  <div class="w-row"><span>Trưởng nhóm / Trưởng nhóm</span><span class="w-val">40%</span></div>
+                  <div class="w-row"><span>Trưởng phòng / Trưởng Phòng</span><span class="w-val">20%</span></div>
+                  <div class="w-row"><span>Giám đốc điều hành / Giám đốc</span><span class="w-val">30%</span></div>
+                  <div class="w-row total"><span>Tổng cộng</span><span class="w-val">100%</span></div>
+                </div>
+              </div>
+
+              <div class="w-card">
+                <div class="w-card-header bg-teal">
+                  <i class="material-icons" style="font-size: 14px;">person_outline</i> Đánh giá Trưởng nhóm (Team
+                  Leader)
+                  <div class="w-card-sub">Đánh giá Trưởng nhóm</div>
+                </div>
+                <div class="w-card-body">
+                  <div class="w-row"><span>Thành viên nhóm (Cấp dưới) / Cấp dưới</span><span class="w-val">10%</span>
+                  </div>
+                  <div class="w-row"><span>Trưởng nhóm/Đồng nghiệp</span><span class="w-val">20%</span></div>
+                  <div class="w-row"><span>Trưởng phòng / Trưởng Phòng</span><span class="w-val">20%</span></div>
+                  <div class="w-row"><span>Giám đốc điều hành / Giám đốc</span><span class="w-val">30%</span></div>
+                  <div class="w-row"><span>CEO</span><span class="w-val">20%</span></div>
+                  <div class="w-row total"><span>Tổng cộng</span><span class="w-val">100%</span></div>
+                </div>
+              </div>
+
+              <div class="w-card">
+                <div class="w-card-header bg-orange">
+                  <i class="material-icons" style="font-size: 14px;">tie</i> Đánh giá Trưởng phòng (Dept Head)
+                  <div class="w-card-sub">Đánh giá Trưởng phòng</div>
+                </div>
+                <div class="w-card-body">
+                  <div class="w-row"><span>Trưởng nhóm (Cấp dưới) / Cấp dưới</span><span class="w-val">20%</span></div>
+                  <div class="w-row"><span>Đồng nghiệp - Trưởng phòng (Peer) / Đồng nghiệp</span><span
+                      class="w-val">30%</span></div>
+                  <div class="w-row"><span>Giám đốc điều hành / Giám đốc</span><span class="w-val">30%</span></div>
+                  <div class="w-row"><span>CEO</span><span class="w-val">20%</span></div>
+                  <div class="w-row total"><span>Tổng cộng</span><span class="w-val">100%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 0;">
+            <div class="col s12 m12 l12 p-0">
+              <ul class="tabs guide-tabs"
+                style="height: auto !important; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px 6px 0 0; border-bottom: none; overflow: visible;">
+                <li class="tab col s3 p-0" style="height: auto !important; line-height: normal;">
+                  <a class="active p-0 g-tab" href="#guide-member"
+                    style="height: 100% !important; display: block; padding: 10px 15px !important; text-transform: none; text-align: left;">
+                    Bảng hướng dẫn đo lường hiệu suất 
+                    <br><small>Cho thành viên</small>
+                  </a>
+                </li>
+                <li class="tab col s3 p-0" style="height: auto !important; line-height: normal;">
+                  <a class="p-0 g-tab" href="#guide-leader"
+                    style="height: 100% !important; display: block; padding: 10px 15px !important; text-transform: none; text-align: left;">
+                    <span></span> Bảng hướng dẫn chỉ số hiệu suất 
+                    <br><small>Cho Trưởng nhóm</small>
+                  </a>
+                </li>
+                <li class="tab col s3 p-0" style="height: auto !important; line-height: normal;">
+                  <a class="p-0 g-tab" href="#guide-dept"
+                    style="height: 100% !important; display: block; padding: 10px 15px !important; text-transform: none; text-align: left;">
+                    <span></span> Bảng hướng dẫn chỉ số thực hiện công việc 
+                    <br><small>Cho Trưởng phòng</small>
+                  </a>
+                </li>
+                <li class="tab col s3 p-0" style="height: auto !important; line-height: normal;">
+                  <a class="p-0 g-tab" href="#guide-admin"
+                    style="height: 100% !important; display: block; padding: 10px 15px !important; text-transform: none; text-align: left;">
+                    <span style="color: #d97706;">Kết quả cuối cùng của việc áp dụng</span> 
+                    <br><small>Trọng số</small>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="guide-member" class="col s12 p-0">
+            <div class="table-box border-top-0">
+              <div class="table-header-title" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                <i class="material-icons">person</i> Dành cho các thành viên nhóm (Tập trung vào hiệu suất cá nhân) -
+                Các chỉ số đánh giá chính
+              </div>
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">khu vực</th>
+                    <th style="width: 15%;">Điểm</th>
+                    <th style="width: 65%;">giải thích</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center font-bold">kết quả</td>
+                    <td class="text-center">35</td>
+                    <td>Mức độ hoàn thành công việc và các chỉ số KPI (mức độ đạt mục tiêu)</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Năng lực</td>
+                    <td class="text-center">20</td>
+                    <td>Chuyên môn và khả năng giải quyết vấn đề</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">thái độ</td>
+                    <td class="text-center">20</td>
+                    <td>Tuân thủ các quy định và chỉ thị</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">sự hợp tác</td>
+                    <td class="text-center">15</td>
+                    <td>Tinh thần đồng đội và chia sẻ kiến thức</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">sự quản lý</td>
+                    <td class="text-center">10</td>
+                    <td>Hiểu biết về Chính sách và Đóng góp</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-box mt-3">
+              <div style="padding: 8px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                <div class="row" style="margin-bottom: 0;">
+                  <div class="col s12 m3 l3">
+                    <label>Ngày bắt đầu</label>
+                    <input [ngModel]="MembershipService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+                      (ngModelChange)="HRMDanhGiaHieuSuatKetQuaDateBegin($event)" type="date" class="form-control">
+                  </div>
+                  <div class="col s12 m3 l3">
+                    <label>Ngày kết thúc</label>
+                    <input [ngModel]="MembershipService.BaseParameter.DateEnd | date:'yyyy-MM-dd'"
+                      (ngModelChange)="HRMDanhGiaHieuSuatKetQuaDateEnd($event)" type="date" class="form-control">
+                  </div>
+                  <div class="col s12 m3 l3">
+                    <label>Tìm kiếm</label>
+                    <input [(ngModel)]="MembershipService.BaseParameter.SearchString" type="text"
+                      class="form-control" placeholder="Tìm kiếm...">
+                  </div>
+                  <div class="col s12 m3 l3" style="display: flex; align-items: flex-end; gap: 4px;">
+                    <button title="Tìm kiếm"
+                      class="btn waves-effect waves-light cyan d-inline-flex align-items-center justify-content-center"
+                      style="height: 36px;"
+                      (click)="MembershipSearch()"><i class="material-icons">search</i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="KhungOverflow70">
+                <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipSort="matSort"
+                  class="TableMaterial" [dataSource]="MembershipService.DataSource01">
+                  <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                      <div *ngIf="MembershipPaginator">
+                        {{MembershipPaginator.pageSize * MembershipPaginator.pageIndex + i + 1}}
+                      </div>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Membership">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Thành viên</th>
+                    <td mat-cell *matCellDef="let element">
+                      <div class="emp-name">{{element.Name}}</div>
+                      <div class="emp-dept">{{element.CategoryDepartmentName}}</div>
+                      <a href="javascript:void(0)" class="emp-link">{{element.CategoryPositionName}}</a>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="HieuSuat">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Hiệu suất (35)</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <input type="number" class="score-input" [(ngModel)]="element.HieuSuat">
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="NangLuc">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Năng lực (20)</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <input type="number" class="score-input" [(ngModel)]="element.NangLuc">
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="ThaiDo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Thái độ (20)</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <input type="number" class="score-input" [(ngModel)]="element.ThaiDo">
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="HopTac">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Hợp tác (15)</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <input type="number" class="score-input" [(ngModel)]="element.HopTac">
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="QuanLy">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quản lý (10)</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <input type="number" class="score-input" [(ngModel)]="element.QuanLy">
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="DiemChuyenDoi">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Điểm chuyển đổi cơ bản</th>
+                    <td mat-cell *matCellDef="let element" class="text-center total-score">{{element.DiemChuyenDoi || 0}} điểm</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Save">
+                    <th mat-header-cell *matHeaderCellDef>Thao tác</th>
+                    <td mat-cell *matCellDef="let element">
+                      <a (click)="HRMDanhGiaHieuSuatKetQuaSave(element)" class="btn waves-effect waves-light cyan" title="Lưu lại">
+                        <i class="material-icons">save</i>
+                      </a>&nbsp;&nbsp;&nbsp;
+                      <a *ngIf="element.ID>0" (click)="HRMDanhGiaHieuSuatKetQuaDelete(element)"
+                        class="btn-floating waves-effect waves-light red" title="Xóa">
+                        <i class="material-icons">delete_outline</i>
+                      </a>
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="HRMDanhGiaHieuSuatKetQuaService.DisplayColumns002"></tr>
+                  <tr mat-row *matRowDef="let row; columns: HRMDanhGiaHieuSuatKetQuaService.DisplayColumns002;"></tr>
+                </table>
+                <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipPaginator="matPaginator"
+                  [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+                <div *ngIf="!MembershipService.ListFilter || MembershipService.ListFilter.length == 0"
+                  class="text-center" style="padding: 20px; color: #64748b;">
+                  Chưa có nhân sự trong phòng ban.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="guide-leader" class="col s12 p-0">
+            <div class="table-box border-top-0">
+              <div class="table-header-title"
+                style="border-top-left-radius: 0; border-top-right-radius: 0; background-color: #eff6ff;">
+                <i class="material-icons" style="color: #1e40af;">person_outline</i> Dành cho Trưởng nhóm (Tổ chức/Lãnh
+                đạo) - Các chỉ số đánh giá đầu tiên
+              </div>
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">khu vực</th>
+                    <th style="width: 15%;">Điểm</th>
+                    <th style="width: 65%;">giải thích</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center font-bold">Hiệu suất của bộ phận</td>
+                    <td class="text-center">25</td>
+                    <td>Đạt được các KPI và mục tiêu</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Quản lý tổ chức</td>
+                    <td class="text-center">20</td>
+                    <td>Phát triển tài năng và huấn luyện</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Hiệu quả</td>
+                    <td class="text-center">15</td>
+                    <td>Quản lý chất lượng và chi phí</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Cải tiến chiến lược</td>
+                    <td class="text-center">15</td>
+                    <td>Xác định và dẫn dắt các cải tiến</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Khả năng lãnh đạo</td>
+                    <td class="text-center">15</td>
+                    <td>Lãnh đạo và điều phối</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">sự quản lý</td>
+                    <td class="text-center">10</td>
+                    <td>Thực thi chiến lược và tầm nhìn</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-box mt-3">
+              <table class="custom-table score-table">
+                <thead>
+                  <tr>
+                    <th style="width: 25%;">Họ và tên/Chức vụ/Phòng ban</th>
+                    <th>Hiệu suất của bộ phận (25)</th>
+                    <th>Quản lý tổ chức (20)</th>
+                    <th>Hiệu quả (15)</th>
+                    <th>Cải thiện chiến lược (15)</th>
+                    <th>Lãnh đạo (15)</th>
+                    <th>Quản lý (10)</th>
+                    <th style="width: 15%;">Điểm chuyển đổi cơ bản</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of MembershipService.ListFilter">
+                    <td class="text-center">
+                      <div class="emp-name">{{item.Name}}</div>
+                      <div class="emp-dept">{{item.CategoryDepartmentName}}</div>
+                      <a href="javascript:void(0)" class="emp-link">{{item.CategoryPositionName}}</a>
+                    </td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center total-score">0,0 điểm</td>
+                  </tr>
+                  <tr *ngIf="!MembershipService.ListFilter || MembershipService.ListFilter.length == 0">
+                    <td colspan="8" class="text-center">Chưa có nhân sự trong phòng ban.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="guide-dept" class="col s12 p-0">
+            <div class="table-box border-top-0">
+              <div class="table-header-title"
+                style="border-top-left-radius: 0; border-top-right-radius: 0; background-color: #eff6ff;">
+                <i class="material-icons" style="color: #1e40af;">tie</i> Dành cho Trưởng phòng (Tổ chức/Lãnh đạo) - Chỉ
+                số đánh giá đầu tiên
+              </div>
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">khu vực</th>
+                    <th style="width: 15%;">Điểm</th>
+                    <th style="width: 65%;">giải thích</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center font-bold">Hiệu suất của bộ phận</td>
+                    <td class="text-center">25</td>
+                    <td>Đạt được các KPI và mục tiêu</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Quản lý tổ chức</td>
+                    <td class="text-center">20</td>
+                    <td>Phát triển tài năng và huấn luyện</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Hiệu quả</td>
+                    <td class="text-center">15</td>
+                    <td>Quản lý chất lượng và chi phí</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Cải tiến chiến lược</td>
+                    <td class="text-center">15</td>
+                    <td>Xác định và dẫn dắt các cải tiến</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">Khả năng lãnh đạo</td>
+                    <td class="text-center">15</td>
+                    <td>Lãnh đạo và điều phối</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center font-bold">sự quản lý</td>
+                    <td class="text-center">10</td>
+                    <td>Thực thi chiến lược và tầm nhìn</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-box mt-3">
+              <table class="custom-table score-table">
+                <thead>
+                  <tr>
+                    <th style="width: 25%;">Họ và tên/Chức vụ/Phòng ban</th>
+                    <th>Hiệu suất của bộ phận (25)</th>
+                    <th>Quản lý tổ chức (20)</th>
+                    <th>Hiệu quả (15)</th>
+                    <th>Cải thiện chiến lược (15)</th>
+                    <th>Lãnh đạo (15)</th>
+                    <th>Quản lý (10)</th>
+                    <th style="width: 15%;">Điểm chuyển đổi cơ bản</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of MembershipService.ListFilter">
+                    <td class="text-center">
+                      <div class="emp-name">{{item.Name}}</div>
+                      <div class="emp-dept">{{item.CategoryDepartmentName}}</div>
+                      <a href="javascript:void(0)" class="emp-link">{{item.CategoryPositionName}}</a>
+                    </td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center"><input type="number" class="score-input" value="0"></td>
+                    <td class="text-center total-score">0,0 điểm</td>
+                  </tr>
+                  <tr *ngIf="!MembershipService.ListFilter || MembershipService.ListFilter.length == 0">
+                    <td colspan="8" class="text-center">Chưa có nhân sự trong phòng ban.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="guide-admin" class="col s12 p-0">
+            <div class="table-box border-top-0">
+              <table class="custom-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 15%;">Chủ thể</th>
+                    <th style="width: 15%;">Trạng thái lập bản đồ người đánh giá</th>
+                    <th style="width: 10%;">Mô hình đánh giá</th>
+                    <th style="width: 35%;">Chi tiết tính toán việc áp dụng trọng số theo cấp bậc</th>
+                    <th style="width: 10%;">Điểm số cuối cùng</th>
+                    <th style="width: 5%;">xếp hạng</th>
+                    <th style="width: 10%;">Ý kiến toàn diện (Cuối cùng)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                
+                  <tr>
+                    <td class="text-center">
+                      <div class="emp-name">Daeilrok</div>
+                      <div class="emp-dept">Viện Nghiên cứu Công nghệ (R&D)</div>
+                      <a href="javascript:void(0)" class="emp-link">Trưởng phòng/Giám đốc trung tâm</a>
+                    </td>
+                    <td class="text-left font-size-10">
+                      <div class="map-status text-blue">Trưởng nhóm: <span class="text-muted">Chưa được chỉ định</span>
+                      </div>
+                      <div class="map-status text-teal">Trưởng phòng: <span class="text-muted">Chưa được chỉ định</span>
+                      </div>
+                      <div class="map-status text-red">Ban điều hành: <span class="text-muted">Không được chỉ
+                          định</span></div>
+                      <div class="map-status text-indigo">CEO: <span class="text-muted">Không xác định</span></div>
+                    </td>
+                    <td class="text-center">
+                      <select class="form-select form-select-sm score-select" style="display: block;">
+                        <option selected>Dành cho trưởng phòng</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="weight-calc-grid">
+                        <div class="weight-item">
+                          <label>Trưởng nhóm (20%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>Đồng nghiệp (30%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>Giám đốc điều hành (30%)</label>
+                          <input type="number" class="score-input-sm" value="0.0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>CEO (20%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="final-score">0 điểm</div>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge rounded-pill bg-danger-subtle text-danger">C</span>
+                    </td>
+                    <td class="text-center text-muted">-</td>
+                  </tr>
+
+                  
+                  <tr>
+                    <td class="text-center">
+                      <div class="emp-name">Redat</div>
+                      <div class="emp-dept">Nhóm thiết kế điện tử</div>
+                      <a href="javascript:void(0)" class="emp-link">Nhân viên / Thành viên nhóm</a>
+                    </td>
+                    <td class="text-left font-size-10">
+                      <div class="map-status text-blue">Trưởng nhóm: <span class="text-muted">Chưa được chỉ định</span>
+                      </div>
+                      <div class="map-status text-teal">Trưởng phòng: <span class="text-muted">Chưa được chỉ định</span>
+                      </div>
+                      <div class="map-status text-red">Ban điều hành: <span class="text-muted">Không được chỉ
+                          định</span></div>
+                      <div class="map-status text-indigo">CEO: <span class="text-muted">Không xác định</span></div>
+                    </td>
+                    <td class="text-center">
+                      <select class="form-select form-select-sm score-select" style="display: block;">
+                        <option selected>Dành cho các thành viên nhóm</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="weight-calc-grid">
+                        <div class="weight-item">
+                          <label>Đồng nghiệp (10%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>Trưởng nhóm (40%)</label>
+                          <input type="number" class="score-input-sm" value="0.0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>Trưởng phòng (20%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>Giám đốc điều hành (30%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="final-score">0 điểm</div>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge rounded-pill bg-danger-subtle text-danger">C</span>
+                    </td>
+                    <td class="text-center text-muted">-</td>
+                  </tr>
+
+                  <!-- Row 3 -->
+                  <tr>
+                    <td class="text-center">
+                      <div class="emp-name">đậu</div>
+                      <div class="emp-dept">Bộ phận Quản lý Chất lượng</div>
+                      <a href="javascript:void(0)" class="emp-link">Quản lý / Trưởng nhóm</a>
+                    </td>
+                    <td class="text-left font-size-10">
+                      <div class="map-status text-blue">Trưởng nhóm: <span class="text-muted">Chưa được chỉ định</span>
+                      </div>
+                      <div class="map-status text-teal">Trưởng phòng: <span class="text-muted">Chưa được chỉ định</span>
+                      </div>
+                      <div class="map-status text-red">Ban điều hành: <span class="text-muted">Không được chỉ
+                          định</span></div>
+                      <div class="map-status text-indigo">CEO: <span class="text-muted">Không xác định</span></div>
+                    </td>
+                    <td class="text-center">
+                      <select class="form-select form-select-sm score-select" style="display: block;">
+                        <option selected>Dành cho trưởng nhóm</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="weight-calc-grid">
+                        <div class="weight-item">
+                          <label>Thành viên nhóm (10%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>Đồng nghiệp (20%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>Trưởng phòng (20%)</label>
+                          <input type="number" class="score-input-sm" value="0.0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>Giám đốc điều hành (30%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                        <div class="weight-item">
+                          <label>CEO (20%)</label>
+                          <input type="number" class="score-input-sm" value="0" disabled>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="final-score">0 điểm</div>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge rounded-pill bg-danger-subtle text-danger">C</span>
+                    </td>
+                    <td class="text-center text-muted">-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+      
+        </div>
+
+        <div id="Tag202" class="col s12 p-0 eval-wrapper">
+          <div class="worker-eval-section">
+            <h3 class="worker-eval-title"><i class="material-icons" style="color: #64748b; font-size: 20px;">person</i>
+              Phiếu đánh giá công nhân sản xuất</h3>
+            <p class="worker-eval-desc">Việc đánh giá năng lực công nhân sản xuất được thực hiện dựa trên các tiêu chí
+              riêng biệt tập trung vào sự chuyên cần, an toàn, chất lượng và năng suất.</p>
+
+            <div class="worker-cards-grid">
+              <div class="w-card">
+                <div class="w-card-header bg-orange-red">
+                  <i class="material-icons" style="font-size: 14px;">build</i> Tiêu chí đánh giá công nhân sản xuất
+                  <div class="w-card-sub">Tiêu chí đánh giá</div>
+                </div>
+                <div class="w-card-body">
+                  <div class="w-row"><span>Tham dự / Tạm biệt</span><span class="w-val">30%</span></div>
+                  <div class="w-row"><span>Tỷ lệ chất lượng/lỗi</span><span class="w-val">25%</span></div>
+                  <div class="w-row"><span>Năng suất / Tốc độ làm việc</span><span class="w-val">20%</span></div>
+                  <div class="w-row"><span>An toàn / Tuân thủ</span><span class="w-val">15%</span></div>
+                  <div class="w-row"><span>Tinh thần hợp tác / Thái độ</span><span class="w-val">10%</span></div>
+                  <div class="w-row total"><span>Tổng cộng</span><span class="w-val">100%</span></div>
+                </div>
+              </div>
+
+              <div class="w-card">
+                <div class="w-card-header bg-purple">
+                  <i class="material-icons" style="font-size: 14px;">description</i> Hướng dẫn vận hành dành cho công
+                  nhân sản xuất
+                  <div class="w-card-sub">Hướng dẫn</div>
+                </div>
+                <div class="w-card-body manual-body">
+                  <p>Đối với việc đánh giá công nhân sản xuất, chỉ có cấu trúc được tách riêng để cho phép đính kèm biểu
+                    mẫu nhập liệu và quy trình phê duyệt riêng.</p>
+                  <p>Màn hình hiện tại hoạt động như một trang riêng biệt, không liên quan đến phần đánh giá quản lý.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="HRMDanhGiaHieuSuatKetQuaService.IsShowLoading"></app-loading>

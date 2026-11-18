@@ -1,0 +1,118 @@
+<div class="card card-default scrollspy">
+  <div class="card-content">
+    <div class="hrmTangCa-filter-panel">
+      <div class="row hrmTangCa-filter-row">
+        <div class="col s12 m6 l3">
+          <label>{{ 'hrm-tang-ca.fromDate' | translate }}</label>
+          <input type="date" [(ngModel)]="FromDate" class="form-control">
+        </div>
+        <div class="col s12 m6 l3">
+          <label>{{ 'hrm-tang-ca.toDate' | translate }}</label>
+          <input type="date" [(ngModel)]="ToDate" class="form-control">
+        </div>
+        <div class="col s12 m6 l2">
+          <label>{{ 'hrm-tang-ca.company' | translate }}</label>
+          <select class="browser-default form-select" [(ngModel)]="CompanyID" (change)="EmployeeCompanyChange()">
+            <option *ngFor="let company of CompanyService.ListFilter" [ngValue]="company.ID">{{ company.Name }}</option>
+          </select>
+        </div>
+        <div class="col s12 m6 l3">
+          <label>{{ 'hrm-tang-ca.department' | translate }}</label>
+          <select class="browser-default form-select" [(ngModel)]="CategoryHRMPhongBanID">
+            <option [ngValue]="0">All</option>
+            <option *ngFor="let department of CategoryHRMPhongBanService.ListFilter" [ngValue]="department.ID">{{ GetDepartmentName(department) }}</option>
+          </select>
+        </div>
+        <div class="col s12 m6 l1 hrmTangCa-office-filter">
+          <label>
+            <input type="checkbox" class="form-check-input" [(ngModel)]="EmployeeIsOffice" (change)="EmployeeOfficeChange()">
+            <span>Office</span>
+          </label>
+        </div>
+      </div>
+      <div class="row hrmTangCa-search-row">
+        <div class="col s12 m8 l6">
+          <input type="text" class="form-control" [placeholder]="'hrm-tang-ca.employeeSearchPlaceholder' | translate" [(ngModel)]="EmployeeSearchString" (keyup.enter)="SearchEmployees()">
+        </div>
+        <div class="col s12 m4 l3 hrmTangCa-filter-actions-col">
+          <button type="button" class="btn waves-effect waves-light green darken-1" (click)="SearchEmployees()">
+            <i class="material-icons">search</i>{{ 'common.search' | translate }}
+          </button>
+          <button type="button" class="btn waves-effect waves-light grey" (click)="ResetEmployeeFilters()">
+            <i class="material-icons">refresh</i>{{ 'hrm-tang-ca.reset' | translate }}
+          </button>
+          <button type="button" class="btn waves-effect waves-light green darken-1" [disabled]="IsEmployeeExporting || CompanyID <= 0" [title]="'common.export_excel' | translate" (click)="ExportEmployees()">
+            <i class="material-icons">{{ IsEmployeeExporting ? 'hourglass_empty' : 'cloud_download' }}</i>
+            {{ IsEmployeeExporting ? ('hrm-tang-ca.exporting' | translate) : ('common.export_excel' | translate) }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hrmTangCa-table-container mat-elevation-z2">
+      <table mat-table [dataSource]="EmployeeDataSource" matSort [matSortActive]="EmployeeSortBy" [matSortDirection]="EmployeeSortDirection" (matSortChange)="EmployeeSortChange($event)" class="hrmTangCa-table">
+        <ng-container matColumnDef="No">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true" class="mat-column-No">No</th>
+          <td mat-cell *matCellDef="let row; let rowIndex = index" class="mat-column-No">{{ EmployeePageIndex * EmployeePageSize + rowIndex + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="EmployeeCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="EmployeeCode">{{ 'hrm-tang-ca.employeeCode' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.EmployeeCode }}</td>
+        </ng-container>
+        <ng-container matColumnDef="EmployeeName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="EmployeeName">{{ 'hrm-tang-ca.employeeName' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.EmployeeName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Department">{{ 'hrm-tang-ca.department' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.DepartmentName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Division">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Division">{{ 'hrm-tang-ca.division' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ (row.IsOffice ? 'hrm-tang-ca.officeDivision' : 'hrm-tang-ca.productionDivision') | translate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="RequestCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="RequestCode">{{ 'hrm-tang-ca.requestCode' | translate }}</th>
+          <td mat-cell *matCellDef="let row">
+            <a class="link-primary" target="_blank" rel="noopener noreferrer" [href]="GetRadApprovalUrl(row.ApprovalRequestId)">{{ row.RequestCode }}</a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="RequestDepartment">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="RequestDepartmentName">{{ 'hrm-tang-ca.requestDepartment' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.RequestDepartmentName || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="OvertimeDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="OvertimeDate">{{ 'hrm-tang-ca.overtimeDate' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.OvertimeDate | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="StartTime">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="StartTime">{{ 'hrm-tang-ca.startTime' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.StartTime | slice:0:5 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="EndTime">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="EndTime">{{ 'hrm-tang-ca.endTime' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.EndTime | slice:0:5 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="TotalHours">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="TotalHours">{{ 'hrm-tang-ca.totalHours' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ FormatHoursToTime(row.TotalHours) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="CompletedDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="CompletedDate">{{ 'hrm-tang-ca.approvedDate' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.CompletedDate | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Note">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">{{ 'hrm-tang-ca.note' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.SignatureOrNote || '—' }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="EmployeeColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: EmployeeColumns" class="hrmTangCa-employee-row"></tr>
+      </table>
+      <div class="hrmTangCa-empty-state" *ngIf="!ApprovalOvertimeEmployeeService.IsShowLoading && EmployeeDataSource.data.length === 0">
+        <i class="material-icons">inbox</i><span>{{ 'hrm-tang-ca.noEmployeeRows' | translate }}</span>
+      </div>
+      <mat-paginator [length]="EmployeeTotalCount" [pageIndex]="EmployeePageIndex" [pageSize]="EmployeePageSize" [pageSizeOptions]="[10, 20, 50]" [showFirstLastButtons] (page)="EmployeePageChange($event)"></mat-paginator>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="ApprovalOvertimeEmployeeService.IsShowLoading"></app-loading>

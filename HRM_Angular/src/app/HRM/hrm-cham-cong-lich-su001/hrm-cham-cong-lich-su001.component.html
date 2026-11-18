@@ -1,0 +1,263 @@
+<div class="row">
+  <div class="pt-2 pb-0" id="breadcrumbs-wrapper" *ngIf="!NotificationService.IsMobile">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <h6 class="breadcrumbs-title">
+            Chấm công / 시간 기록
+            <span style="font-size: 30px;"
+              *ngIf="HRMChamCongLichSuService.List">({{HRMChamCongLichSuService.List.length}}
+              items)</span>
+          </h6>
+        </div>
+        <div class="col s12 m6 l6 right-align-md">
+          <ol class="breadcrumbs mb-0">
+            <li class="breadcrumb-item">
+              <a href="javascript:history.back()" title="Back">
+                <<< Back </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a title="HRM">HRM</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/HRMChamCongLichSu" title="Chấm công / 시간 기록">Chấm công / 시간 기록</a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pt-10 pb-0" id="breadcrumbs-wrapper" *ngIf="NotificationService.IsMobile">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <h6 class="breadcrumbs-title">
+            Chấm công / 시간 기록
+            <span style="font-size: 30px;"
+              *ngIf="HRMChamCongLichSuService.List">({{HRMChamCongLichSuService.List.length}}
+              items)</span>
+          </h6>
+        </div>       
+      </div>
+    </div>
+  </div>
+  <div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+      <div class="card-content">
+        <div class="col s12 m12 l2">
+          <input [ngModel]="HRMChamCongLichSuService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+            style="text-align: right;" (ngModelChange)="DateBegin($event)" (keyup.enter)="HRMChamCongLichSu001Search()"
+            [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+        </div>
+        <div class="col s12 m12 l2">
+          <input [ngModel]="HRMChamCongLichSuService.BaseParameter.DateEnd | date:'yyyy-MM-dd'"
+            style="text-align: right;" (ngModelChange)="DateEnd($event)" (keyup.enter)="HRMChamCongLichSu001Search()"
+            [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off">
+        </div>
+        <div class="col s12 m12 l6">
+          <input [(ngModel)]="HRMChamCongLichSuService.BaseParameter.SearchString" placeholder="Search ..."
+            [disabled]="true" class="form-control" (keyup.enter)="HRMChamCongLichSu001Search()">
+        </div>
+        <div class="col s12 m12 l1">
+          <button title="Tìm kiếm | 검색" (click)="HRMChamCongLichSu001Search()"
+            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+            <i class="material-icons">search</i>
+          </button>
+        </div>
+        <div class="col s12 m12 l1">
+          <button title="Xuất Excel | 엑셀로 내보내기" (click)="HRMChamCongLichSu001Excel()"
+            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+            <i class="material-icons">cloud_download</i>
+          </button>
+        </div>
+        <div class="KhungOverflow80" *ngIf="!NotificationService.IsMobile">
+          <table *ngIf="!NotificationService.IsMobile" mat-table matSort #HRMChamCongLichSuSort="matSort"
+            class="TableMaterial" [dataSource]="HRMChamCongLichSuService.DataSource">
+            <ng-container matColumnDef="No">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                No
+              </th>
+              <td mat-cell *matCellDef="let element; index as i;">
+                <div *ngIf="HRMChamCongLichSuPaginator">
+                  {{
+                  HRMChamCongLichSuPaginator.pageSize *
+                  HRMChamCongLichSuPaginator.pageIndex + i + 1
+                  }}
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.ID}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Active">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Kích hoạt / 활성화</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                    [(ngModel)]="element.Active">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="IsTangCa">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tăng ca / 시간 외에</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="IsTangCa{{element.ID}}"
+                    [(ngModel)]="element.IsTangCa">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="IsCaDem">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ca đêm / 야간 근무</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="IsCaDem{{element.ID}}"
+                    [(ngModel)]="element.IsCaDem">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="MembershipCode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhân viên / 직원</th>
+              <td mat-cell *matCellDef="let element">
+                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                  routerLink="/EmployeeInfo/{{element.ParentID}}"><b>{{element.MembershipCode}} -
+                    {{element.MembershipName}}</b></a>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Thời gian / 시간</th>
+              <td mat-cell *matCellDef="let element">
+                <div>
+                  {{element.Date |
+                  date:'dd/MM/yyyy HH:mm:ss'}}
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="CategoryHRMPhongBanName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Bộ phận | 부서</th>
+              <td mat-cell *matCellDef="let element">{{element.CategoryHRMPhongBanName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="CategoryHRMCaLamViecName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ca làm việc | 옮기다 </th>
+              <td mat-cell *matCellDef="let element">{{element.CategoryHRMCaLamViecName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Save">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              </th>
+              <td mat-cell *matCellDef="let element">
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="HRMChamCongLichSuService.DisplayColumns001">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: HRMChamCongLichSuService.DisplayColumns001;">
+            </tr>
+          </table>
+          <mat-paginator *ngIf="!NotificationService.IsMobile" #HRMChamCongLichSuPaginator="matPaginator"
+            [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="14" [showFirstLastButtons]></mat-paginator>
+        </div>
+        <div class="KhungOverflow" *ngIf="NotificationService.IsMobile">
+          <table *ngIf="NotificationService.IsMobile" mat-table matSort #HRMChamCongLichSuSort="matSort"
+            class="TableMaterial" [dataSource]="HRMChamCongLichSuService.DataSource">
+            <ng-container matColumnDef="No">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                No
+              </th>
+              <td mat-cell *matCellDef="let element; index as i;">
+                <div *ngIf="HRMChamCongLichSuPaginator">
+                  {{
+                  HRMChamCongLichSuPaginator.pageSize *
+                  HRMChamCongLichSuPaginator.pageIndex + i + 1
+                  }}
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.ID}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Active">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Kích hoạt / 활성화</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                    [(ngModel)]="element.Active">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="IsTangCa">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tăng ca / 시간 외에</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="IsTangCa{{element.ID}}"
+                    [(ngModel)]="element.IsTangCa">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="IsCaDem">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ca đêm / 야간 근무</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="IsCaDem{{element.ID}}"
+                    [(ngModel)]="element.IsCaDem">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="MembershipCode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhân viên / 직원</th>
+              <td mat-cell *matCellDef="let element">
+                <a style="cursor: pointer;" class="link-primary" target="_blank"
+                  routerLink="/EmployeeInfo/{{element.ParentID}}"><b>{{element.MembershipCode}} -
+                    {{element.MembershipName}}</b></a>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Thời gian / 시간</th>
+              <td mat-cell *matCellDef="let element">
+                <div>
+                  {{element.Date |
+                  date:'dd/MM/yyyy HH:mm:ss'}}
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="CategoryHRMPhongBanName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Bộ phận | 부서</th>
+              <td mat-cell *matCellDef="let element">{{element.CategoryHRMPhongBanName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="CategoryHRMCaLamViecName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ca làm việc | 옮기다 </th>
+              <td mat-cell *matCellDef="let element">{{element.CategoryHRMCaLamViecName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Save">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              </th>
+              <td mat-cell *matCellDef="let element">
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="HRMChamCongLichSuService.DisplayColumns001">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: HRMChamCongLichSuService.DisplayColumns001;">
+            </tr>
+          </table>
+          <mat-paginator *ngIf="!NotificationService.IsMobile" #HRMChamCongLichSuPaginator="matPaginator"
+            [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="14" [showFirstLastButtons]></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="HRMChamCongLichSuService.IsShowLoading"></app-loading>

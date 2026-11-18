@@ -1,0 +1,186 @@
+{
+  "hrm-nghi-phep": {
+    "title": "Quản lý nghỉ phép",
+    "tabs": {
+      "overview": "Tổng quan",
+      "requests": "Đơn nghỉ phép",
+      "actualWorkdays": "Ngày công thực tế",
+      "balanceUpdate": "Cập nhật tồn",
+      "history": "Lịch sử cập nhật tồn",
+      "leaveType": "Quản lý loại phép"
+    },
+    "overview": {
+      "company": "Công ty",
+      "year": "Năm",
+      "department": "Bộ phận",
+      "office": "Văn phòng",
+      "production": "Sản xuất",
+      "searchPlaceholder": "Tìm kiếm theo mã hoặc tên nhân viên",
+      "search": "Tìm kiếm",
+      "reset": "Làm mới",
+      "exportExcel": "Xuất Excel",
+      "exportDisabledTitle": "Chưa kết nối backend",
+      "columns": {
+        "no": "No",
+        "id": "ID",
+        "employeeCode": "Mã nhân viên",
+        "employeeName": "Tên nhân viên",
+        "department": "Bộ phận",
+        "openingDate": "Ngày chốt tồn",
+        "openingBalance": "Tồn đầu kỳ",
+        "monthlyAccrued": "Cấp theo tháng",
+        "seniority": "Phép thâm niên",
+        "used": "Đã dùng",
+        "adjustment": "Điều chỉnh",
+        "current": "Hiện tại"
+      },
+      "messages": {
+        "noData": "Không có nhân viên phù hợp.",
+        "noCompany": "Không có công ty để tải danh sách nhân viên.",
+        "loadCompanyFailed": "Không thể tải danh sách công ty.",
+        "loadDepartmentFailed": "Không thể tải danh sách bộ phận.",
+        "loadOverviewFailed": "Không thể tải dữ liệu tổng quan phép năm.",
+        "syncSuccess": "Đồng bộ phép năm hoàn tất. Nhân viên: {{total}}, phép tháng: {{monthly}}, thâm niên: {{seniority}}.",
+        "syncFailed": "Không thể đồng bộ phép năm."
+      }
+    },
+    "requests": {
+      "search": "Tìm kiếm",
+      "exportExcel": "Xuất Excel",
+      "columns": {
+        "no": "No",
+        "id": "ID",
+        "status": "Trạng thái",
+        "requestCode": "Mã đơn",
+        "employeeCode": "Mã nhân viên",
+        "employeeName": "Tên nhân viên",
+        "department": "Bộ phận",
+        "leaveType": "Loại phép",
+        "leaveDays": "Số ngày nghỉ",
+        "fromDate": "Từ ngày",
+        "toDate": "Đến ngày",
+        "leaveReason": "Lý do nghỉ",
+        "createdDate": "Ngày tạo"
+      },
+      "messages": {
+        "exportFailed": "Không thể lưu hoặc tải file."
+      }
+    },
+    "leaveType": {
+      "columns": {
+        "no": "No",
+        "code": "Mã loại phép",
+        "nameVn": "Tên (VN)",
+        "nameEn": "Tên (EN)",
+        "nameKr": "Tên (KR)",
+        "description": "Mô tả",
+        "isDeduct": "Trừ phép năm",
+        "isActive": "Hoạt động",
+        "save": "Lưu"
+      },
+      "tooltips": {
+        "save": "Lưu"
+      },
+      "messages": {
+        "loadFailed": "Không thể tải danh sách loại phép.",
+        "codeRequired": "Mã loại phép không được để trống.",
+        "nameVnRequired": "Tên loại phép tiếng Việt không được để trống.",
+        "saveSuccess": "Đã lưu loại phép.",
+        "saveFailed": "Không thể lưu loại phép."
+      }
+    },
+    "placeholders": {
+      "balanceTitle": "Cập nhật tồn",
+      "historyTitle": "Lịch sử cập nhật"
+    },
+    "balance": {
+      "actions": {
+        "adjust": "Điều chỉnh"
+      },
+      "columns": {
+        "openingBalance": "Tồn đầu kỳ",
+        "openingDate": "Ngày chốt tồn",
+        "currentBalance": "Tồn hiện tại",
+        "updatedDate": "Ngày cập nhật",
+        "updatedBy": "Người cập nhật",
+        "action": "Thao tác"
+      },
+      "historyColumns": {
+        "changeType": "Loại thay đổi",
+        "oldBalance": "Tồn trước",
+        "changeAmount": "Biến động",
+        "newBalance": "Tồn sau",
+        "reason": "Lý do",
+        "createdDate": "Thời điểm",
+        "createdBy": "Người thực hiện",
+        "noData": "Chưa có lịch sử cập nhật tồn."
+      },
+      "editDialog": {
+        "title": "Điều chỉnh số dư phép năm",
+        "employeeCode": "Mã nhân viên",
+        "employeeName": "Họ và tên",
+        "department": "Phòng ban",
+        "currentBalance": "Số dư hiện tại",
+        "openingBalance": "Tồn đầu kỳ",
+        "year": "Năm",
+        "adjustmentType": "Loại điều chỉnh",
+        "add": "Cộng",
+        "subtract": "Trừ",
+        "amount": "Số ngày điều chỉnh",
+        "newBalance": "Tồn hiện tại sau điều chỉnh",
+        "amountRequired": "Số ngày điều chỉnh phải lớn hơn 0.",
+        "balanceNegative": "Tồn hiện tại sau điều chỉnh không được âm.",
+        "reason": "Lý do điều chỉnh (không bắt buộc)"
+      },
+      "importDialog": {
+        "title": "Nhập tồn đầu kỳ từ Excel",
+        "year": "Năm",
+        "updateDate": "Ngày chốt tồn",
+        "reason": "Lý do cập nhật (không bắt buộc)",
+        "file": "File Excel (.xlsx)",
+        "errorsTitle": "Danh sách lỗi kiểm tra file",
+        "close": "Đóng",
+        "import": "Thực hiện nhập",
+        "importing": "Đang nhập..."
+      },
+      "messages": {
+        "saveSuccess": "Đã cập nhật số dư phép thành công.",
+        "saveFailed": "Không thể cập nhật số dư phép.",
+        "loadHistoryFailed": "Không thể tải lịch sử số dư phép.",
+        "invalidFile": "Chỉ hỗ trợ file Excel định dạng .xlsx.",
+        "fileRequired": "Vui lòng chọn file .xlsx.",
+        "invalidYear": "Vui lòng nhập năm hợp lệ.",
+        "invalidOpeningDate": "Vui lòng chọn ngày chốt tồn hợp lệ.",
+        "importFailed": "Không thể nhập dữ liệu Excel.",
+        "correctErrors": "Vui lòng sửa các lỗi bên dưới rồi tải lại file.",
+        "noRecords": "File không có dòng dữ liệu nào để cập nhật.",
+        "importSuccess": "Đã cập nhật thành công {{count}} nhân viên."
+      }
+    },
+    "actualWorkdays": {
+      "employeeListTitle": "Danh sách nhân viên",
+      "previousMonth": "Tháng trước",
+      "nextMonth": "Tháng sau",
+      "legendWorked": "Đi làm",
+      "legendLeaveDeduct": "Nghỉ trừ phép",
+      "legendLeaveNonDeduct": "Nghỉ không trừ phép",
+      "messages": {
+        "loadingEmployees": "Đang tải danh sách nhân viên...",
+        "noEmployees": "Không tìm thấy nhân viên phù hợp.",
+        "loadEmployeesFailed": "Không thể tải danh sách nhân viên.",
+        "selectEmployee": "Chọn nhân viên để xem lịch ngày công.",
+        "loadingCalendar": "Đang tải lịch ngày công...",
+        "loadCalendarFailed": "Không thể tải lịch ngày công của nhân viên."
+      },
+      "weekdays": {
+        "mon": "T2",
+        "tue": "T3",
+        "wed": "T4",
+        "thu": "T5",
+        "fri": "T6",
+        "sat": "T7",
+        "sun": "CN"
+      }
+    }
+  }
+}

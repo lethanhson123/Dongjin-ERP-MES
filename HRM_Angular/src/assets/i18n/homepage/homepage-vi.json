@@ -1,0 +1,20 @@
+{
+  "homepage": {
+    "avatar": "Ảnh đại diện",
+    "bank": "Ngân hàng",
+    "account": "Tài khoản",
+    "bank_account": "Tài khoản ngân hàng",
+    "address_current": "Địa chỉ",
+    "display_uppercase": "In hoa",
+    "resignation_reason": "Lý do nghỉ",
+    "cccd_issue_place": "CCCD.Nơi cấp",
+    "cccd_birthplace": "CCCD.Nơi sinh",
+    "cccd_address": "CCCD.Địa chỉ",
+    "cccd_expiry": "CCCD.Hết hạn",
+    "process": "Công đoạn",
+    "shift": "Ca làm việc",
+    "year": "năm",
+    "month": "tháng",
+    "day": "ngày"
+  }
+}

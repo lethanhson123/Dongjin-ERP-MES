@@ -1,0 +1,140 @@
+.attendance-summary {
+  display: flex !important;
+  flex-wrap: wrap;
+  clear: both;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 14px;
+  margin: 0 0 18px !important;
+  padding: 0 4px;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.attendance-summary > .summary-card {
+  flex: 1 1 calc(25% - 14px);
+  min-width: 180px;
+  box-sizing: border-box;
+}
+
+.attendance-summary,
+.attendance-summary * {
+  visibility: visible !important;
+}
+
+.summary-card {
+  position: relative;
+  min-height: 92px;
+  padding: 18px 20px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(40, 52, 80, .10);
+}
+
+/* Mỗi ô một màu để dễ phân biệt */
+.attendance-summary > .summary-card:nth-child(1) {
+  border-color: #9b85f5;
+  background: linear-gradient(135deg, #f2efff, #e5dfff);
+}
+
+.attendance-summary > .summary-card:nth-child(2) {
+  border-color: #f0bd72;
+  background: linear-gradient(135deg, #fff8e9, #ffedc8);
+}
+
+.attendance-summary > .summary-card:nth-child(3) {
+  border-color: #83a9e8;
+  background: linear-gradient(135deg, #eef5ff, #dceaff);
+}
+
+.attendance-summary > .summary-card:nth-child(4) {
+  border-color: #f29a9a;
+  background: linear-gradient(135deg, #fff0f0, #ffdede);
+}
+
+.summary-card.primary {
+  border-color: #9b85f5;
+}
+
+.summary-card .summary-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #71809b;
+  font-size: 13px;
+}
+
+.summary-card .summary-value {
+  display: inline-block;
+  color: #17233d;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.summary-card .summary-unit {
+  margin-left: 5px;
+  color: #71809b;
+  font-size: 12px;
+}
+
+/* Căn giữa tiêu đề bảng */
+th.mat-header-cell,
+th.mat-mdc-header-cell {
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-success {
+  background-color: #e6f4ea !important;
+  color: #137333 !important;
+}
+
+.status-warning {
+  background-color: #fef7e0 !important;
+  color: #b06000 !important;
+}
+
+.status-danger {
+  background-color: #fce8e6 !important;
+  color: #c5221f !important;
+}
+
+.status-secondary {
+  background-color: #f1f3f4 !important;
+  color: #5f6368 !important;
+}
+
+.sunday-cell,
+.sunday-cell .mat-cell,
+.sunday-cell .mat-mdc-cell {
+  color: #d32f2f !important;
+  font-weight: 600;
+}
+
+.summary-card .summary-description {
+  display: block;
+  margin-top: 9px;
+  color: #8b94a7;
+  font-size: 11px;
+}
+
+@media (max-width: 992px) {
+  .attendance-summary > .summary-card {
+    flex-basis: calc(50% - 14px);
+  }
+}
+
+@media (max-width: 600px) {
+  .attendance-summary > .summary-card {
+    flex-basis: 100%;
+  }
+}

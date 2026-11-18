@@ -1,0 +1,93 @@
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px;">
+  <h6 style="margin: 0;"><b>Upload ca làm việc | 근무 업로드</b></h6>
+  <button title="Close | 닫다" class="btn waves-effect waves-light purple lighten-1"
+    style="padding: 0 10px;" (click)="HRMCaLamViecKeHoachClose()"><i class="material-icons">close</i></button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+  <label style="flex: 0 0 auto; margin: 0;">Công ty | 회사</label>
+  <select class="browser-default form-select form-control" style="flex: 1 1 200px; max-width: 260px;"
+    [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.CompanyID">
+    <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">{{item.Name}}</option>
+  </select>
+</div>
+
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+  <input #fileInput class="form-control" type="file" accept=".xlsx,.xls" style="display: none;"
+    (change)="HRMCaLamViecKeHoachChange($event, $event.target.files)">
+  <button title="Chọn file Excel | 엑셀 파일 선택" class="btn waves-effect waves-light cyan"
+    style="padding: 0 10px; flex: 0 0 auto;" (click)="fileInput.click()">
+    <i class="material-icons" style="vertical-align: middle;">attach_file</i>
+  </button>
+  <span style="word-break: break-all; flex: 1 1 auto;">{{HRMCaLamViecKeHoachService.FileName}}</span>
+  <a title="Tải file mẫu | 템플릿 다운로드" class="btn waves-effect waves-light green darken-1"
+    style="padding: 0 10px; flex: 0 0 auto;" href="{{HRMCaLamViecKeHoachService.URLTemplate}}" target="_blank">
+    <i class="material-icons" style="vertical-align: middle;">cloud_download</i> File mẫu
+  </a>
+</div>
+
+
+
+<div class="KhungOverflow" *ngIf="this.HRMCaLamViecKeHoachService.BaseParameter.List  && this.HRMCaLamViecKeHoachService.BaseParameter.List .length > 0">
+  <table mat-table matSort #HRMCaLamViecKeHoachModal02Sort="matSort" class="TableMaterial" style="width: 100%;"
+    [dataSource]="HRMCaLamViecKeHoachService.DataSource">
+    <ng-container matColumnDef="No">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>STT</th>
+      <td mat-cell *matCellDef="let element; index as i;">
+        <div *ngIf="HRMCaLamViecKeHoachModal02Paginator">
+          {{ HRMCaLamViecKeHoachModal02Paginator.pageSize * HRMCaLamViecKeHoachModal02Paginator.pageIndex + i + 1 }}
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="MembershipCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã nhân viên | 직원 코드</th>
+      <td mat-cell *matCellDef="let element">{{element.MembershipCode}}</td>
+    </ng-container>
+    <ng-container matColumnDef="MembershipName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Họ tên | 성명</th>
+      <td mat-cell *matCellDef="let element">{{element.MembershipName}}</td>
+    </ng-container>
+    <ng-container matColumnDef="CategoryHRMPhongBanName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Phòng ban | 부서</th>
+      <td mat-cell *matCellDef="let element">{{element.CategoryHRMPhongBanName}}</td>
+    </ng-container>
+    <ng-container matColumnDef="CategoryHRMCaLamViecName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ca làm việc | 근무조</th>
+      <td mat-cell *matCellDef="let element">{{element.CategoryHRMCaLamViecName}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Quantity01">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bắt đầu: Giờ | 시작: 시간</th>
+      <td mat-cell *matCellDef="let element">{{element.Quantity01}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Quantity02">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bắt đầu: Phút | 시작: 분</th>
+      <td mat-cell *matCellDef="let element">{{element.Quantity02}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Quantity03">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Kết thúc: Giờ | 종료: 시간</th>
+      <td mat-cell *matCellDef="let element">{{element.Quantity03}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Quantity04">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Kết thúc: Phút | 종료: 분</th>
+      <td mat-cell *matCellDef="let element">{{element.Quantity04}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày làm việc | 날짜</th>
+      <td mat-cell *matCellDef="let element">{{element.Date | date:'dd/MM/yyyy'}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="HRMCaLamViecKeHoachService.DisplayColumns006"></tr>
+    <tr mat-row *matRowDef="let row; columns: HRMCaLamViecKeHoachService.DisplayColumns006;"></tr>
+  </table>
+  <mat-paginator #HRMCaLamViecKeHoachModal02Paginator="matPaginator" [pageSizeOptions]="[10,20,50,100]"
+    [pageSize]="10" [showFirstLastButtons]="true"></mat-paginator>
+</div>
+
+<div style="display: flex; justify-content: flex-end; margin-top: 12px;">
+  <button title="Lưu | 저장" class="btn waves-effect waves-light cyan" style="padding: 0 14px;"
+    (click)="HRMCaLamViecKeHoachSave()">
+    <i class="material-icons" style="vertical-align: middle;">save</i> Lưu
+  </button>
+</div>
+
+<app-loading *ngIf="HRMCaLamViecKeHoachService.IsShowLoading"></app-loading>

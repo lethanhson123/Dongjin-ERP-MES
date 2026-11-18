@@ -1,0 +1,174 @@
+.annualLeaveBalance-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.annualLeaveBalance-filter-row > .col {
+  margin-left: 0;
+}
+
+.annualLeaveBalance-filter-row input.form-control,
+.annualLeaveBalance-filter-row .form-select {
+  width: 100%;
+  height: 32px !important;
+  line-height: 32px !important;
+  box-sizing: border-box;
+  margin: 0 !important;
+}
+
+.annualLeaveBalance-office-filter {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.annualLeaveBalance-office-filter select {
+  width: 100%;
+}
+
+.annualLeaveBalance-year-picker {
+  position: relative;
+  width: 100%;
+  height: 32px;
+}
+
+.annualLeaveBalance-year-picker input.form-control {
+  padding-right: 40px;
+  background-color: #fff !important;
+  border-color: #ccc !important;
+  color: #333 !important;
+  cursor: pointer;
+}
+
+::ng-deep .cdk-overlay-pane:has(.annualLeaveBalance-year-picker-panel) {
+  width: auto !important;
+  max-width: 90vw !important;
+  overflow: visible !important;
+}
+
+.annualLeaveBalance-year-picker mat-datepicker-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 32px;
+  width: 36px;
+}
+
+::ng-deep .annualLeaveBalance-year-picker .mat-icon-button {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0;
+}
+
+.annualLeaveBalance-filter-action {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.annualLeaveBalance-filter-action .btn {
+  width: 100%;
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.annualLeaveBalance-filter-action .btn .material-icons,
+.annualLeaveBalance-action-button .material-icons,
+.annualLeaveBalance-edit-button .material-icons {
+  font-size: 16px;
+  line-height: 32px;
+}
+
+.annualLeaveBalance-action-col {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.annualLeaveBalance-action-button {
+  width: 100%;
+  min-width: 0;
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.annualLeaveBalance-action-button:hover,
+.annualLeaveBalance-filter-button:hover,
+.annualLeaveBalance-edit-button:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.annualLeaveBalance-table-container {
+  overflow-x: auto;
+}
+
+.annualLeaveBalance-table {
+  min-width: 1050px;
+}
+
+.annualLeaveBalance-table .mat-column-DepartmentName {
+  width: 300px;
+  min-width: 120px;
+  max-width: 300px;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.annualLeaveBalance-table .mat-column-No {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.annualLeaveBalance-table .mat-column-OpeningBalance,
+.annualLeaveBalance-table .mat-column-CurrentBalance {
+  min-width: 130px;
+}
+
+.annualLeaveBalance-table .mat-column-OpeningDate {
+  min-width: 170px;
+}
+
+.annualLeaveBalance-table .mat-column-UpdatedDate {
+  min-width: 170px;
+}
+
+.annualLeaveBalance-number-cell {
+  text-align: right;
+}
+
+.annualLeaveBalance-edit-button {
+  min-width: 36px;
+  width: 36px;
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+@media (min-width: 993px) {
+  .annualLeaveBalance-filter-row {
+    flex-wrap: nowrap;
+  }
+}

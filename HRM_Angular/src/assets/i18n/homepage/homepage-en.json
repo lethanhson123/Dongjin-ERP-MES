@@ -1,0 +1,20 @@
+{
+  "homepage": {
+    "avatar": "Avatar",
+    "bank": "Bank",
+    "account": "Account",
+    "bank_account": "Bank account",
+    "address_current": "Current address",
+    "display_uppercase": "Uppercase",
+    "resignation_reason": "Resignation reason",
+    "cccd_issue_place": "ID issue place",
+    "cccd_birthplace": "Birthplace",
+    "cccd_address": "ID address",
+    "cccd_expiry": "ID expiry date",
+    "process": "Process",
+    "shift": "Shift",
+    "year": "Years",
+    "month": "Months",
+    "day": "Days"
+  }
+}

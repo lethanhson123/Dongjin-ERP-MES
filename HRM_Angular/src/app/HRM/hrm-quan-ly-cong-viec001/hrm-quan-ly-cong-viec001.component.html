@@ -1,0 +1,170 @@
+<div class="row">
+  <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <h6 class="breadcrumbs-title">
+            Quản lý công việc | 업무 관리
+            <span *ngIf="HRMQuanLyCongViecService.List">({{HRMQuanLyCongViecService.List.length}} items)</span>
+          </h6>
+        </div>
+        <div class="col s12 m6 l6 right-align-md">
+          <ol class="breadcrumbs mb-0">
+            <li class="breadcrumb-item">
+              <a href="javascript:history.back()" title="Back">
+                <<< Back </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/Homepage" title="Home">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a title="HRM">HRM</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/HRMQuanLyCongViec" title="Quản lý công việc">Quản lý công việc</a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+      <div class="card-content">
+        <div class="row mb-0">
+          <div class="col s12 m12 l1">
+            <select class="browser-default form-select" [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.CompanyID"
+              (change)="CompanyChange()">
+              <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                {{item.Name}}
+              </option>
+            </select>
+          </div>
+          <div class="col s12 m12 l2">
+            <input [ngModel]="HRMQuanLyCongViecService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+              style="text-align: right; min-width: 140px;" (ngModelChange)="DateBegin($event)"
+              (keyup.enter)="HRMQuanLyCongViecSearch()" [ngModelOptions]="{ updateOn: 'blur' }" type="date"
+              class="form-control" autocomplete="off">
+          </div>
+          <div class="col s12 m12 l2">
+            <input [ngModel]="HRMQuanLyCongViecService.BaseParameter.DateEnd | date:'yyyy-MM-dd'"
+              style="text-align: right; min-width: 140px;" (ngModelChange)="DateEnd($event)"
+              (keyup.enter)="HRMQuanLyCongViecSearch()" [ngModelOptions]="{ updateOn: 'blur' }" type="date"
+              class="form-control" autocomplete="off">
+          </div>
+          <div class="col s12 m12 l5">
+            <input [(ngModel)]="HRMQuanLyCongViecService.BaseParameter.SearchString" placeholder="Tìm kiếm ... | 찾다 ..."
+              class="form-control" disabled>
+          </div>
+          <div class="col s12 m12 l1">
+            <button title="Tìm kiếm | 찾다" (click)="HRMQuanLyCongViecSearch()"
+              class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+              <i class="material-icons">search</i>
+            </button>
+          </div>
+          <div class="col s12 m12 l1">
+            <button title="Thêm mới | 추가" (click)="HRMQuanLyCongViecAdd(0)"
+              class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+              <i class="material-icons">add</i>
+            </button>
+          </div>
+        </div>
+        <div class="KhungOverflow70">
+          <table *ngIf="!NotificationService.IsMobile" mat-table matSort #HRMQuanLyCongViecSort="matSort"
+            [dataSource]="HRMQuanLyCongViecService.DataSource">
+            <ng-container matColumnDef="No">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+              <td mat-cell *matCellDef="let element; index as i;">
+                <div *ngIf="HRMQuanLyCongViecPaginator">
+                  {{HRMQuanLyCongViecPaginator.pageSize * HRMQuanLyCongViecPaginator.pageIndex + i + 1}}
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Membership">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Người nhận việc | 그 일자리 취득자 </th>
+              <td mat-cell *matCellDef="let element">
+                <a (click)="HRMQuanLyCongViecAdd(element.ID)"
+                  style="cursor: pointer; color: #2196F3; font-size: 16px; font-weight: 500;">{{element.MembershipCode}}
+                  - {{element.MembershipName}}</a>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="CategoryDepartment">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Phòng ban | 부서</th>
+              <td mat-cell *matCellDef="let element">{{element.CategoryDepartmentName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="CategoryStatusName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng thái | 상태</th>
+              <td mat-cell *matCellDef="let element">{{element.CategoryStatusName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Complete">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Hoàn thành | 완료</th>
+              <td mat-cell *matCellDef="let element">{{element.Complete}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Point">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Điểm | 점수</th>
+              <td mat-cell *matCellDef="let element">{{element.Point}}</td>
+            </ng-container>
+            <ng-container matColumnDef="DateBegin">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày bắt đầu | 시작일</th>
+              <td mat-cell *matCellDef="let element">{{element.DateBegin | date:'yyyy-MM-dd'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="DateEnd">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày kết thúc | 마감일</th>
+              <td mat-cell *matCellDef="let element">{{element.DateEnd | date:'yyyy-MM-dd'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Note">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ghi chú | 메모</th>
+              <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Description">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Công việc | 직업</th>
+              <td mat-cell *matCellDef="let element">{{element.Description}}</td>
+            </ng-container>
+            <ng-container matColumnDef="CreateUser">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Người giao việc | 업무 담당자</th>
+              <td mat-cell *matCellDef="let element">{{element.CreateUserCode}} - {{element.CreateUserName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="File">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tài liệu | 문서</th>
+              <td mat-cell *matCellDef="let element">
+                <a *ngFor="let file of element.Files" target="_blank" href="{{file.FileName}}"
+                  class="btn waves-effect waves-light green darken-1" style="margin-right: 4px;" title="{{file.Name}}">
+                  <i class="material-icons">cloud_download</i>
+                </a>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Active">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Kích hoạt | 활성화
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                    [(ngModel)]="element.Active">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Save">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <a (click)="HRMQuanLyCongViecDelete(element)" class="btn-floating waves-effect waves-light red"
+                  title="Xóa | 지우다">
+                  <i class="material-icons">delete_outline</i>
+                </a>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="HRMQuanLyCongViecService.DisplayColumns001"></tr>
+            <tr mat-row *matRowDef="let row; columns: HRMQuanLyCongViecService.DisplayColumns001;"></tr>
+          </table>
+          <mat-paginator *ngIf="!NotificationService.IsMobile" #HRMQuanLyCongViecPaginator="matPaginator"
+            [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="HRMQuanLyCongViecService.IsShowLoading"></app-loading>

@@ -1,0 +1,134 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        Organization / Tổ chức / 조직
+                        <span style="font-size: 30px;" *ngIf="HRMSoDoToChucService.List">({{HRMSoDoToChucService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Homepage" title="Home">Home</a>
+                        </li>                       
+                        <li class="breadcrumb-item">
+                            <a routerLink="/HRMSoDoToChuc" title="Organization">Organization</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card card-default scrollspy">
+        <div class="card-content">
+            <div class="col s12 m12 l3">
+            </div>
+            <div class="col s12 m12 l2">
+                <select class="browser-default form-select" [(ngModel)]="HRMSoDoToChucService.BaseParameter.CompanyID">
+                    <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                        {{item.Name}}
+                    </option>
+                </select>
+            </div>
+            <div class="col s12 m12 l1">
+                <label>Width</label>
+            </div>
+            <div class="col s12 m12 l1">
+                <input [(ngModel)]="HRMSoDoToChucService.BaseParameter.Count" placeholder="Width" class="form-control"
+                    type="number">
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="Search" (click)="HRMSoDoToChucSearch()" style="width: 100%;"
+                    class="btn waves-effect waves-light green darken-1">
+                    <i class="material-icons">search</i>
+                </button>
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="Zoom in" style="width: 100%;" class="btn waves-effect waves-light green darken-1"
+                    (click)="zoomIn()"><i class="material-icons">zoom_in</i></button>
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="Zoom out" style="width: 100%;" class="btn waves-effect waves-light green darken-1"
+                    (click)="zoomOut()"><i class="material-icons">zoom_out</i></button>
+            </div>
+            <div class="col s12 m12 l1">
+                <button title="Reset zoom" style="width: 100%;" class="btn waves-effect waves-light green darken-1"
+                    (click)="resetZoom()"><i class="material-icons">youtube_searched_for</i></button>
+            </div>
+            <div class="col s12 m12 l1">
+                <label>Zoom: {{ (zoomLevel * 100) | number:'1.0-0' }}%</label>
+            </div>
+        </div>
+    </div>
+    <div class="KhungOverflowParent" id="ecommerce-products">
+        <div class="KhungOverflowChild" [style.transform]="'rotateX(180deg) scale(' + zoomLevel + ')'">
+            <div class="KhungOverflow1">
+                <div style="width: {{HRMSoDoToChucService.BaseParameter.Count}}px; border: green solid 0px;">
+                    <ng-container *ngTemplateOutlet="nodeTemplate; context: { $implicit: HRMSoDoToChucSearch001(0) }">
+                    </ng-container>
+                    <ng-template #nodeTemplate let-nodes>
+                        <table style="width: 100%; border: green solid 0px; box-shadow: none !important;">
+                            <tr style="border: green solid 0px; padding: 0px;">
+                                <td *ngFor="let HRMSoDoToChuc of nodes; index as i;"
+                                    style="vertical-align: top; border: green solid 0px; padding: 0px;">
+                                    <div
+                                        style="width: {{HRMSoDoToChucService.BaseParameter.Sum/nodes.length}}px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: red solid 0px;">
+                                        <div *ngIf="HRMSoDoToChuc.ParentID>0"
+                                            style="position: relative; width: 2px; height: 50px; background-color: #000; margin: 0px;">
+                                            <div
+                                                style="position: absolute; top: -5px; left: -4px; width: 10px; height: 10px; background-color: #000; border-radius: 50%;">
+                                            </div>
+                                            <div
+                                                style="position: absolute; bottom: -5px; left: -4px; width: 10px; height: 10px; background-color: #000; border-radius: 50%;">
+                                            </div>
+                                        </div>
+                                        <div *ngIf="HRMSoDoToChuc.ParentID==0">
+                                            <img src="/image/DJG.png" width="500" height="103"
+                                                style="display: block; margin: 0 auto; max-width: 100%; height: auto;">
+                                        </div>
+                                        <div style="width: 270px; padding-left: 6px; padding-right: 6px;">
+                                            <div class="card animate fadeLeft">                                                
+                                                <div class="card-content text-center">
+                                                    <div style="cursor: pointer;"
+                                                        class="{{HRMSoDoToChuc.Note}} lighten-4 padding-5 medium-small">
+                                                        <h6>{{HRMSoDoToChuc.CategoryDepartmentName}}</h6>      
+                                                        <h5 class="purple-text">{{HRMSoDoToChuc.CategoryPositionName}}</h5>                                                  
+                                                        <h6>{{HRMSoDoToChuc.Mission}}</h6>
+                                                        <img src="{{HRMSoDoToChuc.MembershipFileName}}" width="200"
+                                                            height="200">
+                                                        <h6 class="blue-text">{{HRMSoDoToChuc.MembershipName}}</h6>
+                                                        <h6>{{HRMSoDoToChuc.MembershipCode}}</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="HRMSoDoToChucSearch001(HRMSoDoToChuc.ID).length>1"
+                                            style="position: relative; width: 90%; height: 2px; background-color: #000; margin: 0px;">
+                                            <div
+                                                style="position: absolute; left: -5px; top: -4px; width: 10px; height: 10px; background-color: #000; border-radius: 50%;">
+                                            </div>
+                                            <div
+                                                style="position: absolute; right: -5px; top: -4px; width: 10px; height: 10px; background-color: #000; border-radius: 50%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-container
+                                        *ngTemplateOutlet="nodeTemplate; context: { $implicit: HRMSoDoToChucSearch001(HRMSoDoToChuc.ID) }">
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </table>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="HRMSoDoToChucService.IsShowLoading"></app-loading>

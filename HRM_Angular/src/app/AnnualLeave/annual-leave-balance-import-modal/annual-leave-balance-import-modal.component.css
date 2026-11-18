@@ -1,0 +1,112 @@
+::ng-deep .cdk-overlay-pane.annualLeaveBalanceImportModal-pane {
+  width: 680px !important;
+  max-width: 95vw !important;
+}
+
+.annualLeaveBalanceImportModal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.annualLeaveBalanceImportModal-header h6 {
+  margin: 0;
+}
+
+.annualLeaveBalanceImportModal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.annualLeaveBalanceImportModal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+}
+
+.annualLeaveBalanceImportModal-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.annualLeaveBalanceImportModal-form-row > div,
+.annualLeaveBalanceImportModal-field,
+.annualLeaveBalanceImportModal-file-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+:host input.form-control,
+:host textarea.form-control {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+:host textarea.form-control {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.annualLeaveBalanceImportModal-file-name {
+  overflow-wrap: anywhere;
+  color: #334155;
+}
+
+.annualLeaveBalanceImportModal-text-link {
+  align-self: flex-start;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #1976d2;
+  font-size: 13px;
+  line-height: inherit !important;
+  text-decoration: underline;
+  box-shadow: none !important;
+}
+
+.annualLeaveBalanceImportModal-text-link:hover {
+  color: #0d47a1;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.annualLeaveBalanceImportModal-text-link:disabled {
+  color: #9e9e9e;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.annualLeaveBalanceImportModal-errors {
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 12px 14px;
+  border: 1px solid #f5c2c7;
+  border-radius: 6px;
+  background: #f8d7da;
+  color: #842029;
+}
+
+.annualLeaveBalanceImportModal-errors ul {
+  margin: 8px 0 0;
+  padding-left: 22px;
+}
+
+@media (max-width: 600px) {
+  .annualLeaveBalanceImportModal-form-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .annualLeaveBalanceImportModal-header-actions {
+    gap: 8px;
+  }
+}

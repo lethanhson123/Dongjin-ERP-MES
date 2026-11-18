@@ -1,0 +1,207 @@
+<div class="row">
+    <div class="col s12 m12 l8">
+        <h6><b>Organization / Tổ chức / 조직</b></h6>
+    </div>
+    <div class="col s12 m12 l1">
+        <label>
+            <input type="checkbox" class="form-check-input" name="Active"
+                [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.Active" />
+            <span>Active</span>
+        </label>
+    </div>
+    <div class="col s12 m12 l1">
+        <button style="width: 100%;" title="Save"
+            class="btn waves-effect waves-light cyan d-inline-flex align-items-center justify-content-center"
+            (click)="HRMSoDoToChucSave()"><i class="material-icons">save</i></button>
+    </div>
+    <div class="col s12 m12 l1">
+        <button title="Làm sạch | 깨끗한" class="btn waves-effect waves-light green" style="width: 100%;"
+            (click)="HRMSoDoToChucAdd()"><i class="material-icons">refresh</i></button>
+    </div>
+    <div class="col s12 m12 l1" style="text-align: right;">
+        <button title="Close"
+            class="btn waves-effect waves-light purple lightrn-1 d-inline-flex align-items-center justify-content-center"
+            (click)="Close()"><i class="material-icons">close</i></button>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l6">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>ID</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input disabled placeholder="ID" [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.ID"
+                    type="number" class="form-control">
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Phòng ban / 부서</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <mat-select class="browser-default form-select" panelClass="my-custom-dropdown-panel"
+                    style="border-bottom-color: #000000; border-bottom-width: 1px; border-bottom-style: solid;"
+                    [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.CategoryHRMPhongBanID">
+                    <input [(ngModel)]="CategoryHRMPhongBanService.CategoryHRMPhongBanSearchString"
+                        placeholder="Tìm phòng ban | 부서 검색" style="width: 100%; box-sizing: border-box;"
+                        (keydown)="$event.stopPropagation()" (keyup)="CategoryHRMPhongBanService.CategoryHRMPhongBanFilter()">
+                    <mat-option *ngFor="let item of CategoryHRMPhongBanService.ListCategoryHRMPhongBanFiltered" [value]="item.ID">
+                        {{item.Name}} - {{item.Display}} - {{item.Description}}
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div> -->
+        
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Mission</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Mission" [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.Mission01"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Nhiệm vụ</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Nhiệm vụ" [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.Mission02"
+                    type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>사명</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="사명" [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.Mission03" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Hiển thị / 표시하다</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Hiển thị / 표시하다"
+                    [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.MembershipName" type="text"
+                    class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Sort Order</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <input placeholder="Sort Order" [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.SortOrder"
+                    type="number" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l6">
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Quản lý trực tiếp | 직접 관리</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <mat-select class="browser-default form-select" panelClass="my-custom-dropdown-panel"
+                    style="border-bottom-color: #000000; border-bottom-width: 1px; border-bottom-style: solid;"
+                    [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.ParentID">
+                    <input [(ngModel)]="HRMSoDoToChucService.BaseParameter.SearchString"
+                        style="font-size: 40px; color: green;" (keyup)="MembershipFilter($event.target.value)">
+                    <mat-option style="height: 100px; padding: 10px; margin: 10px;"
+                        *ngFor="let item of HRMSoDoToChucService.List" [value]="item.ID">
+                        <table>
+                            <tr>
+                                <td style="width: 100px;"><img src="{{item.MembershipFileName}}" width="100"
+                                        height="100"></td>
+                                <td><span style="font-size: 40px;">{{item.MembershipCode}} -
+                                        {{item.MembershipName}}</span></td>
+                            </tr>
+                        </table>
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Nhân viên | 직원</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <mat-select class="browser-default form-select" panelClass="my-custom-dropdown-panel"
+                    style="border-bottom-color: #000000; border-bottom-width: 1px; border-bottom-style: solid;"
+                    [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.MembershipID">
+                    <input [(ngModel)]="HRMSoDoToChucService.BaseParameter.SearchString"
+                        style="font-size: 40px; color: green;" (keyup)="MembershipFilter($event.target.value)">
+                    <mat-option style="height: 100px; padding: 10px; margin: 10px;"
+                        *ngFor="let item of MembershipService.ListChild" [value]="item.ID">
+                        <table>
+                            <tr>
+                                <td style="width: 100px;"><img src="{{item.FileName}}" width="100" height="100"></td>
+                                <td><span style="font-size: 40px;">{{item.UserName}} - {{item.Name}} -
+                                        {{item.CategoryHRMPhongBanName}}</span></td>
+                            </tr>
+                        </table>
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Màu nền / 배경색 ({{HRMSoDoToChucService.BaseParameter.BaseModel.Note}})</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <mat-select class="browser-default form-select" panelClass="my-custom-dropdown-panel"
+                    style="border-bottom-color: #000000; border-bottom-width: 1px; border-bottom-style: solid;"
+                    [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.Note">
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="brown">
+                        <div class="brown padding-5 medium-small"></div>
+                    </mat-option>
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="grey">
+                        <div class="grey padding-5 medium-small"></div>
+                    </mat-option>
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="green">
+                        <div class="green padding-5 medium-small"></div>
+                    </mat-option>
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="cyan">
+                        <div class="cyan padding-5 medium-small"></div>
+                    </mat-option>
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="blue">
+                        <div class="blue padding-5 medium-small"></div>
+                    </mat-option>
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="purple">
+                        <div class="purple padding-5 medium-small"></div>
+                    </mat-option>
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="orange">
+                        <div class="orange padding-5 medium-small"></div>
+                    </mat-option>
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="pink">
+                        <div class="pink padding-5 medium-small"></div>
+                    </mat-option>
+                    <mat-option style="height: 50px; padding: 10px; margin: 10px;" value="red">
+                        <div class="red padding-5 medium-small"></div>
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col s4 m4 l4">
+                <label>Cấp bậc / 계급 [{{HRMSoDoToChucService.BaseParameter.BaseModel.CategoryPositionName}}]</label>
+            </div>
+            <div class="col s8 m8 l8">
+                <select class="browser-default form-select"
+                    [(ngModel)]="HRMSoDoToChucService.BaseParameter.BaseModel.CategoryPositionID">
+                    <option *ngFor="let item of CategoryPositionService.ListFilter;" [value]="item.ID">
+                        {{item.Name}} - {{item.Display}} - {{item.Description}}</option>
+                </select>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<app-loading *ngIf="HRMSoDoToChucService.IsShowLoading"></app-loading>

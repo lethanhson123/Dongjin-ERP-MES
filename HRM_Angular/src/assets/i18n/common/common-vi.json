@@ -1,0 +1,31 @@
+{
+  "common": {
+    "save": "Lưu",
+    "add": "Thêm mới",
+    "search": "Tìm kiếm",
+    "delete": "Xoá",
+    "active": "Active",
+    "no": "STT",
+    "close": "Đóng",
+    "back": "Quay lại",
+    "home": "Trang chủ",
+    "export_excel": "Xuất Excel",
+    "upload_excel": "Upload / Xuất Excel",
+    "print": "In ấn",
+    "company": "Công ty",
+    "department": "Phòng ban",
+    "logout": "Đăng xuất",
+    "user_guide": "Tài liệu hướng dẫn sử dụng HRM",
+    "loading": "Đang tải, vui lòng chờ...",
+    "items": "mục",
+    "view": "Xem",
+    "office": "Văn phòng",
+    "translate_korean": "Dịch tiếng Hàn",
+    "resignation_upload": "Upload nghỉ việc",
+    "hrm": "HRM"
+  },
+  "page": {
+    "membership_title": "Nhân viên",
+    "annual_leave_title": "Nghỉ phép"
+  }
+}

@@ -1,0 +1,296 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        {{ 'hrm-ca-lam-viec-ke-hoach.title' | translate }}
+                        <span style="font-size: 30px;"
+                            *ngIf="HRMCaLamViecKeHoachService.List">({{HRMCaLamViecKeHoachService.List.length}}
+                            {{ 'common.items' | translate }})</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" [title]="'common.back' | translate">
+                                <<< {{ 'common.back' | translate }} </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a [title]="'common.hrm' | translate">{{ 'common.hrm' | translate }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/HRMCaLamViecKeHoach" [title]="'hrm-ca-lam-viec-ke-hoach.title' | translate">{{ 'hrm-ca-lam-viec-ke-hoach.title' | translate }}</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select form-control" (change)="CompanyChange()"
+                        [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.CompanyID">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">{{item.Name}}</option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select form-control" (change)="HRMCaLamViecKeHoachSearch()"
+                        [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.CategoryHRMPhongBanID">
+                        <option [value]="0">All</option>
+                        <option *ngFor="let item of CategoryHRMPhongBanService.ListFilter;" [value]="item.ID">
+                            {{item.Name || item.Code}}</option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [ngModel]="DateStart | date:'yyyy-MM-dd'"
+                        style="text-align: right; width: 100%; box-sizing: border-box;" (ngModelChange)="DateStartChange($event)"
+                        [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                        autocomplete="off" title="Từ ngày | Date start">
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [ngModel]="DateEnd | date:'yyyy-MM-dd'"
+                        style="text-align: right; width: 100%; box-sizing: border-box;" (ngModelChange)="DateEndChange($event)"
+                        [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control"
+                        autocomplete="off" title="Đến ngày | Date end">
+                </div>
+
+                <div class="col s12 m12 l2">
+                    <input [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.SearchString"
+                        [placeholder]="'common.search' | translate" class="form-control"
+                        style="width: 100%; box-sizing: border-box;" (keyup.enter)="HRMCaLamViecKeHoachSearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <button [title]="'common.search' | translate" (click)="HRMCaLamViecKeHoachSearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+
+                <div class="col s12 m12 l1">
+                    <button [title]="'common.add' | translate" (click)="HRMCaLamViecKeHoachAdd(0)"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Upload Excel | 엑셀 업로드" (click)="HRMCaLamViecKeHoachUpload()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">add_circle</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Xuất Excel | 엑셀로 내보내기" (click)="HRMCaLamViecKeHoachExcel()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">cloud_download</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l3">
+                    <div class="KhungOverflow80">
+                        <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+                            #HRMCaLamViecKeHoachSortCa="matSort" class="TableMaterial"
+                            [dataSource]="HRMCaLamViecKeHoachService.DataSource01">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    NO
+                                </th>
+                                <td mat-cell *matCellDef="let element; index as i;">
+                                    {{i + 1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CategoryHRMCaLamViecName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.work_shift' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.CategoryHRMCaLamViecName}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity01">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.total' | translate }}</th>
+                                <td mat-cell *matCellDef="let element"><b>{{element.Quantity01}}</b></td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="HRMCaLamViecKeHoachService.DisplayColumns002">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: HRMCaLamViecKeHoachService.DisplayColumns002;">
+                            </tr>
+                        </table>
+                        <br />
+                        <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+                            #HRMCaLamViecKeHoachSortDepartment="matSort" class="TableMaterial"
+                            [dataSource]="HRMCaLamViecKeHoachService.DataSource02">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    NO
+                                </th>
+                                <td mat-cell *matCellDef="let element; index as i;">
+                                    {{i + 1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CategoryHRMPhongBanName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.department' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.CategoryHRMPhongBanName}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity01">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.total' | translate }}</th>
+                                <td mat-cell *matCellDef="let element"><b>{{element.Quantity01}}</b></td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="HRMCaLamViecKeHoachService.DisplayColumns003">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: HRMCaLamViecKeHoachService.DisplayColumns003;">
+                            </tr>
+                        </table>
+                        <br />
+                        <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+                            #HRMCaLamViecKeHoachSortSum="matSort" class="TableMaterial"
+                            [dataSource]="HRMCaLamViecKeHoachService.DataSource03">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    NO
+                                </th>
+                                <td mat-cell *matCellDef="let element; index as i;">
+                                    {{i + 1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CategoryHRMCaLamViecName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.work_shift' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.CategoryHRMCaLamViecName}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="CategoryHRMPhongBanName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.department' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.CategoryHRMPhongBanName}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity01">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.total' | translate }}</th>
+                                <td mat-cell *matCellDef="let element"><b>{{element.Quantity01}}</b></td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="HRMCaLamViecKeHoachService.DisplayColumns004">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: HRMCaLamViecKeHoachService.DisplayColumns004;">
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s12 m12 l9">
+                    <div class="KhungOverflow80">
+                        <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+                            #HRMCaLamViecKeHoachSort="matSort" class="TableMaterial"
+                            [dataSource]="HRMCaLamViecKeHoachService.DataSource">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    NO
+                                </th>
+                                <td mat-cell *matCellDef="let element; index as i;">
+                                    <div *ngIf="HRMCaLamViecKeHoachPaginator">
+                                        {{
+                                        HRMCaLamViecKeHoachPaginator.pageSize *
+                                        HRMCaLamViecKeHoachPaginator.pageIndex + i + 1
+                                        }}
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ID">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.ID}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CompanyName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'common.company' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.CompanyName}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.date' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div>{{element.Date | date:'dd/MM/yyyy'}}</div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="MembershipCode">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.employee' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <a class="link-primary" target="_blank" rel="noopener noreferrer"
+                                        [href]="'http://192.168.103.221:91/#/EmployeeInfo/' + element.MembershipCode"
+                                        [title]="'Mở thông tin nhân viên | ' + element.MembershipCode">
+                                        <b>{{element.MembershipCode}} - {{element.MembershipName}}</b>
+                                    </a>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CategoryHRMCaLamViecID">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.work_shift' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <select class="browser-default form-select inline-shift-select"
+                                        [(ngModel)]="element.CategoryHRMCaLamViecID"
+                                        (change)="CategoryHRMCaLamViecChange(element)">
+                                        <option *ngFor="let shift of CategoryHRMCaLamViecService.ListFilter"
+                                            [value]="shift.ID">
+                                            {{shift.Name}}
+                                        </option>
+                                    </select>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="CategoryHRMPhongBanName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.department' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.CategoryHRMPhongBanName}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity01">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.start_hour' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.Quantity01}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity02">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.start_minute' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.Quantity02}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity03">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.end_hour' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.Quantity03}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity04">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.end_minute' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.Quantity04}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Note">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.note' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Active">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-ca-lam-viec-ke-hoach.active' | translate }}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <label>
+                                        <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                                            [(ngModel)]="element.Active">
+                                        <span></span>
+                                    </label>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Save">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button type="button" (click)="Save(element)"
+                                        class="btn-floating waves-effect waves-light cyan row-action-button"
+                                        title="Save | 저장">
+                                        <i class="material-icons">save</i>
+                                    </button>
+                                    <button *ngIf="element.ID>0" (click)="HRMCaLamViecKeHoachDelete(element)"
+                                        class="btn-floating waves-effect waves-light red row-action-button" [title]="'common.delete' | translate">
+                                        <i class="material-icons">delete_outline</i>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="HRMCaLamViecKeHoachService.DisplayColumns001">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: HRMCaLamViecKeHoachService.DisplayColumns001;">
+                            </tr>
+                        </table>
+                        <mat-paginator *ngIf="!NotificationService.IsMobile"
+                            #HRMCaLamViecKeHoachPaginator="matPaginator" [pageSizeOptions]="[10,20,50,100,1000000]"
+                            [pageSize]="14" [showFirstLastButtons]="true"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="HRMCaLamViecKeHoachService.IsShowLoading"></app-loading>

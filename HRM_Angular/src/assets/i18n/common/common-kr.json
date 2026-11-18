@@ -1,0 +1,31 @@
+{
+  "common": {
+    "save": "저장",
+    "add": "추가",
+    "search": "찾다",
+    "delete": "삭제",
+    "active": "Active",
+    "no": "번호",
+    "close": "닫기",
+    "back": "뒤로",
+    "home": "홈",
+    "export_excel": "엑셀로 내보내기",
+    "upload_excel": "엑셀 업로드 / 내보내기",
+    "print": "인쇄",
+    "company": "회사",
+    "department": "부서",
+    "logout": "로그아웃",
+    "user_guide": "HRM 사용 가이드",
+    "loading": "로딩 중입니다. 잠시 기다려 주세요...",
+    "items": "항목",
+    "view": "보기",
+    "office": "사무실",
+    "translate_korean": "한국어 번역",
+    "resignation_upload": "퇴사 업로드",
+    "hrm": "HRM"
+  },
+  "page": {
+    "membership_title": "직원",
+    "annual_leave_title": "휴가"
+  }
+}

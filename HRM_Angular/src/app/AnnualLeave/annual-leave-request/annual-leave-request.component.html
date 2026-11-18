@@ -1,0 +1,131 @@
+    <div class="row">
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="row annualLeaveRequest-filter-row">
+                    <div class="col s12 m12 l1">
+                        <select class="browser-default form-select"
+                            [(ngModel)]="AnnualLeaveRequestService.BaseParameter.CompanyID">
+                            <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                                {{item.Name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input [ngModel]="AnnualLeaveRequestService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+                            style="text-align: right;" (ngModelChange)="DateBegin($event)"
+                            (keyup.enter)="AnnualLeaveRequestSearch()" [ngModelOptions]="{ updateOn: 'blur' }" type="date"
+                            class="form-control" autocomplete="off">
+                    </div>
+                    <div class="col s12 m12 l2">
+                        <input [ngModel]="AnnualLeaveRequestService.BaseParameter.DateEnd | date:'yyyy-MM-dd'"
+                            style="text-align: right;" (ngModelChange)="DateEnd($event)"
+                            (keyup.enter)="AnnualLeaveRequestSearch()" [ngModelOptions]="{ updateOn: 'blur' }" type="date"
+                            class="form-control" autocomplete="off">
+                    </div>
+                    <div class="col s12 m12 l5">
+                        <input [(ngModel)]="AnnualLeaveRequestService.BaseParameter.SearchString"
+                            placeholder="Search" class="form-control"
+                            (keyup.enter)="AnnualLeaveRequestSearch()">
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <button [title]="'hrm-nghi-phep.requests.search' | translate" (click)="AnnualLeaveRequestSearch()"
+                            class="btn waves-effect waves-light green darken-1 annualLeaveRequest-filter-button">
+                            <i class="material-icons">search</i>
+                        </button>
+                    </div>
+                    <div class="col s12 m12 l1">
+                        <button [title]="'hrm-nghi-phep.requests.exportExcel' | translate" (click)="AnnualLeaveRequestExcel()"
+                            class="btn waves-effect waves-light green darken-1 annualLeaveRequest-filter-button">
+                            <i class="material-icons">cloud_download</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row mb-0">
+                    <div class="col s12 m12 l12">
+                        <div class="KhungOverflow70">
+                            <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+                                #AnnualLeaveRequestSort="matSort" class="TableMaterial annualLeaveRequest-table"
+                                [dataSource]="AnnualLeaveRequestService.DataSource">
+                                <ng-container matColumnDef="No">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        {{ 'hrm-nghi-phep.requests.columns.no' | translate }}
+                                    </th>
+                                    <td mat-cell *matCellDef="let element; index as i;">
+                                        {{ (AnnualLeaveRequestService.DataSource?.paginator
+                                        ? AnnualLeaveRequestService.DataSource.paginator.pageSize *
+                                        AnnualLeaveRequestService.DataSource.paginator.pageIndex : 0) + i + 1 }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Id">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.id' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <a class="link-primary" target="_blank" rel="noopener noreferrer"
+                                            [href]="GetRadAnnualLeaveUrl(element.Id)">{{element.Id}}</a>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Status">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.status' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.Status}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="RequestCode">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.requestCode' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <a class="link-primary" target="_blank" rel="noopener noreferrer"
+                                            [href]="GetRadAnnualLeaveUrl(element.Id)"><b>{{element.RequestCode}}</b></a>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="EmployeeCode">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.employeeCode' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.EmployeeCode}}</td>
+                                 </ng-container>
+                                <ng-container matColumnDef="EmployeeName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.employeeName' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.EmployeeName}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="DepartmentName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.department' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.DepartmentName}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="LeaveType">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.leaveType' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.LeaveType}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="LeaveDays">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.leaveDays' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                        {{element.LeaveDays}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="FromDate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.fromDate' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.FromDate | date:'dd/MM/yyyy'}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="ToDate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.toDate' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.ToDate | date:'dd/MM/yyyy'}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="LeaveReason">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.leaveReason' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.LeaveReason}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="CreatedDate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-nghi-phep.requests.columns.createdDate' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">{{element.CreatedDate | date:'dd/MM/yyyy'}}</td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="AnnualLeaveRequestService.DisplayColumns004">
+                                </tr>
+                                <tr mat-row *matRowDef="let row; columns: AnnualLeaveRequestService.DisplayColumns004;">
+                                </tr>
+                            </table>
+                            <mat-paginator *ngIf="!NotificationService.IsMobile"
+                                #AnnualLeaveRequestPaginator="matPaginator" [pageSizeOptions]="[10,20,50,100,1000000]"
+                                [pageSize]="20" [showFirstLastButtons]></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="AnnualLeaveRequestService.IsShowLoading"></app-loading>

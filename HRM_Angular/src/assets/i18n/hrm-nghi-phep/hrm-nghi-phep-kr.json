@@ -1,0 +1,186 @@
+{
+  "hrm-nghi-phep": {
+    "title": "연차 관리",
+    "tabs": {
+      "overview": "개요",
+      "requests": "휴가 신청 목록",
+      "actualWorkdays": "실제 근무일수",
+      "balanceUpdate": "잔여일수 업데이트",
+      "history": "잔여일수 변경 이력",
+      "leaveType": "휴가 유형 관리"
+    },
+    "overview": {
+      "company": "회사",
+      "year": "연도",
+      "department": "부서",
+      "office": "사무실",
+      "production": "생산",
+      "searchPlaceholder": "사번 또는 성명으로 검색",
+      "search": "검색",
+      "reset": "초기화",
+      "exportExcel": "엑셀 다운로드",
+      "exportDisabledTitle": "백엔드 미연결",
+      "columns": {
+        "no": "번호",
+        "id": "ID",
+        "employeeCode": "사원 코드",
+        "employeeName": "성명",
+        "department": "부서",
+        "openingDate": "기준일",
+        "openingBalance": "기초 잔여",
+        "monthlyAccrued": "월차 발생",
+        "seniority": "근속 연차",
+        "used": "사용 일수",
+        "adjustment": "수동 조정",
+        "current": "현재 잔여"
+      },
+      "messages": {
+        "noData": "일치하는 직원이 없습니다.",
+        "noCompany": "직원 목록을 불러올 회사가 없습니다.",
+        "loadCompanyFailed": "회사 목록을 불러오지 못했습니다.",
+        "loadDepartmentFailed": "부서 목록을 불러오지 못했습니다.",
+        "loadOverviewFailed": "연차 현황 데이터를 불러오지 못했습니다.",
+        "syncSuccess": "연차 동기화가 완료되었습니다. 직원: {{total}}, 월별 발생: {{monthly}}, 근속 발생: {{seniority}}.",
+        "syncFailed": "연차 잔여 일수를 동기화하지 못했습니다."
+      }
+    },
+    "requests": {
+      "search": "검색",
+      "exportExcel": "엑셀 다운로드",
+      "columns": {
+        "no": "번호",
+        "id": "ID",
+        "status": "상태",
+        "requestCode": "신청 코드",
+        "employeeCode": "사원 코드",
+        "employeeName": "성명",
+        "department": "부서",
+        "leaveType": "휴가 유형",
+        "leaveDays": "휴가 일수",
+        "fromDate": "시작일",
+        "toDate": "종료일",
+        "leaveReason": "휴가 사유",
+        "createdDate": "생성일"
+      },
+      "messages": {
+        "exportFailed": "파일 저장 또는 다운로드에 실패했습니다."
+      }
+    },
+    "leaveType": {
+      "columns": {
+        "no": "번호",
+        "code": "휴가 유형 코드",
+        "nameVn": "명칭 (VN)",
+        "nameEn": "명칭 (EN)",
+        "nameKr": "명칭 (KR)",
+        "description": "설명",
+        "isDeduct": "연차 차감",
+        "isActive": "사용 여부",
+        "save": "저장"
+      },
+      "tooltips": {
+        "save": "저장"
+      },
+      "messages": {
+        "loadFailed": "휴가 유형 목록을 불러오지 못했습니다.",
+        "codeRequired": "휴가 유형 코드는 필수입니다.",
+        "nameVnRequired": "베트남어 휴가 유형 명칭은 필수입니다.",
+        "saveSuccess": "휴가 유형이 저장되었습니다.",
+        "saveFailed": "휴가 유형 저장에 실패했습니다."
+      }
+    },
+    "placeholders": {
+      "balanceTitle": "잔여일수 업데이트",
+      "historyTitle": "변경 이력"
+    },
+    "balance": {
+      "actions": {
+        "adjust": "조정"
+      },
+      "columns": {
+        "openingBalance": "기초 잔여일수",
+        "openingDate": "기준일",
+        "currentBalance": "현재 잔여일수",
+        "updatedDate": "수정일",
+        "updatedBy": "수정자",
+        "action": "작업"
+      },
+      "historyColumns": {
+        "changeType": "변경 유형",
+        "oldBalance": "변경 전 잔여일수",
+        "changeAmount": "변동 일수",
+        "newBalance": "변경 후 잔여일수",
+        "reason": "사유",
+        "createdDate": "변경 일시",
+        "createdBy": "변경자",
+        "noData": "잔여일수 변경 이력이 없습니다."
+      },
+      "editDialog": {
+        "title": "연차 잔여일수 조정",
+        "employeeCode": "사번",
+        "employeeName": "성명",
+        "department": "부서",
+        "currentBalance": "현재 잔여일수",
+        "openingBalance": "기초 잔여일수",
+        "year": "연도",
+        "adjustmentType": "조정 유형",
+        "add": "추가",
+        "subtract": "차감",
+        "amount": "조정 일수",
+        "newBalance": "조정 후 현재 잔여일수",
+        "amountRequired": "조정 일수는 0보다 커야 합니다.",
+        "balanceNegative": "조정 후 현재 잔여일수는 음수가 될 수 없습니다.",
+        "reason": "조정 사유 (선택 사항)"
+      },
+      "importDialog": {
+        "title": "엑셀에서 기초 잔여일수 가져오기",
+        "year": "연도",
+        "updateDate": "기준일",
+        "reason": "수정 사유 (선택 사항)",
+        "file": "엑셀 파일 (.xlsx)",
+        "errorsTitle": "가져오기 검증 오류",
+        "close": "닫기",
+        "import": "가져오기",
+        "importing": "가져오는 중..."
+      },
+      "messages": {
+        "saveSuccess": "연차 잔여일수가 업데이트되었습니다.",
+        "saveFailed": "연차 잔여일수를 업데이트하지 못했습니다.",
+        "loadHistoryFailed": "연차 잔여 일수 기록을 불러오지 못했습니다.",
+        "invalidFile": ".xlsx 형식의 엑셀 파일만 지원합니다.",
+        "fileRequired": ".xlsx 파일을 선택하세요.",
+        "invalidYear": "유효한 연도를 입력하세요.",
+        "invalidOpeningDate": "유효한 기초 잔액 기준일을 선택하세요.",
+        "importFailed": "엑셀 데이터를 가져오지 못했습니다.",
+        "correctErrors": "오류를 수정한 후 파일을 다시 업로드하세요.",
+        "noRecords": "업데이트할 데이터가 파일에 없습니다.",
+        "importSuccess": "{{count}}명의 잔여일수가 업데이트되었습니다."
+      }
+    },
+    "actualWorkdays": {
+      "employeeListTitle": "직원 목록",
+      "previousMonth": "이전 달",
+      "nextMonth": "다음 달",
+      "legendWorked": "출근",
+      "legendLeaveDeduct": "연차 차감 휴가",
+      "legendLeaveNonDeduct": "미차감 휴가",
+      "messages": {
+        "loadingEmployees": "직원 목록을 불러오는 중...",
+        "noEmployees": "검색 결과가 없습니다.",
+        "loadEmployeesFailed": "직원 목록을 불러오지 못했습니다.",
+        "selectEmployee": "근무일 달력을 볼 직원을 선택하세요.",
+        "loadingCalendar": "근무일 달력을 불러오는 중...",
+        "loadCalendarFailed": "직원의 근무일 달력을 불러오지 못했습니다."
+      },
+      "weekdays": {
+        "mon": "월",
+        "tue": "화",
+        "wed": "수",
+        "thu": "목",
+        "fri": "금",
+        "sat": "토",
+        "sun": "일"
+      }
+    }
+  }
+}

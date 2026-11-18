@@ -1,0 +1,47 @@
+.sunday-row,
+.sunday-row td,
+.sunday-row .mat-cell,
+.sunday-row .mat-mdc-cell {
+  color: #d32f2f !important;
+}
+
+/* Căn giữa tiêu đề bảng */
+th.mat-header-cell,
+th.mat-mdc-header-cell {
+  text-align: center !important;
+  justify-content: center !important;
+}
+th.mat-header-cell,
+th.mat-mdc-header-cell {
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-success {
+  background-color: #e6f4ea !important;
+  color: #137333 !important;
+}
+
+.status-warning {
+  background-color: #fef7e0 !important;
+  color: #b06000 !important;
+}
+
+.status-danger {
+  background-color: #fce8e6 !important;
+  color: #c5221f !important;
+}
+
+.status-secondary {
+  background-color: #f1f3f4 !important;
+  color: #5f6368 !important;
+}

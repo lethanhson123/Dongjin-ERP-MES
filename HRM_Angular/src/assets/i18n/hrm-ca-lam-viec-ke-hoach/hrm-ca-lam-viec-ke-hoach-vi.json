@@ -1,0 +1,17 @@
+{
+  "hrm-ca-lam-viec-ke-hoach": {
+    "title": "Kế hoạch ca làm việc",
+    "all": "Tất cả",
+    "total": "Tổng",
+    "work_shift": "Ca làm việc",
+    "department": "Bộ phận",
+    "date": "Ngày",
+    "employee": "Nhân viên",
+    "start_hour": "Bắt đầu: Giờ",
+    "start_minute": "Bắt đầu: Phút",
+    "end_hour": "Kết thúc: Giờ",
+    "end_minute": "Kết thúc: Phút",
+    "note": "Ghi chú",
+    "active": "Kích hoạt"
+  }
+}

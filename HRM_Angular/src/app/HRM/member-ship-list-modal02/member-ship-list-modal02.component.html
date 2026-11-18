@@ -1,0 +1,47 @@
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px;">
+  <h6 style="margin: 0;"><b>Upload nghỉ việc | 퇴사 업로드</b></h6>
+  <button title="Close | 닫다" class="btn waves-effect waves-light purple lighten-1"
+    style="padding: 0 10px;" (click)="MembershipListModal02Close()"><i class="material-icons">close</i></button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+  <input #fileInput class="form-control" type="file" accept=".xlsx,.xls" style="display: none;"
+    (change)="MembershipChange($event, $event.target.files)">
+  <button title="Chọn file Excel | 엑셀 파일 선택" class="btn waves-effect waves-light cyan"
+    style="padding: 0 10px; flex: 0 0 auto;" (click)="fileInput.click()">
+    <i class="material-icons" style="vertical-align: middle;">attach_file</i>
+  </button>
+  <span style="word-break: break-all; flex: 1 1 auto;">{{FileName}}</span>
+  <a title="Tải file mẫu | 템플릿 다운로드" class="btn waves-effect waves-light green darken-1"
+    style="padding: 0 10px; flex: 0 0 auto;" href="{{URLTemplate}}" target="_blank">
+    <i class="material-icons" style="vertical-align: middle;">cloud_download</i> File mẫu
+  </a>
+</div>
+
+<div class="KhungOverflow" *ngIf="List && List.length > 0">
+  <table class="TableMaterial" style="width: 100%;">
+    <thead>
+      <tr>
+        <th style="text-align: left;">Mã nhân viên | 직원 코드</th>
+        <th style="text-align: left;">Ngày nghỉ việc | 퇴사일</th>
+        <th style="text-align: left;">Lý do nghỉ việc | 퇴사 사유</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of List">
+        <td style="text-align: left;">{{item.UserName}}</td>
+        <td style="text-align: left;">{{item.NgayNghiViec | date:'dd/MM/yyyy'}}</td>
+        <td style="text-align: left;">{{item.LyDoNghiViec}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="display: flex; justify-content: flex-end; margin-top: 12px;">
+  <button title="Lưu | 저장" class="btn waves-effect waves-light cyan" style="padding: 0 14px;"
+    (click)="MembershipListModal02Save()">
+    <i class="material-icons" style="vertical-align: middle;">save</i> Lưu
+  </button>
+</div>
+
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

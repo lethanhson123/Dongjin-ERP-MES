@@ -1,0 +1,29 @@
+{
+  "hrm-quan-ly-cong-viec": {
+    "title": "Task Management",
+    "back": "Back",
+    "home": "Home",
+    "hrm": "HRM",
+    "all": "All",
+    "search": "Search",
+    "search_placeholder": "Search ...",
+    "add": "Add",
+    "status": "Status",
+    "total": "Total",
+    "department": "Department",
+    "deadline": "Deadline",
+    "assigner": "Assigner",
+    "assignee": "Assignee",
+    "no": "No",
+    "id": "ID",
+    "complete": "Complete",
+    "point": "Point",
+    "date_begin": "Start date",
+    "date_end": "Due date",
+    "note": "Note",
+    "task": "Task",
+    "document": "Document",
+    "active": "Active",
+    "delete": "Delete"
+  }
+}

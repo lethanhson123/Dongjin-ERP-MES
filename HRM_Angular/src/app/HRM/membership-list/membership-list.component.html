@@ -1,0 +1,682 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h6 class="breadcrumbs-title" style="margin: 0;">
+                            {{ 'page.membership_title' | translate }}
+                            <span *ngIf="MembershipService.List">({{MembershipService.List.length}}
+                                {{ 'common.items' | translate }})</span>
+                        </h6>
+                        <button title="{{ 'common.translate_korean' | translate }}"
+                            class="btn waves-effect waves-light blue darken-1" (click)="MembershipTranslate()"><i
+                                class="material-icons">translate</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a title="{{ 'common.hrm' | translate }}">{{ 'common.hrm' | translate }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/Membership" title="{{ 'page.membership_title' | translate }}">{{
+                                'page.membership_title' | translate }} </a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l1">
+                    <select class="browser-default form-select" [(ngModel)]="MembershipService.BaseParameter.CompanyID"
+                        (change)="MembershipActionChange(0)">
+                        <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col s12 m12 l3">
+                    <input [(ngModel)]="MembershipService.BaseParameter.SearchString"
+                        [placeholder]="'common.search' | translate" class="form-control"
+                        (keyup.enter)="MembershipSearch()">
+                </div>
+                <div class="col s12 m12 l2" style="display: flex; align-items: center; gap: 12px;">
+                    <label style="white-space: nowrap; margin: 0;">
+                        <input type="checkbox" class="form-check-input" name="Office"
+                            [(ngModel)]="MembershipService.BaseParameter.Active003" (change)="MembershipSearch()" />
+                        <span>{{ 'common.office' | translate }}</span>
+                    </label>
+                    <label style="white-space: nowrap; margin: 0;">
+                        <input type="checkbox" class="form-check-input" name="ActiveFilter"
+                            [(ngModel)]="MembershipService.BaseParameter.Active001" (change)="MembershipSearch()" />
+                        <span>{{ 'common.active' | translate }}</span>
+                    </label>
+                    <label style="white-space: nowrap; margin: 0;">
+                        <input type="checkbox" class="form-check-input" name="Active"
+                            [(ngModel)]="MembershipService.BaseParameter.Active" />
+                        <span>{{ 'common.view' | translate }}</span>
+                    </label>
+                </div>
+                <div class="col s12 m6 l1"></div>
+                <div class="col s12 m6 l1">
+                    <button [title]="'common.upload_excel' | translate" (click)="MembershipListModal01()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">import_export</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button [title]="'common.save' | translate" class="btn waves-effect waves-light cyan"
+                        style="width: 100%;" (click)="MembershipListSave()">
+                        <i class="material-icons">save</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button [title]="'common.add' | translate" (click)="MembershipListModalAdd()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button [title]="'common.resignation_upload' | translate" (click)="MembershipListModal02()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">person</i>
+                    </button>
+                </div>
+                <div class="col s12 m12 l1">
+                    <button [title]="'common.print' | translate" class="btn waves-effect waves-light green"
+                        style="width: 100%;" (click)="MembershipPrint()"><i class="material-icons">print</i></button>
+                </div>
+                <div class="row mb-0">
+                    <div class="col s12 m12 l12">
+                        <div class="KhungOverflow80">
+                            <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipSort="matSort"
+                                class="TableMaterial" [dataSource]="MembershipService.DataSource">
+                                <ng-container matColumnDef="Edit">
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <label style="margin: 0; cursor: pointer;">
+                                            <input type="checkbox" class="form-check-input"
+                                                [(ngModel)]="element.IsEdit" />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Active">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.active' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <label style="margin: 0; cursor: pointer;">
+                                            <input type="checkbox" class="form-check-input" disabled
+                                                [(ngModel)]="element.Active" />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="No">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.no' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element; index as i;">
+                                        <div *ngIf="MembershipPaginator">
+                                            {{MembershipPaginator.pageSize * MembershipPaginator.pageIndex + i + 1}}
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="UserName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.username' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element" style="cursor: pointer;"
+                                        (click)="(!MembershipService.BaseParameter.Active && !element.IsEdit) && MembershipListModal(element)">
+                                        <b><a>{{element.UserName}}</a></b>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Name">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.name' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.Name}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.Name"
+                                            style="width: 100%" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="FileName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.filename' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <img style="width: 100px; height: 100px;" src="{{element.FileName}}" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Display">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.display' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.Display}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.Display" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryHRMKhoiName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.khoi' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMKhoiName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMKhoiName"
+                                            (change)="element.CategoryHRMKhoiID = null">
+                                            <option value="Gián tiếp">Gián tiếp</option>
+                                            <option value="Trực tiếp">Trực tiếp</option>
+                                        </select>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="DepartmentKorean">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.department_korean' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span>{{GetDepartmentKoreanDisplay(element)}}</span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryHRMPhongBanName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.phongban' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMPhongBanName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMPhongBanID"
+                                            (change)="element.CategoryHRMPhongBanName = $event.target.options[$event.target.selectedIndex].text">
+                                            <option *ngFor="let item of CategoryHRMPhongBanService.ListFilter;"
+                                                [value]="item.ID">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PositionKorean">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.position_korean' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span></span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryHRMChucDanhName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.chucdanh' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMChucDanhName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMChucDanhID"
+                                            (change)="element.CategoryHRMChucDanhName = $event.target.options[$event.target.selectedIndex].text">
+                                            <option *ngFor="let item of CategoryHRMChucDanhService.ListFilter;"
+                                                [value]="item.ID">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Rank">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.rank' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.Rank}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.Rank" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="RankKorean">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.rank_korean' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span>{{GetPositionDisplay(element)}}</span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NgayVaoLam">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.ngayvaolam'
+                                        | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.NgayVaoLam
+                                            |
+                                            date:'dd/MM/yyyy'}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="date" class="form-control"
+                                            [ngModel]="element.NgayVaoLam | date:'yyyy-MM-dd'"
+                                            (ngModelChange)="element.NgayVaoLam = $event" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryHRMGioiTinhName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.gioitinh' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMGioiTinhName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMGioiTinhID"
+                                            (change)="element.CategoryHRMGioiTinhName = $event.target.options[$event.target.selectedIndex].text">
+                                            <option *ngFor="let item of CategoryHRMGioiTinhService.ListFilter;"
+                                                [value]="item.ID">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </ng-container>>
+
+                                <ng-container matColumnDef="CategoryHRMTrinhDoName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.trinhdo' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMTrinhDoName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMTrinhDoID"
+                                            (change)="element.CategoryHRMTrinhDoName = $event.target.options[$event.target.selectedIndex].text">
+                                            <option *ngFor="let item of CategoryHRMTrinhDoService.ListFilter;"
+                                                [value]="item.ID">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryHRMChuyenNganhName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.chuyennganh' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMChuyenNganhName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMChuyenNganhID"
+                                            (change)="element.CategoryHRMChuyenNganhName = $event.target.options[$event.target.selectedIndex].text">
+                                            <option *ngFor="let item of CategoryHRMChuyenNganhService.ListFilter;"
+                                                [value]="item.ID">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="EmploymentType">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.employmenttype' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.EmploymentType}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.EmploymentType" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CCCDNoiSinh">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.cccdnoisinh' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CCCDNoiSinh}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.CCCDNoiSinh" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NgaySinh">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.ngaysinh' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.NgaySinh
+                                            |
+                                            date:'dd/MM/yyyy'}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="date" class="form-control"
+                                            [ngModel]="element.NgaySinh | date:'yyyy-MM-dd'"
+                                            (ngModelChange)="element.NgaySinh = $event" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NguyenQuanName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.nguyenquan'
+                                        | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.NguyenQuanName}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.NguyenQuanName" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryHRMQuocGiaName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.quocgia' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMQuocGiaName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMQuocGiaID"
+                                            (change)="element.CategoryHRMQuocGiaName = $event.target.options[$event.target.selectedIndex].text">
+                                            <option *ngFor="let item of CategoryHRMQuocGiaService.ListFilter;"
+                                                [value]="item.ID">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryHRMDanTocName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.dantoc' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMDanTocName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMDanTocID"
+                                            (change)="element.CategoryHRMDanTocName = $event.target.options[$event.target.selectedIndex].text">
+                                            <option *ngFor="let item of CategoryHRMDanTocService.ListFilter;"
+                                                [value]="item.ID">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CCCD">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccd' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CCCD}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.CCCD" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CCCDNgayCap">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.cccdngaycap' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CCCDNgayCap
+                                            |
+                                            date:'dd/MM/yyyy'}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="date" class="form-control"
+                                            [ngModel]="element.CCCDNgayCap | date:'yyyy-MM-dd'"
+                                            (ngModelChange)="element.CCCDNgayCap = $event" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CCCDNgayHetHan">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.cccdngayhethan' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CCCDNgayHetHan
+                                            |
+                                            date:'dd/MM/yyyy'}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="date" class="form-control"
+                                            [ngModel]="element.CCCDNgayHetHan | date:'yyyy-MM-dd'"
+                                            (ngModelChange)="element.CCCDNgayHetHan = $event" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CCCDNoiCap">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccdnoicap'
+                                        | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CCCDNoiCap}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.CCCDNoiCap" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CCCDiaChi">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccddiachi'
+                                        | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CCCDiaChi}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.CCCDiaChi" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="DiaChi">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.diachi' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.DiaChi}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.DiaChi" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Phone">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.phone' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.Phone}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.Phone" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Email">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.email' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.Email}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.Email" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryHRMTinhTrangLamViecName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.tinhtrang'
+                                        | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.CategoryHRMTinhTrangLamViecName}}</span>
+                                        <select *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            class="browser-default form-select form-control"
+                                            [(ngModel)]="element.CategoryHRMTinhTrangLamViecID"
+                                            (change)="element.CategoryHRMTinhTrangLamViecName = $event.target.options[$event.target.selectedIndex].text">
+                                            <option *ngFor="let item of CategoryHRMTinhTrangLamViecService.ListFilter;"
+                                                [value]="item.ID">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NgayNghiViec">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.ngghiviec'
+                                        | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.NgayNghiViec
+                                            |
+                                            date:'dd/MM/yyyy'}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="date" class="form-control"
+                                            [ngModel]="element.NgayNghiViec | date:'yyyy-MM-dd'"
+                                            (ngModelChange)="element.NgayNghiViec = $event" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="LyDoNghiViec">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.lydonghiviec' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.LyDoNghiViec}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.LyDoNghiViec" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Certificate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.certificate' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.Certificate}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.Certificate" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="OverseasExperience">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.overseasexperience' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.OverseasExperience}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.OverseasExperience" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ForeignLanguageLevel">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.foreignlanguage' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.ForeignLanguageLevel}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control"
+                                            [(ngModel)]="element.ForeignLanguageLevel" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ContractCondition">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.contractcondition' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.ContractCondition}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.ContractCondition" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="RewardsDiscipline">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.rewardsdiscipline' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.RewardsDiscipline}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.RewardsDiscipline" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PromotionHistory">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.promotionhistory' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.PromotionHistory}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.PromotionHistory" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="TrainingDate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.trainingdate' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.TrainingDate
+                                            |
+                                            date:'dd/MM/yyyy'}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="date" class="form-control"
+                                            [ngModel]="element.TrainingDate | date:'yyyy-MM-dd'"
+                                            (ngModelChange)="element.TrainingDate = $event" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="WorkExperience">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{
+                                        'membership.col.workexperience' | translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span>{{element.Year}}
+                                            năm -{{element.Month}} tháng -{{element.Day}} ngày
+                                        </span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Other">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.other' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.Other}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.Other" />
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Note">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.note' |
+                                        translate }}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span
+                                            *ngIf="!MembershipService.BaseParameter.Active && !element.IsEdit">{{element.Note}}</span>
+                                        <input *ngIf="MembershipService.BaseParameter.Active || element.IsEdit"
+                                            type="text" class="form-control" [(ngModel)]="element.Note" />
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="MembershipService.DisplayColumns004">
+                                </tr>
+                                <tr mat-row *matRowDef="let row; columns: MembershipService.DisplayColumns004;">
+                                </tr>
+                            </table>
+                            <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipPaginator="matPaginator"
+                                [pageSizeOptions]="[5,10,20,50,100,1000000]" [pageSize]="5"
+                                [showFirstLastButtons]></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

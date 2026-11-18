@@ -1,0 +1,56 @@
+<div class="annualLeaveBalanceImportModal-header">
+  <h6><b>{{ 'hrm-nghi-phep.balance.importDialog.title' | translate }}</b></h6>
+  <div class="annualLeaveBalanceImportModal-header-actions">
+    <button type="button" title="Import | 가져오기" class="btn waves-effect waves-light green darken-1"
+      (click)="Import()" [disabled]="IsImporting || !SelectedFile">
+      <i class="material-icons">cloud_upload</i> Upload
+    </button>
+    <button type="button" title="Close | 닫기" class="btn waves-effect waves-light purple lighten-1"
+      (click)="Close()" [disabled]="IsImporting">
+      <i class="material-icons">close</i>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content class="annualLeaveBalanceImportModal-content">
+  <div class="annualLeaveBalanceImportModal-form-row">
+    <div>
+      <label for="annualLeaveBalanceImportYear">{{ 'hrm-nghi-phep.balance.importDialog.year' | translate }}</label>
+      <input id="annualLeaveBalanceImportYear" class="form-control" type="number" min="1" step="1"
+        name="Year" [(ngModel)]="Year" [disabled]="IsImporting">
+    </div>
+    <div>
+      <label for="annualLeaveBalanceImportDate">{{ 'hrm-nghi-phep.balance.importDialog.updateDate' | translate }}</label>
+      <input id="annualLeaveBalanceImportDate" class="form-control" type="date"
+        name="OpeningDate" [(ngModel)]="OpeningDate" [disabled]="IsImporting">
+    </div>
+  </div>
+
+  <div class="annualLeaveBalanceImportModal-field">
+    <label for="annualLeaveBalanceImportReason">{{ 'hrm-nghi-phep.balance.importDialog.reason' | translate }}</label>
+    <textarea id="annualLeaveBalanceImportReason" class="form-control" rows="3" name="Reason"
+      [(ngModel)]="Reason" maxlength="2000" [disabled]="IsImporting"></textarea>
+  </div>
+
+  <div class="annualLeaveBalanceImportModal-file-picker">
+    <label for="annualLeaveBalanceImportFile">{{ 'hrm-nghi-phep.balance.importDialog.file' | translate }}</label>
+    <input id="annualLeaveBalanceImportFile" class="form-control" type="file" accept=".xlsx"
+      (change)="OnFileSelected($event)" [disabled]="IsImporting">
+    <span *ngIf="SelectedFile" class="annualLeaveBalanceImportModal-file-name">
+      {{ SelectedFile.name }} ({{ SelectedFile.size | number }} bytes)
+    </span>
+    <button type="button" class="annualLeaveBalanceImportModal-text-link"
+      (click)="DownloadTemplate()" [disabled]="IsImporting || IsDownloadingTemplate">
+      Download Template
+    </button>
+  </div>
+
+  <div *ngIf="Errors.length > 0" class="annualLeaveBalanceImportModal-errors" role="alert">
+    <strong>{{ 'hrm-nghi-phep.balance.importDialog.errorsTitle' | translate }}</strong>
+    <ul>
+      <li *ngFor="let error of Errors">{{ error }}</li>
+    </ul>
+  </div>
+</mat-dialog-content>
+
+<app-loading *ngIf="IsImporting"></app-loading>

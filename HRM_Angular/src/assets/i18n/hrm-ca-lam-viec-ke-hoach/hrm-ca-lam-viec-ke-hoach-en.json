@@ -1,0 +1,17 @@
+{
+  "hrm-ca-lam-viec-ke-hoach": {
+    "title": "Work shift plan",
+    "all": "All",
+    "total": "Total",
+    "work_shift": "Work shift",
+    "department": "Department",
+    "date": "Date",
+    "employee": "Employee",
+    "start_hour": "Start: Hour",
+    "start_minute": "Start: Minute",
+    "end_hour": "End: Hour",
+    "end_minute": "End: Minute",
+    "note": "Note",
+    "active": "Active"
+  }
+}

@@ -1,0 +1,125 @@
+<div class="card card-default scrollspy">
+  <div class="card-content">
+    <div class="hrmTangCa-filter-panel">
+      <div class="row hrmTangCa-filter-row">
+        <div class="col s12 m6 l2">
+          <label>{{ 'hrm-tang-ca.fromDate' | translate }}</label>
+          <input type="date" [(ngModel)]="FromDate" class="form-control">
+        </div>
+        <div class="col s12 m6 l2">
+          <label>{{ 'hrm-tang-ca.toDate' | translate }}</label>
+          <input type="date" [(ngModel)]="ToDate" class="form-control">
+        </div>
+        <div class="col s12 m6 l2">
+          <label>{{ 'hrm-tang-ca.company' | translate }}</label>
+          <select class="browser-default form-select" [(ngModel)]="CompanyID" (change)="CompanyChange()">
+            <option *ngFor="let company of CompanyService.ListFilter" [ngValue]="company.ID">{{ company.Name }}</option>
+          </select>
+        </div>
+        <div class="col s12 m6 l3">
+          <label>{{ 'hrm-tang-ca.department' | translate }}</label>
+          <select class="browser-default form-select" [(ngModel)]="CategoryHRMPhongBanID">
+            <option [ngValue]="0">All</option>
+            <option *ngFor="let department of CategoryHRMPhongBanService.ListFilter" [ngValue]="department.ID">{{ GetDepartmentName(department) }}</option>
+          </select>
+        </div>
+        <div class="col s12 m6 l3">
+          <label>{{ 'hrm-tang-ca.requestDepartment' | translate }}</label>
+          <select class="browser-default form-select" [(ngModel)]="RequestDepartmentID" (change)="RequestDepartmentChange()">
+            <option [ngValue]="0">All</option>
+            <option *ngFor="let department of CategoryHRMPhongBanService.ListFilter" [ngValue]="department.ID">{{ GetDepartmentName(department) }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row hrmTangCa-search-row">
+        <div class="col s12 m6 l5">
+          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="SearchString" (keyup.enter)="SearchOrders()">
+        </div>
+        <div class="col s12 m2 l1 hrmTangCa-office-filter">
+          <label>
+            <input type="checkbox" class="form-check-input" [(ngModel)]="IsOffice" (change)="OfficeChange()">
+            <span>Office</span>
+          </label>
+        </div>
+        <div class="col s12 m4 l5 hrmTangCa-filter-actions-col">
+          <button type="button" class="btn waves-effect waves-light green darken-1" (click)="SearchOrders()">
+            <i class="material-icons">search</i>{{ 'common.search' | translate }}
+          </button>
+          <button type="button" class="btn waves-effect waves-light grey" (click)="ResetOrderFilters()">
+            <i class="material-icons">refresh</i>{{ 'hrm-tang-ca.reset' | translate }}
+          </button>
+          <button type="button" class="btn waves-effect waves-light green darken-1" [disabled]="IsOrderExporting || CompanyID <= 0" [title]="'common.export_excel' | translate" (click)="ExportOrders()">
+            <i class="material-icons">{{ IsOrderExporting ? 'hourglass_empty' : 'cloud_download' }}</i>
+            {{ IsOrderExporting ? ('hrm-tang-ca.exporting' | translate) : ('common.export_excel' | translate) }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hrmTangCa-table-container mat-elevation-z2">
+      <table mat-table [dataSource]="OrderDataSource" matSort [matSortActive]="OrderSortBy" [matSortDirection]="OrderSortDirection" (matSortChange)="OrderSortChange($event)" class="hrmTangCa-table">
+        <ng-container matColumnDef="No">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true" class="mat-column-No">No</th>
+          <td mat-cell *matCellDef="let row; let rowIndex = index" class="mat-column-No">{{ OrderPageIndex * OrderPageSize + rowIndex + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Id">ID</th>
+          <td mat-cell *matCellDef="let row">
+            <a class="link-primary hrmTangCa-cell-link" target="_blank" rel="noopener noreferrer" [href]="GetRadApprovalUrl(row.ApprovalRequestId)">{{ row.ApprovalRequestId }}</a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="RequestCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="RequestCode">{{ 'hrm-tang-ca.requestCode' | translate }}</th>
+          <td mat-cell *matCellDef="let row">
+            <a class="link-primary hrmTangCa-cell-link" target="_blank" rel="noopener noreferrer" [href]="GetRadApprovalUrl(row.ApprovalRequestId)">{{ row.RequestCode }}</a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="OvertimeDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="OvertimeDate">{{ 'hrm-tang-ca.overtimeDate' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.OvertimeDate | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Division">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Division">{{ 'hrm-tang-ca.division' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ (row.IsOffice ? 'hrm-tang-ca.officeDivision' : 'hrm-tang-ca.productionDivision') | translate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="RequestDepartment">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="RequestDepartment">{{ 'hrm-tang-ca.requestDepartment' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.RequestDepartmentName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Departments">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Departments" [disabled]="true">{{ 'hrm-tang-ca.departments' | translate }}</th>
+          <td mat-cell *matCellDef="let row">
+            <div *ngFor="let departmentName of GetDepartmentNamesForDisplay(row.DepartmentNames)">{{ departmentName }}</div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="EmployeeCount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="EmployeeCount">{{ 'hrm-tang-ca.employeeCount' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.EmployeeCount }}</td>
+        </ng-container>
+        <ng-container matColumnDef="TotalHours">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="TotalHours">{{ 'hrm-tang-ca.totalHours' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ FormatHoursToTime(row.TotalHours) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="CreatorName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="CreatorName">{{ 'hrm-tang-ca.creator' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.CreatorName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="CreatedDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="CreatedDate">{{ 'hrm-tang-ca.createdDate' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.CreatedDate | date:'dd/MM/yyyy HH:mm' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="ApprovedDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="ApprovedDate">{{ 'hrm-tang-ca.approvedDate' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.CompletedDate | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="OrderColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: OrderColumns"></tr>
+      </table>
+      <div class="hrmTangCa-empty-state" *ngIf="!ApprovalOvertimeService.IsShowLoading && OrderDataSource.data.length === 0">
+        <i class="material-icons">inbox</i><span>{{ 'hrm-tang-ca.noOrders' | translate }}</span>
+      </div>
+      <mat-paginator [length]="OrderTotalCount" [pageIndex]="OrderPageIndex" [pageSize]="OrderPageSize" [pageSizeOptions]="[10, 20, 50]" [showFirstLastButtons] (page)="OrderPageChange($event)"></mat-paginator>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="ApprovalOvertimeService.IsShowLoading"></app-loading>

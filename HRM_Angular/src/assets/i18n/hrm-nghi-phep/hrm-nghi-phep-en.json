@@ -1,0 +1,186 @@
+{
+  "hrm-nghi-phep": {
+    "title": "Annual Leave Management",
+    "tabs": {
+      "overview": "Overview",
+      "requests": "Leave Requests",
+      "actualWorkdays": "Actual Workdays",
+      "balanceUpdate": "Balance Update",
+      "history": "Balance History",
+      "leaveType": "Leave Types"
+    },
+    "overview": {
+      "company": "Company",
+      "year": "Year",
+      "department": "Department",
+      "office": "Office",
+      "production": "Production",
+      "searchPlaceholder": "Search by employee code or name",
+      "search": "Search",
+      "reset": "Reset",
+      "exportExcel": "Export Excel",
+      "exportDisabledTitle": "Backend not connected",
+      "columns": {
+        "no": "No",
+        "id": "ID",
+        "employeeCode": "Employee Code",
+        "employeeName": "Employee Name",
+        "department": "Department",
+        "openingDate": "Opening Date",
+        "openingBalance": "Opening Balance",
+        "monthlyAccrued": "Monthly Accrual",
+        "seniority": "Seniority Leave",
+        "used": "Used",
+        "adjustment": "Adjustment",
+        "current": "Current"
+      },
+      "messages": {
+        "noData": "No matching employees found.",
+        "noCompany": "No company available to load employees.",
+        "loadCompanyFailed": "Failed to load companies.",
+        "loadDepartmentFailed": "Failed to load departments.",
+        "loadOverviewFailed": "Failed to load annual leave overview data.",
+        "syncSuccess": "Annual leave sync completed. Employees: {{total}}, monthly accruals: {{monthly}}, seniority accruals: {{seniority}}.",
+        "syncFailed": "Failed to synchronize annual leave balances."
+      }
+    },
+    "requests": {
+      "search": "Search",
+      "exportExcel": "Export Excel",
+      "columns": {
+        "no": "No",
+        "id": "ID",
+        "status": "Status",
+        "requestCode": "Request Code",
+        "employeeCode": "Employee Code",
+        "employeeName": "Employee Name",
+        "department": "Department",
+        "leaveType": "Leave Type",
+        "leaveDays": "Days",
+        "fromDate": "From Date",
+        "toDate": "To Date",
+        "leaveReason": "Leave Reason",
+        "createdDate": "Created Date"
+      },
+      "messages": {
+        "exportFailed": "Failed to save or download file."
+      }
+    },
+    "leaveType": {
+      "columns": {
+        "no": "No",
+        "code": "Leave Type Code",
+        "nameVn": "Name (VN)",
+        "nameEn": "Name (EN)",
+        "nameKr": "Name (KR)",
+        "description": "Description",
+        "isDeduct": "Deduct Annual Leave",
+        "isActive": "Active",
+        "save": "Save"
+      },
+      "tooltips": {
+        "save": "Save"
+      },
+      "messages": {
+        "loadFailed": "Failed to load leave types.",
+        "codeRequired": "Leave type code is required.",
+        "nameVnRequired": "Vietnamese leave type name is required.",
+        "saveSuccess": "Leave type saved successfully.",
+        "saveFailed": "Failed to save leave type."
+      }
+    },
+    "placeholders": {
+      "balanceTitle": "Balance Update",
+      "historyTitle": "Update History"
+    },
+    "balance": {
+      "actions": {
+        "adjust": "Adjust"
+      },
+      "columns": {
+        "openingBalance": "Opening Balance",
+        "openingDate": "Opening Date",
+        "currentBalance": "Current Balance",
+        "updatedDate": "Last Updated",
+        "updatedBy": "Updated By",
+        "action": "Action"
+      },
+      "historyColumns": {
+        "changeType": "Change Type",
+        "oldBalance": "Previous Balance",
+        "changeAmount": "Change Amount",
+        "newBalance": "New Balance",
+        "reason": "Reason",
+        "createdDate": "Date and Time",
+        "createdBy": "Changed By",
+        "noData": "No balance history yet."
+      },
+      "editDialog": {
+        "title": "Adjust Annual Leave Balance",
+        "employeeCode": "Employee Code",
+        "employeeName": "Employee Name",
+        "department": "Department",
+        "currentBalance": "Current Balance",
+        "openingBalance": "Opening Balance",
+        "year": "Year",
+        "adjustmentType": "Adjustment Type",
+        "add": "Add",
+        "subtract": "Subtract",
+        "amount": "Adjustment Days",
+        "newBalance": "Current Balance After Adjustment",
+        "amountRequired": "Adjustment amount must be greater than zero.",
+        "balanceNegative": "Current balance after adjustment cannot be negative.",
+        "reason": "Adjustment Reason (optional)"
+      },
+      "importDialog": {
+        "title": "Import Opening Balance from Excel",
+        "year": "Year",
+        "updateDate": "Opening Date",
+        "reason": "Update Reason (optional)",
+        "file": "Excel file (.xlsx)",
+        "errorsTitle": "Import validation errors",
+        "close": "Close",
+        "import": "Import",
+        "importing": "Importing..."
+      },
+      "messages": {
+        "saveSuccess": "Leave balance updated successfully.",
+        "saveFailed": "Could not update the leave balance.",
+        "loadHistoryFailed": "Could not load annual leave balance history.",
+        "invalidFile": "Only .xlsx Excel files are supported.",
+        "fileRequired": "Please select an .xlsx file.",
+        "invalidYear": "Enter a valid year.",
+        "invalidOpeningDate": "Select a valid opening balance date.",
+        "importFailed": "The Excel import failed.",
+        "correctErrors": "Please correct the listed errors and upload the file again.",
+        "noRecords": "The file did not contain any records to update.",
+        "importSuccess": "Successfully updated {{count}} employee(s)."
+      }
+    },
+    "actualWorkdays": {
+      "employeeListTitle": "Employee List",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "legendWorked": "Worked",
+      "legendLeaveDeduct": "Leave (Deduct)",
+      "legendLeaveNonDeduct": "Leave (Non-deduct)",
+      "messages": {
+        "loadingEmployees": "Loading employees...",
+        "noEmployees": "No matching employees found.",
+        "loadEmployeesFailed": "Failed to load employees.",
+        "selectEmployee": "Select an employee to view the workday calendar.",
+        "loadingCalendar": "Loading workday calendar...",
+        "loadCalendarFailed": "Failed to load this employee's workday calendar."
+      },
+      "weekdays": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "sun": "Sun"
+      }
+    }
+  }
+}

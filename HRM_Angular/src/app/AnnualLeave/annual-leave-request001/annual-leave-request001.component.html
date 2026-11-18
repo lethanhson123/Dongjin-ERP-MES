@@ -1,0 +1,248 @@
+<div class="row">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper" *ngIf="!NotificationService.IsMobile">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        Nghỉ phép | 휴가 중
+                        <span *ngIf="AnnualLeaveRequestService.List">({{AnnualLeaveRequestService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+                <div class="col s12 m6 l6 right-align-md">
+                    <ol class="breadcrumbs mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:history.back()" title="Back">
+                                <<< Back </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a title="HRM">HRM</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a routerLink="/AnnualLeaveRequest" title="Nghỉ phép">Nghỉ phép</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pt-10 pb-0" id="breadcrumbs-wrapper" *ngIf="NotificationService.IsMobile">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <h6 class="breadcrumbs-title">
+                        Nghỉ phép | 휴가 중
+                        <span *ngIf="AnnualLeaveRequestService.List">({{AnnualLeaveRequestService.List.length}}
+                            items)</span>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m12 l12">
+        <div class="card card card-default scrollspy">
+            <div class="card-content">
+                <div class="col s12 m12 l2">
+                    <input [ngModel]="AnnualLeaveRequestService.BaseParameter.DateBegin | date:'yyyy-MM-dd'"
+                        style="text-align: right;" (ngModelChange)="DateBegin($event)"
+                        (keyup.enter)="AnnualLeaveRequestSearch()" [ngModelOptions]="{ updateOn: 'blur' }" type="date"
+                        class="form-control" autocomplete="off">
+                </div>
+                <div class="col s12 m12 l2">
+                    <input [ngModel]="AnnualLeaveRequestService.BaseParameter.DateEnd | date:'yyyy-MM-dd'"
+                        style="text-align: right;" (ngModelChange)="DateEnd($event)"
+                        (keyup.enter)="AnnualLeaveRequestSearch()" [ngModelOptions]="{ updateOn: 'blur' }" type="date"
+                        class="form-control" autocomplete="off">
+                </div>
+                <div class="col s12 m12 l6">
+                    <input disabled [(ngModel)]="AnnualLeaveRequestService.BaseParameter.SearchString"
+                        placeholder="Tìm kiếm ... | 찾다 ..." class="form-control"
+                        (keyup.enter)="AnnualLeaveRequestSearch()">
+                </div>
+                <div class="col s12 m12 l1">
+                    <button title="Tìm kiếm | 찾다" (click)="AnnualLeaveRequestSearch()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>      
+
+                <div class="col s12 m12 l1">
+                    <button (click)="AnnualLeaveRequest001Modal()"
+                        class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>    
+
+                <div class="KhungOverflow70">
+                    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #AnnualLeaveRequestSort="matSort"
+                        class="TableMaterial" [dataSource]="AnnualLeaveRequestService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="AnnualLeaveRequestPaginator">
+                                    {{
+                                    AnnualLeaveRequestPaginator.pageSize *
+                                    AnnualLeaveRequestPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a class="link-primary" target="_blank" rel="noopener noreferrer"
+                                    [href]="GetRadAnnualLeaveUrl(element.Id)">{{element.Id}}</a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Status">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng thái | 상태</th>
+                            <td mat-cell *matCellDef="let element">{{element.Status}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="RequestCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã số | 이자형</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a class="link-primary" target="_blank" rel="noopener noreferrer"
+                                    [href]="GetRadAnnualLeaveUrl(element.Id)"><b>{{element.RequestCode}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="EmployeeCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhân viên | 직원</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.EmployeeCode}} -
+                                {{element.EmployeeName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="EmployeeName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên | 이름</th>
+                            <td mat-cell *matCellDef="let element">{{element.EmployeeName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="LeaveDays">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SUM</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.LeaveDays}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="SubmitDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nộp đơn | 신청일 </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    {{element.SubmitDate |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CompletedDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Duyệt đơn | 신청 승인일</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    {{element.CompletedDate |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Detail">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Chi tiết | 세부 사항</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngFor="let detail of element.Details">{{detail.FromDate |
+                                    date:'dd/MM/yyyy'}} {{detail.FromTime}} - {{detail.ToDate |
+                                    date:'dd/MM/yyyy'}} {{detail.ToTime}}</div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="AnnualLeaveRequestService.DisplayColumns001">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: AnnualLeaveRequestService.DisplayColumns001;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #AnnualLeaveRequestPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="20"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+                <div class="KhungOverflow" *ngIf="NotificationService.IsMobile">
+                    <table *ngIf="NotificationService.IsMobile" mat-table matSort #AnnualLeaveRequestSort="matSort"
+                        class="TableMaterial" [dataSource]="AnnualLeaveRequestService.DataSource">
+                        <ng-container matColumnDef="No">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No
+                            </th>
+                            <td mat-cell *matCellDef="let element; index as i;">
+                                <div *ngIf="AnnualLeaveRequestPaginator">
+                                    {{
+                                    AnnualLeaveRequestPaginator.pageSize *
+                                    AnnualLeaveRequestPaginator.pageIndex + i + 1
+                                    }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a class="link-primary" target="_blank" rel="noopener noreferrer"
+                                    [href]="GetRadAnnualLeaveUrl(element.Id)">{{element.Id}}</a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Status">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng thái | 상태</th>
+                            <td mat-cell *matCellDef="let element">{{element.Status}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="RequestCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã số | 이자형</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a class="link-primary" target="_blank" rel="noopener noreferrer"
+                                    [href]="GetRadAnnualLeaveUrl(element.Id)"><b>{{element.RequestCode}}</b></a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="EmployeeCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhân viên | 직원</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.EmployeeCode}} -
+                                {{element.EmployeeName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="EmployeeName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên | 이름</th>
+                            <td mat-cell *matCellDef="let element">{{element.EmployeeName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="LeaveDays">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>SUM</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                                <b>{{element.LeaveDays}}</b>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="SubmitDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nộp đơn | 신청일 </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    {{element.SubmitDate |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="CompletedDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Duyệt đơn | 신청 승인일</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    {{element.CompletedDate |
+                                    date:'dd/MM/yyyy HH:mm:ss'}}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Detail">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Chi tiết | 세부 사항</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngFor="let detail of element.Details">{{detail.FromDate |
+                                    date:'dd/MM/yyyy'}} {{detail.FromTime}} - {{detail.ToDate |
+                                    date:'dd/MM/yyyy'}} {{detail.ToTime}}</div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="AnnualLeaveRequestService.DisplayColumns001">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: AnnualLeaveRequestService.DisplayColumns001;">
+                        </tr>
+                    </table>
+                    <mat-paginator *ngIf="!NotificationService.IsMobile" #AnnualLeaveRequestPaginator="matPaginator"
+                        [pageSizeOptions]="[10,20,50,100,1000000]" [pageSize]="20"
+                        [showFirstLastButtons]></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="AnnualLeaveRequestService.IsShowLoading"></app-loading>

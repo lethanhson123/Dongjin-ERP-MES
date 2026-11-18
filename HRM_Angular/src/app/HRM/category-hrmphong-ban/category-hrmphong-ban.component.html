@@ -1,0 +1,168 @@
+<div class="row">
+  <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <h6 class="breadcrumbs-title">
+            Phòng ban | 부서
+            <span *ngIf="CategoryHRMPhongBanService.List">({{CategoryHRMPhongBanService.List.length}} items)</span>
+          </h6>
+        </div>
+        <div class="col s12 m6 l6 right-align-md">
+          <ol class="breadcrumbs mb-0">
+            <li class="breadcrumb-item"><a href="javascript:history.back()" title="Back">&lt;&lt;&lt; Back</a></li>
+            <li class="breadcrumb-item"><a routerLink="/Homepage" title="Home">Home</a></li>
+            <li class="breadcrumb-item"><a title="HRM">HRM</a></li>
+            <li class="breadcrumb-item"><a routerLink="/CategoryHRMPhongBan" title="Phòng ban">Phòng ban</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+      <div class="card-content">
+        <div class="col s12 m12 l11">
+          <input [(ngModel)]="CategoryHRMPhongBanService.BaseParameter.SearchString"
+            placeholder="Tìm kiếm ... | 찾다 ..." class="form-control"
+            (keyup.enter)="CategoryHRMPhongBanSearchFilter()">
+        </div>
+        <div class="col s12 m12 l1">
+          <button title="Tìm kiếm | 찾다" (click)="CategoryHRMPhongBanSearchFilter()"
+            class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+            <i class="material-icons">search</i>
+          </button>
+        </div>
+
+        <div class="KhungOverflow70">
+          <table *ngIf="!NotificationService.IsMobile" mat-table matSort
+            #CategoryHRMPhongBanSort="matSort"
+            [dataSource]="CategoryHRMPhongBanService.DataSource">
+
+            <ng-container matColumnDef="No">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+              <td mat-cell *matCellDef="let element; index as i">
+                <span *ngIf="CategoryHRMPhongBanPaginator">
+                  {{CategoryHRMPhongBanPaginator.pageSize * CategoryHRMPhongBanPaginator.pageIndex + i + 1}}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let element">{{element.ID || 'Mới'}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="ParentID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="number" [(ngModel)]="element.ParentID"
+                  name="ParentID{{element.ID}}" readonly>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ParentName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentName</th>
+              <td mat-cell *matCellDef="let element; index as i">
+                <select class="browser-default form-select" [(ngModel)]="element.ParentID"
+                  (ngModelChange)="CategoryHRMPhongBanParentChange(element)"
+                  [ngModelOptions]="{standalone: true}"
+                  name="ParentName{{element.ID || 'new-' + i}}">
+                  <option [ngValue]="0"></option>
+                  <option *ngFor="let parent of getParentOptions(element)" [ngValue]="parent.ID">
+                    {{getParentLabel(parent)}}
+                  </option>
+                </select>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Code">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã | 코드</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" [(ngModel)]="element.Code"
+                  placeholder="Mã" name="Code{{element.ID}}">
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên tiếng Anh</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" [(ngModel)]="element.Name"
+                  placeholder="Tên tiếng Anh" name="Name{{element.ID}}">
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Display">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên tiếng Việt</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" [(ngModel)]="element.Display"
+                  placeholder="Tên tiếng Việt" name="Display{{element.ID}}">
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Description">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên tiếng Hàn</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" [(ngModel)]="element.Description"
+                  placeholder="Tên tiếng Hàn" name="Description{{element.ID}}">
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="SortOrder">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Thứ tự</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="number" [(ngModel)]="element.SortOrder"
+                  placeholder="Thứ tự" name="SortOrder{{element.ID}}">
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="IsOffice">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Office</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" [(ngModel)]="element.IsOffice"
+                    name="IsOffice{{element.ID}}">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Active">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Kích hoạt</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" [(ngModel)]="element.Active"
+                    name="Active{{element.ID}}">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Save">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <button (click)="CategoryHRMPhongBanSave(element)"
+                  class="btn waves-effect waves-light cyan" title="Lưu | 저장">
+                  <i class="material-icons">save</i>
+                </button>
+                <button *ngIf="element.ID > 0" (click)="CategoryHRMPhongBanDelete(element)"
+                  class="btn-floating waves-effect waves-light red" title="Xóa | 삭제">
+                  <i class="material-icons">delete_outline</i>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="CategoryHRMPhongBanService.DisplayColumns001"></tr>
+            <tr mat-row *matRowDef="let row; columns: CategoryHRMPhongBanService.DisplayColumns001;"></tr>
+          </table>
+          <mat-paginator *ngIf="!NotificationService.IsMobile"
+            #CategoryHRMPhongBanPaginator="matPaginator"
+            [pageSizeOptions]="[10,20,50,100]" [pageSize]="10"
+            [showFirstLastButtons]></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="CategoryHRMPhongBanService.IsShowLoading"></app-loading>

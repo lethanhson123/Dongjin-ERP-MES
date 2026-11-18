@@ -1,0 +1,29 @@
+{
+  "hrm-quan-ly-cong-viec": {
+    "title": "업무 관리",
+    "back": "뒤로",
+    "home": "홈",
+    "hrm": "HRM",
+    "all": "All",
+    "search": "찾다",
+    "search_placeholder": "찾다 ...",
+    "add": "추가",
+    "status": "상태",
+    "total": "총",
+    "department": "부서",
+    "deadline": "기한",
+    "assigner": "업무 담당자",
+    "assignee": "그 일자리 취득자",
+    "no": "번호",
+    "id": "ID",
+    "complete": "완료",
+    "point": "점수",
+    "date_begin": "시작일",
+    "date_end": "마감일",
+    "note": "메모",
+    "task": "직업",
+    "document": "문서",
+    "active": "활성화",
+    "delete": "지우다"
+  }
+}

@@ -1,0 +1,232 @@
+<div class="row">
+  <div class="pt-2 pb-0" id="breadcrumbs-wrapper" >
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <h6 class="breadcrumbs-title">
+            Quốc tịch |  국적
+            <span *ngIf="CategoryHRMQuocGiaService.List">({{CategoryHRMQuocGiaService.List.length}}
+              items)</span>
+          </h6>
+        </div>
+        <div class="col s12 m6 l6 right-align-md">
+          <ol class="breadcrumbs mb-0">
+            <li class="breadcrumb-item">
+              <a href="javascript:history.back()" title="Back">
+                <<< Back </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/Homepage" title="Home">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a title="HRM">HRM</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/CategoryHRMQuocGia" title="Trinh do">
+                Quốc tịch
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col s12 m12 l12">
+    <div class="card card card-default scrollspy">
+      <div class="card-content">
+        <div class="col s12 m12 l11">
+          <input [(ngModel)]="CategoryHRMQuocGiaService.BaseParameter.SearchString" placeholder="Tìm kiếm ... | 찾다 ..."
+            class="form-control" (keyup.enter)="CategoryHRMQuocGiaSearch()">
+        </div>
+        <div class="col s12 m12 l1">
+          <a title="Tìm kiếm ... | 찾다 ..." (click)="CategoryHRMQuocGiaSearch()" class="btn waves-effect waves-light green darken-1"
+            style="width: 100%;">
+            <i class="material-icons">search</i>
+          </a>
+        </div>
+        <div class="KhungOverflow70">
+          <table *ngIf="!NotificationService.IsMobile" mat-table matSort #CategoryHRMQuocGiaSort="matSort"
+            [dataSource]="CategoryHRMQuocGiaService.DataSource">
+            <ng-container matColumnDef="No">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                No
+              </th>
+              <td mat-cell *matCellDef="let element; index as i;">
+                <div *ngIf="CategoryHRMQuocGiaPaginator">
+                  {{
+                  CategoryHRMQuocGiaPaginator.pageSize *
+                  CategoryHRMQuocGiaPaginator.pageIndex + i + 1
+                  }}
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.ID}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ParentID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentID</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="ParentID" name="ParentID{{element.ID}}"
+                  [(ngModel)]="element.ParentID">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ParentName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ParentName</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="ParentName" name="ParentName{{element.ID}}"
+                  [(ngModel)]="element.ParentName">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="CreateDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateDate</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="CreateDate" name="CreateDate{{element.ID}}"
+                  [(ngModel)]="element.CreateDate">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="CreateUserID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserID</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="CreateUserID" name="CreateUserID{{element.ID}}"
+                  [(ngModel)]="element.CreateUserID">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="CreateUserCode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserCode</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="CreateUserCode" name="CreateUserCode{{element.ID}}"
+                  [(ngModel)]="element.CreateUserCode">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="CreateUserName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>CreateUserName</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="CreateUserName" name="CreateUserName{{element.ID}}"
+                  [(ngModel)]="element.CreateUserName">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateDate</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="UpdateDate" name="UpdateDate{{element.ID}}"
+                  [(ngModel)]="element.UpdateDate">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateUserID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserID</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="UpdateUserID" name="UpdateUserID{{element.ID}}"
+                  [(ngModel)]="element.UpdateUserID">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateUserCode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserCode</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="UpdateUserCode" name="UpdateUserCode{{element.ID}}"
+                  [(ngModel)]="element.UpdateUserCode">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="UpdateUserName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>UpdateUserName</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="UpdateUserName" name="UpdateUserName{{element.ID}}"
+                  [(ngModel)]="element.UpdateUserName">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="RowVersion">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>RowVersion</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="RowVersion" name="RowVersion{{element.ID}}"
+                  [(ngModel)]="element.RowVersion">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="SortOrder">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Thứ tự sắp xếp | 정렬 순서</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="Thứ tự sắp xếp | 정렬 순서" name="SortOrder{{element.ID}}"
+                  [(ngModel)]="element.SortOrder">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Active">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Kích hoạt | 활성화 
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                    [(ngModel)]="element.Active">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Code">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã số | 코드 번호</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="Mã số | 코드 번호" name="Code{{element.ID}}"
+                  [(ngModel)]="element.Code">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên | 이름</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="Name" name="Name{{element.ID}}"
+                  [(ngModel)]="element.Name">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Display">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Hiển thị | 표시하다</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="Hiển thị | 표시하다" name="Display{{element.ID}}"
+                  [(ngModel)]="element.Display">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Description">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="Description" name="Description{{element.ID}}"
+                  [(ngModel)]="element.Description">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Note">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ghi chú | 메모</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="Ghi chú | 메모" name="Note{{element.ID}}"
+                  [(ngModel)]="element.Note">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="FileName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>FileName</th>
+              <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" placeholder="FileName" name="FileName{{element.ID}}"
+                  [(ngModel)]="element.FileName">
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Save">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <a (click)="CategoryHRMQuocGiaSave(element)" class="btn waves-effect waves-light cyan" title="Lưu lại | 저장하다">
+                  <i class="material-icons">save</i>
+                </a>&nbsp;&nbsp;&nbsp;
+                <a *ngIf="element.ID>0" (click)="CategoryHRMQuocGiaDelete(element)"
+                  class="btn-floating waves-effect waves-light red" title="Xóa | 지우다">
+                  <i class="material-icons">delete_outline</i>
+                </a>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="CategoryHRMQuocGiaService.DisplayColumns001">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: CategoryHRMQuocGiaService.DisplayColumns001;">
+            </tr>
+          </table>
+          <mat-paginator *ngIf="!NotificationService.IsMobile" #CategoryHRMQuocGiaPaginator="matPaginator"
+            [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="CategoryHRMQuocGiaService.IsShowLoading"></app-loading>

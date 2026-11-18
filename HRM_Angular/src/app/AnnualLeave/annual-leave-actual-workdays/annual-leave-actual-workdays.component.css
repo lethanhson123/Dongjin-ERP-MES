@@ -1,0 +1,228 @@
+.annualLeaveActualWorkdays-page {
+  margin-top: 10px;
+}
+
+.annualLeaveActualWorkdays-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.annualLeaveActualWorkdays-card:hover {
+  transform: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.annualLeaveActualWorkdays-title {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.annualLeaveActualWorkdays-search {
+  margin-bottom: 12px;
+}
+
+.annualLeaveActualWorkdays-employee-table-container {
+  max-height: 560px;
+  overflow-y: auto;
+}
+
+.annualLeaveActualWorkdays-employee-table {
+  width: 100%;
+}
+
+.annualLeaveActualWorkdays-employee-table tr.mat-row {
+  cursor: pointer;
+}
+
+.annualLeaveActualWorkdays-employee-table tr.mat-row.selected {
+  background-color: #e8f0fe;
+}
+
+.annualLeaveActualWorkdays-paginator {
+  width: 100%;
+  margin-top: 8px;
+  background: transparent;
+}
+
+.annualLeaveActualWorkdays-message {
+  padding: 12px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.annualLeaveActualWorkdays-message-error {
+  color: #b3261e;
+}
+
+.annualLeaveActualWorkdays-calendar-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+.annualLeaveActualWorkdays-month-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.annualLeaveActualWorkdays-month-button {
+  height: auto;
+  padding: 6px;
+  line-height: 1;
+}
+
+.annualLeaveActualWorkdays-month-button:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.annualLeaveActualWorkdays-current-month {
+  min-width: 150px;
+  color: #222;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.annualLeaveActualWorkdays-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.annualLeaveActualWorkdays-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.annualLeaveActualWorkdays-legend-count {
+  color: #222;
+  font-weight: 600;
+}
+
+.annualLeaveActualWorkdays-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.annualLeaveActualWorkdays-legend-dot.status-worked {
+  background-color: #2e7d32;
+}
+
+.annualLeaveActualWorkdays-legend-dot.status-deduct {
+  background-color: #f57c00;
+}
+
+.annualLeaveActualWorkdays-legend-dot.status-non-deduct {
+  background-color: #d32f2f;
+}
+
+.annualLeaveActualWorkdays-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-auto-rows: minmax(80px, 1fr);
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #e0e0e0;
+}
+
+.annualLeaveActualWorkdays-day-header {
+  padding: 8px 4px;
+  background-color: #f5f5f5;
+  color: #444;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.annualLeaveActualWorkdays-day-header.weekend {
+  color: #d32f2f;
+}
+
+.annualLeaveActualWorkdays-calendar-cell {
+  position: relative;
+  min-width: 0;
+  min-height: 80px;
+  padding: 8px;
+  background-color: #fff;
+}
+
+.annualLeaveActualWorkdays-calendar-cell.weekend {
+  background-color: #fafafa;
+}
+
+.annualLeaveActualWorkdays-calendar-cell.empty {
+  background-color: #f0f0f0;
+}
+
+.annualLeaveActualWorkdays-cell-date {
+  display: block;
+  margin-bottom: 6px;
+  color: #555;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.annualLeaveActualWorkdays-day-status {
+  margin-top: 4px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  overflow-wrap: anywhere;
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.annualLeaveActualWorkdays-day-status.status-worked {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.annualLeaveActualWorkdays-day-status.status-deduct {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.annualLeaveActualWorkdays-day-status.status-non-deduct {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+@media (max-width: 600px) {
+  .annualLeaveActualWorkdays-calendar-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .annualLeaveActualWorkdays-legend {
+    gap: 6px 12px;
+  }
+
+  .annualLeaveActualWorkdays-calendar-grid {
+    grid-auto-rows: minmax(65px, 1fr);
+  }
+
+  .annualLeaveActualWorkdays-calendar-cell {
+    min-height: 65px;
+    padding: 5px;
+  }
+
+  .annualLeaveActualWorkdays-day-status {
+    padding: 3px;
+    font-size: 0.68rem;
+  }
+}

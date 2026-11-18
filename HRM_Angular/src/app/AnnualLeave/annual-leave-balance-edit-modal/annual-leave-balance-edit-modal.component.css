@@ -1,0 +1,51 @@
+::ng-deep .cdk-overlay-pane.annualLeaveBalanceEditModal-pane {
+  width: 760px !important;
+  max-width: 95vw !important;
+}
+
+:host input.form-control {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.annualLeaveBalanceEditModal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.annualLeaveBalanceEditModal-header h6 {
+  margin: 0;
+}
+
+.annualLeaveBalanceEditModal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+:host input.annualLeaveBalanceEditModal-amount-input {
+  height: 38px !important;
+  line-height: 38px !important;
+}
+
+.annualLeaveBalanceEditModal-adjustment-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.annualLeaveBalanceEditModal-adjustment-buttons .btn {
+  flex: 1 1 0;
+  width: 50%;
+}
+
+:host textarea.annualLeaveBalanceEditModal-reason-textarea {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 80px !important;
+  min-height: 80px !important;
+  resize: vertical;
+  padding: 8px 10px;
+}

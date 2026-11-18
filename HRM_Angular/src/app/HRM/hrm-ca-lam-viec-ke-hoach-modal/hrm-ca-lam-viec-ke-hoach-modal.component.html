@@ -1,0 +1,55 @@
+<div class="row header-row no-margin-bottom">
+  <div class="col s12 m12 l8">
+    <h6><b>
+      <span *ngIf="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.ID > 0">Chỉnh sửa | 편집</span>
+      <span *ngIf="!HRMCaLamViecKeHoachService.BaseParameter.BaseModel.ID || HRMCaLamViecKeHoachService.BaseParameter.BaseModel.ID == 0">Thêm mới | 추가</span>
+    </b></h6>
+  </div>
+  <div class="col s12 m12 l4 header-actions">
+    <label class="header-active">
+      <input type="checkbox" class="form-check-input" name="Active" [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.Active" />
+      <span>Active</span>
+    </label>
+    <button type="button" title="Save | 저장" class="btn waves-effect waves-light cyan d-inline-flex align-items-center justify-content-center" (click)="Save()"><i class="material-icons">save</i></button>
+    <button type="button" *ngIf="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.ID > 0" title="Delete | 삭제" class="btn waves-effect waves-light red d-inline-flex align-items-center justify-content-center" (click)="Delete()"><i class="material-icons">delete</i></button>
+    <button type="button" title="Close | 닫다" class="btn waves-effect waves-light purple lighten-1 d-inline-flex align-items-center justify-content-center" (click)="Close()"><i class="material-icons">close</i></button>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12 m12 l6">
+    <div class="row"><div class="col s4 m4 l4"><label>ID</label></div><div class="col s8 m8 l8"><input disabled placeholder="ID" [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.ID" type="number" class="form-control"></div></div>
+    <div class="row"><div class="col s4 m4 l4"><label>Công ty | 회사</label></div><div class="col s8 m8 l8"><select class="browser-default form-select form-control" (change)="CompanyChange()" [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.CompanyID"><option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">{{item.Name}}</option></select></div></div>
+    <div class="row"><div class="col s4 m4 l4"><label>Bộ phận | 부서</label></div><div class="col s8 m8 l8"><mat-select class="browser-default form-select department-select" [value]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.CategoryHRMPhongBanID || 0" (selectionChange)="SelectDepartment($event.value)" panelClass="department-dropdown-panel"><input class="department-search-input" [(ngModel)]="DepartmentSearchString" placeholder="Tìm bộ phận | 부서 검색" (keyup)="FilterDepartments($event.target.value)" (click)="$event.stopPropagation()"><mat-option [value]="0">All</mat-option><mat-option *ngFor="let item of DepartmentListFiltered" [value]="item.ID">{{item.Name || item.Code}}</mat-option></mat-select></div></div>
+    <div class="row">
+      <h6 class="membership-list-title">Danh sách nhân viên sản xuất</h6>
+      <input class="membership-search-input" [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.SearchString"
+        placeholder="Tìm mã hoặc tên nhân viên..." (ngModelChange)="MembershipFilter($event)">
+      <div class="KhungOverflow">
+        <div class="row">
+          <label class="col s8 m8 l8"><input type="checkbox" class="form-check-input"
+            [checked]="SelectedMembershipIDs.length > 0 && SelectedMembershipIDs.length === MembershipService.ListChild?.length"
+            (change)="SelectAllMemberships()"><span>Chọn {{ SelectedMembershipIDs.length }} người đang hiển thị</span></label>
+          <div class="col s4 m4 l4 right-align"><button type="button" class="btn-small grey" (click)="ClearMemberships()">Bỏ chọn</button></div>
+        </div>
+        <label class="membership-option" *ngFor="let item of MembershipService.ListChild">
+          <input type="checkbox" class="form-check-input" [checked]="IsMembershipSelected(item.ID)" (change)="MembershipToggle(item.ID)">
+          <span>{{item.Name}}<br><small>{{item.UserName}} - {{item.CategoryHRMPhongBanName}}</small></span>
+        </label>
+        <div *ngIf="!MembershipService.ListChild || MembershipService.ListChild.length === 0">Không tìm thấy nhân viên</div>
+      </div>
+    </div>
+  </div>
+  <div class="col s12 m12 l6">
+    <div class="row"><div class="col s4 m4 l4"><label>Từ ngày | 시작일</label></div><div class="col s8 m8 l8"><input [ngModel]="DateBegin | date:'yyyy-MM-dd'" style="text-align: right;" (ngModelChange)="DateBeginChange($event)" [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off"></div></div>
+    <div class="row"><div class="col s4 m4 l4"><label>Đến ngày | 종료일</label></div><div class="col s8 m8 l8"><input [ngModel]="DateEnd | date:'yyyy-MM-dd'" style="text-align: right;" (ngModelChange)="DateEndChange($event)" [ngModelOptions]="{ updateOn: 'blur' }" type="date" class="form-control" autocomplete="off"></div></div>
+    <div class="row"><div class="col s4 m4 l4"><label>Ca làm việc | 옮기다</label></div><div class="col s8 m8 l8"><select class="browser-default form-select" (change)="CategoryHRMCaLamViecChange()" [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.CategoryHRMCaLamViecID"><option *ngFor="let item of CategoryHRMCaLamViecService.ListFilter;" [value]="item.ID">
+            {{item.Name}} ({{FormatTime(item.Quantity01, item.Quantity02)}} - {{FormatTime(item.Quantity03, item.Quantity04)}})
+          </option></select></div></div>
+    <div class="row"><div class="col s4 m4 l4"><label>Bắt đầu: Giờ | 시작: 지금</label></div><div class="col s8 m8 l8"><input placeholder="Giờ" type="number" disabled [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.Quantity01" class="form-control"></div></div>
+    <div class="row"><div class="col s4 m4 l4"><label>Bắt đầu: Phút | 시작: 분</label></div><div class="col s8 m8 l8"><input placeholder="Phút" type="number" disabled [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.Quantity02" class="form-control"></div></div>
+    <div class="row"><div class="col s4 m4 l4"><label>Kết thúc: Giờ | 종료: 시간</label></div><div class="col s8 m8 l8"><input placeholder="Giờ" type="number" disabled [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.Quantity03" class="form-control"></div></div>
+    <div class="row"><div class="col s4 m4 l4"><label>Kết thúc: Phút | 종료: 분</label></div><div class="col s8 m8 l8"><input placeholder="Phút" type="number" disabled [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.Quantity04" class="form-control"></div></div>
+    <div class="row note-row"><div class="col s4 m4 l4"><label>Note</label></div><div class="col s8 m8 l8"><textarea placeholder="Note" [(ngModel)]="HRMCaLamViecKeHoachService.BaseParameter.BaseModel.Note" rows="8" class="form-control note-input"></textarea></div></div>
+  </div>
+</div>
+<app-loading *ngIf="HRMCaLamViecKeHoachService.IsShowLoading"></app-loading>

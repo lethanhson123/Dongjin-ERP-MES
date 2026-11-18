@@ -1,0 +1,174 @@
+.hrmTangCa-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.hrmTangCa-filter-row > .col {
+  margin-left: 0;
+}
+
+.hrmTangCa-heading-row {
+  margin-bottom: 16px;
+}
+
+.hrmTangCa-heading-row input.form-control {
+  width: 100% !important;
+  height: 32px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+}
+
+.hrmTangCa-filter-panel .form-select,
+.hrmTangCa-heading-row .form-select {
+  width: 100%;
+  height: 32px !important;
+  margin-bottom: 0 !important;
+}
+
+.hrmTangCa-filter-actions-col {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  height: 32px;
+  margin-bottom: 0;
+}
+
+.hrmTangCa-filter-actions-col .btn {
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hrmTangCa-filter-actions-col .btn .material-icons {
+  font-size: 18px;
+  line-height: 32px;
+}
+
+.hrmTangCa-metrics {
+  margin-bottom: 20px;
+}
+
+.hrmTangCa-metrics > .col {
+  display: flex;
+}
+
+.hrmTangCa-metric-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 104px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.hrmTangCa-metric-card:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.hrmTangCa-metric-card > .material-icons {
+  flex: 0 0 36px;
+  width: 36px;
+  font-size: 36px;
+  opacity: 0.9;
+  text-align: center;
+}
+
+.hrmTangCa-metric-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hrmTangCa-metric-content strong {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.hrmTangCa-metric-content span {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.3;
+  opacity: 0.9;
+}
+
+.hrmTangCa-metric-total-hours {
+  background: linear-gradient(45deg, #0288d1, #26c6da);
+}
+
+.hrmTangCa-metric-employee-count {
+  background: linear-gradient(45deg, #43a047, #81c784);
+}
+
+.hrmTangCa-metric-average-hours {
+  background: linear-gradient(45deg, #ff9800, #ffb74d);
+}
+
+.hrmTangCa-metric-top-department {
+  background: linear-gradient(45deg, #ff5252, #f48fb1);
+}
+
+.hrmTangCa-metric-top-department .hrmTangCa-metric-content strong {
+  font-size: 18px;
+}
+
+.hrmTangCa-chart-card {
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.hrmTangCa-chart-card:hover {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.hrmTangCa-chart-card h6 {
+  margin: 0 0 14px;
+  color: #37474f;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.hrmTangCa-chart-container {
+  position: relative;
+  height: 260px;
+}
+
+.hrmTangCa-chart-container-wide {
+  height: 300px;
+}
+
+.hrmTangCa-chart-container canvas {
+  max-width: 100%;
+}
+
+.hrmTangCa-chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 260px;
+  color: #90a4ae;
+  font-size: 13px;
+}
+
+.hrmTangCa-chart-empty-wide {
+  height: 300px;
+}

@@ -1,0 +1,303 @@
+<div class="row">
+  <div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+      <div class="card-content">
+
+        <div class="row mb-0">
+          <div class="col s12 m12 l12 kpi-header-row">
+            <h6 class="breadcrumbs-title mb-0">🎯 Quản lý KPI theo bộ phận | 부서별 KPI 관리 <span *ngIf="HRMThongKeKPIService.List">({{HRMThongKeKPIService.List.length}} items)</span></h6>
+          </div>
+        </div>
+
+        <div class="row">       
+          <div class="col s12 m6 l3">
+            <div class="kpi-card-new gradient-info">
+              <div class="kpi-top">
+                <div class="kpi-icon"><i class="material-icons">assessment</i></div>
+                <div class="kpi-stats">
+                  <div class="kpi-value">
+                    {{HRMThongKeKPIService.List03 && HRMThongKeKPIService.List03.length > 0 ?
+                    HRMThongKeKPIService.List03[0].SortOrder : 0}}
+                  </div>
+                  <div class="kpi-label">Tổng số KPI | 총 KPI</div>
+                </div>
+              </div>
+              <div class="kpi-bottom">
+                <span>Đã đăng ký | 등기</span>
+                <span>Phòng ban | 부서</span>
+              </div>
+            </div>
+          </div>
+       
+          <div class="col s12 m6 l3">
+            <div class="kpi-card-new gradient-danger">
+              <div class="kpi-top">
+                <div class="kpi-icon"><i class="material-icons">pie_chart</i></div>
+                <div class="kpi-stats">
+                  <div class="kpi-value">
+                    {{HRMThongKeKPIService.List03 && HRMThongKeKPIService.List03.length > 0 ?
+                    HRMThongKeKPIService.List03[0].RateAchievement : 0}}%
+                  </div>
+                  <div class="kpi-label">Tỷ lệ trung bình | 평균 비율</div>
+                </div>
+              </div>
+              <div class="kpi-bottom">
+                <span>Hiệu suất | 능률</span>
+                <span>Trọng số | 무게</span>
+              </div>
+            </div>
+          </div>
+ 
+          <div class="col s12 m6 l3">
+            <div class="kpi-card-new gradient-warning">
+              <div class="kpi-top">
+                <div class="kpi-icon"><i class="material-icons">trending_down</i></div>
+                <div class="kpi-stats">
+                  <div class="kpi-value">
+                    {{HRMThongKeKPIService.List03 && HRMThongKeKPIService.List03.length > 0 ?
+                    HRMThongKeKPIService.List03[0].Target : 0}}
+                  </div>
+                  <div class="kpi-label">Cần cải thiện | 개선이 필요합니다</div>
+                </div>
+              </div>
+              <div class="kpi-bottom">
+                <span>Dưới 90% | 90% 미만</span>
+                <span>Chưa đạt | 아직 달성하지 못함</span>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col s12 m6 l3">
+            <div class="kpi-card-new gradient-success">
+              <div class="kpi-top">
+                <div class="kpi-icon"><i class="material-icons">trending_up</i></div>
+                <div class="kpi-stats">
+                  <div class="kpi-value">
+                    {{HRMThongKeKPIService.List03 && HRMThongKeKPIService.List03.length > 0 ?
+                    HRMThongKeKPIService.List03[0].CurrentResult : 0}}
+                  </div>
+                  <div class="kpi-label">Đạt được | 성취하다</div>
+                </div>
+              </div>
+              <div class="kpi-bottom">
+                <span>Đạt 100%</span>
+                <span>Mục tiêu</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="display: flex; flex-wrap: wrap; align-items: stretch;">
+          <div class="col s12 m12 l8" style="display: flex; flex-direction: column;">
+            <div class="card" style="flex-grow: 1;">
+              <div class="card-content">
+                <span class="card-title" style="font-size: 1.2rem; font-weight: 500;">
+                  <i class="material-icons left">bar_chart</i> Tình trạng đạt KPI của các bộ phận | 각 부서별 KPI 달성 현황
+                </span>
+                <div *ngFor="let item of HRMThongKeKPIService.ListParent"
+                  style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 1rem; background-color: #fcfcfc;">
+                  <div
+                    style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px;">
+                    <strong style="font-size: 1rem;">{{item.CategoryDepartmentName}}</strong>
+                    <div class="right-align">
+                      <strong class="blue-text" style="font-size: 1rem;">{{item.RateAchievement}}%</strong><br>
+                      <span class="grey-text" style="font-size: 0.85rem;">Số KPI: {{item.SortOrder}}</span>
+                    </div>
+                  </div>
+                  <div class="progress" style="height: 10px; background-color: #e0e0e0; border-radius: 4px; margin: 0;">
+                    <div class="determinate blue"
+                      [style.width.%]="item.RateAchievement > 100 ? 100 : item.RateAchievement"
+                      style="border-radius: 4px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 m12 l4" style="display: flex; flex-direction: column;">
+            <div class="card" style="flex-grow: 1;">
+              <div class="card-content">
+                <span class="card-title orange-text text-darken-2" style="font-size: 1.2rem; font-weight: 500;">
+                  <i class="material-icons left">warning</i> Các hạng mục cần chú ý | 유의사항
+                </span>
+                <div class="card-panel z-depth-0" *ngFor="let item of HRMThongKeKPIService.List02"
+                  style="background-color: #fff5f5; border: 1px solid #ffcdd2; padding: 15px; border-radius: 4px; margin-top: 1rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong style="font-size: 1rem; margin: 0;">{{item.CategoryDepartmentName}}</strong>
+                    <span
+                      style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #f5f5f5; border: 1px solid #e0e0e0; font-size: 0.85rem; font-weight: bold; color: #424242;">{{item.SortOrder}}</span>
+                  </div>
+                  <p style="margin: 0 0 8px 0; font-size: 0.9rem;">{{item.Name}}</p>
+                  <span class="grey-text" style="font-size: 0.85rem;">Tỷ lệ hoàn thành: {{item.RateAchievement}}% ·
+                    Trạng thái: {{item.CategoryStatusName}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="row mb-0">
+          <div class="col s12 m12 l12">
+            <h6 class="breadcrumbs-title">🧩 Đăng ký KPI | KPI 등록</h6>
+          </div>
+        </div>
+        <div class="row mb-0">
+          <div class="col s12 m12 l1">
+            <select class="browser-default form-select" [(ngModel)]="HRMThongKeKPIService.BaseParameter.CompanyID"
+              (change)="CompanyChange()">
+              <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                {{item.Name}}
+              </option>
+            </select>
+          </div>
+          <div class="col s12 m12 l2">
+            <select class="browser-default form-select"
+              [(ngModel)]="HRMThongKeKPIService.BaseParameter.CategoryDepartmentID">
+              <option [value]="0">Tất cả bộ phận</option>
+              <option *ngFor="let item of CategoryDepartmentService.ListParent" [value]="item.ID">
+                {{item.Name || item.Code}}</option>
+            </select>
+          </div>
+          <div class="col s12 m12 l2">
+            <select class="browser-default form-select"
+              [(ngModel)]="HRMThongKeKPIService.BaseParameter.CategoryStatusID">
+              <option [value]="0">Tất cả trạng thái</option>
+              <option *ngFor="let item of CategoryStatusService.ListFilter" [value]="item.ID">
+                {{item.Name || item.Code}}</option>
+            </select>
+          </div>
+          <div class="col s12 m12 l4">
+            <input [(ngModel)]="HRMThongKeKPIService.BaseParameter.SearchString" placeholder="Tìm kiếm KPI ... | 찾다 ..."
+              class="form-control" (keyup.enter)="HRMThongKeKPISearch()">
+          </div>
+          <div class="col s12 m12 l1">
+            <button title="Tìm kiếm | 찾다" (click)="HRMThongKeKPISearch()"
+              class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+              <i class="material-icons">search</i>
+            </button>
+          </div>
+          <div class="col s12 m12 l1">
+            <button title="Thêm mới | 추가" (click)="HRMThongKeKPIAdd(0)"
+              class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+              <i class="material-icons">add</i>
+            </button>
+          </div>
+          <div class="col s12 m12 l1">
+            <button title="Xuất Excel | 엑셀로 내보내기" (click)="HRMThongKeKPIExcel()"
+              class="btn waves-effect waves-light green darken-1" style="width: 100%;">
+              <i class="material-icons">cloud_download</i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row mb-0">
+          <div class="col s12 m12 l12">
+            <div class="KhungOverflow70" style="min-height: auto !important; height: auto !important;">
+              <table *ngIf="!NotificationService.IsMobile" mat-table matSort #HRMThongKeKPISort="matSort"
+                class="TableMaterial" [dataSource]="HRMThongKeKPIService.DataSource">
+                <ng-container matColumnDef="No">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+                  <td mat-cell *matCellDef="let element; index as i;">
+                    <div *ngIf="HRMThongKeKPIPaginator">
+                      {{HRMThongKeKPIPaginator.pageSize * HRMThongKeKPIPaginator.pageIndex + i + 1}}
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Team">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Bộ phận | 부서</th>
+                  <td mat-cell *matCellDef="let element">{{element.CategoryDepartmentName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Metric">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên KPI | KPI 이름</th>
+                  <td mat-cell *matCellDef="let element">
+                    <a (click)="HRMThongKeKPIAdd(element.ID)" style="cursor: pointer;">{{element.Name}}</a>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Target">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Mục tiêu | 목표</th>
+                  <td mat-cell *matCellDef="let element">{{element.Target}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Current">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Kết quả | 결과</th>
+                  <td mat-cell *matCellDef="let element">{{element.CurrentResult}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Weight">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Trọng số | 가중치</th>
+                  <td mat-cell *matCellDef="let element">{{element.Weight}}%</td>
+                </ng-container>
+                <ng-container matColumnDef="Rate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Tỷ lệ / Xếp hạng | 달성률 / 등급</th>
+                  <td mat-cell *matCellDef="let element">{{element.RateAchievement}}%</td>
+                </ng-container>
+                <ng-container matColumnDef="ResultNote">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>File | 파일</th>
+                  <td mat-cell *matCellDef="let element">
+                    <a *ngFor="let file of element.Files" target="_blank" href="{{file.FileName}}" class="chip"
+                      style="cursor: pointer; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                      title="{{file.FileName}}">
+                      {{getFileName(file.Name)}}
+                    </a>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Note">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Ghi chú | 비고</th>
+                  <td mat-cell *matCellDef="let element">{{element.Note}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng thái | 상태</th>
+                  <td mat-cell *matCellDef="let element">{{element.CategoryStatusName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Approval">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Kích hoạt | 활성화</th>
+                  <td mat-cell *matCellDef="let element">
+                    <label>
+                      <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                        [(ngModel)]="element.Active">
+                      <span></span>
+                    </label>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Save">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let element">
+                    <a (click)="HRMThongKeKPIDelete(element)" class="btn-floating waves-effect waves-light red"
+                      title="Xóa | 지우다">
+                      <i class="material-icons">delete_outline</i>
+                    </a>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="HRMThongKeKPIService.DisplayColumns001"></tr>
+                <tr mat-row *matRowDef="let row; columns: HRMThongKeKPIService.DisplayColumns001;"></tr>
+              </table>
+              <mat-paginator *ngIf="!NotificationService.IsMobile" #HRMThongKeKPIPaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-0">
+          <div class="col s12 m12 l12">
+            <div class="card-panel z-depth-0" style="background-color: #fbfbfb; border: 1px solid #e0e0e0;">
+              <h6 style="font-weight: bold; margin-bottom: 20px; color: #1565c0;">📋 Ứng viên cho Hoạt động Cải thiện
+                KPI (CAPA)</h6>
+              <div *ngFor="let item of HRMThongKeKPIService.List02"
+                style="border: 1px solid #e0e0e0; border-left: 4px solid #ff832b; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; background-color: #ffffff;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <strong style="font-size: 1rem; color: #212121;">{{item.CategoryDepartmentName}}</strong>
+                  <span
+                    style="background-color: #e0e0e0; padding: 3px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #424242;">{{item.RateAchievement}}%</span>
+                </div>
+                <p style="margin: 0 0 6px 0; font-size: 0.95rem; color: #333;">{{item.Name}}</p>
+                <span style="font-size: 0.85rem; color: #757575;">Trạng thái: {{item.CategoryStatusName}} · Ghi chú:
+                  {{item.Note}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loading *ngIf="HRMThongKeKPIService.IsShowLoading"></app-loading>

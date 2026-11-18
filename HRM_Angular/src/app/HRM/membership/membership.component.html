@@ -1,0 +1,675 @@
+<div class="row">
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <ul class="tabs" style="height: 70px !important;" (click)="MembershipActionChange(1)">
+        <li class="tab col l2 p-0" style="height: 70px !important;">
+          <a id="ATag201" class="active p-0" href="#Tag201">📊 {{ 'membership.tab.office' | translate }} ({{MembershipService.BaseResult.Count}})</a>
+        </li>
+        <li class="tab col l2 p-0" style="height: 70px !important;" (click)="MembershipActionChange(2)">
+          <a id="ATag202" class="p-0" href="#Tag202">🏭 {{ 'membership.tab.manufacturing' | translate }} ({{MembershipService.BaseResult.Sum}})</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="card card card-default scrollspy">
+    <div class="card-content">
+      <div class="col s12 m12 l12">
+        <div class="row">
+          <div class="col s12 m12 l2">
+            <select class="browser-default form-select" [(ngModel)]="MembershipService.BaseParameter.CompanyID"
+              (change)="MembershipSearch()">
+              <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+                {{item.Name}}
+              </option>
+            </select>
+          </div>
+          <div class="col s12 m12 l1">
+            <label>
+              <input type="checkbox" class="form-check-input" name="IsShow" (change)="MembershipActiveAllChange()"
+                [(ngModel)]="MembershipService.BaseParameter.IsShow" />
+              <span>{{ 'membership.btn.all' | translate }}</span>
+            </label>
+          </div>
+          <div class="col s12 m6 l1">
+            <label><a style="cursor: pointer;" class="link-primary" target="_blank" href="{{URLTemplate}}">{{ 'common.upload_excel' | translate }}
+                </a></label>
+          </div>
+          <div class="col s12 m6 l3">
+            <input [title]="'membership.placeholder.upload' | translate" class="form-control" type="file"
+              (change)="MembershipChange($event, $event.target.files)">
+          </div>
+          <div class="col s12 m12 l1">
+            <button [title]="'membership.btn.upload' | translate" class="btn waves-effect waves-light cyan"
+              style="width: 100%;" (click)="MembershipUpload()"><i class="material-icons">cloud_upload</i></button>
+          </div>
+          <div class="col s12 m12 l1">
+            <button [title]="'membership.btn.download_excel' | translate" class="btn waves-effect waves-light green" style="width: 100%;"
+              (click)="MembershipExcel()"><i class="material-icons">cloud_download</i></button>
+          </div>
+          <div class="col s12 m12 l1">
+            <button [title]="'membership.btn.print' | translate" class="btn waves-effect waves-light green" style="width: 100%;"
+              (click)="MembershipPrint()"><i class="material-icons">print</i></button>
+          </div>
+          <div class="col s12 m12 l1">
+            <button [title]="'membership.btn.clean' | translate" class="btn waves-effect waves-light green" style="width: 100%;"
+              (click)="MembershipAdd()"><i class="material-icons">refresh</i></button>
+          </div>
+          <div class="col s12 m12 l1">
+            <button [title]="'membership.btn.save' | translate" class="btn waves-effect waves-light cyan" style="width: 100%;"
+              (click)="MembershipSave()"><i class="material-icons">save</i></button>
+          </div>
+
+        </div>
+      </div>
+      <div class="col s12 m12 l3 mt-1">
+        <input [(ngModel)]="MembershipService.BaseParameter.SearchString" [placeholder]="'membership.placeholder.search' | translate"
+          class="form-control" (keyup.enter)="MembershipSearch()" />
+        <div class="KhungOverflow70">
+          <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipSort="matSort" class="TableMaterial"
+            [dataSource]="MembershipService.DataSource">
+            <ng-container matColumnDef="Save">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.form.in' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="IsNew{{element.ID}}"
+                    (change)="MembershipActiveChange(element)" [(ngModel)]="element.IsNew">
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.form.employee' | translate }}</th>
+              <td mat-cell *matCellDef="let element" style="cursor: pointer; text-align: left;"
+                (click)="MembershipModal(element)">
+                <div>
+                  <span>Code:</span> <b>{{element.UserName}}</b>
+                </div>
+                <div><span>Name:</span>: <b>{{element.Name}}</b></div>
+                <div><span>Department:</span> <b>{{element.CategoryHRMPhongBanName}}</b></div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="MembershipService.DisplayColumns007">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: MembershipService.DisplayColumns007;">
+            </tr>
+          </table>
+          <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipPaginator="matPaginator"
+            [pageSizeOptions]="[10,20,50,100,200,500,1000,10000]" [pageSize]="7" [showFirstLastButtons]></mat-paginator>
+        </div>
+      </div>
+      <div class="col s12 m12 l9">
+        <div class="row">
+          <div class="col s12 m12 l12">
+            <ul class="tabs">
+              <li class="tab col s1 p-0">
+                <a id="ATag001" class="active p-0" href="#Tag001">{{ 'membership.title.employee' | translate }}</a>
+              </li>
+              <li class="tab col s1 p-0">
+                <a id="ATag002" class="p-0" href="#Tag002">{{ 'membership.title.contact' | translate }}</a>
+              </li>
+              <li class="tab col s2 p-0">
+                <a id="ATag003" class="p-0" href="#Tag003">{{ 'membership.title.document' | translate }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card card-default scrollspy" id="Tag001">
+          <div class="card-content">
+            <div class="col s12 m12 l4">
+              <div class="row">
+                <div class="col s12 m12 l12">
+                  <input class="form-control" type="file" (change)="MembershipChange($event, $event.target.files)"
+                    style="width: 200px !important;">
+                  <img src="{{MembershipService.BaseParameter.BaseModel.FileName}}" width="300" height="300">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l6">
+                  <label>
+                    <input type="checkbox" class="form-check-input" name="Active"
+                      [(ngModel)]="MembershipService.BaseParameter.BaseModel.Active" />
+                    <span>Active</span>
+                  </label>
+                </div>
+                <div class="col s12 m12 l6">
+                  <label>
+                    <input type="checkbox" class="form-check-input" name="IsOffice"
+                      [(ngModel)]="MembershipService.BaseParameter.BaseModel.IsOffice" />
+                    <span>Office</span>
+                  </label>
+                </div>
+              </div>            
+              <div class="row">
+                <div class="col s12 m12 l12">
+                  <a target="_blank" href="{{ChupAnhURL}}" [title]="'membership.btn.capture' | translate"
+                    class="btn waves-effect waves-light green" style="width: 100%;">{{ 'membership.btn.capture' | translate }}</a>
+                </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l8">
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.employee_code' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l6">
+                  <input [placeholder]="'membership.placeholder.employee_code' | translate"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.UserName" type="text" class="form-control">
+                </div>
+                <div class="col s12 m12 l3">
+                  <input disabled [placeholder]="'membership.placeholder.employee_code' | translate"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.ID" type="number" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.employee' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <input [placeholder]="'membership.placeholder.name' | translate" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Name"
+                    type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.display' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l5">
+                  <input [placeholder]="'membership.placeholder.display' | translate" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Display"
+                    type="text" class="form-control">
+                </div>
+                <div class="col s12 m12 l1">
+                  <label>{{ 'membership.label.search' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l3">
+                  <input [placeholder]="'membership.placeholder.search2' | translate" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Search"
+                    type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.address' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <input [placeholder]="'membership.placeholder.address' | translate" [(ngModel)]="MembershipService.BaseParameter.BaseModel.CCCDiaChi"
+                    type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.email' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <input [placeholder]="'membership.placeholder.email' | translate" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Email"
+                    type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.phone' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l3">
+                  <input style="text-align: right;" [placeholder]="'membership.placeholder.phone' | translate"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.Phone" type="text" class="form-control">
+                </div>
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.birthday' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l3">
+                  <input [ngModel]="MembershipService.BaseParameter.BaseModel.NgaySinh | date:'yyyy-MM-dd'"
+                    (ngModelChange)="MembershipService.BaseParameter.BaseModel.NgaySinh = $event"
+                    style="text-align: right;" type="date" class="form-control"
+                    autocomplete="off">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.cccd' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l3">
+                  <input style="text-align: right;" [placeholder]="'membership.placeholder.cccd' | translate"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CCCD" type="text" class="form-control">
+                </div>
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.issue_date' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l3">
+                  <input [ngModel]="MembershipService.BaseParameter.BaseModel.CCCDNgayCap | date:'yyyy-MM-dd'"
+                    (ngModelChange)="MembershipService.BaseParameter.BaseModel.CCCDNgayCap = $event"
+                    [placeholder]="'membership.placeholder.issue_date' | translate" style="text-align: right;" type="date" class="form-control" autocomplete="off">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.join_date' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l3">
+                  <input [ngModel]="MembershipService.BaseParameter.BaseModel.NgayVaoLam | date:'yyyy-MM-dd'"
+                    (ngModelChange)="MembershipService.BaseParameter.BaseModel.NgayVaoLam = $event"
+                    style="text-align: right;" type="date" class="form-control"
+                    autocomplete="off">
+                </div>
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.resignation_date' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l3">
+                  <input [ngModel]="MembershipService.BaseParameter.BaseModel.NgayNghiViec | date:'yyyy-MM-dd'"
+                    (ngModelChange)="MembershipService.BaseParameter.BaseModel.NgayNghiViec = $event"
+                    style="text-align: right;" type="date" class="form-control"
+                    autocomplete="off">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.status' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMTinhTrangLamViecID">
+                    <option *ngFor="let item of CategoryHRMTinhTrangLamViecService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.sex' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMGioiTinhID">
+                    <option *ngFor="let item of CategoryHRMGioiTinhService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.nationality' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMQuocGiaID">
+                    <option *ngFor="let item of CategoryHRMQuocGiaService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.department' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMPhongBanID">
+                    <option [value]="0">Root</option>
+                    <option *ngFor="let item of CategoryHRMPhongBanService.ListFilter;" [value]="item.ID">
+                      {{item.Name}} - {{item.Description}} - {{item.Display}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.rank' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryPositionID">
+                    <option *ngFor="let item of CategoryPositionService.ListFilter;" [value]="item.ID">
+                      {{item.Name}} - {{item.Code}} - {{item.Display}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.note' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <input [placeholder]="'membership.placeholder.note' | translate" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Note"
+                    type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col s12 m12 l6">
+                 
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.department2' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMPhongBanID">
+                    <option *ngFor="let item of CategoryHRMPhongBanService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>              
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.position_title' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMChucDanhID">
+                    <option *ngFor="let item of CategoryHRMChucDanhService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.level' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMTrinhDoID">
+                    <option *ngFor="let item of CategoryHRMTrinhDoService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.major2' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMChuyenNganhID">
+                    <option *ngFor="let item of CategoryHRMChuyenNganhService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+             
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.ethnicity' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMDanTocID">
+                    <option *ngFor="let item of CategoryHRMDanTocService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.nationality2' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMQuocGiaID">
+                    <option *ngFor="let item of CategoryHRMQuocGiaService.ListFilter;" [value]="item.ID">
+                      {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.origin' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.NguyenQuanID">
+                    <option *ngFor="let item of CategoryHRMTinhThanhService.ListFilter;" [value]="item.ID">
+                      {{item.Code}} | {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.province' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMTinhThanhID">
+                    <option *ngFor="let item of CategoryHRMTinhThanhService.ListFilter;" [value]="item.ID">
+                      {{item.Code}} | {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.ward' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <select class="browser-default form-select form-control"
+                    [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMXaPhuongID">
+                    <option *ngFor="let item of CategoryHRMXaPhuongService.ListFilter;" [value]="item.ID">
+                      {{item.Code}} | {{item.Name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.label.note' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <input [placeholder]="'membership.placeholder.note' | translate" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Note"
+                    type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.age' | translate }}</label>
+                </div>
+                <div class="col s12 m12 l9">
+                  <input disabled [placeholder]="'membership.section.age' | translate" [(ngModel)]="MembershipService.BaseParameter.BaseModel.Tuoi"
+                    type="number" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l3">
+                  <label>{{ 'membership.section.seniority' | translate }}</label>
+                </div>
+                <div class="col s2 m2 l7">
+                  <label style="font-size: 16px;">
+                    {{MembershipService.BaseParameter.BaseModel.Year}} year-
+                    {{MembershipService.BaseParameter.BaseModel.Month}} month-
+                    {{MembershipService.BaseParameter.BaseModel.Day}} day
+                  </label>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        <div class="card card card-default scrollspy" id="Tag002">
+          <div class="card-content">
+            <div class="KhungOverflow">
+              <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipContactSort="matSort"
+                [dataSource]="MembershipContactService.DataSource">
+                <ng-container matColumnDef="No">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+                  <td mat-cell *matCellDef="let element; index as i;">
+                    <div *ngIf="MembershipContactPaginator">
+                      {{MembershipContactPaginator.pageSize * MembershipContactPaginator.pageIndex + i + 1}}
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.contact.name' | translate }}</th>
+                  <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" [placeholder]="'membership.placeholder.contact_name' | translate" name="Name{{element.ID}}"
+                      [(ngModel)]="element.Name">
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Code">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.contact.phone' | translate }}</th>
+                  <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" [placeholder]="'membership.placeholder.contact_phone' | translate" name="Code{{element.ID}}"
+                      [(ngModel)]="element.Code">
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Description">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.contact.relation' | translate }}</th>
+                  <td mat-cell *matCellDef="let element">
+                    <input class="form-control" type="text" [placeholder]="'membership.placeholder.contact_relation' | translate" name="Description{{element.ID}}"
+                      [(ngModel)]="element.Description">
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Active">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                  <td mat-cell *matCellDef="let element">
+                    <label>
+                      <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                        [(ngModel)]="element.Active">
+                      <span></span>
+                    </label>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Save">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                  <td mat-cell *matCellDef="let element">
+                    <a (click)="MembershipContactSave(element)" class="btn waves-effect waves-light cyan" title="Save">
+                      <i class="material-icons">save</i>
+                    </a>&nbsp;&nbsp;&nbsp;
+                    <a *ngIf="element.ID>0" (click)="MembershipContactDelete(element)"
+                      class="btn-floating waves-effect waves-light red" title="Delete">
+                      <i class="material-icons">delete_outline</i>
+                    </a>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="MembershipContactService.DisplayColumns001"></tr>
+                <tr mat-row *matRowDef="let row; columns: MembershipContactService.DisplayColumns001;"></tr>
+              </table>
+              <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipContactPaginator="matPaginator"
+                [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+            </div>
+          </div>
+        </div>
+        <div class="card card card-default scrollspy" id="Tag003">
+          <div class="card-content">
+            <div class="row">
+              <div class="col s12 m12 l5">
+                <h6><b>{{ 'membership.title.document' | translate }}<span *ngIf="MembershipFileService.List">{{MembershipFileService.List.length}}
+                      {{ 'common.items' | translate }}</span></b></h6>
+              </div>
+              <div class="col s12 m12 l6">
+                <input [(ngModel)]="MembershipFileService.BaseParameter.SearchString" [placeholder]="'membership.placeholder.doc_search' | translate"
+                  class="form-control" (keyup.enter)="MembershipFileSearch()">
+              </div>
+              <div class="col s12 m12 l1">
+                <a title="search" (click)="MembershipFileSearch()" class="btn waves-effect waves-light green darken-1"
+                  style="width: 100%;">
+                  <i class="material-icons">search</i>
+                </a>
+              </div>
+              <div class="KhungOverflow70">
+                <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipFileSort="matSort"
+                  [dataSource]="MembershipFileService.DataSource">
+                  <ng-container matColumnDef="No">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      No
+                    </th>
+                    <td mat-cell *matCellDef="let element; index as i;">
+                      <div *ngIf="MembershipFilePaginator">
+                        {{
+                        MembershipFilePaginator.pageSize *
+                        MembershipFilePaginator.pageIndex + i + 1
+                        }}
+                      </div>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">{{element.ID}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="UpdateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.doc.time' | translate }}</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateDate |
+                      date:'dd/MM/yyyy hh:mm:ss'}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="UpdateUserCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.doc.editor' | translate }}</th>
+                    <td mat-cell *matCellDef="let element">{{element.UpdateUserCode}} |
+                      {{element.UpdateUserName}}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="SortOrder">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.label.doc_sort_order' | translate }}</th>
+                    <td mat-cell *matCellDef="let element">
+                      <input class="form-control" type="number" [placeholder]="'membership.placeholder.doc_sort_order' | translate" name="SortOrder{{element.ID}}"
+                        [(ngModel)]="element.SortOrder">
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                    <td mat-cell *matCellDef="let element">
+                      <label>
+                        <input class="form-check-input" type="checkbox" name="Active{{element.ID}}"
+                          [(ngModel)]="element.Active">
+                        <span></span>
+                      </label>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Code">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.label.doc_code' | translate }}</th>
+                    <td mat-cell *matCellDef="let element">
+                      <input class="form-control" type="text" [placeholder]="'membership.placeholder.doc_code' | translate" name="Code{{element.ID}}"
+                        [(ngModel)]="element.Code">
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.doc.name' | translate }}</th>
+                    <td mat-cell *matCellDef="let element">
+                      <input class="form-control" type="text" [placeholder]="'membership.placeholder.doc_name' | translate" name="Name{{element.ID}}"
+                        [(ngModel)]="element.Name">
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Display">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Display</th>
+                    <td mat-cell *matCellDef="let element">
+                      <a target="_blank" class="link-primary" href="{{element.FileName}}">{{element.FileName}}</a>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="FileName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.doc.upload' | translate }}</th>
+                    <td mat-cell *matCellDef="let element">
+                      <input *ngIf="element.ID==0" class="form-control" type="file"
+                        (change)="MembershipFileChange($event, $event.target.files)" [title]="'membership.doc.upload' | translate">
+                      <a *ngIf="element.ID>0" target="_blank" class="btn waves-effect waves-light green darken-1"
+                        href="{{element.FileName}}" title="{{element.FileName}}"><i
+                          class="material-icons">cloud_download</i></a>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="CategoryHRMTaiLieuID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.doc.document' | translate }}</th>
+                    <td mat-cell *matCellDef="let element" style="width: 200px;">
+                      <select class="browser-default form-select form-control"
+                        [(ngModel)]="element.CategoryHRMTaiLieuID">
+                        <option *ngFor="let item of CategoryHRMTaiLieuService.ListFilter;" [value]="item.ID">
+                          {{item.Name}}</option>
+                      </select>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Save">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      <button (click)="MembershipFileSave(element)" class="btn waves-effect waves-light cyan"
+                        [title]="'membership.btn.save2' | translate">
+                        <i class="material-icons">save</i>
+                      </button>&nbsp;&nbsp;&nbsp;
+                      <button *ngIf="element.ID>0" (click)="MembershipFileDelete(element)"
+                        class="btn-floating waves-effect waves-light red" style="padding-top: 3px;" title="Delete">
+                        <i class="material-icons">delete_outline</i>
+                      </button>
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="MembershipFileService.DisplayColumns001">
+                  </tr>
+                  <tr mat-row *matRowDef="let row; columns: MembershipFileService.DisplayColumns001;">
+                  </tr>
+                </table>
+                <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipFilePaginator="matPaginator"
+                  [pageSizeOptions]="[10,20,50,100]" [pageSize]="10" [showFirstLastButtons]></mat-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

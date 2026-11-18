@@ -1,0 +1,163 @@
+<div class="row annualLeaveActualWorkdays-page">
+  <div class="col s12">
+    <div class="card card-default scrollspy annualLeaveActualWorkdays-card">
+      <div class="card-content">
+        <div class="row">
+          <div class="col s12 m12 l4">
+            <h6 class="annualLeaveActualWorkdays-title">
+              {{ 'hrm-nghi-phep.actualWorkdays.employeeListTitle' | translate }}
+            </h6>
+
+            <input
+              type="text"
+              id="annualLeaveActualWorkdaysSearchEmployee"
+              class="form-control annualLeaveActualWorkdays-search"
+              [(ngModel)]="SearchString"
+              placeholder="Search"
+              (keydown.enter)="$event.preventDefault(); SearchEmployees()"
+            />
+
+            <div *ngIf="IsLoadingEmployees" class="annualLeaveActualWorkdays-message" role="status">
+              {{ 'hrm-nghi-phep.actualWorkdays.messages.loadingEmployees' | translate }}
+            </div>
+
+            <div *ngIf="EmployeesErrorKey" class="annualLeaveActualWorkdays-message annualLeaveActualWorkdays-message-error" role="alert">
+              {{ EmployeesErrorKey | translate }}
+            </div>
+
+            <div *ngIf="!IsLoadingEmployees && !EmployeesErrorKey && Employees.length === 0"
+              class="annualLeaveActualWorkdays-message">
+              {{ 'hrm-nghi-phep.actualWorkdays.messages.noEmployees' | translate }}
+            </div>
+
+            <div class="annualLeaveActualWorkdays-employee-table-container" [attr.aria-busy]="IsLoadingEmployees">
+              <table mat-table matSort [dataSource]="Employees"
+                class="TableMaterial annualLeaveActualWorkdays-employee-table" *ngIf="Employees.length > 0">
+                <ng-container matColumnDef="EmployeeCode">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">
+                    {{ 'hrm-nghi-phep.overview.columns.employeeCode' | translate }}
+                  </th>
+                  <td mat-cell *matCellDef="let employee">{{ employee.EmployeeCode || '-' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="EmployeeName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="true">
+                    {{ 'hrm-nghi-phep.overview.columns.employeeName' | translate }}
+                  </th>
+                  <td mat-cell *matCellDef="let employee">{{ employee.EmployeeName || '-' }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="['EmployeeCode', 'EmployeeName']"></tr>
+                <tr mat-row *matRowDef="let employee; columns: ['EmployeeCode', 'EmployeeName'];"
+                  [class.selected]="SelectedEmployee?.MembershipId === employee.MembershipId"
+                  (click)="SelectEmployee(employee)"></tr>
+              </table>
+            </div>
+
+            <mat-paginator
+              class="annualLeaveActualWorkdays-paginator"
+              [length]="TotalEmployeeCount"
+              [pageIndex]="PageIndex"
+              [pageSize]="PageSize"
+              [pageSizeOptions]="[20, 50, 100]"
+              [showFirstLastButtons]="true"
+              (page)="EmployeePageChange($event)"
+            ></mat-paginator>
+          </div>
+
+          <div class="col s12 m12 l8">
+            <div class="annualLeaveActualWorkdays-calendar-toolbar">
+              <div class="annualLeaveActualWorkdays-month-picker">
+                <button
+                  type="button"
+                  class="btn-flat btn-small annualLeaveActualWorkdays-month-button"
+                  [attr.aria-label]="'hrm-nghi-phep.actualWorkdays.previousMonth' | translate"
+                  (click)="PreviousMonth()"
+                >
+                  <i class="material-icons">chevron_left</i>
+                </button>
+                <span class="annualLeaveActualWorkdays-current-month">
+                  {{ CurrentMonthLabel }}
+                </span>
+                <button
+                  type="button"
+                  class="btn-flat btn-small annualLeaveActualWorkdays-month-button"
+                  [attr.aria-label]="'hrm-nghi-phep.actualWorkdays.nextMonth' | translate"
+                  (click)="NextMonth()"
+                >
+                  <i class="material-icons">chevron_right</i>
+                </button>
+              </div>
+
+              <div class="annualLeaveActualWorkdays-legend">
+                <span class="annualLeaveActualWorkdays-legend-item">
+                  <span class="annualLeaveActualWorkdays-legend-dot status-worked"></span>
+                  {{ 'hrm-nghi-phep.actualWorkdays.legendWorked' | translate }}
+                  <span class="annualLeaveActualWorkdays-legend-count">({{ WorkedDaysCount }})</span>
+                </span>
+                <span class="annualLeaveActualWorkdays-legend-item">
+                  <span class="annualLeaveActualWorkdays-legend-dot status-deduct"></span>
+                  {{ 'hrm-nghi-phep.actualWorkdays.legendLeaveDeduct' | translate }}
+                  <span class="annualLeaveActualWorkdays-legend-count">({{ LeaveDeductDaysCount }})</span>
+                </span>
+                <span class="annualLeaveActualWorkdays-legend-item">
+                  <span class="annualLeaveActualWorkdays-legend-dot status-non-deduct"></span>
+                  {{ 'hrm-nghi-phep.actualWorkdays.legendLeaveNonDeduct' | translate }}
+                  <span class="annualLeaveActualWorkdays-legend-count">({{ LeaveNonDeductDaysCount }})</span>
+                </span>
+              </div>
+            </div>
+
+            <div *ngIf="!SelectedEmployee" class="annualLeaveActualWorkdays-message">
+              {{ 'hrm-nghi-phep.actualWorkdays.messages.selectEmployee' | translate }}
+            </div>
+
+            <div *ngIf="IsLoadingCalendar" class="annualLeaveActualWorkdays-message" role="status">
+              {{ 'hrm-nghi-phep.actualWorkdays.messages.loadingCalendar' | translate }}
+            </div>
+
+            <div *ngIf="CalendarErrorMessage" class="annualLeaveActualWorkdays-message annualLeaveActualWorkdays-message-error" role="alert">
+              {{ CalendarErrorMessage }}
+            </div>
+
+            <div *ngIf="SelectedEmployee" class="annualLeaveActualWorkdays-calendar-grid">
+              <div class="annualLeaveActualWorkdays-day-header">{{ 'hrm-nghi-phep.actualWorkdays.weekdays.mon' | translate }}</div>
+              <div class="annualLeaveActualWorkdays-day-header">{{ 'hrm-nghi-phep.actualWorkdays.weekdays.tue' | translate }}</div>
+              <div class="annualLeaveActualWorkdays-day-header">{{ 'hrm-nghi-phep.actualWorkdays.weekdays.wed' | translate }}</div>
+              <div class="annualLeaveActualWorkdays-day-header">{{ 'hrm-nghi-phep.actualWorkdays.weekdays.thu' | translate }}</div>
+              <div class="annualLeaveActualWorkdays-day-header">{{ 'hrm-nghi-phep.actualWorkdays.weekdays.fri' | translate }}</div>
+              <div class="annualLeaveActualWorkdays-day-header weekend">{{ 'hrm-nghi-phep.actualWorkdays.weekdays.sat' | translate }}</div>
+              <div class="annualLeaveActualWorkdays-day-header weekend">{{ 'hrm-nghi-phep.actualWorkdays.weekdays.sun' | translate }}</div>
+
+              <div
+                *ngFor="let cell of CalendarCells"
+                class="annualLeaveActualWorkdays-calendar-cell"
+                [class.weekend]="IsWeekend(cell.WorkDate)"
+                [class.empty]="!cell.WorkDate"
+              >
+                <ng-container *ngIf="cell.WorkDate as workDate">
+                  <span class="annualLeaveActualWorkdays-cell-date">{{ workDate.getDate() }}</span>
+
+                  <div *ngIf="cell.Workday?.IsWorked" class="annualLeaveActualWorkdays-day-status status-worked">
+                    {{ 'hrm-nghi-phep.actualWorkdays.legendWorked' | translate }}
+                  </div>
+
+                  <ng-container *ngIf="!cell.Workday?.IsWorked">
+                    <div
+                      *ngFor="let leave of cell.Workday?.Leaves"
+                      class="annualLeaveActualWorkdays-day-status"
+                      [class.status-deduct]="leave.IsDeduct"
+                      [class.status-non-deduct]="!leave.IsDeduct"
+                    >
+                      {{ GetLeaveTypeName(leave) }}
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

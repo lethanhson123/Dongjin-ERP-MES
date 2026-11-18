@@ -1,0 +1,303 @@
+<div style="width: 100%; max-width: 100%; box-sizing: border-box;">
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px;">
+    <div>
+      <h6 style="margin: 0;"><b>Tải lên &amp; Xuất dữ liệu | 엑셀 업로드 / 내보내기</b></h6>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+      <button title="Tải file Excel mẫu | 엑셀 양식 다운로드" class="btn waves-effect waves-light white"
+        style="border: 1px solid #cfd8dc; color: #37474f; text-transform: none; font-size: 13px; height: 36px; line-height: 36px; padding: 0 12px; display: flex; align-items: center; gap: 4px; box-shadow: none;"
+        (click)="MembershipTemplate()">
+        <i class="material-icons" style="font-size: 18px;">description</i> Tải file Excel mẫu
+      </button>
+      <button title="Xuất Excel | 엑셀로 내보내기" class="btn waves-effect waves-light white"
+        style="border: 1px solid #cfd8dc; color: #37474f; text-transform: none; font-size: 13px; height: 36px; line-height: 36px; padding: 0 12px; display: flex; align-items: center; gap: 4px; box-shadow: none;"
+        (click)="MembershipExcel()">
+        <i class="material-icons" style="font-size: 18px;">cloud_download</i> Xuất Excel
+      </button>
+      <button title="Close | 닫다" class="btn waves-effect waves-light grey lighten-2"
+        style="padding: 0; width: 34px; height: 34px; min-width: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+        (click)="MembershipListModalClose()">
+        <i class="material-icons" style="font-size: 20px; color: #607d8b;">close</i>
+      </button>
+    </div>
+  </div>
+
+  <input #fileInput class="form-control" type="file" accept=".xlsx,.xls" style="display: none;"
+    (change)="MembershipChange($event, $event.target.files)">
+
+  <div *ngIf="!FileName" (click)="fileInput.click()"
+    style="width: 100%; border: 2px dashed #b0bec5; border-radius: 8px; background: #f4f7f9; padding: 40px 16px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; transition: all .2s; box-sizing: border-box;"
+    (dragover)="$event.preventDefault()" (drop)="fileInput.files = $event.dataTransfer.files; MembershipChange($event, $event.dataTransfer.files)">
+    <div style="display: flex; gap: 6px; align-items: center;">
+      <i class="material-icons" style="font-size: 46px; color: #78909c;">cloud_upload</i>
+      <i class="material-icons" style="font-size: 34px; color: #43a047;">insert_drive_file</i>
+    </div>
+    <div style="font-size: 14px; color: #546e7a;">Kéo thả file vào đây hoặc Duyệt file</div>
+    <span class="btn btn-small waves-effect waves-light white"
+      style="border: 1px solid #cfd8dc; color: #37474f; text-transform: none; font-size: 12px; height: 30px; line-height: 30px; padding: 0 14px; box-shadow: none;">
+      <i class="material-icons left" style="font-size: 16px; line-height: 30px;">folder_open</i>Chọn file từ máy tính
+    </span>
+  </div>
+
+  <div *ngIf="FileName" style="display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap;">
+    <div (click)="fileInput.click()"
+      style="flex: 1 1 320px; min-width: 260px; border: 2px dashed #b0bec5; border-radius: 8px; background: #f4f7f9; padding: 18px 16px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all .2s;"
+      (dragover)="$event.preventDefault()" (drop)="fileInput.files = $event.dataTransfer.files; MembershipChange($event, $event.dataTransfer.files)">
+      <div style="display: flex; gap: 6px; align-items: center;">
+        <i class="material-icons" style="font-size: 40px; color: #78909c;">cloud_upload</i>
+        <i class="material-icons" style="font-size: 30px; color: #43a047;">insert_drive_file</i>
+      </div>
+      <div style="font-size: 13px; color: #546e7a;">Kéo thả file vào đây hoặc Duyệt file</div>
+      <span class="btn btn-small waves-effect waves-light white"
+        style="border: 1px solid #cfd8dc; color: #37474f; text-transform: none; font-size: 12px; height: 28px; line-height: 28px; padding: 0 14px; box-shadow: none;">
+        <i class="material-icons left" style="font-size: 16px; line-height: 28px;">folder_open</i>Chọn file từ máy tính
+      </span>
+    </div>
+
+    <div style="flex: 1 1 320px; min-width: 260px; display: flex; flex-direction: column; gap: 8px; justify-content: center;">
+      <div style="display: flex; align-items: center; gap: 8px; border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px 10px; background: #fff; flex-wrap: wrap;">
+        <i class="material-icons" style="font-size: 22px; color: #43a047;">description</i>
+        <span style="flex: 1 1 120px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: #37474f;">{{ FileName }}</span>
+        <button title="Xóa | 삭제" class="btn waves-effect waves-light white"
+          style="border: 1px solid #cfd8dc; color: #37474f; text-transform: none; font-size: 12px; height: 30px; line-height: 30px; padding: 0 10px; display: flex; align-items: center; gap: 4px; box-shadow: none;"
+          (click)="MembershipService.FileToUpload = null; FileName = '';">
+          <i class="material-icons" style="font-size: 16px;">delete_outline</i> Xóa
+        </button>
+        <button title="Upload | 업로드" class="btn waves-effect waves-light blue darken-1"
+          style="text-transform: none; font-size: 13px; height: 30px; line-height: 30px; padding: 0 14px; display: flex; align-items: center; gap: 4px;"
+          (click)="MembershipUpload()">
+          <i class="material-icons" style="font-size: 16px;">cloud_upload</i> Tải lên (Upload)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="DataSourceMessage && MessageList.length > 0" style="margin-top: 12px;">
+    <div style="background: #fdecea; border: 1px solid #f5c2c0; border-left: 4px solid #e53935; border-radius: 6px; padding: 10px 14px; color: #b71c1c; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 8px;">
+      <i class="material-icons" style="font-size: 18px;">warning</i>
+      Danh sách nhân viên đã tồn tại trong hệ thống | 이미 존재하는 사원
+    </div>
+    <div class="KhungOverflow25" style="margin-top: 8px; min-height: 0 !important; height: 25vh !important;">
+      <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MessageSort="matSort" class="TableMaterial"
+        [dataSource]="DataSourceMessage">
+        <ng-container matColumnDef="No">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+          <td mat-cell *matCellDef="let element; index as i;">
+            <div *ngIf="MessagePaginator">
+              {{MessagePaginator.pageSize * MessagePaginator.pageIndex + i + 1}}
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Content">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Thông tin đã tồn tại | 기존 정보</th>
+          <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Content}}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="MessageColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: MessageColumns;"></tr>
+      </table>
+      <mat-paginator *ngIf="!NotificationService.IsMobile" #MessagePaginator="matPaginator"
+        [pageSizeOptions]="[5,10,20,50,100,1000000]" [pageSize]="5" [showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+
+
+  <div class="KhungOverflow55" style="margin-top: 12px; min-height: 0 !important; height: 35vh !important;" *ngIf="DataSource && List.length > 0">
+    <table *ngIf="!NotificationService.IsMobile" mat-table matSort #MembershipSort="matSort" class="TableMaterial"
+      [dataSource]="DataSource">
+      <ng-container matColumnDef="No">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>No</th>
+        <td mat-cell *matCellDef="let element; index as i;">
+          <div *ngIf="MembershipPaginator">
+            {{MembershipPaginator.pageSize * MembershipPaginator.pageIndex + i + 1}}
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Active">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.active' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <label>
+            <input type="checkbox" class="form-check-input" disabled [(ngModel)]="element.Active">
+            <span></span>
+          </label>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="UserName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.username' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;"><b>{{element.UserName}}</b></td>
+      </ng-container>
+      <ng-container matColumnDef="FileName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.filename' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <img *ngIf="element.FileName" style="width: 50px; height: 50px;" src="{{element.FileName}}" />
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.name' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Name}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Display">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.display' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Display}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMKhoiName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.khoi' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMKhoiName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="DepartmentKorean">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.department_korean' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.DepartmentKorean}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMPhongBanName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.phongban' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMPhongBanName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="PositionKorean">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.position_korean' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.PositionKorean}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMChucDanhName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.chucdanh' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMChucDanhName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Rank">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.rank' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Rank}}</td>
+      </ng-container>
+      <ng-container matColumnDef="RankKorean">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.rank_korean' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.RankKorean}}</td>
+      </ng-container>
+      <ng-container matColumnDef="NgayVaoLam">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.ngayvaolam' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.NgayVaoLam | date:'dd/MM/yyyy'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMGioiTinhName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.gioitinh' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMGioiTinhName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMTrinhDoName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.trinhdo' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMTrinhDoName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMChuyenNganhName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.chuyennganh' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMChuyenNganhName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="EmploymentType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.employmenttype' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.EmploymentType}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CCCDNoiSinh">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccdnoisinh' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CCCDNoiSinh}}</td>
+      </ng-container>
+      <ng-container matColumnDef="NgaySinh">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.ngaysinh' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.NgaySinh | date:'dd/MM/yyyy'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="NguyenQuanName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.nguyenquan' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.NguyenQuanName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMQuocGiaName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.quocgia' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMQuocGiaName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMDanTocName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.dantoc' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMDanTocName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CCCD">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccd' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CCCD}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CCCDNgayCap">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccdngaycap' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CCCDNgayCap | date:'dd/MM/yyyy'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CCCDNgayHetHan">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccdngayhethan' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CCCDNgayHetHan | date:'dd/MM/yyyy'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CCCDNoiCap">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccdnoicap' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CCCDNoiCap}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CCCDiaChi">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.cccddiachi' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CCCDiaChi}}</td>
+      </ng-container>
+      <ng-container matColumnDef="DiaChi">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.diachi' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.DiaChi}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.phone' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Phone}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.email' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Email}}</td>
+      </ng-container>
+      <ng-container matColumnDef="CategoryHRMTinhTrangLamViecName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.tinhtrang' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.CategoryHRMTinhTrangLamViecName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="NgayNghiViec">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.ngghiviec' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.NgayNghiViec | date:'dd/MM/yyyy'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="LyDoNghiViec">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.lydonghiviec' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.LyDoNghiViec}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Certificate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.certificate' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Certificate}}</td>
+      </ng-container>
+      <ng-container matColumnDef="OverseasExperience">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.overseasexperience' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.OverseasExperience}}</td>
+      </ng-container>
+      <ng-container matColumnDef="ForeignLanguageLevel">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.foreignlanguage' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.ForeignLanguageLevel}}</td>
+      </ng-container>
+      <ng-container matColumnDef="ContractCondition">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.contractcondition' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.ContractCondition}}</td>
+      </ng-container>
+      <ng-container matColumnDef="RewardsDiscipline">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.rewardsdiscipline' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.RewardsDiscipline}}</td>
+      </ng-container>
+      <ng-container matColumnDef="PromotionHistory">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.promotionhistory' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.PromotionHistory}}</td>
+      </ng-container>
+      <ng-container matColumnDef="TrainingDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.trainingdate' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.TrainingDate | date:'dd/MM/yyyy'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="WorkExperience">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.workexperience' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.WorkExperience}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Other">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.other' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Other}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Note">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'membership.col.note' | translate }}</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">{{element.Note}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="DisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: DisplayedColumns;"></tr>
+    </table>
+    <mat-paginator *ngIf="!NotificationService.IsMobile" #MembershipPaginator="matPaginator"
+      [pageSizeOptions]="[5,10,20,50,100,1000000]" [pageSize]="5" [showFirstLastButtons></mat-paginator>
+  </div>
+
+  <app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>
+</div>

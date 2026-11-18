@@ -1,0 +1,172 @@
+<div class="row">
+  <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+    <div class="container">
+      <h6 class="breadcrumbs-title">{{ 'hrm-cham-cong-tong-hop.title' | translate }}</h6>
+    </div>
+  </div>
+
+  <div class="col s12 m12 l12">
+    <div class="card card-default scrollspy">
+      <div class="card-content">
+        <div class="col s12 m12 l12">
+          <ul class="tabs" style="height: 70px !important;">
+            <li class="tab col l2 p-0" style="height: 70px !important;" (click)="SetOffice(true)">
+              <a class="p-0" [class.active]="IsOffice" href="#TongHopOffice">📊 {{ 'hrm-cham-cong-tong-hop.officeTab' | translate }}</a>
+            </li>
+            <li class="tab col l2 p-0" style="height: 70px !important;" (click)="SetOffice(false)">
+              <a class="p-0" [class.active]="!IsOffice" href="#TongHopDirect">🏭 {{ 'hrm-cham-cong-tong-hop.productionTab' | translate }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="attendance-summary" style="margin-top: 24px !important;">
+          <div class="summary-card primary">
+            <span class="summary-label">{{ (IsOffice ? 'hrm-cham-cong-tong-hop.officeTab' : 'hrm-cham-cong-tong-hop.productionTab') | translate }}</span>
+            <span class="summary-value">{{Summary.EmployeeCount}}</span>
+            <span class="summary-unit">{{ 'hrm-cham-cong-tong-hop.employeeCount' | translate }}</span>
+            <span class="summary-description">{{ (IsOffice ? 'hrm-cham-cong-tong-hop.officeDescription' : 'hrm-cham-cong-tong-hop.productionDescription') | translate }}</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">{{ 'hrm-cham-cong-tong-hop.lateEmployees' | translate }}</span>
+            <span class="summary-value">{{Summary.LateCount}}</span>
+            <span class="summary-unit">{{ 'hrm-cham-cong-tong-hop.personCount' | translate }}</span>
+            <span class="summary-description">{{ 'hrm-cham-cong-tong-hop.lateDescription' | translate }}</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">{{ 'hrm-cham-cong-tong-hop.overtimeEmployees' | translate }}</span>
+            <span class="summary-value">{{Summary.OvertimeCount}}</span>
+            <span class="summary-unit">{{ 'hrm-cham-cong-tong-hop.personCount' | translate }}</span>
+            <span class="summary-description">{{ 'hrm-cham-cong-tong-hop.overtimeDescription' | translate }}</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">{{ 'hrm-cham-cong-tong-hop.needCheck' | translate }}</span>
+            <span class="summary-value">{{Summary.NeedCheckCount}}</span>
+            <span class="summary-unit">{{ 'hrm-cham-cong-tong-hop.personCount' | translate }}</span>
+            <span class="summary-description">{{ 'hrm-cham-cong-tong-hop.needCheckDescription' | translate }}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 m12 l2">
+            <select class="browser-default form-select" [(ngModel)]="HRMChamCongTongHopService.BaseParameter.CompanyID"
+              (change)="CompanyChange()">
+              <option *ngFor="let item of CompanyService.ListFilter" [value]="item.ID">{{item.Name}}</option>
+            </select>
+          </div>
+          <div class="col s12 m12 l2">
+            <select class="browser-default form-select"
+              [(ngModel)]="HRMChamCongTongHopService.BaseParameter.CategoryHRMPhongBanID" (change)="Search()">
+              <option [value]="0">{{ 'hrm-cham-cong-tong-hop.all' | translate }}</option>
+              <option *ngFor="let item of CategoryHRMPhongBanService.ListFilter" [value]="item.ID">{{item.Name ||
+                item.Code}}</option>
+            </select>
+          </div>
+          <div class="col s12 m12 l2">
+            <input type="date" class="form-control" [(ngModel)]="SelectedDate"
+              (change)="DateChange($event.target.value)">
+          </div>
+          <div class="col s12 m12 l4">
+            <input class="form-control" [(ngModel)]="HRMChamCongTongHopService.BaseParameter.SearchString"
+              [placeholder]="'hrm-cham-cong-tong-hop.searchPlaceholder' | translate" (keyup.enter)="Search()">
+          </div>
+          <div class="col s12 m12 l1">
+            <button class="btn waves-effect waves-light green" [title]="'hrm-cham-cong-tong-hop.search' | translate" style="width:100%" (click)="Search()">
+              <i class="material-icons">search</i>
+            </button>
+          </div>
+          <div class="col s12 m12 l1">
+            <button [title]="'hrm-cham-cong-tong-hop.exportExcel' | translate" (click)="ExportExcel()"
+              class="btn waves-effect waves-light green darken-1" style="width: 100%;"><i
+                class="material-icons">cloud_download</i></button>
+          </div>
+        </div>
+
+        <div class="KhungOverflow60">
+          <table mat-table matSort #TongHopSort="matSort" class="TableMaterial"
+            [dataSource]="HRMChamCongTongHopService.DataSource">
+            <ng-container matColumnDef="No">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.no' | translate }}</th>
+              <td mat-cell *matCellDef="let row; index as i">{{TongHopPaginator.pageIndex * TongHopPaginator.pageSize +
+                i + 1}}</td>
+            </ng-container>
+            <ng-container matColumnDef="MembershipCode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.employee' | translate }}</th>
+              <td mat-cell *matCellDef="let row"><b>{{row.MembershipCode}}</b></td>
+            </ng-container>
+            <ng-container matColumnDef="MembershipName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.employeeName' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.MembershipName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.status' | translate }}</th>
+              <td mat-cell *matCellDef="let row">
+                <span class="status-badge" [ngStyle]="getStatusBadgeStyle(row.Status)">{{row.Status}}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.date' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.Date | date:'dd/MM/yyyy'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="DayOfWeek">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.dayOfWeek' | translate }}</th>
+              <td mat-cell *matCellDef="let row" [class.sunday-cell]="isSunday(row.Date)">{{ getDayOfWeek(row.Date) }}</td>
+            </ng-container>
+            <ng-container matColumnDef="CategoryHRMCaLamViecName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.standardShift' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.CategoryHRMCaLamViecName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="StandardCheckIn">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.standardCheckIn' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.StandardCheckIn}}</td>
+            </ng-container>
+            <ng-container matColumnDef="StandardCheckOut">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.standardCheckOut' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.StandardCheckOut}}</td>
+            </ng-container>
+            <ng-container matColumnDef="CheckIn01">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.actualCheckIn' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.CheckIn01}}</td>
+            </ng-container>
+            <ng-container matColumnDef="CheckOut01">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.actualCheckOut' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.CheckOut01}}</td>
+            </ng-container>
+            <ng-container matColumnDef="StandardHour">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.standardHour' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.StandardHour | number:'1.2-2'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="ActualHour">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.actualHour' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.ActualHour | number:'1.2-2'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="LateMinutes">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.lateMinutes' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.LateMinutes}}</td>
+            </ng-container>
+            <ng-container matColumnDef="EarlyLeaveMinutes">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.earlyLeave' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.EarlyLeaveMinutes}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Workday">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.workdayActual' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.Workday | number:'1.2-2'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="OvertimeHour">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.overtimeApproved' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.OvertimeHour | number:'1.2-2'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="OvertimeHourThucTe">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'hrm-cham-cong-tong-hop.overtimeActual' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{row.OvertimeHourThucTe | number:'1.2-2'}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="DisplayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: DisplayColumns"></tr>
+          </table>
+          <mat-paginator #TongHopPaginator [pageSizeOptions]="[10,20,50,100]" [pageSize]="15"
+            [showFirstLastButtons]></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="HRMChamCongTongHopService.IsShowLoading"></app-loading>

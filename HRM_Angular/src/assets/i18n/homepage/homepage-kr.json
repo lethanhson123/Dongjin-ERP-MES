@@ -1,0 +1,20 @@
+{
+  "homepage": {
+    "avatar": "아바타",
+    "bank": "은행",
+    "account": "계정",
+    "bank_account": "은행 계좌",
+    "address_current": "현재 주소",
+    "display_uppercase": "대문자로 쓰다",
+    "resignation_reason": "퇴사 사유",
+    "cccd_issue_place": "CCCD.발급지",
+    "cccd_birthplace": "CCCD.출생지",
+    "cccd_address": "CCCD.주소",
+    "cccd_expiry": "CCCD.만료일",
+    "process": "공정",
+    "shift": "근무 교대",
+    "year": "년",
+    "month": "개월",
+    "day": "일"
+  }
+}

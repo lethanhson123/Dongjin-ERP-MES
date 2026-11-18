@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col s12 m12 l9">
+    <h6><b>Chấm công</b></h6>
+  </div>
+  <div class="col s12 m12 l1">
+    <label>
+      <input type="checkbox" class="form-check-input" name="Active"
+        [(ngModel)]="HRMChamCongLichSuService.BaseParameter.BaseModel.Active" />
+      <span>Active</span>
+    </label>
+  </div>
+  <div class="col s12 m12 l1">
+    <button style="width: 100%;" title="Save" class="btn waves-effect waves-light cyan d-inline-flex align-items-center justify-content-center" (click)="Save()"><i class="material-icons">save</i></button>    
+  </div>
+  <div class="col s12 m12 l1">    
+    <button title="Close" class="btn waves-effect waves-light purple lightrn-1 d-inline-flex align-items-center justify-content-center" (click)="Close()"><i class="material-icons">close</i></button>
+  </div>
+</div>
+<div class="row">
+  <div class="col s4 m4 l4">
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>ID</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input disabled placeholder="ID" [(ngModel)]="HRMChamCongLichSuService.BaseParameter.BaseModel.ID" type="number"
+          class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Mã nhân viên</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input placeholder="Mã nhân viên" [(ngModel)]="HRMChamCongLichSuService.BaseParameter.BaseModel.MembershipCode"
+          type="text" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="col s4 m4 l4">
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Thời gian</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input [ngModel]="HRMChamCongLichSuService.BaseParameter.BaseModel.Date | date:'yyyy-MM-ddTHH:mm'"
+          style="text-align: right;" (ngModelChange)="Date($event)" [ngModelOptions]="{ updateOn: 'blur' }"
+          type="datetime-local" class="form-control" autocomplete="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Note</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <input placeholder="Note" [(ngModel)]="HRMChamCongLichSuService.BaseParameter.BaseModel.Note" type="text"
+          class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="col s4 m4 l4">
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Company</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <select class="browser-default form-select form-control" (change)="CompanyChange()"
+          [(ngModel)]="HRMChamCongLichSuService.BaseParameter.BaseModel.CompanyID">
+          <option *ngFor="let item of CompanyService.ListFilter;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 m4 l4">
+        <label>Department</label>
+      </div>
+      <div class="col s8 m8 l8">
+        <select class="browser-default form-select"
+          [(ngModel)]="HRMChamCongLichSuService.BaseParameter.BaseModel.CategoryDepartmentID">
+          <option *ngFor="let item of CategoryDepartmentService.ListParent;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="HRMChamCongLichSuService.IsShowLoading"></app-loading>

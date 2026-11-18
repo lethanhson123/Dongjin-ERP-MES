@@ -1,0 +1,51 @@
+.annualLeaveType-card {
+  margin-top: 0;
+}
+
+.annualLeaveType-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.annualLeaveType-table {
+  width: 100%;
+  min-width: 1100px;
+}
+
+.annualLeaveType-table th {
+  white-space: nowrap;
+}
+
+.annualLeaveType-table td {
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+.annualLeaveType-input {
+  min-width: 120px;
+  margin: 0;
+}
+
+.annualLeaveType-checkbox-cell,
+.annualLeaveType-save-cell {
+  text-align: center;
+}
+
+.annualLeaveType-checkbox-cell label {
+  margin: 0;
+}
+
+.annualLeaveType-save-button {
+  min-width: 36px;
+  padding: 0 8px;
+}
+
+.annualLeaveType-save-button .material-icons {
+  font-size: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .annualLeaveType-card .card-content {
+    padding: 12px;
+  }
+}

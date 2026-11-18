@@ -1,0 +1,67 @@
+<div class="row annualLeaveManagement-page">
+  <div class="col s12">
+    <div class="pt-2 pb-0" id="breadcrumbs-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col s12 m6 l6">
+            <h6 class="breadcrumbs-title">{{ 'hrm-nghi-phep.title' | translate }}</h6>
+          </div>
+          <div class="col s12 m6 l6 right-align-md">
+            <ol class="breadcrumbs mb-0">
+              <li class="breadcrumb-item">
+                <a href="javascript:history.back()" [title]="'common.back' | translate">
+                  &lt;&lt;&lt; {{ 'common.back' | translate }}
+                </a>
+              </li>
+              <li class="breadcrumb-item">
+                <a>{{ 'common.hrm' | translate }}</a>
+              </li>
+              <li class="breadcrumb-item active">{{ 'hrm-nghi-phep.title' | translate }}</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="tabs annualLeaveManagement-tabs">
+      <li class="tab">
+        <a routerLink="Overview" routerLinkActive="active">
+          <i class="material-icons">dashboard</i>
+          {{ 'hrm-nghi-phep.tabs.overview' | translate }}
+        </a>
+      </li>
+      <li class="tab">
+        <a routerLink="AnnualLeaveRequest" routerLinkActive="active">
+          <i class="material-icons">assignment</i>
+          {{ 'hrm-nghi-phep.tabs.requests' | translate }}
+        </a>
+      </li>
+      <li class="tab">
+        <a routerLink="ActualWorkdays" routerLinkActive="active">
+          <i class="material-icons">date_range</i>
+          {{ 'hrm-nghi-phep.tabs.actualWorkdays' | translate }}
+        </a>
+      </li>
+      <li class="tab">
+        <a routerLink="Balance" routerLinkActive="active">
+          <i class="material-icons">event_available</i>
+          {{ 'hrm-nghi-phep.tabs.balanceUpdate' | translate }}
+        </a>
+      </li>
+      <li class="tab">
+        <a routerLink="History" routerLinkActive="active">
+          <i class="material-icons">history</i>
+          {{ 'hrm-nghi-phep.tabs.history' | translate }}
+        </a>
+      </li>
+      <li class="tab">
+        <a routerLink="LeaveType" routerLinkActive="active">
+          <i class="material-icons">view_list</i>
+          {{ 'hrm-nghi-phep.tabs.leaveType' | translate }}
+        </a>
+      </li>
+    </ul>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>

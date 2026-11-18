@@ -1,0 +1,92 @@
+.hrmTangCa-table .mat-column-No {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.hrmTangCa-table .mat-column-EmployeeCode {
+  white-space: nowrap;
+}
+
+.hrmTangCa-table-container {
+  overflow-x: auto;
+}
+
+.hrmTangCa-table {
+  min-width: 1800px;
+}
+
+.hrmTangCa-filter-row,
+.hrmTangCa-search-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.hrmTangCa-filter-row {
+  margin-bottom: 8px;
+}
+
+.hrmTangCa-office-filter {
+  display: flex;
+  align-items: center;
+  height: 29px;
+}
+
+.hrmTangCa-office-filter label {
+  margin: 0;
+}
+
+.hrmTangCa-search-row {
+  margin-bottom: 16px;
+}
+
+.hrmTangCa-filter-row > .col,
+.hrmTangCa-search-row > .col {
+  margin-left: 0;
+}
+
+.hrmTangCa-filter-actions-col {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  height: 32px;
+  margin-bottom: 0;
+}
+
+.hrmTangCa-filter-panel input.form-control {
+  width: 100% !important;
+  height: 32px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+}
+
+.hrmTangCa-filter-panel input[type="text"].form-control {
+  line-height: 32px !important;
+}
+
+.hrmTangCa-filter-panel .form-select {
+  width: 100%;
+  height: 32px !important;
+  margin-bottom: 0 !important;
+}
+
+.hrmTangCa-filter-actions-col .btn {
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hrmTangCa-filter-actions-col .btn .material-icons {
+  font-size: 18px;
+  line-height: 32px;
+}

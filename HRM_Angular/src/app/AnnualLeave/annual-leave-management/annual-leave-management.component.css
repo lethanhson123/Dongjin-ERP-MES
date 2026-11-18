@@ -1,0 +1,15 @@
+.annualLeaveManagement-tabs .tab {
+  width: auto !important;
+}
+
+.annualLeaveManagement-tabs .tab a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-transform: none !important;
+}
+
+.annualLeaveManagement-tabs .tab a .material-icons {
+  font-size: 19px;
+}

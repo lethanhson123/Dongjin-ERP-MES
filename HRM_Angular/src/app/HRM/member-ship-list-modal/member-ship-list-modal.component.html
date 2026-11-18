@@ -1,0 +1,386 @@
+<div class="row" style="display: flex; align-items: center; margin-bottom: 0;">
+  <div class="col s12 m12 l6">
+    <h1 style="margin:0;"><b>
+      <span *ngIf="MembershipService.BaseParameter.BaseModel.ID > 0">Chỉnh sửa | 편집</span>
+      <span *ngIf="!MembershipService.BaseParameter.BaseModel.ID || MembershipService.BaseParameter.BaseModel.ID == 0">Thêm mới | 추가</span>
+    </b></h1>
+  </div>
+  <div class="col s12 m12 l6" style="display: flex; justify-content: flex-end; align-items: center; gap: 6px;">
+    <label style="display:flex; align-items:center; gap:4px; margin:0;">
+      <input type="checkbox" class="form-check-input" name="Active"
+        [(ngModel)]="MembershipService.BaseParameter.BaseModel.Active" />
+      <span>Active</span>
+    </label>
+    <button title="Save | 저장" class="btn waves-effect waves-light cyan"
+      style="padding: 0 14px;" (click)="MembershipListModalSave20260928()"><i class="material-icons">save</i></button>
+    <button title="Close | 닫다" class="btn waves-effect waves-light purple lighten-1"
+      (click)="MembershipListModalClose()"><i class="material-icons">close</i></button>
+  </div>
+</div>
+
+<div class="row" style="display: flex; flex-wrap: wrap;">
+  <div class="col s12 m12 l4" style="flex: 1 1 30%; min-width: 300px;">
+    <div class="row" style="display: none;">
+      <div class="col s5 m5 l5"><label>ID</label></div>
+      <div class="col s7 m7 l7">
+        <input disabled [(ngModel)]="MembershipService.BaseParameter.BaseModel.ID"
+          type="number" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Avatar</label></div>
+      <div class="col s7 m7 l7" style="display: flex; flex-direction: column; align-items: center;">
+        <img src="{{MembershipService.BaseParameter.BaseModel.FileName}}" width="160" height="160" style="object-fit: cover;">
+        <input class="form-control" type="file" (change)="MembershipChange($event, $event.target.files)"
+          style="width: 100% !important; margin-top: 8px;">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Mã NV | 직원 코드</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Mã NV | 직원 코드" [disabled]="MembershipService.BaseParameter.BaseModel.ID > 0"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.UserName"
+          style="text-align: right;"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Họ tên | 성명</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Họ tên | 성명"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.Name"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Search</label></div>
+      <div class="col s7 m7 l7">
+        <input
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.Search"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Tiếng hàn | 한국어</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Tiếng hàn | 한국어"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.Display"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Email | 이메일</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Email | 이메일"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.Email"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Điện thoại | 핸드폰</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Điện thoại | 핸드폰"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.Phone"
+          style="text-align: right;"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Nguyên quán | 원적</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Nguyên quán | 원적"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.NguyenQuanName"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>CCCD | 신분증</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="CCCD | 신분증"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CCCD"
+          style="text-align: right;"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Nơi cấp | 발행처</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Nơi cấp | 발행처"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CCCDNoiCap"
+          type="text" class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <div class="col s12 m12 l4" style="flex: 1 1 30%; min-width: 300px;">
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Ngày sinh | 생일</label></div>
+      <div class="col s7 m7 l7">
+        <input [ngModel]="MembershipService.BaseParameter.BaseModel.NgaySinh | date:'yyyy-MM-dd'"
+          (ngModelChange)="DateNgaySinh($event)"
+          style="text-align: right;" [ngModelOptions]="{ updateOn: 'blur' }"
+          type="date" class="form-control" autocomplete="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Nơi sinh | 출생지</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Nơi sinh | 출생지"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CCCDNoiSinh"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Địa chỉ CCCD | 신분증 주소</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Địa chỉ CCCD | 신분증 주소"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CCCDiaChi"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Ngày cấp | 발행일</label></div>
+      <div class="col s7 m7 l7">
+        <input [ngModel]="MembershipService.BaseParameter.BaseModel.CCCDNgayCap | date:'yyyy-MM-dd'"
+          (ngModelChange)="DateCCCDNgayCap($event)"
+          style="text-align: right;" [ngModelOptions]="{ updateOn: 'blur' }"
+          type="date" class="form-control" autocomplete="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Ngày hết hạn | 만료일</label></div>
+      <div class="col s7 m7 l7">
+        <input [ngModel]="MembershipService.BaseParameter.BaseModel.CCCDNgayHetHan | date:'yyyy-MM-dd'"
+          (ngModelChange)="DateCCCDNgayHetHan($event)"
+          style="text-align: right;" [ngModelOptions]="{ updateOn: 'blur' }"
+          type="date" class="form-control" autocomplete="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Vào làm | 업무 시작</label></div>
+      <div class="col s7 m7 l7">
+        <input [ngModel]="MembershipService.BaseParameter.BaseModel.NgayVaoLam | date:'yyyy-MM-dd'"
+          (ngModelChange)="DateNgayVaoLam($event)"
+          style="text-align: right;" [ngModelOptions]="{ updateOn: 'blur' }"
+          type="date" class="form-control" autocomplete="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Nghỉ việc | 퇴사일</label></div>
+      <div class="col s7 m7 l7">
+        <input [ngModel]="MembershipService.BaseParameter.BaseModel.NgayNghiViec | date:'yyyy-MM-dd'"
+          (ngModelChange)="DateNgayNghiViec($event)"
+          style="text-align: right;" [ngModelOptions]="{ updateOn: 'blur' }"
+          type="date" class="form-control" autocomplete="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Lịch sử đào tạo | 교육 이력</label></div>
+      <div class="col s7 m7 l7">
+        <input [ngModel]="MembershipService.BaseParameter.BaseModel.TrainingDate | date:'yyyy-MM-dd'"
+          (ngModelChange)="DateTrainingDate($event)"
+          style="text-align: right;" [ngModelOptions]="{ updateOn: 'blur' }"
+          type="date" class="form-control" autocomplete="off">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Cấp bậc | 직급</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryPositionID">
+          <option *ngFor="let item of CategoryPositionService.ListFilter;" [value]="item.ID">
+            {{item.Name}} - {{item.Code}} - {{item.Display}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Thời vụ | 단기 일자리</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Thời vụ | 단기 일자리"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.EmploymentType"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Lý do nghỉ việc | 퇴사 사유</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Lý do nghỉ việc | 퇴사 사유"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.LyDoNghiViec"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Chứng chỉ | 자격증</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Chứng chỉ | 자격증"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.Certificate"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Kinh nghiệm| 해외 경험</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Kinh nghiệm| 해외 경험"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.OverseasExperience"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Lịch sử thăng chức | 승진 이력</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Lịch sử thăng chức | 승진 이력"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.PromotionHistory"
+          type="text" class="form-control">
+      </div>
+    </div>
+     <div class="row">
+      <div class="col s5 m5 l5"><label>Khen thưởng / Kỷ luật | 포상 / 징계</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Khen thưởng / Kỷ luật | 포상 / 징계"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.RewardsDiscipline"
+          type="text" class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <div class="col s12 m12 l4" style="flex: 1 1 30%; min-width: 300px;">
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Khối | 블록</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMKhoiName">
+          <option value="Gián tiếp">Gián tiếp</option>
+          <option value="Trực tiếp">Trực tiếp</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Giới tính | 성별</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMGioiTinhID">
+          <option *ngFor="let item of CategoryHRMGioiTinhService.ListFilter;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Quốc tịch | 국적</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMQuocGiaID">
+          <option *ngFor="let item of CategoryHRMQuocGiaService.ListFilter;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Phòng ban | 부서</label></div>
+      <div class="col s7 m7 l7" style="display: flex; align-items: center; gap: 6px;">
+        <mat-select class="browser-default form-select form-control" style="flex: 1 1 auto;"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMPhongBanID">
+          <input [(ngModel)]="CategoryHRMPhongBanService.CategoryHRMPhongBanSearchString" placeholder="Tìm phòng ban | 부서 검색"
+            style="width: 100%; box-sizing: border-box;" (keyup)="CategoryHRMPhongBanService.CategoryHRMPhongBanFilter()">
+          <mat-option *ngFor="let item of CategoryHRMPhongBanService.ListCategoryHRMPhongBanFiltered;" [value]="item.ID">
+            {{item.Name}}</mat-option>
+        </mat-select>
+        <button type="button" title="Quản lý phòng ban | 부서 관리" class="btn waves-effect waves-light cyan"
+          style="padding: 0 8px; flex: 0 0 auto;" (click)="CategoryHRMPhongBanModal03()">
+          <i class="material-icons">settings</i>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Chức danh | 직책</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMChucDanhID">
+          <option *ngFor="let item of CategoryHRMChucDanhService.ListFilter;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Trình độ | 수준</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMTrinhDoID">
+          <option *ngFor="let item of CategoryHRMTrinhDoService.ListFilter;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Chuyên ngành | 전문</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMChuyenNganhID">
+          <option *ngFor="let item of CategoryHRMChuyenNganhService.ListFilter;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Dân tộc | 민족</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMDanTocID">
+          <option *ngFor="let item of CategoryHRMDanTocService.ListFilter;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Tình trạng | 상태</label></div>
+      <div class="col s7 m7 l7">
+        <select class="browser-default form-select form-control"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.CategoryHRMTinhTrangLamViecID">
+          <option *ngFor="let item of CategoryHRMTinhTrangLamViecService.ListFilter;" [value]="item.ID">
+            {{item.Name}}</option>
+        </select>
+      </div>
+    </div>
+        <div class="row">
+      <div class="col s5 m5 l5"><label>Trình độ ngoại ngữ | 외국어 수준</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Trình độ ngoại ngữ | 외국어 수준"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.ForeignLanguageLevel"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Điều kiện hợp đồng | 계약 조건</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Điều kiện hợp đồng | 계약 조건"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.ContractCondition"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Địa chỉ | 주소</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Địa chỉ | 주소"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.DiaChi"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Ghi chú | 메모</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Ghi chú | 메모"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.Note"
+          type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s5 m5 l5"><label>Khác</label></div>
+      <div class="col s7 m7 l7">
+        <input placeholder="Khác"
+          [(ngModel)]="MembershipService.BaseParameter.BaseModel.Other"
+          type="text" class="form-control">
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loading *ngIf="MembershipService.IsShowLoading"></app-loading>

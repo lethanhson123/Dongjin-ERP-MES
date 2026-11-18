@@ -1,0 +1,107 @@
+<div class="card card-default scrollspy">
+  <div class="card-content">
+    <div class="row hrmTangCa-heading-row hrmTangCa-filter-row">
+      <div class="col s12 m4 l3">
+        <label>{{ 'hrm-tang-ca.fromDate' | translate }}</label>
+        <input type="date" [(ngModel)]="ReportFromDate" class="form-control">
+      </div>
+      <div class="col s12 m4 l3">
+        <label>{{ 'hrm-tang-ca.toDate' | translate }}</label>
+        <input type="date" [(ngModel)]="ReportToDate" class="form-control">
+      </div>
+      <div class="col s12 m4 l2">
+        <label>{{ 'hrm-tang-ca.company' | translate }}</label>
+        <select class="browser-default form-select" [(ngModel)]="ReportCompanyID" (change)="ReportCompanyChange()">
+          <option *ngFor="let company of CompanyService.ListFilter" [ngValue]="company.ID">{{ company.Name }}</option>
+        </select>
+      </div>
+      <div class="col s12 m12 l4 hrmTangCa-filter-actions-col">
+        <button type="button" class="btn waves-effect waves-light green darken-1" (click)="SearchReport()">
+          <i class="material-icons">search</i>{{ 'common.search' | translate }}
+        </button>
+        <button type="button" class="btn waves-effect waves-light grey" (click)="ResetReportFilters()">
+          <i class="material-icons">refresh</i>{{ 'hrm-tang-ca.reset' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div class="row hrmTangCa-metrics">
+      <div class="col s12 m6 l3">
+        <div class="hrmTangCa-metric-card hrmTangCa-metric-total-hours">
+          <i class="material-icons">schedule</i>
+          <div class="hrmTangCa-metric-content">
+            <strong>{{ FormatHoursToTime(ReportData.TotalHours) }}</strong>
+            <span>{{ 'hrm-tang-ca.totalOvertimeHours' | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6 l3">
+        <div class="hrmTangCa-metric-card hrmTangCa-metric-employee-count">
+          <i class="material-icons">people</i>
+          <div class="hrmTangCa-metric-content">
+            <strong>{{ ReportData.EmployeeCount }}</strong>
+            <span>{{ 'hrm-tang-ca.uniqueEmployeeCount' | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6 l3">
+        <div class="hrmTangCa-metric-card hrmTangCa-metric-average-hours">
+          <i class="material-icons">assessment</i>
+          <div class="hrmTangCa-metric-content">
+            <strong>{{ FormatHoursToTime(ReportData.AverageHoursPerEmployee) }}</strong>
+            <span>{{ 'hrm-tang-ca.averageHoursPerEmployee' | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6 l3">
+        <div class="hrmTangCa-metric-card hrmTangCa-metric-top-department">
+          <i class="material-icons">business</i>
+          <div class="hrmTangCa-metric-content">
+            <strong>{{ ReportData.TopDepartment || '—' }}</strong>
+            <span>{{ 'hrm-tang-ca.topDepartment' | translate }} · {{ FormatHoursToTime(ReportData.TopDepartmentHours) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row hrmTangCa-report-charts">
+      <div class="col s12 m12 l6">
+        <div class="hrmTangCa-chart-card">
+          <h6>{{ 'hrm-tang-ca.departmentChartTitle' | translate }}</h6>
+          <div class="hrmTangCa-chart-container" *ngIf="DepartmentChartLabels.length > 0">
+            <canvas baseChart [datasets]="DepartmentChartData" [labels]="DepartmentChartLabels" [options]="DepartmentChartOptions" [chartType]="DepartmentChartType" [legend]="false"></canvas>
+          </div>
+          <div class="hrmTangCa-chart-empty" *ngIf="DepartmentChartLabels.length === 0">{{ 'hrm-tang-ca.noReportData' | translate }}</div>
+        </div>
+      </div>
+      <div class="col s12 m12 l6">
+        <div class="hrmTangCa-chart-card">
+          <h6>{{ 'hrm-tang-ca.requestDepartmentChartTitle' | translate }}</h6>
+          <div class="hrmTangCa-chart-container" *ngIf="RequestDepartmentChartLabels.length > 0">
+            <canvas baseChart [datasets]="RequestDepartmentChartData" [labels]="RequestDepartmentChartLabels" [options]="DepartmentChartOptions" [chartType]="DepartmentChartType" [legend]="false"></canvas>
+          </div>
+          <div class="hrmTangCa-chart-empty" *ngIf="RequestDepartmentChartLabels.length === 0">{{ 'hrm-tang-ca.noReportData' | translate }}</div>
+        </div>
+      </div>
+      <div class="col s12 m12 l6">
+        <div class="hrmTangCa-chart-card">
+          <h6>{{ 'hrm-tang-ca.divisionChartTitle' | translate }}</h6>
+          <div class="hrmTangCa-chart-container" *ngIf="DivisionChartLabels.length > 0">
+            <canvas baseChart [datasets]="DivisionChartData" [labels]="DivisionChartLabels" [options]="DivisionChartOptions" [chartType]="DivisionChartType" [legend]="true"></canvas>
+          </div>
+          <div class="hrmTangCa-chart-empty" *ngIf="DivisionChartLabels.length === 0">{{ 'hrm-tang-ca.noReportData' | translate }}</div>
+        </div>
+      </div>
+      <div class="col s12 m12 l6">
+        <div class="hrmTangCa-chart-card">
+          <h6>{{ 'hrm-tang-ca.trendChartTitle' | translate }}</h6>
+          <div class="hrmTangCa-chart-container" *ngIf="TrendChartLabels.length > 0">
+            <canvas baseChart [datasets]="TrendChartData" [labels]="TrendChartLabels" [options]="TrendChartOptions" [chartType]="TrendChartType" [legend]="false"></canvas>
+          </div>
+          <div class="hrmTangCa-chart-empty" *ngIf="TrendChartLabels.length === 0">{{ 'hrm-tang-ca.noReportData' | translate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="ApprovalOvertimeEmployeeService.IsShowLoading"></app-loading>

@@ -1,0 +1,41 @@
+import { Base } from "./Base.model";
+
+export class HRMDanhGiaHieuSuatKetQua extends Base {
+    HRMDanhGiaDotID?: number;
+    HRMDanhGiaDotName?: string;
+    HRMDanhGiaCapBacID?: number;
+    HRMDanhGiaCapBacName?: string;
+    MembershipID?: number;
+    MembershipCode?: string;
+    MembershipName?: string;
+    CategoryDepartmentID?: number;
+    CategoryDepartmentName?: string;
+    CategoryPositionID?: number;
+    CategoryPositionName?: string;
+    EvaluatorMembershipID?: number;
+    EvaluatorMembershipCode?: string;
+    EvaluatorMembershipName?: string;
+    RoleCode?: string;
+    Weight?: number;
+    DetailScores?: string;
+    DetailItems?: any[];
+    ScoreTotal?: number;
+    ScoreWeighted?: number;
+    Comment?: string;
+    IsSubmitted?: boolean;
+    SubmittedDate?: Date;
+    SelfReviewContent?: string;
+    SelfReviewSubmitted?: boolean;
+    SelfReviewSubmittedDate?: Date;
+    FinalScore?: number;
+    Rank?: string;
+    FinalComment?: string;
+    AttendanceScore?: number;
+    QualityScore?: number;
+    ProductivityScore?: number;
+    SafetyScore?: number;
+    AttitudeScore?: number;
+    TotalScore?: number;
+    CategoryStatusID?: number;
+    CategoryStatusName?: string;
+}

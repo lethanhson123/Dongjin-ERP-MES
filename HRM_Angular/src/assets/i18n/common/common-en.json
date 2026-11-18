@@ -1,0 +1,31 @@
+{
+  "common": {
+    "save": "Save",
+    "add": "Add",
+    "search": "Search",
+    "delete": "Delete",
+    "active": "Active",
+    "no": "No",
+    "close": "Close",
+    "back": "Back",
+    "home": "Home",
+    "export_excel": "Export Excel",
+    "upload_excel": "Upload / Export Excel",
+    "print": "Print",
+    "company": "Company",
+    "department": "Department",
+    "logout": "Logout",
+    "user_guide": "HRM User Guide",
+    "loading": "Loading, please wait...",
+    "items": "items",
+    "view": "View",
+    "office": "Office",
+    "translate_korean": "Translate to Korean",
+    "resignation_upload": "Upload resignation",
+    "hrm": "HRM"
+  },
+  "page": {
+    "membership_title": "Employee",
+    "annual_leave_title": "Annual Leave"
+  }
+}

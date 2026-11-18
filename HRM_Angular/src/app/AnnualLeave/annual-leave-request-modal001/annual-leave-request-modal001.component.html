@@ -1,0 +1,182 @@
+<div class="leave-modal">
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <div class="title">
+            <i class="fas fa-calendar-check"></i> Leave Record
+        </div>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+        <!-- Top Info Section -->
+        <div class="info-section">
+            <div class="info-left">
+                <div class="info-item">
+                    <span class="label">Employee Name</span>
+                    <span class="value underline">{{ this.MembershipService.BaseParameter.BaseModel?.Name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Employee Code</span>
+                    <span class="value underline">{{ this.MembershipService.BaseParameter.BaseModel?.UserName }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Department</span>
+                    <span class="value underline">{{
+                        this.MembershipService.BaseParameter.BaseModel?.CategoryHRMPhongBanName ||
+                        this.MembershipService.BaseParameter.BaseModel?.CategoryDepartmentName }}</span>
+                </div>
+                  <div class="info-item">
+                    <span class="label">Rank</span>
+                    <span class="value underline"> {{this.MembershipService.BaseParameter.BaseModel?.Rank}}</span>
+                  </div>
+            </div>
+            <div class="info-right">
+                <span class="label">Request Code:</span>
+                <span class="value bold">(Auto Generated)</span>
+            </div>
+        </div>
+
+        <!-- Approval Process Section -->
+        <div class="section">
+            <h4 class="section-title">
+                <i class="fas fa-user-tie"></i> Approval Process
+            </h4>
+            <div class="approval-container">
+                <div class="approval-applicant">
+                    <div class="table-header">Applicant</div>
+                    <div class="applicant-details">
+                        <div class="text-muted">{{ CurrentMembership?.CategoryPositionName }}</div>
+                        <div class="user-profile">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i><img src="{{CurrentMembership?.FileName }}" alt=""
+                                    width="50px" , height="50px">
+                            </div>
+                            <span>{{ CurrentMembership?.Name }}</span>
+                        </div>
+                        <div class="text-muted">{{ CurrentMembership?.CategoryHRMPhongBanName ||
+                            CurrentMembership?.CategoryDepartmentName }}</div>
+                        <span class="badge-submitted">Submitted</span>
+                    </div>
+                </div>
+                <div class="approval-action">
+                    <div class="action-body">
+                        <div class="KhungOverflow"
+                            *ngIf="!AnnualLeaveRequestService.IsShowLoading && ForemanList.length > 0">
+                            <table mat-table matSort #ForemanSort="matSort" class="TableMaterial"
+                                [dataSource]="ForemanDataSource">
+                                <ng-container matColumnDef="No">
+                                    <th mat-header-cell *matHeaderCellDef>No</th>
+                                    <td mat-cell *matCellDef="let membership; index as i">
+                                        {{ ForemanPaginator ? ForemanPaginator.pageSize * ForemanPaginator.pageIndex + i
+                                        + 1 : i + 1 }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="UserName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Code</th>
+                                    <td mat-cell *matCellDef="let membership">{{ membership.UserName }}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="Name">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                                    <td mat-cell *matCellDef="let membership">{{ membership.Name }}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="Department">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+                                    <td mat-cell *matCellDef="let membership">
+                                        {{ membership.CategoryHRMPhongBanName || membership.CategoryDepartmentName }}
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="ForemanDisplayColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: ForemanDisplayColumns;"></tr>
+                            </table>
+                            <mat-paginator #ForemanPaginator="matPaginator" [pageSizeOptions]="[3, 10, 20]"
+                                [pageSize]="3" [showFirstLastButtons]></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leave Request Information Section -->
+        <div class="section">
+            <div class="section-header-flex">
+                <h4 class="section-title">
+                    <i class="fas fa-file-alt"></i> Leave Request Information
+                </h4>
+            </div>
+
+            <table class="leave-table">
+                <thead>
+                    <tr>
+                        <th width="3%">#</th>
+                        <th width="35%">Leave Time <i class="fas fa-sync-alt"></i></th>
+                        <th width="15%">Days <i class="fas fa-sync-alt"></i></th>
+                        <th width="25%">Reason For Change</th>
+                        <th width="22%">Leave Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">1</td>
+                        <td>
+                            <div class="datetime-group">
+                                <div class="input-row">
+                                    <span class="lbl">From:</span>
+                                    <input type="date" [(ngModel)]="FromDate" class="form-control date-input">
+                                    <input type="time" [(ngModel)]="FromTime" class="form-control time-input">
+                                </div>
+                                <div class="input-row mt-1">
+                                    <span class="lbl">To:</span>
+                                    <input type="date" [(ngModel)]="ToDate" class="form-control date-input">
+                                    <input type="time" [(ngModel)]="ToTime" class="form-control time-input">
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center text-blue font-weight-bold">
+                            <input type="number" [(ngModel)]="LeaveDays" class="form-control text-center text-blue" min="1" max="30" step="1">
+                        </td>
+                        <td>
+                            <textarea class="form-control reason-input" placeholder="Enter reason..." [(ngModel)]="LeaveReason"></textarea>
+                        </td>
+                        <td>
+                            <select class="browser-default form-select form-control"
+                            [(ngModel)]="SelectedLeaveType">
+                                <option *ngFor="let leaveType of LeaveTypeList" [value]="leaveType.Code">
+                                    {{ leaveType.Code }} - {{ leaveType.NameEN || leaveType.NameVN || leaveType.NameKR }}
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Viewers Section -->
+        <div class="section">
+            <div class="section-header-flex">
+                <h4 class="section-title"><i class="fas fa-eye"></i> Viewers</h4>
+                <button class="btn-link"><i class="fas fa-plus"></i> Add Viewer</button>
+            </div>
+            <div class="viewer-list" *ngIf="HrList.length > 0">
+                <div class="viewer-card" *ngFor="let viewer of HrList">
+                    <div class="viewer-avatar">
+                        <img *ngIf="viewer.FileName" [src]="viewer.FileName" [alt]="viewer.Name || viewer.UserName">
+                        <i *ngIf="!viewer.FileName" class="fas fa-user"></i>
+                    </div>
+                    <div class="viewer-info">
+                        <strong>{{ viewer.Name }}</strong>
+                        <span>{{ viewer.UserName }}</span>
+                    </div>
+                </div>
+            </div>
+            <p class="empty-text" *ngIf="HrList.length === 0">No Viewers</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-green" (click)="SaveFullAsync()" [disabled]="IsSaving">
+                <i class="fas fa-save"></i> {{ IsSaving ? 'Saving...' : 'Save' }}
+            </button>
+        </div>
+    </div>
+</div>
+
+<app-loading *ngIf="AnnualLeaveRequestService.IsShowLoading"></app-loading>

@@ -1,0 +1,17 @@
+{
+  "hrm-ca-lam-viec-ke-hoach": {
+    "title": "근무 계획",
+    "all": "All",
+    "total": "총",
+    "work_shift": "근무 교대",
+    "department": "부서",
+    "date": "날짜",
+    "employee": "직원",
+    "start_hour": "시작: 시간",
+    "start_minute": "시작: 분",
+    "end_hour": "종료: 시간",
+    "end_minute": "종료: 분",
+    "note": "메모",
+    "active": "활성화"
+  }
+}

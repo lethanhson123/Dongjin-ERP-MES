@@ -1,0 +1,11 @@
+
+
+
+/* 3 ô Thâm niên canh đều */
+.card > .row > .col.s4.m4.l4 > .row:last-of-type > .col:not(:first-child) {
+  flex: 1;
+  max-width: none;
+  min-width: 0;
+  padding: 10 4px;
+}
+
